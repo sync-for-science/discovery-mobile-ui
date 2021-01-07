@@ -2,6 +2,7 @@ module.exports = {
   env: {
     browser: true,
     es2021: true,
+    'react-native/react-native': true,
   },
   extends: [
     'plugin:react/recommended',
@@ -16,8 +17,10 @@ module.exports = {
   },
   plugins: [
     'react',
+    'react-native',
   ],
   rules: {
+    'no-use-before-define': ['error', { functions: true, classes: true, variables: false }], // disable the rule for variables, but enable it for functions and classes
     'react/jsx-filename-extension': ['off'],
   },
 };
