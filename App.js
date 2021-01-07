@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -6,8 +6,8 @@ import {
   View,
   Text,
   Image,
-} from "react-native";
-import DemoLogin from "./src/components/Login/DemoLogin";
+} from 'react-native';
+import DemoLogin from './src/components/Login/DemoLogin';
 
 export default function App() {
   return (
@@ -19,12 +19,12 @@ export default function App() {
         <View style={styles.logoContainer}>
           <Image
             style={styles.vlogo}
-            source={require("./assets/images/vermonster-logo.png")}
+            source={require('./assets/images/vermonster-logo.png')}
             resizeMode="contain"
           />
           <Image
             style={styles.slogo}
-            source={{ uri: "http://syncfor.science/s4s-logo.png" }}
+            source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
             resizeMode="contain"
           />
         </View>
@@ -42,25 +42,25 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {
-    height: "100%",
+    height: '100%',
     padding: 20,
   },
 
   vlogo: {
     height: 50,
-    width: "60%",
+    width: '60%',
   },
   slogo: {
     height: 50,
-    width: "60%",
+    width: '60%',
   },
   logoContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 25,
     marginBottom: 25,
   },
 
   description: {
-    alignItems: "center",
+    alignItems: 'center',
   },
 });

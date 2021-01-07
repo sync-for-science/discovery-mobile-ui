@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ScrollView,
-} from "react-native";
-import * as AppAuth from "expo-app-auth";
-import Client from "fhir-kit-client";
+} from 'react-native';
+import * as AppAuth from 'expo-app-auth';
+import Client from 'fhir-kit-client';
 
 // smartapp auth with provided patient
-const fhirIss =
-  "https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI2ODk4OTJiZC1kY2JlLTQxZmMtODY1MS0zOGExZDA4OTM4NTQifQ/fhir";
+const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI2ODk4OTJiZC1kY2JlLTQxZmMtODY1MS0zOGExZDA4OTM4NTQifQ/fhir';
 
 const initializeFhirClient = (baseUrl, accessToken) => {
   if (!accessToken) {
@@ -28,8 +27,8 @@ const initializeFhirClient = (baseUrl, accessToken) => {
 const DemoLogin = () => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
-  console.log("authResult", authResult);
-  console.log("patient", patient);
+  console.log('authResult', authResult);
+  console.log('patient', patient);
 
   useEffect(() => {
     if (authResult && !patient) {
@@ -41,7 +40,7 @@ const DemoLogin = () => {
       const queryPatient = async () => {
         try {
           const patient = await fhirClient.read({
-            resourceType: "Patient",
+            resourceType: 'Patient',
             id: patientId,
           });
           setPatient(patient);
@@ -75,11 +74,11 @@ export default DemoLogin;
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   section: {
-    overflow: "scroll",
-    backgroundColor: "white",
+    overflow: 'scroll',
+    backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
   },
@@ -88,26 +87,26 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   body: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   login: {
-    backgroundColor: "#db882a",
+    backgroundColor: '#db882a',
     height: 50,
     borderRadius: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    width: "50%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
     marginTop: 100,
   },
   loginText: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
   scrollViewInternal: {
     height: 240,
     padding: 20,
     borderWidth: 1,
-    borderColor: "lightgray",
+    borderColor: 'lightgray',
   },
 });
 
@@ -123,27 +122,27 @@ export async function signInAsync() {
     additionalParameters: {
       aud: fhirIss,
     },
-    clientId: "example-client-id",
-    clientSecret: "example-client-secret",
+    clientId: 'example-client-id',
+    clientSecret: 'example-client-secret',
     // redirectUrl:
     //   Platform.OS === "android"
     //     ? "com.reactnativeoauth:/callback"
     //     : "org.reactjs.native.example.ReactNativeOauth:/callback",
     scopes: [
-      "openid",
-      "fhirUser",
-      "patient/*.*",
-      "launch/patient",
-      "online_access",
+      'openid',
+      'fhirUser',
+      'patient/*.*',
+      'launch/patient',
+      'online_access',
     ],
   };
 
   let result;
   try {
     result = await AppAuth.authAsync(config);
-    console.log("Auth result from signInAsync", result);
+    console.log('Auth result from signInAsync', result);
   } catch (error) {
-    console.log("error", error);
+    console.log('error', error);
   }
 
   return result;
@@ -155,27 +154,25 @@ const Login = ({ handleAuthorize }) => (
   </TouchableOpacity>
 );
 
-const PatientView = ({ authResult, patient }) => {
-  return (
-    <View style={styles.sectionContainer}>
-      <View style={styles.section}>
-        <Text style={styles.title}>Authorization Result:</Text>
-        <ScrollView
-          style={styles.scrollViewInternal}
-          nestedScrollEnabled={true}
-        >
-          <Text style={styles.text}>{JSON.stringify(authResult, null, 2)}</Text>
-        </ScrollView>
-      </View>
-      <View style={styles.section}>
-        <Text style={styles.title}>Patient:</Text>
-        <ScrollView
-          style={styles.scrollViewInternal}
-          nestedScrollEnabled={true}
-        >
-          <Text>{JSON.stringify(patient, null, 2)}</Text>
-        </ScrollView>
-      </View>
+const PatientView = ({ authResult, patient }) => (
+  <View style={styles.sectionContainer}>
+    <View style={styles.section}>
+      <Text style={styles.title}>Authorization Result:</Text>
+      <ScrollView
+        style={styles.scrollViewInternal}
+        nestedScrollEnabled
+      >
+        <Text style={styles.text}>{JSON.stringify(authResult, null, 2)}</Text>
+      </ScrollView>
     </View>
-  );
-};
+    <View style={styles.section}>
+      <Text style={styles.title}>Patient:</Text>
+      <ScrollView
+        style={styles.scrollViewInternal}
+        nestedScrollEnabled
+      >
+        <Text>{JSON.stringify(patient, null, 2)}</Text>
+      </ScrollView>
+    </View>
+  </View>
+);
