@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { func, string } from 'prop-types';
+import { func, shape } from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -181,6 +181,6 @@ const PatientView = ({ authResult, patient }) => (
 );
 
 PatientView.propTypes = {
-  authResult: string.isRequired,
-  patient: string.isRequired,
+  authResult: shape({}).isRequired,
+  patient: shape({}).isRequired,
 };
