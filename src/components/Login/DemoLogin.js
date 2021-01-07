@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { func, string } from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -24,11 +25,47 @@ const initializeFhirClient = (baseUrl, accessToken) => {
   });
 };
 
+export async function signInAsync() {
+  const fhirClient = initializeFhirClient(fhirIss);
+  const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
+
+  const config = {
+    serviceConfiguration: {
+      authorizationEndpoint: authorizeUrl.toString(),
+      tokenEndpoint: tokenUrl.toString(),
+    },
+    additionalParameters: {
+      aud: fhirIss,
+    },
+    clientId: 'example-client-id',
+    clientSecret: 'example-client-secret',
+    // redirectUrl:
+    //   Platform.OS === "android"
+    //     ? "com.reactnativeoauth:/callback"
+    //     : "org.reactjs.native.example.ReactNativeOauth:/callback",
+    scopes: [
+      'openid',
+      'fhirUser',
+      'patient/*.*',
+      'launch/patient',
+      'online_access',
+    ],
+  };
+
+  let result;
+  try {
+    result = await AppAuth.authAsync(config);
+    console.log('Auth result from signInAsync', result);
+  } catch (error) {
+    console.warn('error', error);
+  }
+
+  return result;
+}
+
 const DemoLogin = () => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
-  console.log('authResult', authResult);
-  console.log('patient', patient);
 
   useEffect(() => {
     if (authResult && !patient) {
@@ -39,11 +76,11 @@ const DemoLogin = () => {
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
-          const patient = await fhirClient.read({
+          const patientData = await fhirClient.read({
             resourceType: 'Patient',
             id: patientId,
           });
-          setPatient(patient);
+          setPatient(patientData);
         } catch (error) {
           setPatient(error);
         }
@@ -60,8 +97,8 @@ const DemoLogin = () => {
         <View style={styles.body}>
           <Login
             handleAuthorize={async () => {
-              const _authState = await signInAsync();
-              setAuthResult(_authState);
+              const authResponse = await signInAsync();
+              setAuthResult(authResponse);
             }}
           />
         </View>
@@ -110,49 +147,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export async function signInAsync() {
-  const fhirClient = initializeFhirClient(fhirIss);
-  const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
-
-  const config = {
-    serviceConfiguration: {
-      authorizationEndpoint: authorizeUrl._url,
-      tokenEndpoint: tokenUrl._url,
-    },
-    additionalParameters: {
-      aud: fhirIss,
-    },
-    clientId: 'example-client-id',
-    clientSecret: 'example-client-secret',
-    // redirectUrl:
-    //   Platform.OS === "android"
-    //     ? "com.reactnativeoauth:/callback"
-    //     : "org.reactjs.native.example.ReactNativeOauth:/callback",
-    scopes: [
-      'openid',
-      'fhirUser',
-      'patient/*.*',
-      'launch/patient',
-      'online_access',
-    ],
-  };
-
-  let result;
-  try {
-    result = await AppAuth.authAsync(config);
-    console.log('Auth result from signInAsync', result);
-  } catch (error) {
-    console.log('error', error);
-  }
-
-  return result;
-}
-
 const Login = ({ handleAuthorize }) => (
   <TouchableOpacity style={styles.login} onPress={handleAuthorize}>
     <Text style={styles.loginText}>Login</Text>
   </TouchableOpacity>
 );
+
+Login.propTypes = {
+  handleAuthorize: func.isRequired,
+};
 
 const PatientView = ({ authResult, patient }) => (
   <View style={styles.sectionContainer}>
@@ -176,3 +179,8 @@ const PatientView = ({ authResult, patient }) => (
     </View>
   </View>
 );
+
+PatientView.propTypes = {
+  authResult: string.isRequired,
+  patient: string.isRequired,
+};

@@ -8,6 +8,7 @@ import {
   Image,
 } from 'react-native';
 import DemoLogin from './src/components/Login/DemoLogin';
+import logo from './assets/images/vermonster-logo.png';
 
 export default function App() {
   return (
@@ -19,7 +20,7 @@ export default function App() {
         <View style={styles.logoContainer}>
           <Image
             style={styles.vlogo}
-            source={require('./assets/images/vermonster-logo.png')}
+            source={logo}
             resizeMode="contain"
           />
           <Image
