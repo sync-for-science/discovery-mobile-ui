@@ -34,7 +34,7 @@ const LoginScreen = ({navigation}) => {
         <View style={styles.description}>
           <Text>Discovery Mobile App</Text>
         </View>
-        <Login />
+        <Login navigation={navigation} />
         <Button
           title="Skip Login"
           onPress={() => navigation.navigate('PostAuth')}

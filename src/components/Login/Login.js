@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
+import Colors from '../../constants/Colors'
 
 // smartapp auth with provided patient
 const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI2ODk4OTJiZC1kY2JlLTQxZmMtODY1MS0zOGExZDA4OTM4NTQifQ/fhir';
@@ -63,7 +64,7 @@ export async function signInAsync() {
   return result;
 }
 
-const Login = () => {
+const Login = ({navigation}) => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
 
@@ -99,6 +100,7 @@ const Login = () => {
             handleAuthorize={async () => {
               const authResponse = await signInAsync();
               setAuthResult(authResponse);
+              navigation.navigate('PostAuth')
             }}
           />
         </View>
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   login: {
-    backgroundColor: '#3477e3',
+    backgroundColor: Colors.primary,
     height: 50,
     borderRadius: 50,
     alignItems: 'center',
