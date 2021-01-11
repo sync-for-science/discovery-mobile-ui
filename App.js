@@ -1,67 +1,40 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Image,
-} from 'react-native';
-import Login from './src/components/Login/Login';
-import logo from './assets/images/vermonster-logo.png';
+import { StyleSheet, Button, Platform } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import LoginScreen from './src/screens/LoginScreen'
+import SummaryScreen from './src/screens/SummaryScreen'
+import CatalogScreen from './src/screens/CatalogScreen'
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-      >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.vlogo}
-            source={logo}
-            resizeMode="contain"
-          />
-          <Image
-            style={styles.slogo}
-            source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={styles.description}>
-          <Text>Discovery Mobile App</Text>
-        </View>
-        <Login />
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer >
+      <Stack.Navigator 
+        initialRouteName="Login" 
+        screenOptions={{ 
+            headerStyle: { backgroundColor: '#3477e3' },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontWeight: 'normal',
+              alignSelf: 'center'
+            },
+          }}
+        >
+        <Stack.Screen 
+          name="Login" 
+          component={LoginScreen} 
+          options={{
+            title: 'Discovery Mobile App', 
+          }} 
+        />
+        <Stack.Screen name="Summary" component={SummaryScreen} />
+        <Stack.Screen name="Catalog" component={CatalogScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-  },
-  scrollView: {
-    height: '100%',
-    padding: 20,
-  },
-
-  vlogo: {
-    height: 50,
-    width: '60%',
-  },
-  slogo: {
-    height: 50,
-    width: '60%',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: 25,
-    marginBottom: 25,
-  },
-
-  description: {
-    alignItems: 'center',
-  },
-});
+const styles = StyleSheet.create();

@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   login: {
-    backgroundColor: '#db882a',
+    backgroundColor: '#3477e3',
     height: 50,
     borderRadius: 50,
     alignItems: 'center',
