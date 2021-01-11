@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .js,.jsx"
   },
   "dependencies": {
+    "@react-navigation/native": "^5.8.10",
     "expo": "~40.0.0",
     "expo-app-auth": "~9.3.0",
     "expo-status-bar": "~1.0.3",
