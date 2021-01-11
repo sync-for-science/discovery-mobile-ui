@@ -31,14 +31,13 @@ const LoginScreen = ({navigation}) => {
             resizeMode="contain"
           />
         </View>
+        <View style={styles.description}>
+          <Text>Discovery Mobile App</Text>
+        </View>
         <Login />
         <Button
-          title="Go to Summary"
-          onPress={() => navigation.navigate('Summary')}
-        />
-        <Button
-          title="Go to Catalog"
-          onPress={() => navigation.navigate('Catalog')}
+          title="Skip Login"
+          onPress={() => navigation.navigate('PostAuth')}
         />
       </ScrollView>
     </SafeAreaView>
@@ -69,5 +68,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 25,
     marginBottom: 25,
+  },
+  description: {	
+    alignItems: 'center',	
   },
 })

@@ -1,10 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 
-const CatalogScreen = () => {
+const CatalogScreen = ({navigation}) => {
   return (
     <View style={styles.screen}>
-        <Text>CatalogScreen</Text>
+        <Text>Catalog Screen</Text>
+        <Button
+          title="Back To Login"
+          onPress={() => navigation.navigate('PreAuth')}
+        />
     </View>
   )
 }
