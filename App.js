@@ -7,7 +7,7 @@ import {
   Text,
   Image,
 } from 'react-native';
-import DemoLogin from './src/components/Login/DemoLogin';
+import Login from './src/components/Login/Login';
 import logo from './assets/images/vermonster-logo.png';
 
 export default function App() {
@@ -32,7 +32,7 @@ export default function App() {
         <View style={styles.description}>
           <Text>Discovery Mobile App</Text>
         </View>
-        <DemoLogin />
+        <Login />
       </ScrollView>
     </SafeAreaView>
   );

@@ -63,7 +63,7 @@ export async function signInAsync() {
   return result;
 }
 
-const DemoLogin = () => {
+const Login = () => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
 
@@ -95,7 +95,7 @@ const DemoLogin = () => {
         <PatientView authResult={authResult} patient={patient} />
       ) : (
         <View style={styles.body}>
-          <Login
+          <LoginButton
             handleAuthorize={async () => {
               const authResponse = await signInAsync();
               setAuthResult(authResponse);
@@ -107,7 +107,7 @@ const DemoLogin = () => {
   );
 };
 
-export default DemoLogin;
+export default Login;
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -147,13 +147,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = ({ handleAuthorize }) => (
+const LoginButton = ({ handleAuthorize }) => (
   <TouchableOpacity style={styles.login} onPress={handleAuthorize}>
     <Text style={styles.loginText}>Login</Text>
   </TouchableOpacity>
 );
 
-Login.propTypes = {
+LoginButton.propTypes = {
   handleAuthorize: func.isRequired,
 };
 
