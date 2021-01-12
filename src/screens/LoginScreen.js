@@ -1,4 +1,5 @@
 import React from 'react';
+import { shape } from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
@@ -40,6 +41,10 @@ const LoginScreen = ({ navigation }) => (
     </ScrollView>
   </SafeAreaView>
 );
+
+LoginScreen.propTypes = {
+  navigation: shape({}).isRequired,
+};
 
 export default LoginScreen;
 

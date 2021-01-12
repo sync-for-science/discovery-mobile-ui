@@ -68,6 +68,8 @@ const Login = ({ navigation }) => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
 
+  console.log('navigation:', navigation);
+
   useEffect(() => {
     if (authResult && !patient) {
       const {
@@ -107,6 +109,10 @@ const Login = ({ navigation }) => {
       )}
     </View>
   );
+};
+
+Login.propTypes = {
+  navigation: shape({}).isRequired,
 };
 
 export default Login;

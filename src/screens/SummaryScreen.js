@@ -1,4 +1,5 @@
 import React from 'react';
+import { shape } from 'prop-types';
 import {
   StyleSheet, Text, View, Button,
 } from 'react-native';
@@ -12,6 +13,10 @@ const SummaryScreen = ({ navigation }) => (
     />
   </View>
 );
+
+SummaryScreen.propTypes = {
+  navigation: shape({}).isRequired,
+};
 
 export default SummaryScreen;
 
