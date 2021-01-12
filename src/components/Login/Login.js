@@ -68,8 +68,6 @@ const Login = ({ navigation }) => {
   const [authResult, setAuthResult] = useState(null);
   const [patient, setPatient] = useState(null);
 
-  console.log('navigation:', navigation);
-
   useEffect(() => {
     if (authResult && !patient) {
       const {
