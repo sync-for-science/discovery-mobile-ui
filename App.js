@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons/';
 
-// import { bool, number, string } from 'prop-types';
 import LoginScreen from './src/screens/LoginScreen';
 import SummaryScreen from './src/screens/SummaryScreen';
 import CatalogScreen from './src/screens/CatalogScreen';
@@ -23,55 +22,20 @@ function selectIconName(name, focused) {
   return '';
 }
 
-// const TabBarIcon = ({ focused, color, size }) => {
-
-//   return(
-//     <Ionicons
-//       name={selectIconName(name, focused)}
-//       size={size}
-//       color={color}
-//     />
-//   )
-// }
-
-const screenOptions = ({ route: { name } }) => ({
-  tabBarIcon: ({ focused, color, size }) =>
-    // You can return any component that you like here!
-    (
-      <Ionicons
-        name={selectIconName(name, focused)}
-        size={size}
-        color={color}
-      />
-    ),
-
+// selectScreenOptions is a function that returns a POJO
+const selectScreenOptions = ({ route: { name } }) => ({
+  tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
+    <Ionicons
+      name={selectIconName(name, focused)}
+      size={size}
+      color={color}
+    />
+  ),
 });
-
-// const screenOptions = ({ route: { name } }) => ({
-//   tabBarIcon: (({ focused, color, size }) => {
-//     // console.log('props', focused, color, size);
-//     let iconName;
-
-//     if (name === 'Summary') {
-//       iconName = focused
-//         ? 'md-person-sharp'
-//         : 'md-person-outline';
-//     } else if (name === 'Catalog') {
-//       iconName = focused ? 'file-tray-full' : 'file-tray-outline';
-//     }
-
-//     // You can return any component that you like here!
-//     return <Ionicons name={iconName} size={size} color={color} />;
-//   }).propTypes = {
-//     focused: bool.isRequired,
-//     color: string.isRequired,
-//     size: number.isRequired,
-//   },
-// });
 
 const PostAuthScreens = () => (
   <Tab.Navigator
-    screenOptions={screenOptions}
+    screenOptions={selectScreenOptions}
     tabBarOptions={{
       activeTintColor: Colors.primary,
       inactiveTintColor: 'gray',
@@ -81,12 +45,6 @@ const PostAuthScreens = () => (
     <Tab.Screen name="Catalog" component={CatalogScreen} />
   </Tab.Navigator>
 );
-
-// tabBarIcon.propTypes = {
-//   focused: bool.isRequired,
-//   color: string.isRequired,
-//   size: number.isRequired
-// }
 
 export default function App() {
   return (
