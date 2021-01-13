@@ -3107,10 +3107,10 @@ fbjs@^0.8.4:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.18"
 
-fhir-kit-client@^1.6.1:
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/fhir-kit-client/-/fhir-kit-client-1.6.1.tgz#27b0b7b8836be6554121469cc233f4cd0a56c697"
-  integrity sha512-lW9zsWu3KbWAJVRzHh5dvWvDish8gZtOrXl0wSm8AK5Y5QhulUBSyM/Jh50s4dthPtqVQ/3VbJCkA8VPgTwcIg==
+fhir-kit-client@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/fhir-kit-client/-/fhir-kit-client-1.6.2.tgz#f3ea6f0ccd79e8e8deaa545fb011deaf020165fa"
+  integrity sha512-haOweM30/Z8bSQMi9e/EwQkwSWFl5lO2p9GfbGWb1j1ZarPttJZQ7lWcxsHKJE7waG9WfyeaLPrOGb7s3IvJmg==
   dependencies:
     abort-controller "^3.0.0"
     agentkeepalive "^4.1.3"
