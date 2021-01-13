@@ -11,7 +11,7 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
-import { setAuth, setPatientData } from '../../features/patient/patientSlice';
+import { setAuth, setPatient } from '../../features/patient/patientSlice';
 import Colors from '../../constants/Colors';
 
 // smartapp auth with provided patient
@@ -68,10 +68,10 @@ export async function signInAsync() {
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientDataAction, auth, patientData,
+  navigation, setAuthAction, setPatientAction, auth, patient,
 }) => {
   useEffect(() => {
-    if (auth && !patientData) {
+    if (auth && !patient) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
@@ -79,23 +79,23 @@ const Login = ({
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
-          const patientDataResult = await fhirClient.read({
+          const patientData = await fhirClient.read({
             resourceType: 'Patient',
             id: patientId,
           });
-          setPatientDataAction(patientDataResult);
+          setPatientAction(patientData);
         } catch (error) {
-          setPatientDataAction(error);
+          setPatientAction(error);
         }
       };
       queryPatient();
     }
-  }, [auth, patientData]);
+  }, [auth, patient]);
 
   return (
     <View>
-      {patientData ? (
-        <PatientView authResult={auth} patient={patientData} />
+      {patient ? (
+        <PatientView authResult={auth} patient={patient} />
       ) : (
         <View style={styles.body}>
           <LoginButton
@@ -114,14 +114,14 @@ const Login = ({
 Login.propTypes = {
   navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
-  setPatientDataAction: func.isRequired,
+  setPatientAction: func.isRequired,
   auth: shape({}),
-  patientData: shape({}),
+  patient: shape({}),
 };
 
 Login.defaultProps = {
   auth: null,
-  patientData: null,
+  patient: null,
 };
 
 const mapPropsToState = (state) => ({
@@ -129,7 +129,7 @@ const mapPropsToState = (state) => ({
   patientData: state.patient.patientData,
 });
 
-const mapPropsToDispatch = { setAuthAction: setAuth, setPatientDataAction: setPatientData };
+const mapPropsToDispatch = { setAuthAction: setAuth, setPatientAction: setPatient };
 
 export default connect(mapPropsToState, mapPropsToDispatch)(Login);
 

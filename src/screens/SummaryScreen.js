@@ -2,11 +2,10 @@ import React from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, ScrollView, SafeAreaView, Dimensions, Platform, StatusBar,
+  StyleSheet, Text, View, Button, ScrollView, SafeAreaView, Platform, StatusBar,
 } from 'react-native';
 
 const SummaryScreen = ({ navigation, patient }) => {
-  console.log('patient from Summary Screen', patient);
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
   const displayPatient = patient
@@ -25,7 +24,7 @@ const SummaryScreen = ({ navigation, patient }) => {
         {patient
       && (
       <View style={styles.section}>
-        <Text style={styles.title}>PatientData</Text>
+        <Text style={styles.title}>Patient Data</Text>
         <ScrollView
           style={styles.scrollViewInternal}
           nestedScrollEnabled
@@ -55,7 +54,7 @@ SummaryScreen.defaultProps = {
 };
 
 const mapPropsToState = (state) => ({
-  patient: state.patient.patientData,
+  patient: state.patient.patient,
 });
 
 export default connect(mapPropsToState, null)(SummaryScreen);
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   scrollViewInternal: {
-    height: Dimensions.get('window').height * 0.5,
+    height: 500,
     padding: 20,
     borderWidth: 1,
     borderColor: 'lightgray',

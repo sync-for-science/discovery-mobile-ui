@@ -2,13 +2,13 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const patientSlice = createSlice({
   name: 'patient',
-  initialState: { auth: null, patientData: null },
+  initialState: { auth: null, patient: null },
   reducers: {
     setAuth: (state, action) => ({ ...state, auth: action.payload }),
-    setPatientData: (state, action) => ({ ...state, patientData: action.payload }),
+    setPatient: (state, action) => ({ ...state, patient: action.payload }),
   },
 });
 
-export const { setAuth, setPatientData } = patientSlice.actions;
+export const { setAuth, setPatient } = patientSlice.actions;
 
 export default patientSlice.reducer;
