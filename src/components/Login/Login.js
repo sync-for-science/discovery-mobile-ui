@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { func, shape } from 'prop-types';
 import {
   StyleSheet,
@@ -9,6 +9,9 @@ import {
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
+import { connect } from 'react-redux';
+
+import { setAuth, setPatientData } from '../../features/patient/patientSlice';
 import Colors from '../../constants/Colors';
 
 // smartapp auth with provided patient
@@ -64,42 +67,41 @@ export async function signInAsync() {
   return result;
 }
 
-const Login = ({ navigation }) => {
-  const [authResult, setAuthResult] = useState(null);
-  const [patient, setPatient] = useState(null);
-
+const Login = ({
+  navigation, setAuthAction, setPatientDataAction, auth, patientData,
+}) => {
   useEffect(() => {
-    if (authResult && !patient) {
+    if (auth && !patientData) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
-      } = authResult;
+      } = auth;
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
-          const patientData = await fhirClient.read({
+          const patientDataResult = await fhirClient.read({
             resourceType: 'Patient',
             id: patientId,
           });
-          setPatient(patientData);
+          setPatientDataAction(patientDataResult);
         } catch (error) {
-          setPatient(error);
+          setPatientDataAction(error);
         }
       };
       queryPatient();
     }
-  }, [authResult, patient]);
+  }, [auth, patientData]);
 
   return (
     <View>
-      {patient ? (
-        <PatientView authResult={authResult} patient={patient} />
+      {patientData ? (
+        <PatientView authResult={auth} patient={patientData} />
       ) : (
         <View style={styles.body}>
           <LoginButton
             handleAuthorize={async () => {
               const authResponse = await signInAsync();
-              setAuthResult(authResponse);
+              setAuthAction(authResponse);
               navigation.navigate('PostAuth');
             }}
           />
@@ -111,9 +113,25 @@ const Login = ({ navigation }) => {
 
 Login.propTypes = {
   navigation: shape({}).isRequired,
+  setAuthAction: func.isRequired,
+  setPatientDataAction: func.isRequired,
+  auth: shape({}),
+  patientData: shape({}),
 };
 
-export default Login;
+Login.defaultProps = {
+  auth: null,
+  patientData: null,
+};
+
+const mapPropsToState = (state) => ({
+  auth: state.patient.auth,
+  patientData: state.patient.patientData,
+});
+
+const mapPropsToDispatch = { setAuthAction: setAuth, setPatientDataAction: setPatientData };
+
+export default connect(mapPropsToState, mapPropsToDispatch)(Login);
 
 const styles = StyleSheet.create({
   sectionContainer: {

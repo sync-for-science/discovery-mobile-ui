@@ -1,12 +1,16 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import RootNavigator from './src/navigation/RootNavigator';
-import counterSlice from './Slice';
+import patientReducer from './src/features/patient/patientSlice';
+
+const rootReducer = combineReducers({
+  patient: patientReducer,
+});
 
 const store = configureStore({
-  reducer: counterSlice.reducer,
+  reducer: rootReducer,
 });
 
 export default function App() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
@@ -11,65 +11,42 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 
 import Login from '../components/Login/Login';
 import logo from '../../assets/images/vermonster-logo.png';
-import counterSlice from '../../Slice';
 
-const LoginScreen = (props) => {
-  const { navigation } = props;
-
-  const { actions } = counterSlice;
-  const { increment, decrement } = actions;
-
-  const count = useSelector((state) => {
-    console.log('useSelector state', state);
-    return state;
-  });
-
-  const dispatch = useDispatch();
-
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
-      >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.vlogo}
-            source={logo}
-            resizeMode="contain"
-          />
-          <Image
-            style={styles.slogo}
-            source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={styles.description}>
-          <Text>Discovery Mobile App</Text>
-        </View>
-        <Login navigation={navigation} />
-        <Button
-          title="Skip Login"
-          onPress={() => navigation.navigate('PostAuth')}
+const LoginScreen = ({ navigation }) => (
+  <SafeAreaView style={styles.safeAreaView}>
+    <ScrollView
+      contentInsetAdjustmentBehavior="automatic"
+      style={styles.scrollView}
+    >
+      <View style={styles.logoContainer}>
+        <Image
+          style={styles.vlogo}
+          source={logo}
+          resizeMode="contain"
         />
-      </ScrollView>
-      <Text>
-        Count:
-        {' '}
-        {count}
-      </Text>
-      <Button title="Increment Count" onPress={() => dispatch(increment())} />
-      <Button title="Reduce Count" onPress={() => dispatch(decrement())} />
-    </SafeAreaView>
-  );
-};
+        <Image
+          style={styles.slogo}
+          source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
+          resizeMode="contain"
+        />
+      </View>
+      <View style={styles.description}>
+        <Text>Discovery Mobile App</Text>
+      </View>
+      <Login navigation={navigation} />
+      <Button
+        title="Skip Login"
+        onPress={() => navigation.navigate('PostAuth')}
+      />
+    </ScrollView>
+  </SafeAreaView>
+);
 
 LoginScreen.propTypes = {
-  navigation: shape({}).isRequired,
+  navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
 };
 
 export default LoginScreen;
