@@ -10,7 +10,8 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
-import { setAuth, setPatient } from '../../features/patient/patientSlice';
+import { setPatient } from '../../features/patient/patientSlice';
+import { setAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
 // smartapp auth with provided patient
@@ -67,14 +68,14 @@ export async function signInAsync() {
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientAction, auth, patient,
+  navigation, setAuthAction, setPatientAction, authResult, patient,
 }) => {
   useEffect(() => {
-    if (auth && !patient) {
+    if (authResult && !patient) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
-      } = auth;
+      } = authResult;
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
@@ -89,7 +90,7 @@ const Login = ({
       };
       queryPatient();
     }
-  }, [auth, patient]);
+  }, [authResult, patient]);
 
   return (
     <View>
@@ -115,18 +116,18 @@ Login.propTypes = {
   navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
   setPatientAction: func.isRequired,
-  auth: shape({}),
+  authResult: shape({}),
   patient: shape({}),
 };
 
 Login.defaultProps = {
-  auth: null,
+  authResult: null,
   patient: null,
 };
 
 const mapPropsToState = (state) => ({
-  auth: state.patient.auth,
-  patientData: state.patient.patientData,
+  authResult: state.auth.authResult,
+  patient: state.patient.patient,
 });
 
 const mapPropsToDispatch = { setAuthAction: setAuth, setPatientAction: setPatient };
