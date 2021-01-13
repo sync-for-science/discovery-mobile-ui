@@ -2,10 +2,10 @@ import React from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, Button, ScrollView, SafeAreaView, Platform, StatusBar,
+  StyleSheet, Text, View, ScrollView, SafeAreaView, Platform, StatusBar,
 } from 'react-native';
 
-const SummaryScreen = ({ navigation, patient }) => {
+const SummaryScreen = ({ patient }) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
   const displayPatient = patient
@@ -33,19 +33,12 @@ const SummaryScreen = ({ navigation, patient }) => {
         </ScrollView>
       </View>
       )}
-        <View style={styles.descriptionContainer}>
-          <Button
-            title="Back To Login"
-            onPress={() => navigation.navigate('PreAuth')}
-          />
-        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 SummaryScreen.propTypes = {
-  navigation: shape({}).isRequired,
   patient: shape({}),
 };
 

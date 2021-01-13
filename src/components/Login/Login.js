@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
@@ -94,19 +93,20 @@ const Login = ({
 
   return (
     <View>
-      {patient ? (
-        <PatientView authResult={auth} patient={patient} />
-      ) : (
-        <View style={styles.body}>
-          <LoginButton
-            handleAuthorize={async () => {
+      <View style={styles.body}>
+        <TouchableOpacity
+          style={styles.login}
+          onPress={
+            async () => {
               const authResponse = await signInAsync();
               setAuthAction(authResponse);
               navigation.navigate('PostAuth');
-            }}
-          />
-        </View>
-      )}
+            }
+          }
+        >
+          <Text style={styles.loginText}>Login</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -170,41 +170,3 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
   },
 });
-
-const LoginButton = ({ handleAuthorize }) => (
-  <TouchableOpacity style={styles.login} onPress={handleAuthorize}>
-    <Text style={styles.loginText}>Login</Text>
-  </TouchableOpacity>
-);
-
-LoginButton.propTypes = {
-  handleAuthorize: func.isRequired,
-};
-
-const PatientView = ({ authResult, patient }) => (
-  <View style={styles.sectionContainer}>
-    <View style={styles.section}>
-      <Text style={styles.title}>Authorization Result:</Text>
-      <ScrollView
-        style={styles.scrollViewInternal}
-        nestedScrollEnabled
-      >
-        <Text style={styles.text}>{JSON.stringify(authResult, null, 2)}</Text>
-      </ScrollView>
-    </View>
-    <View style={styles.section}>
-      <Text style={styles.title}>Patient:</Text>
-      <ScrollView
-        style={styles.scrollViewInternal}
-        nestedScrollEnabled
-      >
-        <Text>{JSON.stringify(patient, null, 2)}</Text>
-      </ScrollView>
-    </View>
-  </View>
-);
-
-PatientView.propTypes = {
-  authResult: shape({}).isRequired,
-  patient: shape({}).isRequired,
-};

@@ -7,7 +7,6 @@ import {
   View,
   Text,
   Image,
-  Button,
   StatusBar,
   Platform,
 } from 'react-native';
@@ -37,10 +36,6 @@ const LoginScreen = ({ navigation }) => (
         <Text>Discovery Mobile App</Text>
       </View>
       <Login navigation={navigation} />
-      <Button
-        title="Skip Login"
-        onPress={() => navigation.navigate('PostAuth')}
-      />
     </ScrollView>
   </SafeAreaView>
 );
