@@ -8,7 +8,6 @@ import {
   Text,
   Image,
   StatusBar,
-  Platform,
 } from 'react-native';
 
 import Login from '../components/Login/Login';
