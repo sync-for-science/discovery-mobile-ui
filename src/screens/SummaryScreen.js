@@ -14,10 +14,10 @@ const SummaryScreen = ({ patient }) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar barStyle="dark-content" />
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.welcome}>
-
             {displayPatient}
           </Text>
         </View>
@@ -86,5 +86,6 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 24,
     fontWeight: '600',
+    paddingTop: 50,
   },
 });

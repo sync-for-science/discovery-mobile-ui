@@ -16,6 +16,7 @@ import logo from '../../assets/images/vermonster-logo.png';
 
 const LoginScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
+    <StatusBar barStyle="dark-content" />
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       style={styles.scrollView}

@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { func, shape } from 'prop-types';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
@@ -70,6 +71,8 @@ export async function signInAsync() {
 const Login = ({
   navigation, setAuthAction, setPatientAction, authResult, patient,
 }) => {
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (authResult && !patient) {
       const {
@@ -95,18 +98,22 @@ const Login = ({
   return (
     <View>
       <View style={styles.body}>
-        <TouchableOpacity
-          style={styles.login}
-          onPress={
+        { loading ? <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> : (
+          <TouchableOpacity
+            style={styles.login}
+            onPress={
             async () => {
+              setLoading(true);
               const authResponse = await signInAsync();
               setAuthAction(authResponse);
+              setLoading(false);
               navigation.navigate('PostAuth');
             }
           }
-        >
-          <Text style={styles.loginText}>Login</Text>
-        </TouchableOpacity>
+          >
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -150,6 +157,7 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
+    paddingTop: 100,
   },
   login: {
     backgroundColor: Colors.primary,
@@ -158,7 +166,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '50%',
-    marginTop: 100,
   },
   loginText: {
     color: 'white',

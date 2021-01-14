@@ -6,6 +6,7 @@ import {
 
 const CatalogScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
+    <StatusBar barStyle="dark-content" />
     <View style={styles.screen}>
       <Text>Catalog Screen</Text>
       <Button
