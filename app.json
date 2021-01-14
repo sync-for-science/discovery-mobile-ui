@@ -2,6 +2,7 @@
   "expo": {
     "name": "discovery-mobile-ui",
     "slug": "discovery-mobile-ui",
+    "owner": "sync-for-science",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
