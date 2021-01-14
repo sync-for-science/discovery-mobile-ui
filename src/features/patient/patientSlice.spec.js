@@ -1,7 +1,7 @@
 import patientReducer, { setPatient, clearPatient, initialState } from './patientSlice';
 
-const patientData = { patient: 'Michael Scott' };
-const stateWithToken = { patient: patientData };
+const patientData = { patientName: 'Michael Scott' };
+const stateWithPatient = { patient: patientData };
 
 describe('patient reducer', () => {
   it('should handle initial state', () => {
@@ -16,12 +16,12 @@ describe('patient reducer', () => {
         type: setPatient.type,
         payload: patientData,
       }),
-    ).toEqual(stateWithToken);
+    ).toEqual(stateWithPatient);
   });
 
   it('should handle clearPatient action', () => {
     expect(
-      patientReducer(stateWithToken, {
+      patientReducer(stateWithPatient, {
         type: clearPatient.type,
       }),
     ).toEqual(initialState);
