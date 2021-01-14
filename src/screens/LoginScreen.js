@@ -8,6 +8,8 @@ import {
   Text,
   Image,
   Button,
+  StatusBar,
+  Platform,
 } from 'react-native';
 import Login from '../components/Login/Login';
 import logo from '../../assets/images/vermonster-logo.png';
@@ -52,12 +54,12 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: 'white',
+    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   scrollView: {
-    height: '100%',
+    flex: 1,
     padding: 20,
   },
-
   vlogo: {
     height: 50,
     width: '60%',
