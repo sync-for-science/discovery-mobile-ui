@@ -2,8 +2,10 @@ import React from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, ScrollView, SafeAreaView, Platform, StatusBar,
+  StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar,
 } from 'react-native';
+
+import Colors from '../constants/Colors';
 
 const SummaryScreen = ({ patient }) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
@@ -14,7 +16,7 @@ const SummaryScreen = ({ patient }) => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.welcome}>
@@ -55,7 +57,6 @@ export default connect(mapPropsToState, null)(SummaryScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   screen: {
     flex: 1,
@@ -86,6 +87,6 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 24,
     fontWeight: '600',
-    paddingTop: 50,
+    paddingTop: 25,
   },
 });

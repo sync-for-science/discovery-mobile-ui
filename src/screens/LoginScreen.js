@@ -13,10 +13,11 @@ import {
 
 import Login from '../components/Login/Login';
 import logo from '../../assets/images/vermonster-logo.png';
+import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar barStyle="dark-content" />
+    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       style={styles.scrollView}
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   scrollView: {
     flex: 1,
