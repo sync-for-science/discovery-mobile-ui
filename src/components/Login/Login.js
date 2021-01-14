@@ -132,14 +132,14 @@ Login.defaultProps = {
   patient: null,
 };
 
-const mapPropsToState = (state) => ({
+const mapStateToProps = (state) => ({
   authResult: state.auth.authResult,
   patient: state.patient.patient,
 });
 
-const mapPropsToDispatch = { setAuthAction: setAuth, setPatientAction: setPatient };
+const mapDispatchToProps = { setAuthAction: setAuth, setPatientAction: setPatient };
 
-export default connect(mapPropsToState, mapPropsToDispatch)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   sectionContainer: {

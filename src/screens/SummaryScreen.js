@@ -1,18 +1,24 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar,
+  StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
+import { logout } from '../features/auth/authSlice';
 
-const SummaryScreen = ({ patient }) => {
+const SummaryScreen = ({ navigation, patient, logoutAction }) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
   const displayPatient = patient
     ? `Welcome ${patientName}`
     : 'No Patient Data Available';
+
+  const handleLogout = () => {
+    logoutAction();
+    navigation.navigate('PreAuth');
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -35,24 +41,29 @@ const SummaryScreen = ({ patient }) => {
         </ScrollView>
       </View>
       )}
+        {patient && <Button title="Logout" onPress={handleLogout} />}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 SummaryScreen.propTypes = {
+  navigation: shape({}).isRequired,
   patient: shape({}),
+  logoutAction: func.isRequired,
 };
 
 SummaryScreen.defaultProps = {
   patient: null,
 };
 
-const mapPropsToState = (state) => ({
+const mapStateToProps = (state) => ({
   patient: state.patient.patient,
 });
 
-export default connect(mapPropsToState, null)(SummaryScreen);
+const mapDispatchToProps = { logoutAction: logout };
+
+export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
