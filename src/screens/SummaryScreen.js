@@ -6,9 +6,12 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import { logout } from '../features/auth/authSlice';
+import { clearAuth } from '../features/auth/authSlice';
+import { clearPatient } from '../features/patient/patientSlice';
 
-const SummaryScreen = ({ navigation, patient, logoutAction }) => {
+const SummaryScreen = ({
+  navigation, patient, clearAuthAction, clearPatientAction,
+}) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
   const displayPatient = patient
@@ -16,7 +19,8 @@ const SummaryScreen = ({ navigation, patient, logoutAction }) => {
     : 'No Patient Data Available';
 
   const handleLogout = () => {
-    logoutAction();
+    clearAuthAction();
+    clearPatientAction();
     navigation.navigate('PreAuth');
   };
 
@@ -50,7 +54,8 @@ const SummaryScreen = ({ navigation, patient, logoutAction }) => {
 SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
   patient: shape({}),
-  logoutAction: func.isRequired,
+  clearAuthAction: func.isRequired,
+  clearPatientAction: func.isRequired,
 };
 
 SummaryScreen.defaultProps = {
@@ -61,7 +66,7 @@ const mapStateToProps = (state) => ({
   patient: state.patient.patient,
 });
 
-const mapDispatchToProps = { logoutAction: logout };
+const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientAction: clearPatient };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 

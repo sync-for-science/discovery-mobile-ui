@@ -6,13 +6,14 @@ import {
   View,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
 import { setPatient } from '../../features/patient/patientSlice';
-import { setAuth } from '../../features/auth/authSlice';
+import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
 // smartapp auth with provided patient
@@ -30,7 +31,7 @@ const initializeFhirClient = (baseUrl, accessToken) => {
   });
 };
 
-export async function signInAsync() {
+export async function authAsync() {
   const fhirClient = initializeFhirClient(fhirIss);
   const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
 
@@ -60,16 +61,16 @@ export async function signInAsync() {
   let result;
   try {
     result = await AppAuth.authAsync(config);
-    console.log('Auth result from signInAsync', result);
   } catch (error) {
-    console.warn('error', error);
+    console.log('AppAuth Error:', error);
+    Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
   }
 
   return result;
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientAction, authResult, patient,
+  navigation, setAuthAction, setPatientAction, authResult, clearAuthAction, patient,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -87,13 +88,23 @@ const Login = ({
             id: patientId,
           });
           setPatientAction(patientData);
+          navigation.navigate('PostAuth');
         } catch (error) {
-          setPatientAction(error);
+          clearAuthAction();
+          console.log('Error fetching patient data:', error);
+          Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
       queryPatient();
     }
-  }, [authResult, patient]);
+  }, [authResult, patient, navigation]);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    const authResponse = await authAsync();
+    setAuthAction(authResponse);
+    setLoading(false);
+  };
 
   return (
     <View>
@@ -101,15 +112,7 @@ const Login = ({
         { loading ? <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> : (
           <TouchableOpacity
             style={styles.login}
-            onPress={
-            async () => {
-              setLoading(true);
-              const authResponse = await signInAsync();
-              setAuthAction(authResponse);
-              setLoading(false);
-              navigation.navigate('PostAuth');
-            }
-          }
+            onPress={handleLogin}
           >
             <Text style={styles.loginText}>Login</Text>
           </TouchableOpacity>
@@ -124,6 +127,7 @@ Login.propTypes = {
   setAuthAction: func.isRequired,
   setPatientAction: func.isRequired,
   authResult: shape({}),
+  clearAuthAction: func.isRequired,
   patient: shape({}),
 };
 
@@ -137,7 +141,9 @@ const mapStateToProps = (state) => ({
   patient: state.patient.patient,
 });
 
-const mapDispatchToProps = { setAuthAction: setAuth, setPatientAction: setPatient };
+const mapDispatchToProps = {
+  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientAction: setPatient,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
 

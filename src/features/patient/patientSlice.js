@@ -5,9 +5,10 @@ const patientSlice = createSlice({
   initialState: { patient: null },
   reducers: {
     setPatient: (state, action) => ({ ...state, patient: action.payload }),
+    clearPatient: () => ({ patient: null }),
   },
 });
 
-export const { setPatient } = patientSlice.actions;
+export const { setPatient, clearPatient } = patientSlice.actions;
 
 export default patientSlice.reducer;
