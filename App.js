@@ -1,67 +1,73 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Image,
-} from 'react-native';
-import Login from './src/components/Login/Login';
-import logo from './assets/images/vermonster-logo.png';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons/'; // eslint-disable-line import/no-extraneous-dependencies
+
+import LoginScreen from './src/screens/LoginScreen';
+import SummaryScreen from './src/screens/SummaryScreen';
+import CatalogScreen from './src/screens/CatalogScreen';
+import Colors from './src/constants/Colors';
+
+const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+function selectIconName(name, focused) {
+  if (name === 'Summary') {
+    return focused ? 'md-person-sharp' : 'md-person-outline';
+  } if (name === 'Catalog') {
+    return focused ? 'file-tray-full' : 'file-tray-outline';
+  }
+
+  return '';
+}
+
+// selectScreenOptions is a function that returns a POJO
+const selectScreenOptions = ({ route: { name } }) => ({
+  tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
+    <Ionicons
+      name={selectIconName(name, focused)}
+      size={size}
+      color={color}
+    />
+  ),
+});
+
+const PostAuthScreens = () => (
+  <Tab.Navigator
+    screenOptions={selectScreenOptions}
+    tabBarOptions={{
+      activeTintColor: Colors.primary,
+      inactiveTintColor: 'gray',
+    }}
+  >
+    <Tab.Screen name="Summary" component={SummaryScreen} />
+    <Tab.Screen name="Catalog" component={CatalogScreen} />
+  </Tab.Navigator>
+);
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.scrollView}
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="PreAuth"
+        headerMode="none"
       >
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.vlogo}
-            source={logo}
-            resizeMode="contain"
-          />
-          <Image
-            style={styles.slogo}
-            source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
-            resizeMode="contain"
-          />
-        </View>
-        <View style={styles.description}>
-          <Text>Discovery Mobile App</Text>
-        </View>
-        <Login />
-      </ScrollView>
-    </SafeAreaView>
+        <Stack.Screen
+          name="PreAuth"
+          component={LoginScreen}
+          options={{
+            title: 'Discovery Mobile App',
+          }}
+        />
+        <Stack.Screen
+          name="PostAuth"
+          component={PostAuthScreens}
+          options={{
+            title: 'Discovery Mobile App',
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-  },
-  scrollView: {
-    height: '100%',
-    padding: 20,
-  },
-
-  vlogo: {
-    height: 50,
-    width: '60%',
-  },
-  slogo: {
-    height: 50,
-    width: '60%',
-  },
-  logoContainer: {
-    alignItems: 'center',
-    marginTop: 25,
-    marginBottom: 25,
-  },
-
-  description: {
-    alignItems: 'center',
-  },
-});
