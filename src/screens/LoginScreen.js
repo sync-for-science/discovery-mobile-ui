@@ -11,29 +11,36 @@ import {
 } from 'react-native';
 
 import Login from '../components/Login/Login';
-import logo from '../../assets/images/vermonster-logo.png';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <ScrollView
+    <View
       contentInsetAdjustmentBehavior="automatic"
-      style={styles.scrollView}
+      style={styles.screen}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.slogo}
-          source={s4sLogo}
-          resizeMode="contain"
-        />
+      <View>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.slogo}
+            source={s4sLogo}
+            resizeMode="contain"
+          />
+        </View>
+        <View style={styles.description}>
+          <Text>Discovery Mobile App</Text>
+          <Text>Beta</Text>
+        </View>
+        <Login navigation={navigation} />
       </View>
-      <View style={styles.description}>
-        <Text>Discovery Mobile App</Text>
+
+      <View style={styles.vermontContainer}>
+        <Text style={styles.vermonsterText}>Powered by</Text>
+        <Text style={styles.vermonsterText}>Vermonster LLC</Text>
       </View>
-      <Login navigation={navigation} />
-    </ScrollView>
+    </View>
   </SafeAreaView>
 );
 
@@ -48,9 +55,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  scrollView: {
+  screen: {
     flex: 1,
     padding: 20,
+    justifyContent: 'space-between',
   },
   vlogo: {
     height: 50,
@@ -67,5 +75,12 @@ const styles = StyleSheet.create({
   },
   description: {
     alignItems: 'center',
+  },
+  vermontContainer: {
+    alignItems: 'center',
+  },
+  vermonsterText: {
+    color: Colors.lightgrey,
+    paddingBottom: 5,
   },
 });
