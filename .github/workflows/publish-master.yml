@@ -12,10 +12,17 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14.x
+      - uses: actions/cache@v2
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile
       - uses: expo/expo-github-action@v5
         with:
           expo-version: 4.x
           expo-username: ${{ secrets.EXPO_CLI_USERNAME }}
           expo-password: ${{ secrets.EXPO_CLI_PASSWORD }}
-      - run: yarn install
-      - run: expo publish
+      - name: Publish
+        run: expo publish
