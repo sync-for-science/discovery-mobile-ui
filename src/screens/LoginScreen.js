@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   Image,
   StatusBar,
 } from 'react-native';
+import * as Linking from 'expo-linking';
 
 import Login from '../components/Login/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
@@ -21,24 +21,22 @@ const LoginScreen = ({ navigation }) => (
       contentInsetAdjustmentBehavior="automatic"
       style={styles.screen}
     >
-      <View>
+      <View style={styles.discoveryContainer}>
         <View style={styles.logoContainer}>
           <Image
             style={styles.slogo}
             source={s4sLogo}
             resizeMode="contain"
           />
-        </View>
-        <View style={styles.description}>
-          <Text>Discovery Mobile App</Text>
-          <Text>Beta</Text>
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>Discovery Mobile</Text>
+          </View>
         </View>
         <Login navigation={navigation} />
       </View>
-
-      <View style={styles.vermontContainer}>
-        <Text style={styles.vermonsterText}>Powered by</Text>
-        <Text style={styles.vermonsterText}>Vermonster LLC</Text>
+      <View style={styles.vermonsterContainer}>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
       </View>
     </View>
   </SafeAreaView>
@@ -57,26 +55,31 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-    padding: 20,
+    padding: 50,
     justifyContent: 'space-between',
   },
-  vlogo: {
-    height: 50,
-    width: '60%',
+  discoveryContainer: {
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    height: '100%',
+    paddingVertical: 160,
   },
   slogo: {
-    height: 50,
-    width: '60%',
+    height: 70,
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 25,
-    marginBottom: 25,
   },
-  description: {
+  descriptionContainer: {
     alignItems: 'center',
+    marginVertical: 50,
   },
-  vermontContainer: {
+  descriptionText: {
+    fontSize: 24,
+    paddingBottom: 20,
+    fontWeight: '200',
+  },
+  vermonsterContainer: {
     alignItems: 'center',
   },
   vermonsterText: {
