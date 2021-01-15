@@ -24,4 +24,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: App is ready for review, you can [see it here](https://expo.io/@sync-for-science/discovery-mobile-ui?release-channel=pr-${{ github.head_ref }}).
+          msg: "App is ready for review: [scan QR code](https://expo.io/@sync-for-science/discovery-mobile-ui?release-channel=pr-${{ github.head_ref }}) | exp://exp.host/@sync-for-science/discovery-mobile-ui?release-channel=pr-${{ github.head_ref }}"
