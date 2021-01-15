@@ -12,6 +12,7 @@ import {
 
 import Login from '../components/Login/Login';
 import logo from '../../assets/images/vermonster-logo.png';
+import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => (
@@ -23,13 +24,8 @@ const LoginScreen = ({ navigation }) => (
     >
       <View style={styles.logoContainer}>
         <Image
-          style={styles.vlogo}
-          source={logo}
-          resizeMode="contain"
-        />
-        <Image
           style={styles.slogo}
-          source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
+          source={s4sLogo}
           resizeMode="contain"
         />
       </View>
