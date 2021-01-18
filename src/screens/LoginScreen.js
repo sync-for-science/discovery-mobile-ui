@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,15 +7,16 @@ import {
   View,
   Text,
   Image,
-  Button,
   StatusBar,
-  Platform,
 } from 'react-native';
+
 import Login from '../components/Login/Login';
 import logo from '../../assets/images/vermonster-logo.png';
+import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
+    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
       style={styles.scrollView}
@@ -36,16 +37,12 @@ const LoginScreen = ({ navigation }) => (
         <Text>Discovery Mobile App</Text>
       </View>
       <Login navigation={navigation} />
-      <Button
-        title="Skip Login"
-        onPress={() => navigation.navigate('PostAuth')}
-      />
     </ScrollView>
   </SafeAreaView>
 );
 
 LoginScreen.propTypes = {
-  navigation: shape({}).isRequired,
+  navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
 };
 
 export default LoginScreen;
@@ -54,7 +51,6 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   scrollView: {
     flex: 1,

@@ -1,73 +1,24 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons/'; // eslint-disable-line import/no-extraneous-dependencies
+import { Provider } from 'react-redux';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
-import LoginScreen from './src/screens/LoginScreen';
-import SummaryScreen from './src/screens/SummaryScreen';
-import CatalogScreen from './src/screens/CatalogScreen';
-import Colors from './src/constants/Colors';
+import RootNavigator from './src/navigation/RootNavigator';
+import patientReducer from './src/features/patient/patientSlice';
+import authReducer from './src/features/auth/authSlice';
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
-
-function selectIconName(name, focused) {
-  if (name === 'Summary') {
-    return focused ? 'md-person-sharp' : 'md-person-outline';
-  } if (name === 'Catalog') {
-    return focused ? 'file-tray-full' : 'file-tray-outline';
-  }
-
-  return '';
-}
-
-// selectScreenOptions is a function that returns a POJO
-const selectScreenOptions = ({ route: { name } }) => ({
-  tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
-    <Ionicons
-      name={selectIconName(name, focused)}
-      size={size}
-      color={color}
-    />
-  ),
+const rootReducer = combineReducers({
+  auth: authReducer,
+  patient: patientReducer,
 });
 
-const PostAuthScreens = () => (
-  <Tab.Navigator
-    screenOptions={selectScreenOptions}
-    tabBarOptions={{
-      activeTintColor: Colors.primary,
-      inactiveTintColor: 'gray',
-    }}
-  >
-    <Tab.Screen name="Summary" component={SummaryScreen} />
-    <Tab.Screen name="Catalog" component={CatalogScreen} />
-  </Tab.Navigator>
-);
+const store = configureStore({
+  reducer: rootReducer,
+});
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="PreAuth"
-        headerMode="none"
-      >
-        <Stack.Screen
-          name="PreAuth"
-          component={LoginScreen}
-          options={{
-            title: 'Discovery Mobile App',
-          }}
-        />
-        <Stack.Screen
-          name="PostAuth"
-          component={PostAuthScreens}
-          options={{
-            title: 'Discovery Mobile App',
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <RootNavigator />
+    </Provider>
   );
 }

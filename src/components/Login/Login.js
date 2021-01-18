@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { func, shape } from 'prop-types';
 import {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
-  ScrollView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
+import { connect } from 'react-redux';
+
+import { setPatient } from '../../features/patient/patientSlice';
+import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
 // smartapp auth with provided patient
@@ -26,7 +31,7 @@ const initializeFhirClient = (baseUrl, accessToken) => {
   });
 };
 
-export async function signInAsync() {
+export async function authAsync() {
   const fhirClient = initializeFhirClient(fhirIss);
   const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
 
@@ -56,17 +61,18 @@ export async function signInAsync() {
   let result;
   try {
     result = await AppAuth.authAsync(config);
-    console.log('Auth result from signInAsync', result);
   } catch (error) {
-    console.warn('error', error);
+    console.log('AppAuth Error:', error);
+    Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
   }
 
   return result;
 }
 
-const Login = ({ navigation }) => {
-  const [authResult, setAuthResult] = useState(null);
-  const [patient, setPatient] = useState(null);
+const Login = ({
+  navigation, setAuthAction, setPatientAction, authResult, clearAuthAction, patient,
+}) => {
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (authResult && !patient) {
@@ -81,39 +87,65 @@ const Login = ({ navigation }) => {
             resourceType: 'Patient',
             id: patientId,
           });
-          setPatient(patientData);
+          setPatientAction(patientData);
+          navigation.navigate('PostAuth');
         } catch (error) {
-          setPatient(error);
+          clearAuthAction();
+          console.log('Error fetching patient data:', error);
+          Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
       queryPatient();
     }
-  }, [authResult, patient]);
+  }, [authResult, patient, navigation]);
+
+  const handleLogin = async () => {
+    setLoading(true);
+    const authResponse = await authAsync();
+    setAuthAction(authResponse);
+    setLoading(false);
+  };
 
   return (
     <View>
-      {patient ? (
-        <PatientView authResult={authResult} patient={patient} />
-      ) : (
-        <View style={styles.body}>
-          <LoginButton
-            handleAuthorize={async () => {
-              const authResponse = await signInAsync();
-              setAuthResult(authResponse);
-              navigation.navigate('PostAuth');
-            }}
-          />
-        </View>
-      )}
+      <View style={styles.body}>
+        { loading ? <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> : (
+          <TouchableOpacity
+            style={styles.login}
+            onPress={handleLogin}
+          >
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
 
 Login.propTypes = {
   navigation: shape({}).isRequired,
+  setAuthAction: func.isRequired,
+  setPatientAction: func.isRequired,
+  authResult: shape({}),
+  clearAuthAction: func.isRequired,
+  patient: shape({}),
 };
 
-export default Login;
+Login.defaultProps = {
+  authResult: null,
+  patient: null,
+};
+
+const mapStateToProps = (state) => ({
+  authResult: state.auth.authResult,
+  patient: state.patient.patient,
+});
+
+const mapDispatchToProps = {
+  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientAction: setPatient,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -131,6 +163,7 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
+    paddingTop: 100,
   },
   login: {
     backgroundColor: Colors.primary,
@@ -139,7 +172,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '50%',
-    marginTop: 100,
   },
   loginText: {
     color: 'white',
@@ -152,41 +184,3 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
   },
 });
-
-const LoginButton = ({ handleAuthorize }) => (
-  <TouchableOpacity style={styles.login} onPress={handleAuthorize}>
-    <Text style={styles.loginText}>Login</Text>
-  </TouchableOpacity>
-);
-
-LoginButton.propTypes = {
-  handleAuthorize: func.isRequired,
-};
-
-const PatientView = ({ authResult, patient }) => (
-  <View style={styles.sectionContainer}>
-    <View style={styles.section}>
-      <Text style={styles.title}>Authorization Result:</Text>
-      <ScrollView
-        style={styles.scrollViewInternal}
-        nestedScrollEnabled
-      >
-        <Text style={styles.text}>{JSON.stringify(authResult, null, 2)}</Text>
-      </ScrollView>
-    </View>
-    <View style={styles.section}>
-      <Text style={styles.title}>Patient:</Text>
-      <ScrollView
-        style={styles.scrollViewInternal}
-        nestedScrollEnabled
-      >
-        <Text>{JSON.stringify(patient, null, 2)}</Text>
-      </ScrollView>
-    </View>
-  </View>
-);
-
-PatientView.propTypes = {
-  authResult: shape({}).isRequired,
-  patient: shape({}).isRequired,
-};
