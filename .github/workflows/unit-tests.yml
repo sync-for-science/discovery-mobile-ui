@@ -1,11 +1,7 @@
-name: Expo Publish
-on:
-  push:
-    branches:
-      - master
+name: Unit Tests
+on: push
 jobs:
-  publish:
-    name: Install and publish
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,9 +15,5 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
-      - uses: expo/expo-github-action@v5
-        with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
-      - name: Publish
-        run: expo publish
+      - name: Run unit tests
+        run: yarn run test
