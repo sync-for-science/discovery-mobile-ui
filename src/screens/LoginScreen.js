@@ -3,41 +3,42 @@ import PropTypes from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   Image,
   StatusBar,
 } from 'react-native';
+import * as Linking from 'expo-linking';
 
 import Login from '../components/Login/Login';
-import logo from '../../assets/images/vermonster-logo.png';
+import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
 const LoginScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <ScrollView
+    <View
       contentInsetAdjustmentBehavior="automatic"
-      style={styles.scrollView}
+      style={styles.screen}
     >
-      <View style={styles.logoContainer}>
-        <Image
-          style={styles.vlogo}
-          source={logo}
-          resizeMode="contain"
-        />
-        <Image
-          style={styles.slogo}
-          source={{ uri: 'http://syncfor.science/s4s-logo.png' }}
-          resizeMode="contain"
-        />
+      <View style={styles.discoveryContainer}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.slogo}
+            source={s4sLogo}
+            resizeMode="contain"
+          />
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>Discovery Mobile</Text>
+          </View>
+        </View>
+        <Login navigation={navigation} />
       </View>
-      <View style={styles.description}>
-        <Text>Discovery Mobile App</Text>
+      <View style={styles.vermonsterContainer}>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
       </View>
-      <Login navigation={navigation} />
-    </ScrollView>
+    </View>
   </SafeAreaView>
 );
 
@@ -52,24 +53,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  scrollView: {
+  screen: {
     flex: 1,
-    padding: 20,
+    padding: 50,
+    justifyContent: 'space-between',
   },
-  vlogo: {
-    height: 50,
-    width: '60%',
+  discoveryContainer: {
+    justifyContent: 'space-between',
+    backgroundColor: 'white',
+    height: '100%',
+    paddingVertical: 160,
   },
   slogo: {
-    height: 50,
-    width: '60%',
+    height: 70,
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 25,
-    marginBottom: 25,
   },
-  description: {
+  descriptionContainer: {
     alignItems: 'center',
+    marginVertical: 50,
+  },
+  descriptionText: {
+    fontSize: 24,
+    paddingBottom: 20,
+    fontWeight: '200',
+  },
+  vermonsterContainer: {
+    alignItems: 'center',
+  },
+  vermonsterText: {
+    color: Colors.lightgrey,
+    paddingBottom: 5,
   },
 });
