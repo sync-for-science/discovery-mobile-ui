@@ -19,9 +19,8 @@ function selectIconName(name, focused) {
       return focused ? 'md-person-sharp' : 'md-person-outline';
     case "Catalog":
       return focused ? 'file-tray-full' : 'file-tray-outline';
-      case "Collections":
+    case "Collections":
       return focused ? 'albums' : 'albums-outline';
-      console.log('collections')
     default:
       return '';
   }
