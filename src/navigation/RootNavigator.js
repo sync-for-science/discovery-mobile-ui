@@ -7,20 +7,27 @@ import { Ionicons } from '@expo/vector-icons/'; // eslint-disable-line import/no
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
+import CollectionsScreen from '../screens/CollectionsScreen'
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function selectIconName(name, focused) {
-  if (name === 'Summary') {
-    return focused ? 'md-person-sharp' : 'md-person-outline';
-  } if (name === 'Catalog') {
-    return focused ? 'file-tray-full' : 'file-tray-outline';
+  switch (name) {
+    case "Summary": 
+      return focused ? 'md-person-sharp' : 'md-person-outline';
+    case "Catalog":
+      return focused ? 'file-tray-full' : 'file-tray-outline';
+      case "Collections":
+      return focused ? 'albums' : 'albums-outline';
+      console.log('collections')
+    default:
+      return '';
   }
-
-  return '';
 }
+
+<Ionicons name="albums-outline" size={24} color="black" />
 
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
@@ -43,6 +50,7 @@ const PostAuthScreens = () => (
   >
     <Tab.Screen name="Summary" component={SummaryScreen} />
     <Tab.Screen name="Catalog" component={CatalogScreen} />
+    <Tab.Screen name="Collections" component={CollectionsScreen} />
   </Tab.Navigator>
 );
 
