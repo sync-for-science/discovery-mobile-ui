@@ -11,8 +11,10 @@ import {
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
+import { connect } from 'react-redux';
 
 import Login from '../components/Login/Login';
+import { setPatient, setSkipLogin } from '../features/patient/patientSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
