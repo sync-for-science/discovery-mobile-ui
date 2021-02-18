@@ -10,7 +10,7 @@ import { clearAuth } from '../features/auth/authSlice';
 import { clearPatient } from '../features/patient/patientSlice';
 
 const SummaryScreen = ({
-  navigation, patient, clearAuthAction, clearPatientAction, skipLogin
+  navigation, patient, clearAuthAction, clearPatientAction, skipLogin,
 }) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
@@ -24,7 +24,7 @@ const SummaryScreen = ({
     navigation.navigate('PreAuth');
   };
 
-  const patientTitle = skipLogin ? 'Mock Patient Data' : 'Patient Data'
+  const patientTitle = skipLogin ? 'Mock Patient Data' : 'Patient Data';
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -65,7 +65,7 @@ SummaryScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   patient: state.patient.patient,
-  skipLogin: state.patient.skipLogin
+  skipLogin: state.patient.skipLogin,
 });
 
 const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientAction: clearPatient };

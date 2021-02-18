@@ -16,44 +16,44 @@ import Login from '../components/Login/Login';
 import { setPatient, setSkipLogin } from '../features/patient/patientSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
-import mockPatient from '../../assets/mock_data/patient/patient-aundrea-grant.json'
+import mockPatient from '../../assets/mock_data/patient/patient-aundrea-grant.json';
 
 const LoginScreen = ({ navigation, setPatient, setSkipLogin }) => {
   const handleSkipLogin = () => {
     setPatient(mockPatient);
-    setSkipLogin(true)
-    navigation.navigate('PostAuth')
-  }
+    setSkipLogin(true);
+    navigation.navigate('PostAuth');
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.screen}
-    >
-      <View style={styles.discoveryContainer}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.slogo}
-            source={s4sLogo}
-            resizeMode="contain"
-          />
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionText}>Discovery Mobile</Text>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      <View
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.screen}
+      >
+        <View style={styles.discoveryContainer}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.slogo}
+              source={s4sLogo}
+              resizeMode="contain"
+            />
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.descriptionText}>Discovery Mobile</Text>
+            </View>
           </View>
+          <Login navigation={navigation} />
         </View>
-        <Login navigation={navigation} />
+        <View style={styles.vermonsterContainer}>
+          <Button title="Skip Login" onPress={handleSkipLogin} />
+          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+        </View>
       </View>
-      <View style={styles.vermonsterContainer}>
-        <Button title="Skip Login" onPress={handleSkipLogin} />
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
-      </View>
-    </View>
-  </SafeAreaView>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
@@ -63,7 +63,7 @@ LoginScreen.propTypes = {
 
 const mapDispatchToProps = {
   setPatient,
-  setSkipLogin
+  setSkipLogin,
 };
 
 export default connect(null, mapDispatchToProps)(LoginScreen);

@@ -8,7 +8,7 @@ const patientSlice = createSlice({
   reducers: {
     setPatient: (state, action) => ({ ...state, patient: action.payload }),
     clearPatient: () => (initialState),
-    setSkipLogin: (state, action) => ({...state, skipLogin: action.payload})
+    setSkipLogin: (state, action) => ({ ...state, skipLogin: action.payload }),
   },
 });
 

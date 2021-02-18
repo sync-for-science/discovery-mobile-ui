@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons/'; // eslint-disable-line import/no
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import CollectionsScreen from '../screens/CollectionsScreen'
+import CollectionsScreen from '../screens/CollectionsScreen';
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
@@ -15,18 +15,18 @@ const Tab = createBottomTabNavigator();
 
 function selectIconName(name, focused) {
   switch (name) {
-    case "Summary": 
+    case 'Summary':
       return focused ? 'md-person-sharp' : 'md-person-outline';
-    case "Catalog":
+    case 'Catalog':
       return focused ? 'file-tray-full' : 'file-tray-outline';
-    case "Collections":
+    case 'Collections':
       return focused ? 'albums' : 'albums-outline';
     default:
       return '';
   }
 }
 
-<Ionicons name="albums-outline" size={24} color="black" />
+  <Ionicons name="albums-outline" size={24} color="black" />;
 
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
