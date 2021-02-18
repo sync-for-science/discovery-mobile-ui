@@ -35,8 +35,9 @@ const LoginScreen = ({ navigation }) => (
         <Login navigation={navigation} />
       </View>
       <View style={styles.vermonsterContainer}>
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+        <Text style={styles.vermonsterText}>Powered by</Text>
         <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('https://fire.ly/')}>Firely BV</Text>
       </View>
     </View>
   </SafeAreaView>
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-    padding: 50,
+    padding: 90,
     justifyContent: 'space-between',
   },
   discoveryContainer: {
