@@ -8,6 +8,7 @@ import {
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatient } from '../features/patient/patientSlice';
+import { Demographics } from '../components/Demographics/Demographics';
 
 const SummaryScreen = ({
   navigation, patient, clearAuthAction, clearPatientAction,
@@ -35,15 +36,7 @@ const SummaryScreen = ({
         </View>
         {patient
       && (
-      <View style={styles.section}>
-        <Text style={styles.title}>Patient Data</Text>
-        <ScrollView
-          style={styles.scrollViewInternal}
-          nestedScrollEnabled
-        >
-          <Text>{JSON.stringify(patient, null, 2)}</Text>
-        </ScrollView>
-      </View>
+        <Demographics />
       )}
         {patient && <Button title="Logout" onPress={handleLogout} />}
       </ScrollView>
