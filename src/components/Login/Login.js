@@ -87,6 +87,89 @@ const Login = ({
             resourceType: 'Patient',
             id: patientId,
           });
+
+          const requestBundle = {
+            'resourceType': 'Bundle',
+            'type': 'batch',
+            'entry': [
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Patient/${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `ExplanationOfBenefit?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Claim?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Condition?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Encounter?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Immunization?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `MedicationRequest?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `CarePlan?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `DiagnosticReport?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Procedure?patient=${patientId}`
+                }
+              },
+              {
+                'request': {
+                  'method': 'GET',
+                  'url': `Observation?patient=${patientId}`
+                }
+              },
+            ]
+          }
+
+          // Provider found in "serviceProvider" within some records
+          // Vital Signs and Lab Results found in Observation (FhirTransform in Web UI shows how to parse)
+
+          const bundle = await fhirClient.batch({
+            body: requestBundle
+          })
+
+          console.log('bundle', bundle)
+          
           setPatientAction(patientData);
           navigation.navigate('PostAuth');
         } catch (error) {
