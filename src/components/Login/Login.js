@@ -162,7 +162,8 @@ const Login = ({
           };
 
           // Provider found in "serviceProvider" within some records
-          // Vital Signs and Lab Results found in Observation (FhirTransform in Web UI shows how to parse)
+          // Vital Signs and Lab Results found in Observation.
+          // Web UI shows how to parse ^ in FhirTransform
 
           const bundle = await fhirClient.batch({
             body: requestBundle,

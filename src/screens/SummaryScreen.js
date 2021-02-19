@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, shape } from 'prop-types';
+import { bool, func, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
@@ -57,6 +57,7 @@ SummaryScreen.propTypes = {
   patient: shape({}),
   clearAuthAction: func.isRequired,
   clearPatientAction: func.isRequired,
+  skipLogin: bool.isRequired,
 };
 
 SummaryScreen.defaultProps = {

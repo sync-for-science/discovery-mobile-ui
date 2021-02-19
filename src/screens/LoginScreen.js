@@ -18,10 +18,10 @@ import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockPatient from '../../assets/mock_data/patient/patient-aundrea-grant.json';
 
-const LoginScreen = ({ navigation, setPatient, setSkipLogin }) => {
+const LoginScreen = ({ navigation, setPatientAction, setSkipLoginAction }) => {
   const handleSkipLogin = () => {
-    setPatient(mockPatient);
-    setSkipLogin(true);
+    setPatientAction(mockPatient);
+    setSkipLoginAction(true);
     navigation.navigate('PostAuth');
   };
 
@@ -57,13 +57,13 @@ const LoginScreen = ({ navigation, setPatient, setSkipLogin }) => {
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
-  setPatient: PropTypes.func.isRequired,
-  setSkipLogin: PropTypes.func.isRequired,
+  setPatientAction: PropTypes.func.isRequired,
+  setSkipLoginAction: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  setPatient,
-  setSkipLogin,
+  setPatientAction: setPatient,
+  setSkipLoginAction: setSkipLogin,
 };
 
 export default connect(null, mapDispatchToProps)(LoginScreen);
