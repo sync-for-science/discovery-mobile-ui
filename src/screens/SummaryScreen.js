@@ -7,10 +7,10 @@ import {
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
-import { clearPatient } from '../features/patient/patientDataSlice';
+import { clearPatientData } from '../features/patient/patientDataSlice';
 
 const SummaryScreen = ({
-  navigation, patient, clearAuthAction, clearPatientAction, skipLogin,
+  navigation, patient, clearAuthAction, clearPatientDataAction, skipLogin,
 }) => {
   const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
 
@@ -20,7 +20,7 @@ const SummaryScreen = ({
 
   const handleLogout = () => {
     clearAuthAction();
-    clearPatientAction();
+    clearPatientDataAction();
     navigation.navigate('PreAuth');
   };
 
@@ -56,7 +56,7 @@ SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
   patient: shape({}),
   clearAuthAction: func.isRequired,
-  clearPatientAction: func.isRequired,
+  clearPatientDataAction: func.isRequired,
   skipLogin: bool.isRequired,
 };
 
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => ({
   skipLogin: state.patient.skipLogin,
 });
 
-const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientAction: clearPatient };
+const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientDataAction: clearPatientData };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 

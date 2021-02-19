@@ -12,7 +12,7 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
-import { setPatient } from '../../features/patient/patientDataSlice';
+import { setPatientData } from '../../features/patient/patientDataSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
@@ -70,7 +70,7 @@ export async function authAsync() {
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientAction, authResult, clearAuthAction, patient,
+  navigation, setAuthAction, setPatientDataAction, authResult, clearAuthAction, patient,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -171,7 +171,7 @@ const Login = ({
 
           console.log('bundle: ', bundle);
 
-          setPatientAction(patientData);
+          setPatientDataAction(patientData);
           navigation.navigate('PostAuth');
         } catch (error) {
           clearAuthAction();
@@ -209,7 +209,7 @@ const Login = ({
 Login.propTypes = {
   navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
-  setPatientAction: func.isRequired,
+  setPatientDataAction: func.isRequired,
   authResult: shape({}),
   clearAuthAction: func.isRequired,
   patient: shape({}),
@@ -226,7 +226,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientAction: setPatient,
+  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientDataAction: setPatientData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -13,14 +13,14 @@ import * as Linking from 'expo-linking';
 import { connect } from 'react-redux';
 
 import Login from '../components/Login/Login';
-import { setPatient, setSkipLogin } from '../features/patient/patientDataSlice';
+import { setPatientData, setSkipLogin } from '../features/patient/patientDataSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockPatient from '../../assets/mock_data/patient/blake-eichmann/patient.json';
 
-const LoginScreen = ({ navigation, setPatientAction, setSkipLoginAction }) => {
+const LoginScreen = ({ navigation, setPatientDataAction, setSkipLoginAction }) => {
   const handleSkipLogin = () => {
-    setPatientAction(mockPatient);
+    setPatientDataAction(mockPatient);
     setSkipLoginAction(true);
     navigation.navigate('PostAuth');
   };
@@ -57,12 +57,12 @@ const LoginScreen = ({ navigation, setPatientAction, setSkipLoginAction }) => {
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
-  setPatientAction: PropTypes.func.isRequired,
+  setPatientDataAction: PropTypes.func.isRequired,
   setSkipLoginAction: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  setPatientAction: setPatient,
+  setPatientDataAction: setPatientData,
   setSkipLoginAction: setSkipLogin,
 };
 
