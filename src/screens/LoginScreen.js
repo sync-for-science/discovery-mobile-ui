@@ -16,7 +16,7 @@ import Login from '../components/Login/Login';
 import { setPatient, setSkipLogin } from '../features/patient/patientSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
-import mockPatient from '../../assets/mock_data/patient/patient-aundrea-grant.json';
+import mockPatient from '../../assets/mock_data/patient/blake-eichmann/patient.json';
 
 const LoginScreen = ({ navigation, setPatientAction, setSkipLoginAction }) => {
   const handleSkipLogin = () => {

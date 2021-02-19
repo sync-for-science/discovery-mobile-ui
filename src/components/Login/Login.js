@@ -16,8 +16,8 @@ import { setPatient } from '../../features/patient/patientSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
-// smartapp auth with provided patient
-const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI2ODk4OTJiZC1kY2JlLTQxZmMtODY1MS0zOGExZDA4OTM4NTQifQ/fhir';
+// smartapp auth with provided patient Blake Eichmann
+const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI4NjUxMmM2Zi1jYWY2LTQxZjQtOTUwMy1lNDI3MGIzN2I5NGYifQ==/fhir';
 
 const initializeFhirClient = (baseUrl, accessToken) => {
   if (!accessToken) {
@@ -88,88 +88,90 @@ const Login = ({
             id: patientId,
           });
 
-          const requestBundle = {
-            resourceType: 'Bundle',
-            type: 'batch',
-            entry: [
-              {
-                request: {
-                  method: 'GET',
-                  url: `Patient/${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `ExplanationOfBenefit?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Claim?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Condition?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Encounter?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Immunization?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `MedicationRequest?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `CarePlan?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `DiagnosticReport?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Procedure?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Observation?patient=${patientId}`,
-                },
-              },
-            ],
-          };
+          console.log(JSON.stringify(patientData, null, 2))
+
+          // const requestBundle = {
+          //   resourceType: 'Bundle',
+          //   type: 'batch',
+          //   entry: [
+              // {
+              //   request: {
+              //     method: 'GET',
+              //     url: `Patient/${patientId}`,
+              //   },
+              // },
+              // {
+              //   request: {
+              //     method: 'GET',
+              //     url: `ExplanationOfBenefit?patient=${patientId}`,
+              //   },
+              // },
+              // {
+              //   request: {
+              //     method: 'GET',
+              //     url: `Claim?patient=${patientId}`,
+              //   },
+              // },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `Condition?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `Encounter?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `Immunization?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `MedicationRequest?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `CarePlan?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `DiagnosticReport?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `Procedure?patient=${patientId}`,
+            //     },
+            //   },
+            //   {
+            //     request: {
+            //       method: 'GET',
+            //       url: `Observation?patient=${patientId}`,
+            //     },
+            //   },
+            // ],
+          // };
 
           // Provider found in "serviceProvider" within some records
           // Vital Signs and Lab Results found in Observation.
           // Web UI shows how to parse ^ in FhirTransform
 
-          const bundle = await fhirClient.batch({
-            body: requestBundle,
-          });
+          // const bundle = await fhirClient.batch({
+          //   body: requestBundle,
+          // });
 
-          console.log('bundle', bundle);
+          // console.log('bundle', bundle);
 
           setPatientAction(patientData);
           navigation.navigate('PostAuth');
