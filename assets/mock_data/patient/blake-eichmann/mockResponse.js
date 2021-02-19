@@ -22,7 +22,7 @@ const mockResponse = {
   LabResult,
   VitalSign,
   Provider,
-  Procedure
+  Procedure,
 };
 
 export default mockResponse;

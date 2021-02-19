@@ -10,61 +10,45 @@ import {
   Button,
 } from 'react-native';
 import * as Linking from 'expo-linking';
-import { connect } from 'react-redux';
 
 import Login from '../components/Login/Login';
-import { setPatientData, setSkipLogin } from '../features/patient/patientDataSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
-const LoginScreen = ({ navigation, setPatientDataAction, setSkipLoginAction }) => {
-  const handleSkipLogin = () => {
-    setSkipLoginAction(true);
-    navigation.navigate('PostAuth');
-  };
-
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <View
-        contentInsetAdjustmentBehavior="automatic"
-        style={styles.screen}
-      >
-        <View style={styles.discoveryContainer}>
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.slogo}
-              source={s4sLogo}
-              resizeMode="contain"
-            />
-            <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionText}>Discovery Mobile</Text>
-            </View>
+const LoginScreen = ({ navigation }) => (
+  <SafeAreaView style={styles.safeAreaView}>
+    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+    <View
+      contentInsetAdjustmentBehavior="automatic"
+      style={styles.screen}
+    >
+      <View style={styles.discoveryContainer}>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.slogo}
+            source={s4sLogo}
+            resizeMode="contain"
+          />
+          <View style={styles.descriptionContainer}>
+            <Text style={styles.descriptionText}>Discovery Mobile</Text>
           </View>
-          <Login navigation={navigation} />
         </View>
-        <View style={styles.vermonsterContainer}>
-          <Button title="Skip Login" onPress={handleSkipLogin} />
-          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
-          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
-        </View>
+        <Login navigation={navigation} />
       </View>
-    </SafeAreaView>
-  );
-};
+      <View style={styles.vermonsterContainer}>
+        <Button title="Skip Login" onPress={() => navigation.navigate('PostAuth')} />
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+      </View>
+    </View>
+  </SafeAreaView>
+);
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
-  setPatientDataAction: PropTypes.func.isRequired,
-  setSkipLoginAction: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {
-  setPatientDataAction: setPatientData,
-  setSkipLoginAction: setSkipLogin,
-};
-
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   safeAreaView: {

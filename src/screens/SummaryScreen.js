@@ -1,5 +1,7 @@
 import React from 'react';
-import { bool, func, shape } from 'prop-types';
+import {
+  func, shape, string,
+} from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
@@ -10,22 +12,28 @@ import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import mockResponse from '../../assets/mock_data/patient/blake-eichmann/mockResponse';
 
-const ResourceTypeRow = ({resourceType, response}) => {
-  if (resourceType === "Patient") {
-    return null
+const ResourceTypeRow = ({ resourceType, response }) => {
+  if (resourceType === 'Patient') {
+    return null;
   }
-  const resourceCount = response?.length
+  const resourceCount = response?.length;
   return (
     <View style={styles.resourceTypeRow}>
       <Text>{resourceType}</Text>
       <Text>{resourceCount}</Text>
     </View>
-  )
-}
+  );
+};
+
+ResourceTypeRow.propTypes = {
+  resourceType: string.isRequired,
+  response: shape({}).isRequired,
+};
 
 const SummaryScreen = ({
-  navigation, patientData, clearAuthAction, clearPatientDataAction, skipLogin,
+  navigation, patientData, clearAuthAction, clearPatientDataAction,
 }) => {
+  console.log('Patient Data: ', patientData);
   // const patientName = `${patientData?.name[0].given} ${patientData?.name[0].family}`;
 
   // const displayPatient = patientData
@@ -33,8 +41,8 @@ const SummaryScreen = ({
   //   : 'No Patient Data Available';
 
   // mockResponse - Delete with response normalization is complete
-  const patientNameResponse = mockResponse.Patient.name[0]
-  const patientNameDisplay = `${patientNameResponse.given[0]} ${patientNameResponse.family}`
+  const patientNameResponse = mockResponse.Patient.name[0];
+  const patientNameDisplay = `${patientNameResponse.given[0]} ${patientNameResponse.family}`;
 
   const handleLogout = () => {
     clearAuthAction();
@@ -53,10 +61,16 @@ const SummaryScreen = ({
         </View>
         <View style={styles.resourceTypeContainer}>
           {Object.keys(mockResponse).map(
-            resourceType => <ResourceTypeRow resourceType={resourceType} response={mockResponse[resourceType]}/>
+            (resourceType) => (
+              <ResourceTypeRow
+                key={`resourceTypeRow-${resourceType}`}
+                resourceType={resourceType}
+                response={mockResponse[resourceType]}
+              />
+            ),
           )}
         </View>
-        {<Button title="Logout" onPress={handleLogout} />}
+        <Button title="Logout" onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -67,16 +81,14 @@ SummaryScreen.propTypes = {
   patientData: shape({}),
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
-  skipLogin: bool.isRequired,
 };
 
 SummaryScreen.defaultProps = {
-  patient: null,
+  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
   patientData: state.patient.patientData,
-  skipLogin: state.patient.skipLogin,
 });
 
 const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientDataAction: clearPatientData };
@@ -126,10 +138,10 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 5,
     borderWidth: 1,
-    borderColor: 'lightgray'
+    borderColor: 'lightgray',
   },
   resourceTypeContainer: {
     alignItems: 'center',
     marginVertical: 20,
-  }
+  },
 });

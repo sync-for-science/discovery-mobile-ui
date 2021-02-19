@@ -70,12 +70,12 @@ export async function authAsync() {
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientDataAction, authResult, clearAuthAction, patient,
+  navigation, setAuthAction, setPatientDataAction, authResult, clearAuthAction, patientData,
 }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (authResult && !patient) {
+    if (authResult && !patientData) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
@@ -83,11 +83,6 @@ const Login = ({
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
-          const patientData = await fhirClient.read({
-            resourceType: 'Patient',
-            id: patientId,
-          });
-
           const requestBundle = {
             resourceType: 'Bundle',
             type: 'batch',
@@ -169,8 +164,6 @@ const Login = ({
             body: requestBundle,
           });
 
-          console.log('Resource Bundle: ', bundle)
-
           setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
         } catch (error) {
@@ -181,7 +174,7 @@ const Login = ({
       };
       queryPatient();
     }
-  }, [authResult, patient, navigation]);
+  }, [authResult, patientData, navigation]);
 
   const handleLogin = async () => {
     setLoading(true);

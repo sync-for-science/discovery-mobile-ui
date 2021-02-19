@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const initialState = { patientData: null, skipLogin: false };
+export const initialState = { patientData: null };
 
 const patientDataSlice = createSlice({
   name: 'patientData',
@@ -8,10 +8,9 @@ const patientDataSlice = createSlice({
   reducers: {
     setPatientData: (state, action) => ({ ...state, patientData: action.payload }),
     clearPatientData: () => (initialState),
-    setSkipLogin: (state, action) => ({ ...state, skipLogin: action.payload }),
   },
 });
 
-export const { setPatientData, clearPatientData, setSkipLogin } = patientDataSlice.actions;
+export const { setPatientData, clearPatientData } = patientDataSlice.actions;
 
 export default patientDataSlice.reducer;
