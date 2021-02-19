@@ -16,15 +16,15 @@ import Login from '../components/Login/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
-import { setPatientData } from "../features/patient/patientDataSlice"
+import { setPatientData } from '../features/patient/patientDataSlice';
 
 const LoginScreen = ({ navigation, setPatientDataAction }) => {
   const handleSkipLogin = () => {
-    setPatientDataAction(mockBundle)
-    navigation.navigate('PostAuth')
-  }
+    setPatientDataAction(mockBundle);
+    navigation.navigate('PostAuth');
+  };
 
-  return(
+  return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <View
@@ -51,17 +51,17 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
         </View>
       </View>
     </SafeAreaView>
-  )
-}
-
+  );
+};
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
+  setPatientDataAction: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = {
-  setPatientDataAction: setPatientData
-}
+  setPatientDataAction: setPatientData,
+};
 
 export default connect(null, mapDispatchToProps)(LoginScreen);
 
