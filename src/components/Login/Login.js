@@ -169,9 +169,9 @@ const Login = ({
             body: requestBundle,
           });
 
-          console.log('bundle: ', bundle);
+          console.log('Resource Bundle: ', bundle)
 
-          setPatientDataAction(patientData);
+          setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
         } catch (error) {
           clearAuthAction();
@@ -212,17 +212,17 @@ Login.propTypes = {
   setPatientDataAction: func.isRequired,
   authResult: shape({}),
   clearAuthAction: func.isRequired,
-  patient: shape({}),
+  patientData: shape({}),
 };
 
 Login.defaultProps = {
   authResult: null,
-  patient: null,
+  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
   authResult: state.auth.authResult,
-  patient: state.patient.patient,
+  patientData: state.patient.patientData,
 });
 
 const mapDispatchToProps = {

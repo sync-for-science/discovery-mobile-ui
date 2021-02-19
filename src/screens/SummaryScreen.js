@@ -8,15 +8,33 @@ import {
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
+import mockResponse from '../../assets/mock_data/patient/blake-eichmann/mockResponse';
+
+const ResourceTypeRow = ({resourceType, response}) => {
+  if (resourceType === "Patient") {
+    return null
+  }
+  const resourceCount = response?.length
+  return (
+    <View style={styles.resourceTypeRow}>
+      <Text>{resourceType}</Text>
+      <Text>{resourceCount}</Text>
+    </View>
+  )
+}
 
 const SummaryScreen = ({
-  navigation, patient, clearAuthAction, clearPatientDataAction, skipLogin,
+  navigation, patientData, clearAuthAction, clearPatientDataAction, skipLogin,
 }) => {
-  const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
+  // const patientName = `${patientData?.name[0].given} ${patientData?.name[0].family}`;
 
-  const displayPatient = patient
-    ? `Welcome ${patientName}`
-    : 'No Patient Data Available';
+  // const displayPatient = patientData
+  //   ? `Welcome ${patientName}`
+  //   : 'No Patient Data Available';
+
+  // mockResponse - Delete with response normalization is complete
+  const patientNameResponse = mockResponse.Patient.name[0]
+  const patientNameDisplay = `${patientNameResponse.given[0]} ${patientNameResponse.family}`
 
   const handleLogout = () => {
     clearAuthAction();
@@ -24,29 +42,21 @@ const SummaryScreen = ({
     navigation.navigate('PreAuth');
   };
 
-  const patientTitle = skipLogin ? 'Mock Patient Data' : 'Patient Data';
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.welcome}>
-            {displayPatient}
+            {patientNameDisplay}
           </Text>
         </View>
-        {patient
-      && (
-      <View style={styles.section}>
-        <Text style={styles.title}>{patientTitle}</Text>
-        <ScrollView
-          style={styles.scrollViewInternal}
-          nestedScrollEnabled
-        >
-          <Text>{JSON.stringify(patient, null, 2)}</Text>
-        </ScrollView>
-      </View>
-      )}
-        {patient && <Button title="Logout" onPress={handleLogout} />}
+        <View style={styles.resourceTypeContainer}>
+          {Object.keys(mockResponse).map(
+            resourceType => <ResourceTypeRow resourceType={resourceType} response={mockResponse[resourceType]}/>
+          )}
+        </View>
+        {<Button title="Logout" onPress={handleLogout} />}
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,7 +64,7 @@ const SummaryScreen = ({
 
 SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
-  patient: shape({}),
+  patientData: shape({}),
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
   skipLogin: bool.isRequired,
@@ -65,7 +75,7 @@ SummaryScreen.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  patient: state.patient.patient,
+  patientData: state.patient.patientData,
   skipLogin: state.patient.skipLogin,
 });
 
@@ -108,4 +118,18 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingTop: 25,
   },
+  resourceTypeRow: {
+    width: '90%',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'lightgray'
+  },
+  resourceTypeContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  }
 });
