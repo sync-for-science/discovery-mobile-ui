@@ -131,7 +131,7 @@ export const getRequestBundle = (patientId) => ({
   ],
 });
 
-export const getBundle = async (patientId, fhirClient) => {
-  const requestBundle = getRequestBundle(patientId)
-  return await fhirClient.batch({ body: requestBundle });
-}
+export const getBundle = (patientId, fhirClient) => {
+  const requestBundle = getRequestBundle(patientId);
+  return fhirClient.batch({ body: requestBundle });
+};
