@@ -41,7 +41,6 @@ const SummaryScreen = ({
     navigation.navigate('PreAuth');
   };
 
-  const patientTitle = skipLogin ? 'Mock Patient Data' : 'Patient Data';
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
