@@ -14,7 +14,7 @@ import {
   getPatientName, 
   getResourceType, 
   getResourceCount,
-  getResourcesByCode
+  getResourceCode
 } from '../resources/fhirReader'
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
@@ -26,11 +26,9 @@ const ResourceTypeRow = ({ resource }) => {
     return null;
   }
 
-  const resourceType = getResourceType(resource)
-
-  if ( resourceType === "Observation" ) {
-    const vitalSignsResources = getResourcesByCode(resource, "vital-signs")
-    const labResultResources = getResourcesByCode(resource, "laboratory")
+  let resourceType = getResourceType(resource)
+  if (resourceType === "Observation") {
+    resourceType = getResourceCode(resource)
   }
 
   return (

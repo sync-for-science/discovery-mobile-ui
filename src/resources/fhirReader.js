@@ -1,6 +1,19 @@
 export const getResources = (response) => {
-  console.log('response: ', response)
-  return response?.entry
+  let flatResources = []
+  response.entry.forEach(entry => {
+    if (getResourceType(entry) === "Observation") {
+      const labResultsBundle = createResourceTypeBundle(entry, "laboratory")
+      flatResources.push(labResultsBundle)
+
+      const vitalSignsBundle = createResourceTypeBundle(entry, "vital-signs")
+      flatResources.push(vitalSignsBundle)
+
+      return
+    }
+    return flatResources.push(entry)
+  })
+
+  return flatResources
 }
 
 export const getPatient = (resources) => resources.find(resource => resource.resource.resourceType === "Patient")
@@ -34,6 +47,16 @@ export const getResourcesByCode = (resource, code) => {
   return resource.resource.entry.filter(entry => entry.resource.category[0].coding[0].code === code)
 }
 
-// export const createResourceTypeBundle = (resources, code) => {
+export const createResourceTypeBundle = (resource, code) => {
+  const entries = getResourcesByCode(resource, code)
 
-// }
+  return {
+    resource: {
+      resourceType: "Bundle",
+      total: entries.length,
+      entry: entries
+    }
+  }
+}
+
+export const getResourceCode = (resource) => resource.resource.entry[0].resource.category[0].coding[0].code
