@@ -18,11 +18,11 @@ import {
 } from '../../resources/fhirAuth';
 
 const Login = ({
-  authResult, 
-  clearAuthAction, 
+  authResult,
+  clearAuthAction,
   patientData,
-  navigation, 
-  setAuthAction, 
+  navigation,
+  setAuthAction,
   setPatientDataAction,
 }) => {
   const [loading, setLoading] = useState(false);
@@ -35,9 +35,9 @@ const Login = ({
       } = authResult;
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
 
-      const queryPatient = async (patientId, fhirClient) => {
+      const queryPatient = async (patientIdProp, fhirClientProp) => {
         try {
-          const bundle = await getBundle(patientId, fhirClient);
+          const bundle = await getBundle(patientIdProp, fhirClientProp);
           setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
         } catch (error) {
