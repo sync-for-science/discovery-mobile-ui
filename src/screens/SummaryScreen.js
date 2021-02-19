@@ -8,15 +8,31 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
+import { 
+  getResources, 
+  getPatient, 
+  getPatientName, 
+  getResourceType, 
+  getResourceCount,
+  getResourcesByCode
+} from '../resources/fhirReader'
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
-import mockResponse from '../../assets/mock_data/patient/blake-eichmann/mockResponse';
+import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json'
 
-const ResourceTypeRow = ({ resourceType, response }) => {
-  if (resourceType === 'Patient') {
+const ResourceTypeRow = ({ resource }) => {
+  const resourceCount = getResourceCount(resource)
+  if (!resourceCount > 0) {
     return null;
   }
-  const resourceCount = response?.length;
+
+  const resourceType = getResourceType(resource)
+
+  if ( resourceType === "Observation" ) {
+    const vitalSignsResources = getResourcesByCode(resource, "vital-signs")
+    const labResultResources = getResourcesByCode(resource, "laboratory")
+  }
+
   return (
     <View style={styles.resourceTypeRow}>
       <Text>{resourceType}</Text>
@@ -33,16 +49,10 @@ ResourceTypeRow.propTypes = {
 const SummaryScreen = ({
   navigation, patientData, clearAuthAction, clearPatientDataAction,
 }) => {
-  console.log('Patient Data: ', patientData);
-  // const patientName = `${patientData?.name[0].given} ${patientData?.name[0].family}`;
+  const resources = patientData ? getResources(patientData) : getResources(mockBundle)
 
-  // const displayPatient = patientData
-  //   ? `Welcome ${patientName}`
-  //   : 'No Patient Data Available';
-
-  // mockResponse - Delete with response normalization is complete
-  const patientNameResponse = mockResponse.Patient.name[0];
-  const patientNameDisplay = `${patientNameResponse.given[0]} ${patientNameResponse.family}`;
+  const patent = getPatient(resources)
+  const patientName = getPatientName(patent)
 
   const handleLogout = () => {
     clearAuthAction();
@@ -56,16 +66,15 @@ const SummaryScreen = ({
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.welcome}>
-            {patientNameDisplay}
+            {patientName}
           </Text>
         </View>
         <View style={styles.resourceTypeContainer}>
-          {Object.keys(mockResponse).map(
-            (resourceType) => (
+          {resources.map(
+            (resource, i) => (
               <ResourceTypeRow
-                key={`resourceTypeRow-${resourceType}`}
-                resourceType={resourceType}
-                response={mockResponse[resourceType]}
+                key={`resourceTypeRow-${i}`}
+                resource={resource}
               />
             ),
           )}
