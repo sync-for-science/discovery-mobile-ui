@@ -88,7 +88,6 @@ const Login = ({
             id: patientId,
           });
 
-
           const requestBundle = {
             resourceType: 'Bundle',
             type: 'batch',
