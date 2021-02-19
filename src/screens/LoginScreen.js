@@ -13,7 +13,7 @@ import * as Linking from 'expo-linking';
 import { connect } from 'react-redux';
 
 import Login from '../components/Login/Login';
-import { setPatient, setSkipLogin } from '../features/patient/patientSlice';
+import { setPatient, setSkipLogin } from '../features/patient/patientDataSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockPatient from '../../assets/mock_data/patient/blake-eichmann/patient.json';

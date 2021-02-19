@@ -12,7 +12,7 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
-import { setPatient } from '../../features/patient/patientSlice';
+import { setPatient } from '../../features/patient/patientDataSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 

@@ -7,7 +7,7 @@ import {
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
-import { clearPatient } from '../features/patient/patientSlice';
+import { clearPatient } from '../features/patient/patientDataSlice';
 
 const SummaryScreen = ({
   navigation, patient, clearAuthAction, clearPatientAction, skipLogin,
