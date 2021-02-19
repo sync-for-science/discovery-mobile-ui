@@ -19,6 +19,7 @@ import {
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
+import RESOURCE_TYPES from '../resources/resourceTypes'
 
 const ResourceTypeRow = ({ resource }) => {
   const resourceCount = getResourceCount(resource);
@@ -33,7 +34,7 @@ const ResourceTypeRow = ({ resource }) => {
 
   return (
     <View style={styles.resourceTypeRow}>
-      <Text>{resourceType}</Text>
+      <Text>{RESOURCE_TYPES[resourceType]}</Text>
       <Text>{resourceCount}</Text>
     </View>
   );
