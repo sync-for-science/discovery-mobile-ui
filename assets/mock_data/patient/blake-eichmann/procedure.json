@@ -1,0 +1,249 @@
+[
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Procedure/b0be9d64-8e93-4e8b-8fb4-c07b533b6c5d",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "b0be9d64-8e93-4e8b-8fb4-c07b533b6c5d",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:59:39.609-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "completed",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "117015009",
+            "display": "Throat culture (procedure)"
+          }
+        ],
+        "text": "Throat culture (procedure)"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/32d3d151-cae3-42f8-b272-63e1f85bd193"
+      },
+      "performedPeriod": {
+        "start": "2012-05-21T15:22:25-04:00",
+        "end": "2012-05-21T15:37:25-04:00"
+      },
+      "reasonReference": [
+        {
+          "reference": "Condition/1396d190-16f1-4413-8c85-e5b2290b5659",
+          "display": "Acute viral pharyngitis (disorder)"
+        }
+      ]
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  },
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Procedure/2aec5836-4650-43cb-b5ba-6bc6193e3574",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "2aec5836-4650-43cb-b5ba-6bc6193e3574",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:56:32.977-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "completed",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "117015009",
+            "display": "Throat culture (procedure)"
+          }
+        ],
+        "text": "Throat culture (procedure)"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/7ae56f17-9b26-4340-a687-9b96cf1c96a5"
+      },
+      "performedPeriod": {
+        "start": "2014-09-24T15:22:25-04:00",
+        "end": "2014-09-24T15:37:25-04:00"
+      },
+      "reasonReference": [
+        {
+          "reference": "Condition/1396d190-16f1-4413-8c85-e5b2290b5659",
+          "display": "Acute viral pharyngitis (disorder)"
+        },
+        {
+          "reference": "Condition/498124e4-5f85-4b5a-8580-25fc75afaf3c",
+          "display": "Acute viral pharyngitis (disorder)"
+        }
+      ]
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  },
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Procedure/05262e04-be65-4515-ab57-8f3f92075577",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "05262e04-be65-4515-ab57-8f3f92075577",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:55:59.099-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "completed",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "23426006",
+            "display": "Measurement of respiratory function (procedure)"
+          }
+        ],
+        "text": "Measurement of respiratory function (procedure)"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/60dce3df-bda0-4756-ac13-be8b24f01066"
+      },
+      "performedPeriod": {
+        "start": "2014-05-11T15:22:25-04:00",
+        "end": "2014-05-11T15:42:25-04:00"
+      },
+      "reasonReference": [
+        {
+          "reference": "Condition/de56087e-9628-448e-8013-23b9de97e41e",
+          "display": "Acute bronchitis (disorder)"
+        }
+      ]
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  },
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Procedure/71d70703-3735-4acf-9048-1cd28c594459",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "71d70703-3735-4acf-9048-1cd28c594459",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:54:37.872-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "completed",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "428191000124101",
+            "display": "Documentation of current medications"
+          }
+        ],
+        "text": "Documentation of current medications"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/ba7da6e3-65e4-429e-a17a-b69279a7fd8a"
+      },
+      "performedPeriod": {
+        "start": "2016-05-17T15:22:25-04:00",
+        "end": "2016-05-17T15:37:25-04:00"
+      }
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  },
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Procedure/5d334312-2d8e-4bc9-af1f-473a276403b7",
+    "resource": {
+      "resourceType": "Procedure",
+      "id": "5d334312-2d8e-4bc9-af1f-473a276403b7",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:54:29.538-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "completed",
+      "code": {
+        "coding": [
+          {
+            "system": "http://snomed.info/sct",
+            "code": "428191000124101",
+            "display": "Documentation of current medications"
+          }
+        ],
+        "text": "Documentation of current medications"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/53c90aa4-80ea-4a8e-9597-cfd86249bf32"
+      },
+      "performedPeriod": {
+        "start": "2019-05-21T15:22:25-04:00",
+        "end": "2019-05-21T15:37:25-04:00"
+      }
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  }
+]
