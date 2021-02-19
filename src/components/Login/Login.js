@@ -62,7 +62,7 @@ export async function authAsync() {
   try {
     result = await AppAuth.authAsync(config);
   } catch (error) {
-    console.log('AppAuth Error:', error);
+    console.error('AppAuth Error:', error);
     Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
   }
 
@@ -168,7 +168,7 @@ const Login = ({
           navigation.navigate('PostAuth');
         } catch (error) {
           clearAuthAction();
-          console.log('Error fetching patient data:', error);
+          console.error('Error fetching patient data:', error);
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
