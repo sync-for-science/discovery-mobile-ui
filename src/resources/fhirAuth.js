@@ -58,77 +58,47 @@ export async function authAsync() {
 // Provider found in "serviceProvider" within some records
 // Vital Signs and Lab Results found in Observation.
 // Web UI shows how to parse ^ in FhirTransform
+const resourceTypes = [
+  'Patient',
+  'ExplanationOfBenefit',
+  'Claim',
+  'Condition',
+  'Encounter',
+  'Immunization',
+  'MedicationRequest',
+  'CarePlan',
+  'DiagnosticReport',
+  'Procedure',
+  'Observation',
+];
+
+const buildBundleEntries = (patientId) => (
+  resourceTypes.map((type) => {
+    if (type === 'Patient') {
+      return (
+        {
+          request: {
+            method: 'GET',
+            url: `${type}/${patientId}`,
+          },
+        }
+      );
+    }
+    return (
+      {
+        request: {
+          method: 'GET',
+          url: `${type}?patient=${patientId}`,
+        },
+      }
+    );
+  })
+);
+
 export const getRequestBundle = (patientId) => ({
   resourceType: 'Bundle',
   type: 'batch',
-  entry: [
-    {
-      request: {
-        method: 'GET',
-        url: `Patient/${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `ExplanationOfBenefit?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Claim?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Condition?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Encounter?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Immunization?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `MedicationRequest?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `CarePlan?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `DiagnosticReport?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Procedure?patient=${patientId}`,
-      },
-    },
-    {
-      request: {
-        method: 'GET',
-        url: `Observation?patient=${patientId}`,
-      },
-    },
-  ],
+  entry: buildBundleEntries(patientId),
 });
 
 export const getBundle = (patientId, fhirClient) => {
