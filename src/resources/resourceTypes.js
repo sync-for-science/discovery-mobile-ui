@@ -11,4 +11,4 @@ const RESOURCE_TYPES = {
   laboratory: 'Lab Results',
 };
 
-export default RESOURCE_TYPES
+export default RESOURCE_TYPES;

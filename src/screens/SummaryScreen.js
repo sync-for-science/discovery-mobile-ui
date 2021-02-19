@@ -19,7 +19,7 @@ import {
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
-import RESOURCE_TYPES from '../resources/resourceTypes'
+import RESOURCE_TYPES from '../resources/resourceTypes';
 
 const ResourceTypeRow = ({ resource }) => {
   const resourceCount = getResourceCount(resource);
