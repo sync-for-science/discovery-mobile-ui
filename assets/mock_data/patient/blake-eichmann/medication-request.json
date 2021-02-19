@@ -1,0 +1,53 @@
+[
+  {
+    "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/MedicationRequest/612eb7fa-5376-44e4-8045-dd3984f3d9b4",
+    "resource": {
+      "resourceType": "MedicationRequest",
+      "id": "612eb7fa-5376-44e4-8045-dd3984f3d9b4",
+      "meta": {
+        "versionId": "2",
+        "lastUpdated": "2019-06-05T02:56:20.455-04:00",
+        "tag": [
+          {
+            "system": "https://smarthealthit.org/tags",
+            "code": "synthea-5-2019"
+          }
+        ]
+      },
+      "status": "stopped",
+      "intent": "order",
+      "medicationCodeableConcept": {
+        "coding": [
+          {
+            "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+            "code": "313782",
+            "display": "Acetaminophen 325 MG Oral Tablet"
+          }
+        ],
+        "text": "Acetaminophen 325 MG Oral Tablet"
+      },
+      "subject": {
+        "reference": "Patient/86512c6f-caf6-41f4-9503-e4270b37b94f"
+      },
+      "encounter": {
+        "reference": "Encounter/60dce3df-bda0-4756-ac13-be8b24f01066"
+      },
+      "authoredOn": "2014-05-11T15:22:25-04:00",
+      "requester": {
+        "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+      },
+      "reasonReference": [
+        {
+          "reference": "Condition/de56087e-9628-448e-8013-23b9de97e41e"
+        }
+      ]
+    },
+    "search": {
+      "mode": "match"
+    },
+    "response": {
+      "status": "200 OK",
+      "etag": "W/\"2\""
+    }
+  }
+]
