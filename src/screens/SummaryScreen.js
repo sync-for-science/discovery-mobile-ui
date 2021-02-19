@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape, string,
+  func, shape,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -8,27 +8,27 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import { 
-  getResources, 
-  getPatient, 
-  getPatientName, 
-  getResourceType, 
+import {
+  getResources,
+  getPatient,
+  getPatientName,
+  getResourceType,
   getResourceCount,
-  getResourceCode
-} from '../resources/fhirReader'
+  getResourceCode,
+} from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
-import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json'
+import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
 
 const ResourceTypeRow = ({ resource }) => {
-  const resourceCount = getResourceCount(resource)
+  const resourceCount = getResourceCount(resource);
   if (!resourceCount > 0) {
     return null;
   }
 
-  let resourceType = getResourceType(resource)
-  if (resourceType === "Observation") {
-    resourceType = getResourceCode(resource)
+  let resourceType = getResourceType(resource);
+  if (resourceType === 'Observation') {
+    resourceType = getResourceCode(resource);
   }
 
   return (
@@ -40,17 +40,16 @@ const ResourceTypeRow = ({ resource }) => {
 };
 
 ResourceTypeRow.propTypes = {
-  resourceType: string.isRequired,
-  response: shape({}).isRequired,
+  resource: shape({}).isRequired,
 };
 
 const SummaryScreen = ({
   navigation, patientData, clearAuthAction, clearPatientDataAction,
 }) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle)
+  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
-  const patent = getPatient(resources)
-  const patientName = getPatientName(patent)
+  const patent = getPatient(resources);
+  const patientName = getPatientName(patent);
 
   const handleLogout = () => {
     clearAuthAction();
@@ -69,9 +68,9 @@ const SummaryScreen = ({
         </View>
         <View style={styles.resourceTypeContainer}>
           {resources.map(
-            (resource, i) => (
+            (resource) => (
               <ResourceTypeRow
-                key={`resourceTypeRow-${i}`}
+                key={`resourceTypeRow-${resource.resource.id}`}
                 resource={resource}
               />
             ),

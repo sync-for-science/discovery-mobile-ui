@@ -1,62 +1,65 @@
 export const getResources = (response) => {
-  let flatResources = []
-  response.entry.forEach(entry => {
-    if (getResourceType(entry) === "Observation") {
-      const labResultsBundle = createResourceTypeBundle(entry, "laboratory")
-      flatResources.push(labResultsBundle)
+  const flatResources = [];
+  response.entry.forEach((entry) => {
+    if (getResourceType(entry) === 'Observation') {
+      const labResultsBundle = createResourceTypeBundle(entry, 'laboratory');
+      flatResources.push(labResultsBundle);
 
-      const vitalSignsBundle = createResourceTypeBundle(entry, "vital-signs")
-      flatResources.push(vitalSignsBundle)
+      const vitalSignsBundle = createResourceTypeBundle(entry, 'vital-signs');
+      flatResources.push(vitalSignsBundle);
 
-      return
+      return;
     }
-    return flatResources.push(entry)
-  })
+    flatResources.push(entry);
+  });
 
-  return flatResources
-}
+  return flatResources;
+};
 
-export const getPatient = (resources) => resources.find(resource => resource.resource.resourceType === "Patient")
+export const getPatient = (resources) => resources.find((resource) => resource.resource.resourceType === 'Patient');
 
 export const getPatientName = (patient) => {
-  const nameData = patient?.resource?.name?.[0]
-  const given = nameData.given?.[0]
-  const family = nameData.family
-  return `${given} ${family}`
-}
+  const nameData = patient?.resource?.name?.[0];
+  const given = nameData.given?.[0];
+  const { family } = nameData;
+  return `${given} ${family}`;
+};
 
 export const getResourceType = (resource) => {
   if (getResourceCount(resource) > 0) {
-    return getBundleResourceType(resource)
+    return getBundleResourceType(resource);
   }
-  return resource.resource.resourceType
-}
+  return resource.resource.resourceType;
+};
 
-export const getBundleResourceType = (resource) => {
-  return resource.resource.entry?.[0]?.resource?.resourceType
-}
+export const getBundleResourceType = (resource) => (
+  resource.resource.entry?.[0]?.resource?.resourceType
+);
 
 export const getResourceCount = (resource) => {
   if (resource.resource?.total > 0) {
-    return resource.resource?.total
+    return resource.resource?.total;
   }
-  return null
-}
+  return null;
+};
 
-export const getResourcesByCode = (resource, code) => {
-  return resource.resource.entry.filter(entry => entry.resource.category[0].coding[0].code === code)
-}
+export const getResourcesByCode = (resource, code) => resource.resource.entry.filter(
+  (entry) => entry.resource.category[0].coding[0].code === code,
+);
 
 export const createResourceTypeBundle = (resource, code) => {
-  const entries = getResourcesByCode(resource, code)
+  const entries = getResourcesByCode(resource, code);
 
   return {
     resource: {
-      resourceType: "Bundle",
+      resourceType: 'Bundle',
+      id: `${resource.resource.id}-${code}`,
       total: entries.length,
-      entry: entries
-    }
-  }
-}
+      entry: entries,
+    },
+  };
+};
 
-export const getResourceCode = (resource) => resource.resource.entry[0].resource.category[0].coding[0].code
+export const getResourceCode = (resource) => (
+  resource.resource.entry[0].resource.category[0].coding[0].code
+);
