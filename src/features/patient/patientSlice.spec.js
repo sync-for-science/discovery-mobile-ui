@@ -1,7 +1,7 @@
 import patientReducer, { setPatient, clearPatient, initialState } from './patientSlice';
 
 const patientData = { patientName: 'Michael Scott' };
-const stateWithPatient = { patient: patientData };
+const stateWithPatient = { ...initialState, patient: patientData };
 
 describe('patient reducer', () => {
   it('should handle initial state', () => {
