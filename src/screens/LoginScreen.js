@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,41 +15,55 @@ import * as Linking from 'expo-linking';
 import Login from '../components/Login/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
+import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
+import { setPatientData } from "../features/patient/patientDataSlice"
 
-const LoginScreen = ({ navigation }) => (
-  <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.screen}
-    >
-      <View style={styles.discoveryContainer}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.slogo}
-            source={s4sLogo}
-            resizeMode="contain"
-          />
-          <View style={styles.descriptionContainer}>
-            <Text style={styles.descriptionText}>Discovery Mobile</Text>
+const LoginScreen = ({ navigation, setPatientDataAction }) => {
+  const handleSkipLogin = () => {
+    setPatientDataAction(mockBundle)
+    navigation.navigate('PostAuth')
+  }
+
+  return(
+    <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      <View
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.screen}
+      >
+        <View style={styles.discoveryContainer}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.slogo}
+              source={s4sLogo}
+              resizeMode="contain"
+            />
+            <View style={styles.descriptionContainer}>
+              <Text style={styles.descriptionText}>Discovery Mobile</Text>
+            </View>
           </View>
+          <Login navigation={navigation} />
         </View>
-        <Login navigation={navigation} />
+        <View style={styles.vermonsterContainer}>
+          <Button title="Skip Login" onPress={handleSkipLogin} />
+          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+        </View>
       </View>
-      <View style={styles.vermonsterContainer}>
-        <Button title="Skip Login" onPress={() => navigation.navigate('PostAuth')} />
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
-      </View>
-    </View>
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  )
+}
+
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
 };
 
-export default LoginScreen;
+const mapDispatchToProps = {
+  setPatientDataAction: setPatientData
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
