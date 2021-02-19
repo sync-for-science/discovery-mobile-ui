@@ -51,12 +51,6 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         </View>
-        <Login navigation={navigation} />
-      </View>
-      <View style={styles.vermonsterContainer}>
-        <Button title="Skip Login" onPress={() => navigation.navigate('PostAuth')} />
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
-        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
       </View>
     </SafeAreaView>
   );
@@ -71,7 +65,11 @@ const mapDispatchToProps = {
   setPatientDataAction: setPatientData,
 };
 
-export default LoginScreen;
+const mapDispatchToProps = {
+  setPatientDataAction: setPatientData
+}
+
+export default connect(null, mapDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
