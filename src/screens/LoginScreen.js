@@ -11,10 +11,8 @@ import {
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
-import { connect } from 'react-redux';
 
 import Login from '../components/Login/Login';
-import { setPatientData, setSkipLogin } from '../features/patient/patientDataSlice';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
@@ -53,10 +51,16 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         </View>
+        <Login navigation={navigation} />
+      </View>
+      <View style={styles.vermonsterContainer}>
+        <Button title="Skip Login" onPress={() => navigation.navigate('PostAuth')} />
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
+        <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
       </View>
     </SafeAreaView>
   );
-};
+}
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
@@ -67,7 +71,7 @@ const mapDispatchToProps = {
   setPatientDataAction: setPatientData,
 };
 
-export default connect(null, mapDispatchToProps)(LoginScreen);
+export default LoginScreen;
 
 const styles = StyleSheet.create({
   safeAreaView: {
