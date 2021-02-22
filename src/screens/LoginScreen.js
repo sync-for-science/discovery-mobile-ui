@@ -24,7 +24,7 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
     navigation.navigate('PostAuth');
   };
 
-  const showButton = process.env.NODE_ENV === 'development';
+  const showSkipLogin = process.env.NODE_ENV === 'development';
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
           <Login navigation={navigation} />
         </View>
         <View style={styles.vermonsterContainer}>
-          {showButton && <Button title="Skip Login" onPress={handleSkipLogin} />}
+          {showSkipLogin && <Button title="Skip Login" onPress={handleSkipLogin} />}
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
           <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         </View>
