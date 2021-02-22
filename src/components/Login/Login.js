@@ -240,7 +240,6 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
-    paddingTop: 100,
   },
   login: {
     backgroundColor: Colors.primary,

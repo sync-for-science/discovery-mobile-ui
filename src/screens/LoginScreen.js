@@ -72,31 +72,31 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-    padding: 50,
-    justifyContent: 'space-between',
   },
   discoveryContainer: {
     justifyContent: 'space-between',
-    backgroundColor: 'white',
-    paddingVertical: 160,
+    height: '75%',
   },
   slogo: {
     height: 70,
+    marginVertical: 50,
   },
   logoContainer: {
+    marginTop: 100,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   descriptionContainer: {
     alignItems: 'center',
-    marginVertical: 50,
   },
   descriptionText: {
     fontSize: 24,
-    paddingBottom: 20,
     fontWeight: '200',
   },
   vermonsterContainer: {
+    height: '25%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   vermonsterText: {
     color: Colors.lightgrey,
