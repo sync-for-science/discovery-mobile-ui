@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar,
+  StyleSheet, View, SafeAreaView, StatusBar, ScrollView
 } from 'react-native';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
@@ -11,11 +11,11 @@ import Colors from '../constants/Colors';
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View style={styles.content}>
+    <ScrollView style={styles.content}>
       <TimelineWidget />
       <CategorySelector />
       <RecordCardsContainer />
-    </View>
+    </ScrollView>
   </SafeAreaView>
 );
 
