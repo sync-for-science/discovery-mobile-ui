@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 import Colors from '../../constants/Colors';
-import { clearPatient } from '../../features/patient/patientSlice';
+import { clearPatient } from '../../features/patient/patientDataSlice';
 
 const Demographics = ({
   navigation, patient, clearAuthAction, clearPatientAction,
