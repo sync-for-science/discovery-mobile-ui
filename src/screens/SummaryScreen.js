@@ -16,6 +16,7 @@ import {
 } from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
+import Demographics from '../components/Demographics/Demographics';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
@@ -64,6 +65,9 @@ const SummaryScreen = ({
           <Text style={styles.welcome}>
             {patientName}
           </Text>
+        </View>
+        <View style={styles.demographics}>
+          <Demographics />
         </View>
         <View style={styles.resourceTypeContainer}>
           {resources.map(
@@ -148,5 +152,8 @@ const styles = StyleSheet.create({
   resourceTypeContainer: {
     alignItems: 'center',
     marginVertical: 20,
+  },
+  demographics: {
+    marginHorizontal: 20,
   },
 });
