@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'lightgray',
     borderWidth: 1,
     borderColor: 'gray',
-    marginVertical: 20,
+    marginTop: 20,
     flexDirection: 'row',
-    padding: 10
+    padding: 10,
+    // height: 220,
   },
   button: {
     padding: 10,

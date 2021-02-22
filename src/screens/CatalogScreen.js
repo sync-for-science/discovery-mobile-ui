@@ -5,6 +5,7 @@ import {
 
 import TimelineWidget from '../components/Timeline/TimelineWidget'
 import CategorySelector from '../components/CategorySelector/CategorySelector'
+import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer'
 import Colors from '../constants/Colors';
 
 const CatalogScreen = () => (
@@ -13,6 +14,7 @@ const CatalogScreen = () => (
     <View style={styles.content}>
       <TimelineWidget />
       <CategorySelector />
+      <RecordCardsContainer />
     </View>
   </SafeAreaView>
 );
