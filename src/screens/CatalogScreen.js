@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, ScrollView
+  StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
