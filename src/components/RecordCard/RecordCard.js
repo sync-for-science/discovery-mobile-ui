@@ -5,7 +5,7 @@ import {
 
 const CatalogScreen = () => (
     <View style={styles.root}>
-      <Text>Timeline Widget</Text>
+      <Text>RecordCard</Text>
     </View>
 );
 
@@ -14,11 +14,12 @@ export default CatalogScreen;
 const styles = StyleSheet.create({
   root: {
     width: "100%",
-    height: 150,
-    backgroundColor: 'lightgray',
-    borderWidth: 1,
+    height: 100,
+    backgroundColor: 'white',
+    borderWidth: 2,
     borderColor: 'gray',
-    marginTop: 20,
+    borderRadius: 15,
+    marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },
