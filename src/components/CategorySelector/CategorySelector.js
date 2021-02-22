@@ -1,29 +1,29 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, ScrollView
+  StyleSheet, Text, View, ScrollView,
 } from 'react-native';
 
 const CatalogScreen = () => (
-    <ScrollView style={styles.root} horizontal={true}>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-      <View style={styles.button}>
-        <Text style={styles.buttonText}>Category</Text>
-      </View>
-    </ScrollView>
+  <ScrollView style={styles.root} horizontal>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+    <View style={styles.button}>
+      <Text style={styles.buttonText}>Category</Text>
+    </View>
+  </ScrollView>
 );
 
 export default CatalogScreen;
@@ -45,5 +45,5 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     backgroundColor: 'white',
     borderRadius: 20,
-  }
+  },
 });

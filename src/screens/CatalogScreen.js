@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar,
+  StyleSheet, View, SafeAreaView, StatusBar,
 } from 'react-native';
 
-import TimelineWidget from '../components/Timeline/TimelineWidget'
-import CategorySelector from '../components/CategorySelector/CategorySelector'
-import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer'
+import TimelineWidget from '../components/Timeline/TimelineWidget';
+import CategorySelector from '../components/CategorySelector/CategorySelector';
+import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer';
 import Colors from '../constants/Colors';
 
 const CatalogScreen = () => (
@@ -24,7 +24,7 @@ export default CatalogScreen;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   screen: {
     flex: 1,
@@ -33,5 +33,5 @@ const styles = StyleSheet.create({
   },
   content: {
     width: '90%',
-  }
+  },
 });
