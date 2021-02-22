@@ -6,22 +6,53 @@ import {
 } from 'react-native';
 
 import Colors from '../constants/Colors';
+import {
+  getResources,
+  getPatient,
+  getPatientName,
+  getResourceType,
+  getResourceCount,
+  getResourceCode,
+} from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
-import { clearPatient } from '../features/patient/patientSlice';
-import { Demographics } from '../components/Demographics/Demographics';
+import { clearPatientData } from '../features/patient/patientDataSlice';
+import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
+import RESOURCE_TYPES from '../resources/resourceTypes';
+
+const ResourceTypeRow = ({ resource }) => {
+  const resourceCount = getResourceCount(resource);
+  if (!resourceCount > 0) {
+    return null;
+  }
+
+  let resourceType = getResourceType(resource);
+  if (resourceType === 'Observation') {
+    resourceType = getResourceCode(resource);
+  }
+
+  return (
+    <View style={styles.resourceTypeRow}>
+      <Text>{RESOURCE_TYPES[resourceType]}</Text>
+      <Text>{resourceCount}</Text>
+    </View>
+  );
+};
+
+ResourceTypeRow.propTypes = {
+  resource: shape({}).isRequired,
+};
 
 const SummaryScreen = ({
-  navigation, patient, clearAuthAction, clearPatientAction,
+  navigation, patientData, clearAuthAction, clearPatientDataAction,
 }) => {
-  const patientName = `${patient?.name[0].given} ${patient?.name[0].family}`;
+  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
-  const displayPatient = patient
-    ? `Welcome ${patientName}`
-    : 'No Patient Data Available';
+  const patent = getPatient(resources);
+  const patientName = getPatientName(patent);
 
   const handleLogout = () => {
     clearAuthAction();
-    clearPatientAction();
+    clearPatientDataAction();
     navigation.navigate('PreAuth');
   };
 
@@ -31,14 +62,20 @@ const SummaryScreen = ({
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
           <Text style={styles.welcome}>
-            {displayPatient}
+            {patientName}
           </Text>
         </View>
-        {patient
-      && (
-        <Demographics />
-      )}
-        {patient && <Button title="Logout" onPress={handleLogout} />}
+        <View style={styles.resourceTypeContainer}>
+          {resources.map(
+            (resource) => (
+              <ResourceTypeRow
+                key={`resourceTypeRow-${resource.resource.id}`}
+                resource={resource}
+              />
+            ),
+          )}
+        </View>
+        <Button title="Logout" onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -46,20 +83,20 @@ const SummaryScreen = ({
 
 SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
-  patient: shape({}),
+  patientData: shape({}),
   clearAuthAction: func.isRequired,
-  clearPatientAction: func.isRequired,
+  clearPatientDataAction: func.isRequired,
 };
 
 SummaryScreen.defaultProps = {
-  patient: null,
+  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
-  patient: state.patient.patient,
+  patientData: state.patient.patientData,
 });
 
-const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientAction: clearPatient };
+const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientDataAction: clearPatientData };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 
@@ -97,5 +134,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     paddingTop: 25,
+  },
+  resourceTypeRow: {
+    width: '90%',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+  },
+  resourceTypeContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
   },
 });

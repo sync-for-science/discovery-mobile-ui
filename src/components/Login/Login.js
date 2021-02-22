@@ -12,12 +12,12 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
-import { setPatient } from '../../features/patient/patientSlice';
+import { setPatientData } from '../../features/patient/patientDataSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 
-// smartapp auth with provided patient
-const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI2ODk4OTJiZC1kY2JlLTQxZmMtODY1MS0zOGExZDA4OTM4NTQifQ/fhir';
+// smartapp auth with provided patient Blake Eichmann
+const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI4NjUxMmM2Zi1jYWY2LTQxZjQtOTUwMy1lNDI3MGIzN2I5NGYifQ==/fhir';
 
 const initializeFhirClient = (baseUrl, accessToken) => {
   if (!accessToken) {
@@ -62,7 +62,7 @@ export async function authAsync() {
   try {
     result = await AppAuth.authAsync(config);
   } catch (error) {
-    console.log('AppAuth Error:', error);
+    console.error('AppAuth Error:', error);
     Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
   }
 
@@ -70,12 +70,12 @@ export async function authAsync() {
 }
 
 const Login = ({
-  navigation, setAuthAction, setPatientAction, authResult, clearAuthAction, patient,
+  navigation, setAuthAction, setPatientDataAction, authResult, clearAuthAction, patientData,
 }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (authResult && !patient) {
+    if (authResult && !patientData) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
@@ -83,21 +83,98 @@ const Login = ({
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
       const queryPatient = async () => {
         try {
-          const patientData = await fhirClient.read({
-            resourceType: 'Patient',
-            id: patientId,
+          const requestBundle = {
+            resourceType: 'Bundle',
+            type: 'batch',
+            entry: [
+              {
+                request: {
+                  method: 'GET',
+                  url: `Patient/${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `ExplanationOfBenefit?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Claim?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Condition?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Encounter?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Immunization?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `MedicationRequest?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `CarePlan?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `DiagnosticReport?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Procedure?patient=${patientId}`,
+                },
+              },
+              {
+                request: {
+                  method: 'GET',
+                  url: `Observation?patient=${patientId}`,
+                },
+              },
+            ],
+          };
+
+          // Provider found in "serviceProvider" within some records
+          // Vital Signs and Lab Results found in Observation.
+          // Web UI shows how to parse ^ in FhirTransform
+
+          const bundle = await fhirClient.batch({
+            body: requestBundle,
           });
-          setPatientAction(patientData);
+
+          setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
         } catch (error) {
           clearAuthAction();
-          console.log('Error fetching patient data:', error);
+          console.error('Error fetching patient data:', error);
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
       queryPatient();
     }
-  }, [authResult, patient, navigation]);
+  }, [authResult, patientData, navigation]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -125,24 +202,24 @@ const Login = ({
 Login.propTypes = {
   navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
-  setPatientAction: func.isRequired,
+  setPatientDataAction: func.isRequired,
   authResult: shape({}),
   clearAuthAction: func.isRequired,
-  patient: shape({}),
+  patientData: shape({}),
 };
 
 Login.defaultProps = {
   authResult: null,
-  patient: null,
+  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
   authResult: state.auth.authResult,
-  patient: state.patient.patient,
+  patientData: state.patient.patientData,
 });
 
 const mapDispatchToProps = {
-  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientAction: setPatient,
+  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientDataAction: setPatientData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
@@ -163,7 +240,6 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
-    paddingTop: 100,
   },
   login: {
     backgroundColor: Colors.primary,
