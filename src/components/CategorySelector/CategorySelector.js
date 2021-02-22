@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: 'row',
     padding: 10,
-    // height: 220,
   },
   button: {
     padding: 10,

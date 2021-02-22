@@ -2,19 +2,24 @@ import React from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const CatalogScreen = () => (
-  <View style={styles.root}>
-    <Text>Timeline Widget</Text>
-  </View>
-);
+const CatalogScreen = () => {
+
+  return(
+    <View style={styles.root}>
+      <Text>Timeline Widget</Text>
+    </View>
+  )
+}
+
 
 export default CatalogScreen;
 
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    height: 150,
+    height: hp('20%'),
     backgroundColor: 'lightgray',
     borderWidth: 1,
     borderColor: 'gray',
