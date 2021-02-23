@@ -66,9 +66,7 @@ const SummaryScreen = ({
             {patientName}
           </Text>
         </View>
-        <View style={styles.demographics}>
-          <Demographics />
-        </View>
+        <Demographics />
         <View style={styles.resourceTypeContainer}>
           {resources.map(
             (resource) => (
