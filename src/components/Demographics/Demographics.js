@@ -2,7 +2,7 @@ import React from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, SectionList, SafeAreaView,
+  StyleSheet, Text, View, SectionList,
 } from 'react-native';
 
 import {
