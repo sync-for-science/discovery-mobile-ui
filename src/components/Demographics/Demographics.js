@@ -58,9 +58,11 @@ const Demographics = ({
 
   return (
     <View style={styles.demographicsContainer}>
-      <Text styles={styles.panelHeader}>
-        Demographics
-      </Text>
+      <View styles={styles.panelHeader}>
+        <Text>
+          Demographics
+        </Text>
+      </View>
       <SafeAreaView >
         <SectionList
           sections={DATA}
@@ -95,6 +97,8 @@ const styles = StyleSheet.create({
   panelHeader: {
     padding: 5,
     backgroundColor: Colors.primary,
+    borderWidth: 2,
+    borderColor: 'gray',
   },
   header: {
     fontSize: 'small',
