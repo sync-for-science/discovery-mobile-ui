@@ -1,19 +1,19 @@
-import patientReducer, { setPatient, clearPatient, initialState } from './patientSlice';
+import patientDataReducer, { setPatientData, clearPatientData, initialState } from './patientDataSlice';
 
 const patientData = { patientName: 'Michael Scott' };
-const stateWithPatient = { patient: patientData };
+const stateWithPatient = { ...initialState, patientData };
 
 describe('patient reducer', () => {
   it('should handle initial state', () => {
     expect(
-      patientReducer(undefined, {}),
+      patientDataReducer(undefined, {}),
     ).toEqual(initialState);
   });
 
   it('should handle setPatient action', () => {
     expect(
-      patientReducer(initialState, {
-        type: setPatient.type,
+      patientDataReducer(initialState, {
+        type: setPatientData.type,
         payload: patientData,
       }),
     ).toEqual(stateWithPatient);
@@ -21,8 +21,8 @@ describe('patient reducer', () => {
 
   it('should handle clearPatient action', () => {
     expect(
-      patientReducer(stateWithPatient, {
-        type: clearPatient.type,
+      patientDataReducer(stateWithPatient, {
+        type: clearPatientData.type,
       }),
     ).toEqual(initialState);
   });
