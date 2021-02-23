@@ -1,3 +1,5 @@
+import { parse, formatDuration, intervalToDuration } from 'date-fns';
+
 export const getResources = (response) => {
   const flatResources = [];
   response.entry.forEach((entry) => {
@@ -23,6 +25,23 @@ export const getPatientName = (patient) => {
   const given = nameData.given?.[0];
   const { family } = nameData;
   return `${given} ${family}`;
+};
+
+export const getPatientBirthDate = (patient) => {
+  const fhirValue = patient?.resource?.birthDate;
+  return fhirValue;
+};
+
+export const getPatientAge = (patient) => {
+  const birthDate = getPatientBirthDate(patient);
+  const birthDuration = intervalToDuration(
+    {
+      start: parse(birthDate, 'yyyy-MM-dd', new Date()),
+      end: new Date(),
+    },
+  );
+
+  return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
 
 export const getResourceType = (resource) => {

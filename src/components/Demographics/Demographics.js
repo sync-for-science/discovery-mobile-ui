@@ -5,20 +5,36 @@ import {
   StyleSheet, Text, View, SectionList, SafeAreaView,
 } from 'react-native';
 
+import {
+  getResources,
+  getPatient,
+  getPatientName,
+  getPatientBirthDate,
+  getPatientAge,
+} from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
+import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatient } from '../../features/patient/patientDataSlice';
 
 const Demographics = ({
-  navigation, patient, clearAuthAction, clearPatientAction,
+  navigation, patientData, clearAuthAction, clearPatientAction,
 }) => {
+  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
+
+  const patent = getPatient(resources);
+  const birthDate = getPatientBirthDate(patent);
+  const age = getPatientAge(patent);
+  console.log(`Birthdate: ${birthDate}`);
+  console.log(`Age: ${age}`);
+
   const DATA = [
     {
       title: 'Birth date',
-      data: ['Oct 24, 2000'],
+      data: [birthDate],
     },
     {
       title: 'Age',
-      data: ['20yr'],
+      data: [age],
     },
     {
       title: 'Gender',
@@ -52,16 +68,16 @@ const Demographics = ({
 
 Demographics.propTypes = {
   navigation: shape({}).isRequired,
-  patient: shape({}),
+  patientData: shape({}),
   clearPatientAction: func.isRequired,
 };
 
 Demographics.defaultProps = {
-  patient: null,
+  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
-  patient: state.patient.patient,
+  patientData: state.patient.patientData,
 });
 
 const mapDispatchToProps = { clearPatientAction: clearPatient };
