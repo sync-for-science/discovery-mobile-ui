@@ -57,16 +57,21 @@ const Demographics = ({
   );
 
   return (
-    <SafeAreaView style={styles.demographicsContainer}>
-      <SectionList
-        sections={DATA}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <Item title={item} />}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title.toUpperCase()}</Text>
-        )}
-      />
-    </SafeAreaView>
+    <View style={styles.demographicsContainer}>
+      <Text styles={styles.panelHeader}>
+        Demographics
+      </Text>
+      <SafeAreaView >
+        <SectionList
+          sections={DATA}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => <Item title={item} />}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.header}>{title.toUpperCase()}</Text>
+          )}
+        />
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -87,18 +92,24 @@ const mapDispatchToProps = { clearPatientAction: clearPatient };
 export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
 const styles = StyleSheet.create({
-  demographicsContainer: {
-    width: '100%',
+  panelHeader: {
     padding: 5,
+    backgroundColor: Colors.primary,
+  },
+  header: {
+    fontSize: 'small',
+    color: 'grey',
+  },
+  demographicsContainer: {
+    marginHorizontal: 20,
     justifyContent: 'center',
-    alignItems: 'center',
   },
   demographicsRow: {
     backgroundColor: 'white',
     borderWidth: 2,
     borderColor: 'gray',
     borderRadius: 3,
-    marginVertical: 10,
+    marginVertical: 5,
     justifyContent: 'left',
     // alignItems: 'center',
   },
