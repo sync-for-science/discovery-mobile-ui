@@ -47,7 +47,10 @@ export const getPatientAge = (patient) => {
 export const getResourceType = (resource) => {
   if (getResourceCount(resource) > 0) {
     return getBundleResourceType(resource);
+  } else if (resource.resource.resourceType === 'Bundle') {
+    return null
   }
+
   return resource.resource.resourceType;
 };
 
@@ -82,3 +85,20 @@ export const createResourceTypeBundle = (resource, code) => {
 export const getResourceCode = (resource) => (
   resource.resource.entry[0].resource.category[0].coding[0].code
 );
+
+export const getResourceText = (resource) => {
+  const resourceType = getResourceType(resource)
+
+  if (resourceType === "Immunization") {
+    return resource.resource.vaccineCode.text
+  } else if (resourceType === "MedicationRequest") {
+    return resource.resource.medicationCodeableConcept.text
+  } else if (resourceType === "CarePlan") {
+    return "Care Plan"
+  } else if (resource.resource.type) {
+    return resource.resource.type?.[0]?.text
+  } else if (resource.resource.code) {
+    return resource.resource.code.text
+  }
+  return null
+}
