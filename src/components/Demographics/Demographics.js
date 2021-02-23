@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, shape } from 'prop-types';
+import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, SectionList, SafeAreaView,
@@ -16,7 +16,7 @@ import {
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
-import { clearPatient } from '../../features/patient/patientDataSlice';
+import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const Demographics = ({
   patientData,
@@ -27,8 +27,6 @@ const Demographics = ({
   const birthDate = getPatientBirthDate(patient);
   const age = getPatientAge(patient);
   const gender = getPatientGender(patient);
-  // console.log(getPatientGender(patient));
-  console.log(getPatientAddresses(patient));
   const address = renderAddress(getPatientAddresses(patient));
 
   const DATA = [
@@ -50,6 +48,7 @@ const Demographics = ({
     },
   ];
 
+  // eslint-disable-next-line react/prop-types
   const Item = ({ title }) => (
     <View style={styles.demographicsRow}>
       <Text style={styles.title}>{title}</Text>
@@ -89,7 +88,7 @@ const mapStateToProps = (state) => ({
   patientData: state.patient.patientData,
 });
 
-const mapDispatchToProps = { clearPatientAction: clearPatient };
+const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
   },
   header: {
-    fontSize: 'small',
+    fontSize: 12,
     color: 'grey',
   },
   demographicsContainer: {
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 3,
     marginVertical: 5,
-    justifyContent: 'left',
+    // justifyContent: 'left',
     // alignItems: 'center',
   },
 });
