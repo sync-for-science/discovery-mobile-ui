@@ -70,17 +70,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
 const styles = StyleSheet.create({
   demographicsContainer: {
+    width: '100%',
+    padding: 5,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
   },
   demographicsRow: {
-    width: '90%',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    borderColor: 'lightgray',
+    backgroundColor: 'white',
+    borderWidth: 2,
+    borderColor: 'gray',
+    borderRadius: 3,
+    marginVertical: 10,
+    justifyContent: 'left',
+    // alignItems: 'center',
   },
 });
