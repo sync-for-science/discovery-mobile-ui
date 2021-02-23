@@ -2,6 +2,36 @@ import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
+const MAX_DEPTH = 4;
+export const processBundle = (acc, resource, depth) => {
+  if (depth > MAX_DEPTH) {
+    return;
+  }
+  const { id, resourceType } = resource;
+  if (resourceType === 'Bundle') {
+    if (!resource.entry) {
+      console.warn(`No resource.entry -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
+      return;
+    }
+    resource.entry.forEach((entry) => {
+      const status = entry?.response?.status;
+      if (status !== '200 OK') {
+        console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
+      }
+      processBundle(acc, entry.resource, depth + 1);
+    });
+  } else {
+    if (!id) {
+      console.warn(`No id -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
+      return;
+    }
+    if (acc[id]) {
+      console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
+    }
+    acc[id] = resource;
+  }
+};
+
 export const getResources = (response) => {
   const flatResources = [];
   response.entry.forEach((entry) => {
@@ -16,7 +46,6 @@ export const getResources = (response) => {
     }
     flatResources.push(entry);
   });
-
   return flatResources;
 };
 
