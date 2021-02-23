@@ -12,14 +12,14 @@ import {
   getPatientBirthDate,
   getPatientAge,
   getPatientAddresses,
-  renderAddress
+  renderAddress,
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatient } from '../../features/patient/patientDataSlice';
 
 const Demographics = ({
-  navigation, patientData, clearAuthAction, clearPatientAction,
+  patientData,
 }) => {
   const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
@@ -71,9 +71,7 @@ const Demographics = ({
 };
 
 Demographics.propTypes = {
-  navigation: shape({}).isRequired,
   patientData: shape({}),
-  clearPatientAction: func.isRequired,
 };
 
 Demographics.defaultProps = {
