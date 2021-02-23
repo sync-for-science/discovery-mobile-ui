@@ -29,7 +29,7 @@ const Demographics = ({
   const gender = getPatientGender(patient);
   const address = renderAddress(getPatientAddresses(patient));
 
-  const DATA = [
+  const demographics = [
     {
       title: 'Birth date',
       data: [birthDate],
@@ -57,21 +57,19 @@ const Demographics = ({
 
   return (
     <View style={styles.demographicsContainer}>
-      <View styles={styles.panelHeader}>
-        <Text>
+      <View style={styles.panelHeader}>
+        <Text style={styles.panelText}>
           Demographics
         </Text>
       </View>
-      <SafeAreaView>
-        <SectionList
-          sections={DATA}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <Item title={item} />}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={styles.header}>{title.toUpperCase()}</Text>
-          )}
-        />
-      </SafeAreaView>
+      <SectionList
+        sections={demographics}
+        keyExtractor={(item, index) => item + index}
+        renderItem={({ item }) => <Item title={item} />}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={styles.demographicsHeader}>{title.toUpperCase()}</Text>
+        )}
+      />
     </View>
   );
 };
@@ -95,25 +93,28 @@ export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 const styles = StyleSheet.create({
   panelHeader: {
     padding: 5,
-    backgroundColor: Colors.primary,
-    borderWidth: 2,
-    borderColor: 'gray',
+    backgroundColor: Colors.secondary,
   },
-  header: {
-    fontSize: 12,
-    color: 'grey',
+  panelText: {
+    color: 'white',
+    fontSize: 16,
+    padding: 5,
   },
   demographicsContainer: {
     marginHorizontal: 20,
     justifyContent: 'center',
   },
-  demographicsRow: {
+  demographicsHeader: {
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    fontSize: 12,
     backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: 'gray',
-    borderRadius: 3,
-    marginVertical: 5,
-    // justifyContent: 'left',
-    // alignItems: 'center',
+    color: Colors.primary,
+  },
+  demographicsRow: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderBottomColor: Colors.secondary,
+    borderBottomWidth: 1,
   },
 });
