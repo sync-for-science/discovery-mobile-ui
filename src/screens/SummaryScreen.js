@@ -153,7 +153,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 20,
   },
-  demographics: {
-    marginHorizontal: 20,
-  },
 });
