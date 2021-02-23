@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, ScrollView, View, Text
+  StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
@@ -21,7 +21,6 @@ const CatalogScreen = () => (
     </FilterDrawer>
   </SafeAreaView>
 );
-
 
 export default CatalogScreen;
 
