@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet,
 } from 'react-native';
+import { Card, CardItem, Body, Text, } from 'native-base';
 
 import {getResourceText} from '../../resources/fhirReader'
 
@@ -9,10 +10,15 @@ const CatalogScreen = ({resource}) => {
   console.log('resource', resource)
   const cardName = getResourceText(resource)
   return (
-    <View style={styles.root}>
-      <Text>Record Card</Text>
-      <Text>{cardName}</Text>
-    </View>
+    <Card>
+      <CardItem>
+        <Body>
+          <Text>
+            {cardName}
+          </Text>
+        </Body>
+      </CardItem>
+    </Card>
   )
 }
 
