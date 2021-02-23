@@ -44,7 +44,7 @@ export const renderAddress = (address) => {
   const firstAddress = address[0];
   const buildup = [
     firstAddress.line.join('\n'),
-    `${firstAddress.city} ${firstAddress.state} ${firstAddress.postalCode}`,
+    `${firstAddress.city}, ${firstAddress.state} ${firstAddress.postalCode}`,
     firstAddress.country,
   ];
 
