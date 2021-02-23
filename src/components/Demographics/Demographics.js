@@ -63,7 +63,7 @@ const Demographics = ({
           Demographics
         </Text>
       </View>
-      <SafeAreaView >
+      <SafeAreaView>
         <SectionList
           sections={DATA}
           keyExtractor={(item, index) => item + index}
