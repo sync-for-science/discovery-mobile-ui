@@ -8,9 +8,11 @@ import {
 import {
   getResources,
   getPatient,
-  getPatientName,
+  getPatientGender,
   getPatientBirthDate,
   getPatientAge,
+  getPatientAddresses,
+  renderAddress
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
@@ -21,11 +23,13 @@ const Demographics = ({
 }) => {
   const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
-  const patent = getPatient(resources);
-  const birthDate = getPatientBirthDate(patent);
-  const age = getPatientAge(patent);
-  console.log(`Birthdate: ${birthDate}`);
-  console.log(`Age: ${age}`);
+  const patient = getPatient(resources);
+  const birthDate = getPatientBirthDate(patient);
+  const age = getPatientAge(patient);
+  const gender = getPatientGender(patient);
+  // console.log(getPatientGender(patient));
+  console.log(getPatientAddresses(patient));
+  const address = renderAddress(getPatientAddresses(patient));
 
   const DATA = [
     {
@@ -38,11 +42,11 @@ const Demographics = ({
     },
     {
       title: 'Gender',
-      data: ['Female'],
+      data: [gender],
     },
     {
       title: 'Address',
-      data: ['432 Gaylord Station Suite 4\nLos Angeles, California 90001\nUS'],
+      data: [address],
     },
   ];
 
