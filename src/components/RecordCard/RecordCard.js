@@ -2,14 +2,28 @@ import React from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { connect } from 'react-redux'
 
-const CatalogScreen = () => (
-  <View style={styles.root}>
-    <Text>RecordCard</Text>
-  </View>
-);
+import { getResources, getPatient, getPatientName } from '../../resources/fhirReader'
 
-export default CatalogScreen;
+const CatalogScreen = ({patientData}) => {
+  const resources = getResources(patientData)
+  const patient = getPatient(resources);
+  const patientName = getPatientName(patient)
+
+
+  return (
+    <View style={styles.root}>
+      <Text>{patientName}</Text>
+    </View>
+  )
+}
+
+const mapStateToProps = (state) => ({
+  patientData: state.patient.patientData
+})
+
+export default connect(mapStateToProps, null)(CatalogScreen);
 
 const styles = StyleSheet.create({
   root: {
