@@ -13,25 +13,37 @@ const Demographics = ({
 }) => {
   const DATA = [
     {
-      title: 'Demographics',
-      data: ['Birth date', 'Age', 'Gender', 'Address'],
+      title: 'Birth date',
+      data: ['Oct 24, 2000'],
+    },
+    {
+      title: 'Age',
+      data: ['20yr'],
+    },
+    {
+      title: 'Gender',
+      data: ['Female'],
+    },
+    {
+      title: 'Address',
+      data: ['432 Gaylord Station Suite 4\nLos Angeles, California 90001\nUS'],
     },
   ];
 
   const Item = ({ title }) => (
-    <View style={styles.item}>
+    <View style={styles.demographicsRow} >
       <Text style={styles.title}>{title}</Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={styles.demographicsContainer}>
       <SectionList
         sections={DATA}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => <Item title={item} />}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.header}>{title}</Text>
+          <Text style={styles.header}>{title.toUpperCase()}</Text>
         )}
       />
     </SafeAreaView>
@@ -57,5 +69,18 @@ const mapDispatchToProps = { clearPatientAction: clearPatient };
 export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
 const styles = StyleSheet.create({
-  /* css here */
+  demographicsContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  demographicsRow: {
+    width: '90%',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+  },
 });
