@@ -18,6 +18,12 @@ export const getResources = (response) => {
 
 export const getPatient = (resources) => resources.find((resource) => resource.resource.resourceType === 'Patient');
 
+export const getDataRange = (resources) => {
+  // scan through all resources
+  // parse all lastUpdated
+  // get lowest and then get highest
+};
+
 export const getPatientName = (patient) => {
   const nameData = patient?.resource?.name?.[0];
   const given = nameData.given?.[0];
