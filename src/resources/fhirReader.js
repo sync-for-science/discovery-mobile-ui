@@ -1,5 +1,5 @@
 import {
-  format, parse, formatDuration, intervalToDuration
+  format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
 export const getResources = (response) => {
@@ -41,7 +41,7 @@ export const getPatientAddresses = (patient) => patient?.resource?.address;
 
 export const renderAddress = (address) => {
   // handle the first one for now
-  const firstAddress = address[0]
+  const firstAddress = address[0];
   const buildup = [
     firstAddress.line.join('\n'),
     `${firstAddress.city} ${firstAddress.state} ${firstAddress.postalCode}`,

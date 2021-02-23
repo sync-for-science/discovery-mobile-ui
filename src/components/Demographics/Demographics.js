@@ -51,7 +51,7 @@ const Demographics = ({
   ];
 
   const Item = ({ title }) => (
-    <View style={styles.demographicsRow} >
+    <View style={styles.demographicsRow}>
       <Text style={styles.title}>{title}</Text>
     </View>
   );
