@@ -54,7 +54,7 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
       </View>
     </SafeAreaView>
   );
-}
+};
 
 LoginScreen.propTypes = {
   navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
