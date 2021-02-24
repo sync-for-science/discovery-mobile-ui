@@ -10,22 +10,17 @@ export const actionTypes = {
   SET_PATIENT_DATA: 'patientData/setPatientData',
   CLEAR_PATIENT_DATA: 'patientData/clearPatientData',
   FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
+  GROUP_BY_TYPE: 'GROUP_BY_TYPE',
 };
 
 const preloadedResources = {};
 
 export const flattenedResourcesReducer = (state = preloadedResources, action) => {
-  console.info('flattenedResourcesReducer, action.type: ', action.type);
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResources;
     }
-    // case actionTypes.SET_PATIENT_DATA:
-    //   console.info('flattenedResourcesReducer, action: ', action);
-    //   return state;
     case actionTypes.FLATTEN_RESOURCES: {
-      // console.info('flattenedResourcesReducer, action: ', action);
-      // console.info('    action.payload: ', JSON.stringify(action.payload, null, 2));
       const newState = { ...state }; // detect mutation
       processBundle(newState, action.payload, 0);
       return newState;
@@ -35,21 +30,64 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
   }
 };
 
-const resourcesEpic = (action$, state$) => action$.pipe(
+const preloadedResourceIdsGroupedByType = {};
+
+export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, action) => {
+  switch (action.type) {
+    case actionTypes.GROUP_BY_TYPE: {
+      const { payload } = action;
+      return Object.entries(payload).reduce((acc, [id, resource]) => {
+        let { resourceType } = resource;
+        if (resourceType === 'Observation') {
+          const { code } = resource.category[0].coding[0];
+          switch (code) {
+            case 'laboratory':
+              resourceType = 'laboratory';
+              break;
+            case 'vital-signs':
+              resourceType = 'vital-signs';
+              break;
+            default: {
+              console.warn(`Unsupported code type for ${id}: `, code); // eslint-disable-line no-console
+              break;
+            }
+          }
+        }
+        if (!acc[resourceType]) {
+          // acc[resourceType] = []; // Arrays are serialized in DevTools, but not Sets
+          acc[resourceType] = new Set();
+        }
+        acc[resourceType].add(resource.id);
+        return acc;
+      }, {});
+    }
+    default:
+      return state;
+  }
+};
+
+const flattenResources = (action$) => action$.pipe(
   ofType(actionTypes.SET_PATIENT_DATA),
-  map(({ payload }) => {
-    console.info('action$:', action$);
-    console.info('state$:', state$);
-    // const { result, sort } = state$.value;
+  map(({ payload }) => ({
+    type: actionTypes.FLATTEN_RESOURCES,
+    payload,
+  })),
+);
+
+const groupByType = (action$, state$) => action$.pipe(
+  ofType(actionTypes.FLATTEN_RESOURCES),
+  map(() => {
+    const { resources } = state$.value;
     return ({
-      type: actionTypes.FLATTEN_RESOURCES,
-      payload,
+      type: actionTypes.GROUP_BY_TYPE,
+      payload: resources,
     });
   }),
 );
 
 export const rootEpic = combineEpics(
-  resourcesEpic,
+  flattenResources,
+  groupByType,
 );
 
 export default createEpicMiddleware({
