@@ -4,18 +4,14 @@ import {
 } from 'react-native';
 import { Card, CardItem, Body, Button, Container } from 'native-base';
 
-import {getResourceText, getFormattedResourceType, getResourceDate} from '../../resources/fhirReader'
+import {getFormattedResourceType, getResourceDate} from '../../resources/fhirReader'
 import BaseText from '../Generic/BaseText'
-import Colors from '../../constants/Colors'
 import BaseDivider from '../Generic/BaseDivider';
 import GenericCardBody from './CardBody/GenericCardBody';
 
 const CatalogScreen = ({resource}) => {
-  console.log('resource', resource)
-  const cardName = getResourceText(resource)
   const resourceType = getFormattedResourceType(resource)
   const resourceDate = getResourceDate(resource)
-  console.log('resourceDate', resourceDate)
   const cardActiveStyle = styles.cardInactive
 
   return (
@@ -26,7 +22,7 @@ const CatalogScreen = ({resource}) => {
         </CardItem>
         <CardItem style={{...cardActiveStyle }}>
           <View style={{width: '100%'}}>
-            <GenericCardBody label={cardName}/>
+            <GenericCardBody resource={resource}/>
           </View>
         </CardItem>
         <BaseDivider />

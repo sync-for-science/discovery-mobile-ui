@@ -7,11 +7,11 @@ import BaseText from '../../Generic/BaseText';
 const CardBodyField = ({
   dependency, label, value, bold = false,
 }) => {
-  const valueFontStyle = bold ? 's4sValueTextBold' : 's4sValueText';
+  const variantStyle = bold ? 'title' : '';
 
   if (dependency) {
     return (
-      <Grid>
+      <Grid style={styles.root}>
         <Row>
           <Col size={1}>
             <BaseText>
@@ -19,7 +19,7 @@ const CardBodyField = ({
             </BaseText>
             </Col>
           <Col size={2}>
-            <BaseText variant='title'>
+            <BaseText variant={variantStyle}>
               {value}
             </BaseText>
           </Col>
@@ -32,4 +32,10 @@ const CardBodyField = ({
 };
 
 export default CardBodyField
+
+const styles = StyleSheet.create({
+  root: {
+    marginVertical: 2
+  }
+})
 
