@@ -28,5 +28,8 @@ const styles = StyleSheet.create({
   header: {
     fontWeight: '700',
     fontSize: 16,
+  },
+  button: {
+    fontWeight: '700'
   }
 })

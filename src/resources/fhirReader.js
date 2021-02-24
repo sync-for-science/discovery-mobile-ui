@@ -1,4 +1,4 @@
-import { parse, formatDuration, intervalToDuration } from 'date-fns';
+import { parse, format, formatDuration, intervalToDuration } from 'date-fns';
 import RESOURCE_TYPES from './resourceTypes'
 
 export const getResources = (response) => {
@@ -104,6 +104,13 @@ export const getResourceText = (resource) => {
     return resource.resource.type?.[0]?.text
   } else if (resource.resource.code) {
     return resource.resource.code.text
+  }
+  return null
+}
+
+export const getResourceDate = (resource) => {
+  if (resource.resource.recordedDate) {
+    return format(new Date(resource.resource.recordedDate), 'MMM d, y h:mm:ssaaa')
   }
   return null
 }
