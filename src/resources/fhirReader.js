@@ -114,3 +114,7 @@ export const getResourceDate = (resource) => {
   }
   return null
 }
+
+export const getOnsetDateTime = (resource) => {
+  return format(new Date(resource.resource.onsetDateTime), 'MMM d, y h:mm:ssaaa')
+}
