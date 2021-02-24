@@ -34,6 +34,9 @@ const preloadedResourceIdsGroupedByType = {};
 
 export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadedResourceIdsGroupedByType;
+    }
     case actionTypes.GROUP_BY_TYPE: {
       const { payload } = action;
       return Object.entries(payload).reduce((acc, [id, resource]) => {
