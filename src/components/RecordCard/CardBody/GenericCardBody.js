@@ -7,7 +7,8 @@ import {
   getPatient, 
   getPatientAge, 
   getResourceText, 
-  getOnsetDateTime
+  getOnsetDateTime,
+  getAbatementDateTime
 } from '../../../resources/fhirReader'
 import CardBodyField from './CardBodyField'
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel'
@@ -40,6 +41,16 @@ const GenericCardBody = ({resource, patientData}) => {
         label={CARD_BODY_LABEL.onset}
         value={getOnsetDateTime(resource)}
       />
+      <CardBodyField
+        dependency={getAbatementDateTime(resource)}
+        label={CARD_BODY_LABEL.abatement}
+        value={getAbatementDateTime(resource)}
+      />
+      {/* <CardBodyField
+        dependency={null}
+        label={CARD_BODY_LABEL.orderedBy}
+        value={null}
+      /> */}
     </View>
   )
 }

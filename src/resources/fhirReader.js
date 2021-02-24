@@ -116,5 +116,15 @@ export const getResourceDate = (resource) => {
 }
 
 export const getOnsetDateTime = (resource) => {
-  return format(new Date(resource.resource.onsetDateTime), 'MMM d, y h:mm:ssaaa')
+  if (resource.resource.onsetDateTime) {
+    return format(new Date(resource.resource.onsetDateTime), 'MMM d, y h:mm:ssaaa')
+  }
+  return null
+}
+
+export const getAbatementDateTime = (resource) => {
+  if (resource.resource.abatementDateTime) {
+    return format(new Date(resource.resource.abatementDateTime), 'MMM d, y h:mm:ssaaa')
+  }
+  return null
 }

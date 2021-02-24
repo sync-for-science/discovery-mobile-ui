@@ -35,7 +35,7 @@ export default CardBodyField
 
 const styles = StyleSheet.create({
   root: {
-    marginVertical: 2
+    marginVertical: 5
   }
 })
 
