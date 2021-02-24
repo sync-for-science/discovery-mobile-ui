@@ -17,6 +17,7 @@ import {
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
+import UserInfo from '../components/UserInfo/UserInfo';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
@@ -62,9 +63,7 @@ const SummaryScreen = ({
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <ScrollView style={styles.screen}>
         <View style={styles.descriptionContainer}>
-          <Text style={styles.welcome}>
-            {patientName}
-          </Text>
+          <UserInfo />
         </View>
         <Demographics />
         <View style={styles.resourceTypeContainer}>

@@ -23,9 +23,13 @@ export const getResources = (response) => {
 export const getPatient = (resources) => resources.find((resource) => resource.resource.resourceType === 'Patient');
 
 export const getDataRange = (resources) => {
-  // scan through all resources
-  // parse all lastUpdated
-  // get lowest and then get highest
+  // incorrect - doesn't go into 'nested' bundles which shouldn't be
+  let timestamps = resources.map((resource) => resource.resource?.meta?.lastUpdated);
+  // trim null values
+  timestamps = timestamps.filter((timestamp) => timestamp);
+  timestamps.sort();
+  console.log(timestamps);
+  return [timestamps[0], timestamps[timestamps.length - 1]];
 };
 
 export const getPatientName = (patient) => {
