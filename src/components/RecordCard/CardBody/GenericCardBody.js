@@ -1,9 +1,10 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 
 import {getResources, getPatient, getPatientAge} from '../../../resources/fhirReader'
 import CardBodyField from './CardBodyField'
+import CARD_BODY_LABEL from '../../../resources/cardBodyLabel'
 
 const GenericCardBody = ({resource, patientData}) => {
   const resources = getResources(patientData)
@@ -14,7 +15,7 @@ const GenericCardBody = ({resource, patientData}) => {
     <View>
       <CardBodyField 
         dependency={patientAge}
-        label={"AGE"}
+        label={CARD_BODY_LABEL.age}
         value={patientAge}
       />
     </View>
