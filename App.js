@@ -20,6 +20,9 @@ const store = configureStore({
     epicMiddleware,
     // routerMiddleware(history), // < e.g.: other middleware
   ]),
+  devTools: {
+    serialize: true, // See: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#serialize
+  },
 });
 
 epicMiddleware.run(rootEpic);

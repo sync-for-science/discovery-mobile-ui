@@ -57,7 +57,6 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
           }
         }
         if (!acc[resourceType]) {
-          // acc[resourceType] = []; // Arrays are serialized in DevTools, but not Sets
           acc[resourceType] = new Set();
         }
         if (acc[resourceType].has(resource.id)) {
