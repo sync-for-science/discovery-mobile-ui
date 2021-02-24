@@ -40,13 +40,15 @@ const Login = ({
           const bundle = await getBundle(patientIdProp, fhirClientProp);
           setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
+          setLoading(false);
         } catch (error) {
           clearAuthAction();
+          setLoading(false);
           console.error('Error fetching patient data:', error);
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
-
+      
       queryPatient(patientId, fhirClient);
     }
   }, [authResult, patientData, navigation]);
@@ -54,8 +56,11 @@ const Login = ({
   const handleLogin = async () => {
     setLoading(true);
     const authResponse = await authAsync();
-    setAuthAction(authResponse);
-    setLoading(false);
+    if (authResponse) {
+      setAuthAction(authResponse);
+    } else {
+      setLoading(false); 
+    }
   };
 
   return (
