@@ -31,5 +31,8 @@ const styles = StyleSheet.create({
   },
   button: {
     fontWeight: '700'
+  },
+  title: {
+    fontWeight: '700'
   }
 })

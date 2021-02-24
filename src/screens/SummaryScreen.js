@@ -47,8 +47,8 @@ const SummaryScreen = ({
 }) => {
   const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
-  const patent = getPatient(resources);
-  const patientName = getPatientName(patent);
+  const patient = getPatient(resources);
+  const patientName = getPatientName(patient);
 
   const handleLogout = () => {
     clearAuthAction();
