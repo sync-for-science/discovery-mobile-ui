@@ -1,4 +1,5 @@
 import { parse, formatDuration, intervalToDuration } from 'date-fns';
+import RESOURCE_TYPES from './resourceTypes'
 
 export const getResources = (response) => {
   const flatResources = [];
@@ -53,6 +54,10 @@ export const getResourceType = (resource) => {
 
   return resource.resource.resourceType;
 };
+
+export const getFormattedResourceType = (resource) => {
+  return RESOURCE_TYPES[getResourceType(resource)]
+}
 
 export const getBundleResourceType = (resource) => (
   resource.resource.entry?.[0]?.resource?.resourceType

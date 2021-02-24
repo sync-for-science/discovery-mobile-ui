@@ -13,7 +13,7 @@ const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <FilterDrawer>
-      <ScrollView style={styles.content}>
+      <ScrollView>
         <TimelineWidget />
         <CategorySelector />
         <RecordCardsContainer />
@@ -27,13 +27,11 @@ export default CatalogScreen;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: Colors.screenBackground
   },
   screen: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  content: {
-    width: '90%',
   },
 });

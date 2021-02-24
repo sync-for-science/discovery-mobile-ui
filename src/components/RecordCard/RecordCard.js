@@ -4,14 +4,22 @@ import {
 } from 'react-native';
 import { Card, CardItem, Body, Text, } from 'native-base';
 
-import {getResourceText} from '../../resources/fhirReader'
+import {getResourceText, getFormattedResourceType} from '../../resources/fhirReader'
+import Colors from '../../constants/Colors'
 
 const CatalogScreen = ({resource}) => {
-  console.log('resource', resource)
+  console.log('getFormattedResourceType(resource)', getFormattedResourceType(resource))
   const cardName = getResourceText(resource)
+  const resourceType = getFormattedResourceType(resource)
+  const cardActiveStyle = styles.cardInactive
+
   return (
-    <Card>
-      <CardItem>
+    <Card style={styles.card}>
+      <CardItem style={{...cardActiveStyle, ...styles.header}}>
+        <Text>{resourceType}</Text>
+        <Text>NativeBase</Text>
+      </CardItem>
+      <CardItem style={{...cardActiveStyle}}>
         <Body>
           <Text>
             {cardName}
@@ -25,15 +33,11 @@ const CatalogScreen = ({resource}) => {
 export default CatalogScreen;
 
 const styles = StyleSheet.create({
-  root: {
-    width: '100%',
-    height: 100,
-    backgroundColor: 'white',
-    borderWidth: 2,
-    borderColor: 'gray',
-    borderRadius: 15,
-    marginVertical: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+  cardSelected: {
+    backgroundColor: 'blue'
   },
+  header: {
+    flex: 1,
+    justifyContent: 'space-between'
+  }
 });

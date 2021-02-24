@@ -30,7 +30,6 @@ const CatalogScreen = ({patientData}) => {
 
   return (
   <View style={styles.root}>
-    <Text>RecordCards Container</Text>
     <View style={styles.container}>
       {formattedResources[currentCategory].map(
         resource => <RecordCard key={resource.resource.id} resource={resource} />
@@ -49,9 +48,6 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     padding: 10,
-    backgroundColor: 'lightgray',
-    borderWidth: 1,
-    borderColor: 'gray',
     marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
