@@ -8,6 +8,7 @@ export const actionTypes = {
   // SET_PATIENT_DATA string is implicitly derived from:
   //     patientDataSlice.name (value) + patientDataSlice.reducers.setPatientData (key)
   SET_PATIENT_DATA: 'patientData/setPatientData',
+  CLEAR_PATIENT_DATA: 'patientData/clearPatientData',
   FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
 };
 
@@ -16,6 +17,9 @@ const preloadedResources = {};
 export const flattenedResourcesReducer = (state = preloadedResources, action) => {
   console.info('flattenedResourcesReducer, action.type: ', action.type);
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadedResources;
+    }
     // case actionTypes.SET_PATIENT_DATA:
     //   console.info('flattenedResourcesReducer, action: ', action);
     //   return state;
