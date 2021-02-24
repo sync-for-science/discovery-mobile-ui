@@ -60,7 +60,11 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
           // acc[resourceType] = []; // Arrays are serialized in DevTools, but not Sets
           acc[resourceType] = new Set();
         }
-        acc[resourceType].add(resource.id);
+        if (acc[resourceType].has(resource.id)) {
+          console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
+        } else {
+          acc[resourceType].add(resource.id);
+        }
         return acc;
       }, {});
     }
