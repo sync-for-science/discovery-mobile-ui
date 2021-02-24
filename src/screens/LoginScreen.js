@@ -65,10 +65,6 @@ const mapDispatchToProps = {
   setPatientDataAction: setPatientData,
 };
 
-const mapDispatchToProps = {
-  setPatientDataAction: setPatientData,
-};
-
 export default connect(null, mapDispatchToProps)(LoginScreen);
 
 const styles = StyleSheet.create({
