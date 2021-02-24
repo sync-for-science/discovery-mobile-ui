@@ -2,8 +2,17 @@ import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
 import { Alert } from 'react-native';
 
-// smartapp auth with provided patient Blake Eichmann
-export const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI4NjUxMmM2Zi1jYWY2LTQxZjQtOTUwMy1lNDI3MGIzN2I5NGYifQ==/fhir';
+const MOCK_USER_ID = '86512c6f-caf6-41f4-9503-e4270b37b94f'; // Blake Eichmann
+// const MOCK_USER_ID = 'd0190651-b9b0-4513-8f3b-d542319220d1'; // Mr. Chadwick Von
+
+// TODO: verify that global.btoa is available to all environments, iOS, Android, dev, deploy:
+const encodedIssData = global.btoa(JSON.stringify({
+  k: '1',
+  b: MOCK_USER_ID,
+}));
+
+// smartapp auth
+export const fhirIss = `https://launch.smarthealthit.org/v/r4/sim/${encodedIssData}/fhir`;
 
 export const initializeFhirClient = (baseUrl, accessToken) => {
   if (!accessToken) {
