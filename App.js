@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   patient: patientDataReducer,
   resources: flattenedResourcesReducer,
-  resourceTypes: resourceTypesReducer,
+  resourceIdsGroupedByType: resourceTypesReducer,
 });
 
 const store = configureStore({
