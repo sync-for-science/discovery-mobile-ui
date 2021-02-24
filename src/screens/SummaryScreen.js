@@ -16,6 +16,7 @@ import {
 } from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
+import Demographics from '../components/Demographics/Demographics';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
@@ -65,6 +66,7 @@ const SummaryScreen = ({
             {patientName}
           </Text>
         </View>
+        <Demographics />
         <View style={styles.resourceTypeContainer}>
           {resources.map(
             (resource) => (
