@@ -5,6 +5,7 @@ import {
 import { Card, CardItem, Body, Text, } from 'native-base';
 
 import {getResourceText, getFormattedResourceType} from '../../resources/fhirReader'
+import BaseText from '../Generic/BaseText'
 import Colors from '../../constants/Colors'
 
 const CatalogScreen = ({resource}) => {
@@ -16,14 +17,12 @@ const CatalogScreen = ({resource}) => {
   return (
     <Card style={styles.card}>
       <CardItem style={{...cardActiveStyle, ...styles.header}}>
-        <Text>{resourceType}</Text>
-        <Text>NativeBase</Text>
+        <BaseText variant='header'>{resourceType}</BaseText>
+        <BaseText>NativeBase</BaseText>
       </CardItem>
       <CardItem style={{...cardActiveStyle}}>
         <Body>
-          <Text>
-            {cardName}
-          </Text>
+          <BaseText>{cardName}</BaseText>
         </Body>
       </CardItem>
     </Card>
