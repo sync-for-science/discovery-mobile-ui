@@ -73,26 +73,14 @@ const resourceTypes = [
 ];
 
 const buildBundleEntries = (patientId) => (
-  resourceTypes.map((type) => {
-    if (type === 'Patient') {
-      return (
-        {
-          request: {
-            method: 'GET',
-            url: `${type}/${patientId}`,
-          },
-        }
-      );
+  resourceTypes.map((type) => (
+    {
+      request: {
+        method: 'GET',
+        url: (type === 'Patient') ? `${type}/${patientId}` : `${type}?patient=${patientId}`,
+      },
     }
-    return (
-      {
-        request: {
-          method: 'GET',
-          url: `${type}?patient=${patientId}`,
-        },
-      }
-    );
-  })
+  ))
 );
 
 export const getRequestBundle = (patientId) => ({
