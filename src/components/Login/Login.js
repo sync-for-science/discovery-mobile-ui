@@ -48,7 +48,7 @@ const Login = ({
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
-      
+
       queryPatient(patientId, fhirClient);
     }
   }, [authResult, patientData, navigation]);
@@ -59,7 +59,7 @@ const Login = ({
     if (authResponse) {
       setAuthAction(authResponse);
     } else {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
