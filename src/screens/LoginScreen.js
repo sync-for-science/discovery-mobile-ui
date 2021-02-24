@@ -9,7 +9,7 @@ import {
   StatusBar,
   Button,
 } from 'react-native';
-import { H2, Text } from 'native-base'
+import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
 
 import Login from '../components/Login/Login';
