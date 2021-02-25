@@ -29,14 +29,16 @@ const UserInfo = ({
       <Text style={styles.welcome}>
         {name}
       </Text>
-      <Text>Data range</Text>
-      <Text>
-        {dataStart}
-        {' '}
-        -
-        {' '}
-        {dataEnd}
-      </Text>
+      <View style={styles.dataRange}>
+        <Text>Data range</Text>
+        <Text>
+          {dataStart}
+          {' '}
+          -
+          {' '}
+          {dataEnd}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -58,30 +60,7 @@ const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
 
 const styles = StyleSheet.create({
-  panelHeader: {
-    padding: 5,
-    backgroundColor: Colors.secondary,
-  },
-  panelText: {
-    color: 'white',
-    fontSize: 16,
-    padding: 5,
-  },
-  UserInfoContainer: {
-    marginHorizontal: 20,
-    justifyContent: 'center',
-  },
-  UserInfoHeader: {
-    paddingHorizontal: 10,
-    paddingTop: 10,
-    fontSize: 12,
-    backgroundColor: 'white',
-    color: Colors.primary,
-  },
-  UserInfoRow: {
-    padding: 10,
-    backgroundColor: 'white',
-    borderBottomColor: Colors.secondary,
-    borderBottomWidth: 1,
+  dataRange: {
+    flexDirection: 'row',
   },
 });

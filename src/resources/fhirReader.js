@@ -1,6 +1,9 @@
 import {
-  format, parse, formatDuration, intervalToDuration,
+  format, parse, parseISO, formatDuration, intervalToDuration, compareAsc,
 } from 'date-fns';
+
+// date format used throughout the UI
+const UI_DATE_FORMAT = 'MMM d, Y';
 
 export const getResources = (response) => {
   const flatResources = [];
@@ -27,9 +30,12 @@ export const getDataRange = (resources) => {
   let timestamps = resources.map((resource) => resource.resource?.meta?.lastUpdated);
   // trim null values
   timestamps = timestamps.filter((timestamp) => timestamp);
-  timestamps.sort();
-  console.log(timestamps);
-  return [timestamps[0], timestamps[timestamps.length - 1]];
+  timestamps = timestamps.map((timestamp) => parseISO(timestamp));
+  timestamps.sort(compareAsc);
+  return [
+    format(timestamps[0], UI_DATE_FORMAT),
+    format(timestamps[timestamps.length - 1], UI_DATE_FORMAT),
+  ];
 };
 
 export const getPatientName = (patient) => {
@@ -44,7 +50,7 @@ export const getPatientGender = (patient) => patient?.resource?.gender;
 // returns human-readable patient birth date
 export const getPatientBirthDate = (patient) => {
   const birthDate = parse(patient?.resource?.birthDate, 'yyyy-MM-dd', new Date());
-  return format(birthDate, 'MMM d, Y');
+  return format(birthDate, UI_DATE_FORMAT);
 };
 
 export const getPatientAddresses = (patient) => patient?.resource?.address;
