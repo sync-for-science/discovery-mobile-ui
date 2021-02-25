@@ -5,7 +5,8 @@ import { combineReducers, configureStore, compose } from '@reduxjs/toolkit';
 import RootNavigator from './src/navigation/RootNavigator';
 import patientDataReducer from './src/features/patient/patientDataSlice';
 import authReducer from './src/features/auth/authSlice';
-import epicMiddleware, { rootEpic, flattenedResourcesReducer, resourceTypesReducer } from './src/epics';
+import { flattenedResourcesReducer, resourceTypesReducer } from './src/redux/reducers';
+import epicMiddleware, { rootEpic } from './src/redux/epics';
 
 const rootReducer = combineReducers({
   auth: authReducer,
