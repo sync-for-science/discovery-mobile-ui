@@ -27,7 +27,6 @@ const ResourceTypeRow = ({ resourceType, resourceIds }) => (
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
   resourceIds: instanceOf(Set).isRequired,
-  // resources: shape({}).isRequired,
 };
 
 const SummaryScreen = ({

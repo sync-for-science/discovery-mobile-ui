@@ -44,7 +44,6 @@ export const getPatientGender = (patientResource) => patientResource?.gender;
 
 // returns human-readable patient birth date
 export const getPatientBirthDate = (patientResource) => {
-  console.info('patient: ', patientResource);
   if (!patientResource) {
     return null;
   }

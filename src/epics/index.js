@@ -45,10 +45,8 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
           const { code } = resource.category[0].coding[0];
           switch (code) {
             case 'laboratory':
-              resourceType = 'laboratory';
-              break;
             case 'vital-signs':
-              resourceType = 'vital-signs';
+              resourceType = code;
               break;
             default: {
               console.warn(`Unsupported code type for ${id}: `, code); // eslint-disable-line no-console
