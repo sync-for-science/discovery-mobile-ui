@@ -29,7 +29,6 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
       const { payload } = action;
       return Object.entries(payload).reduce((acc, [id, resource]) => {
         let { resourceType, subType } = resource;
-        console.log('subType', subType)
         if (resourceType === 'Observation') {
           const { code } = resource.category[0].coding[0];
           switch (code) {
