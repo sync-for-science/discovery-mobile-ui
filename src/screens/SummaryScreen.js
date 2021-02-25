@@ -88,14 +88,4 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingTop: 25,
   },
-  resourceTypeRow: {
-    width: '90%',
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-  },
 });

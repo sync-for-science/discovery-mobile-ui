@@ -7,12 +7,6 @@ import {
 
 import {
   getResources,
-  getPatient,
-  getPatientGender,
-  getPatientBirthDate,
-  getPatientAge,
-  getPatientAddresses,
-  renderAddress,
   getResourceCount,
   getResourceType,
   getResourceCode,
@@ -51,15 +45,22 @@ const RecordsSummary = ({
   const resources = patientData ? getResources(patientData) : getResources(mockBundle);
 
   return (
-    <View style={styles.resourceTypeContainer}>
-      {resources.map(
-        (resource) => (
-          <ResourceTypeRow
-            key={`resourceTypeRow-${resource.resource.id}`}
-            resource={resource}
-          />
-        ),
-      )}
+    <View style={styles.recordSummaryContainer}>
+      <View style={styles.panelHeader}>
+        <Text style={styles.panelText}>
+          Demographics
+        </Text>
+      </View>
+      <View style={styles.resourceTypeContainer}>
+        {resources.map(
+          (resource) => (
+            <ResourceTypeRow
+              key={`resourceTypeRow-${resource.resource.id}`}
+              resource={resource}
+            />
+          ),
+        )}
+      </View>
     </View>
   );
 };
@@ -81,8 +82,35 @@ const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
 export default connect(mapStateToProps, mapDispatchToProps)(RecordsSummary);
 
 const styles = StyleSheet.create({
+  recordSummaryContainer: {
+    marginTop: 10,
+    marginHorizontal: 20,
+    justifyContent: 'center',
+  },
+  panelHeader: {
+    padding: 5,
+    backgroundColor: Colors.secondary,
+  },
+  panelText: {
+    color: 'white',
+    fontSize: 16,
+    padding: 5,
+  },
   resourceTypeContainer: {
     alignItems: 'center',
-    marginVertical: 20,
+    width: '100%',
+  },
+  resourceTypeRow: {
+    width: '100%',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+
+    padding: 10,
+    backgroundColor: 'white',
+    borderBottomColor: Colors.secondary,
+    borderBottomWidth: 1,
   },
 });
