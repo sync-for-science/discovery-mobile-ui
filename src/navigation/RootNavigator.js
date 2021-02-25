@@ -65,7 +65,7 @@ export default function RootNavigator() {
           component={LoginScreen}
           options={{
             title: 'Discovery Mobile App',
-            gestureEnabled: false
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -73,7 +73,7 @@ export default function RootNavigator() {
           component={PostAuthScreens}
           options={{
             title: 'Discovery Mobile App',
-            gestureEnabled: false
+            gestureEnabled: false,
           }}
         />
       </Stack.Navigator>
