@@ -1,55 +1,39 @@
 import React from 'react';
-import { func, shape } from 'prop-types';
+import {
+  func, shape, instanceOf, string,
+} from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 
+import { patientSelector, supportedResourcesSelector } from '../redux/selectors';
 import Colors from '../constants/Colors';
 import {
-  getResources,
-  getPatient,
   getPatientName,
-  getResourceType,
-  getResourceCount,
-  getResourceCode,
 } from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
-import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resource }) => {
-  const resourceCount = getResourceCount(resource);
-  if (!resourceCount > 0) {
-    return null;
-  }
-
-  let resourceType = getResourceType(resource);
-  if (resourceType === 'Observation') {
-    resourceType = getResourceCode(resource);
-  }
-
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text>{resourceCount}</Text>
-    </View>
-  );
-};
+const ResourceTypeRow = ({ resourceType, resourceIds }) => (
+  <View style={styles.resourceTypeRow}>
+    <Text>{RESOURCE_TYPES[resourceType]}</Text>
+    <Text>{resourceIds.size}</Text>
+  </View>
+);
 
 ResourceTypeRow.propTypes = {
-  resource: shape({}).isRequired,
+  resourceType: string.isRequired,
+  resourceIds: instanceOf(Set).isRequired,
 };
 
 const SummaryScreen = ({
-  navigation, patientData, clearAuthAction, clearPatientDataAction,
+  patientResource, resourceIdsGroupedByType, resources, navigation,
+  clearAuthAction, clearPatientDataAction,
 }) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
-
-  const patent = getPatient(resources);
-  const patientName = getPatientName(patent);
+  const patientName = getPatientName(patientResource);
 
   const handleLogout = () => {
     clearAuthAction();
@@ -68,11 +52,13 @@ const SummaryScreen = ({
         </View>
         <Demographics />
         <View style={styles.resourceTypeContainer}>
-          {resources.map(
-            (resource) => (
+          {Object.entries(resourceIdsGroupedByType).map(
+            ([resourceType, resourceIds]) => (
               <ResourceTypeRow
-                key={`resourceTypeRow-${resource.resource.id}`}
-                resource={resource}
+                key={resourceType}
+                resourceType={resourceType}
+                resourceIds={resourceIds}
+                resources={resources}
               />
             ),
           )}
@@ -85,20 +71,29 @@ const SummaryScreen = ({
 
 SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
-  patientData: shape({}),
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
+  resourceIdsGroupedByType: shape({}),
+  resources: shape({}),
+  patientResource: shape({}),
 };
 
 SummaryScreen.defaultProps = {
-  patientData: null,
+  resourceIdsGroupedByType: {},
+  resources: null,
+  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  resources: state.resources,
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  patientResource: patientSelector(state),
 });
 
-const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientDataAction: clearPatientData };
+const mapDispatchToProps = {
+  clearAuthAction: clearAuth,
+  clearPatientDataAction: clearPatientData,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 

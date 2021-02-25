@@ -5,9 +5,9 @@ import {
   StyleSheet, Text, View, SectionList,
 } from 'react-native';
 
+import { patientSelector } from '../../redux/selectors';
+
 import {
-  getResources,
-  getPatient,
   getPatientGender,
   getPatientBirthDate,
   getPatientAge,
@@ -15,19 +15,14 @@ import {
   renderAddress,
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
-import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
-import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const Demographics = ({
-  patientData,
+  patientResource,
 }) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
-
-  const patient = getPatient(resources);
-  const birthDate = getPatientBirthDate(patient);
-  const age = getPatientAge(patient);
-  const gender = getPatientGender(patient);
-  const address = renderAddress(getPatientAddresses(patient));
+  const birthDate = getPatientBirthDate(patientResource);
+  const age = getPatientAge(patientResource);
+  const gender = getPatientGender(patientResource);
+  const address = renderAddress(getPatientAddresses(patientResource));
 
   const demographics = [
     {
@@ -75,18 +70,18 @@ const Demographics = ({
 };
 
 Demographics.propTypes = {
-  patientData: shape({}),
+  patientResource: shape({}),
 };
 
 Demographics.defaultProps = {
-  patientData: null,
+  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  patientResource: patientSelector(state),
 });
 
-const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
+const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
