@@ -26,17 +26,20 @@ export const getResources = (response) => {
 export const getPatient = (resources) => resources.find((resource) => resource.resource.resourceType === 'Patient');
 
 export const getDataRange = (resources) => {
-  // incorrect - doesn't go into 'nested' bundles which shouldn't be
-  let timestamps = resources.map((resource) => resource.resource?.meta?.lastUpdated);
-  // trim null values
-  timestamps = timestamps.filter((timestamp) => timestamp);
-  timestamps = timestamps.map((timestamp) => parseISO(timestamp));
-  timestamps.sort(compareAsc);
+  // incorrect - doesn't go into 'nested' bundles which shouldn't be nested,
+  // will be fixed with Observables
+  const timestamps = resources.map((resource) => resource.resource?.meta?.lastUpdated)
+    .filter((timestamp) => timestamp)
+    .map((timestamp) => parseISO(timestamp))
+    .sort(compareAsc);
+
   return [
     format(timestamps[0], UI_DATE_FORMAT),
     format(timestamps[timestamps.length - 1], UI_DATE_FORMAT),
   ];
 };
+
+export const getRecordsTotal = (resources) => resources.reduce((acc, n) => n + 1);
 
 export const getPatientName = (patient) => {
   const nameData = patient?.resource?.name?.[0];
