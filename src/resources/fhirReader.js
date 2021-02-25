@@ -49,26 +49,32 @@ export const getResources = (response) => {
   return flatResources;
 };
 
-export const getPatient = (resources) => resources.find((resource) => resource.resource.resourceType === 'Patient');
-
-export const getPatientName = (patient) => {
-  const nameData = patient?.resource?.name?.[0];
-  const given = nameData.given?.[0];
-  const { family } = nameData;
-  return `${given} ${family}`;
+export const getPatientName = (patientResource) => {
+  if (!patientResource) {
+    return '';
+  }
+  const { given, family } = patientResource.name[0];
+  return [given?.[0], family].join(' ');
 };
 
-export const getPatientGender = (patient) => patient?.resource?.gender;
+export const getPatientGender = (patientResource) => patientResource?.gender;
 
 // returns human-readable patient birth date
-export const getPatientBirthDate = (patient) => {
-  const birthDate = parse(patient?.resource?.birthDate, 'yyyy-MM-dd', new Date());
+export const getPatientBirthDate = (patientResource) => {
+  console.info('patient: ', patientResource);
+  if (!patientResource) {
+    return null;
+  }
+  const birthDate = parse(patientResource?.birthDate, 'yyyy-MM-dd', new Date());
   return format(birthDate, 'MMM d, Y');
 };
 
-export const getPatientAddresses = (patient) => patient?.resource?.address;
+export const getPatientAddresses = (patientResource) => patientResource?.address;
 
 export const renderAddress = (address) => {
+  if (!address) {
+    return null;
+  }
   // handle the first one for now
   const firstAddress = address[0];
   const buildup = [
@@ -83,7 +89,10 @@ export const renderAddress = (address) => {
 // TODO: make it handle only years or months which is valid
 // TODO: have it return months for babies
 export const getPatientAge = (patient) => {
-  const birthDate = patient?.resource?.birthDate;
+  if (!patient) {
+    return null;
+  }
+  const birthDate = patient?.birthDate;
   const birthDuration = intervalToDuration(
     {
       start: parse(birthDate, 'yyyy-MM-dd', new Date()),
