@@ -7,7 +7,7 @@ import {
   StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 
-import { patientSelector } from '../redux/selectors';
+import { patientSelector, supportedResourcesSelector } from '../redux/selectors';
 import Colors from '../constants/Colors';
 import {
   getPatientName,
@@ -80,14 +80,14 @@ SummaryScreen.propTypes = {
 };
 
 SummaryScreen.defaultProps = {
-  resourceIdsGroupedByType: null,
+  resourceIdsGroupedByType: {},
   resources: null,
   patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  resourceIdsGroupedByType: state.resourceIdsGroupedByType,
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
   patientResource: patientSelector(state),
 });
 
