@@ -23,7 +23,7 @@ const encode = () => {
     return global?.btoa(issDataString);
   }
   console.info('return Buffer: ', Buffer);
-  return (new Buffer(issDataString)).toString('base64');
+  return Buffer.from(issDataString).toString('base64');
 };
 
 const encodedIssData = encode(issDataString);
