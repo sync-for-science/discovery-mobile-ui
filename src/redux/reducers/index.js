@@ -28,7 +28,8 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     case actionTypes.GROUP_BY_TYPE: {
       const { payload } = action;
       return Object.entries(payload).reduce((acc, [id, resource]) => {
-        let { resourceType } = resource;
+        let { resourceType, subType } = resource;
+        console.log('subType', subType)
         if (resourceType === 'Observation') {
           const { code } = resource.category[0].coding[0];
           switch (code) {
@@ -42,13 +43,29 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
             }
           }
         }
-        if (!acc[resourceType]) {
-          acc[resourceType] = new Set();
-        }
-        if (acc[resourceType].has(resource.id)) {
-          console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
+        if (!subType) {
+          if (!acc[resourceType]) {
+            acc[resourceType] = new Set();
+          }
+          if (acc[resourceType].has(resource.id)) {
+            console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
+          } else {
+            acc[resourceType].add(resource.id);
+          }
         } else {
-          acc[resourceType].add(resource.id);
+          if (!acc[resourceType]) {
+            acc[resourceType] = {};
+          }
+          else {
+            if (!acc[resourceType][subType]) {
+              acc[resourceType][subType] = new Set()
+            } 
+            if (acc[resourceType][subType].has(resource.id)) {
+              console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
+            } else {
+              acc[resourceType][subType].add(resource.id);
+            }
+          }
         }
         return acc;
       }, {});
