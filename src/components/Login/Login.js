@@ -8,69 +8,22 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import * as AppAuth from 'expo-app-auth';
-import Client from 'fhir-kit-client';
 import { connect } from 'react-redux';
 
 import { setPatientData } from '../../features/patient/patientDataSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
-
-// smartapp auth with provided patient Blake Eichmann
-const fhirIss = 'https://launch.smarthealthit.org/v/r4/sim/eyJrIjoiMSIsImIiOiI4NjUxMmM2Zi1jYWY2LTQxZjQtOTUwMy1lNDI3MGIzN2I5NGYifQ==/fhir';
-
-const initializeFhirClient = (baseUrl, accessToken) => {
-  if (!accessToken) {
-    return new Client({ baseUrl });
-  }
-  return new Client({
-    baseUrl,
-    customHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-};
-
-export async function authAsync() {
-  const fhirClient = initializeFhirClient(fhirIss);
-  const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
-
-  const config = {
-    serviceConfiguration: {
-      authorizationEndpoint: authorizeUrl.toString(),
-      tokenEndpoint: tokenUrl.toString(),
-    },
-    additionalParameters: {
-      aud: fhirIss,
-    },
-    clientId: 'example-client-id',
-    clientSecret: 'example-client-secret',
-    // redirectUrl:
-    //   Platform.OS === "android"
-    //     ? "com.reactnativeoauth:/callback"
-    //     : "org.reactjs.native.example.ReactNativeOauth:/callback",
-    scopes: [
-      'openid',
-      'fhirUser',
-      'patient/*.*',
-      'launch/patient',
-      'online_access',
-    ],
-  };
-
-  let result;
-  try {
-    result = await AppAuth.authAsync(config);
-  } catch (error) {
-    console.error('AppAuth Error:', error);
-    Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
-  }
-
-  return result;
-}
+import {
+  authAsync, fhirIss, initializeFhirClient, getBundle,
+} from '../../resources/fhirAuth';
 
 const Login = ({
-  navigation, setAuthAction, setPatientDataAction, authResult, clearAuthAction, patientData,
+  authResult,
+  clearAuthAction,
+  patientData,
+  navigation,
+  setAuthAction,
+  setPatientDataAction,
 }) => {
   const [loading, setLoading] = useState(false);
 
@@ -81,106 +34,33 @@ const Login = ({
         additionalParameters: { patient: patientId },
       } = authResult;
       const fhirClient = initializeFhirClient(fhirIss, accessToken);
-      const queryPatient = async () => {
+
+      const queryPatient = async (patientIdProp, fhirClientProp) => {
         try {
-          const requestBundle = {
-            resourceType: 'Bundle',
-            type: 'batch',
-            entry: [
-              {
-                request: {
-                  method: 'GET',
-                  url: `Patient/${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `ExplanationOfBenefit?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Claim?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Condition?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Encounter?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Immunization?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `MedicationRequest?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `CarePlan?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `DiagnosticReport?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Procedure?patient=${patientId}`,
-                },
-              },
-              {
-                request: {
-                  method: 'GET',
-                  url: `Observation?patient=${patientId}`,
-                },
-              },
-            ],
-          };
-
-          // Provider found in "serviceProvider" within some records
-          // Vital Signs and Lab Results found in Observation.
-          // Web UI shows how to parse ^ in FhirTransform
-
-          const bundle = await fhirClient.batch({
-            body: requestBundle,
-          });
-
+          const bundle = await getBundle(patientIdProp, fhirClientProp);
           setPatientDataAction(bundle);
           navigation.navigate('PostAuth');
+          setLoading(false);
         } catch (error) {
           clearAuthAction();
+          setLoading(false);
           console.error('Error fetching patient data:', error);
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
-      queryPatient();
+
+      queryPatient(patientId, fhirClient);
     }
   }, [authResult, patientData, navigation]);
 
   const handleLogin = async () => {
     setLoading(true);
     const authResponse = await authAsync();
-    setAuthAction(authResponse);
-    setLoading(false);
+    if (authResponse) {
+      setAuthAction(authResponse);
+    } else {
+      setLoading(false);
+    }
   };
 
   return (

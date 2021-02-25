@@ -5,11 +5,11 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Text,
   Image,
   StatusBar,
   Button,
 } from 'react-native';
+import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
 
 import Login from '../components/Login/Login';
@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
               resizeMode="contain"
             />
             <View style={styles.descriptionContainer}>
-              <Text style={styles.descriptionText}>Discovery Mobile</Text>
+              <H2 style={styles.descriptionText}>Discovery Mobile</H2>
             </View>
           </View>
           <Login navigation={navigation} />
@@ -92,7 +92,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionText: {
-    fontSize: 24,
     fontWeight: '200',
   },
   vermonsterContainer: {
