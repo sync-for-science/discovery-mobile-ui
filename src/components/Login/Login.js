@@ -14,8 +14,10 @@ import { setPatientData } from '../../features/patient/patientDataSlice';
 import { setAuth, clearAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 import {
-  authAsync, fhirIss, initializeFhirClient, getBundle,
+  authAsync, buildFhirIssUrl, initializeFhirClient, getBundle,
 } from '../../resources/fhirAuth';
+
+import PatientPicker, { PATIENTS } from '../PatientPicker';
 
 const Login = ({
   authResult,
@@ -26,6 +28,8 @@ const Login = ({
   setPatientDataAction,
 }) => {
   const [loading, setLoading] = useState(false);
+  const [mockPatientId, setPatientId] = useState(Object.keys(PATIENTS)[0]);
+  const fhirIss = buildFhirIssUrl(mockPatientId);
 
   useEffect(() => {
     if (authResult && !patientData) {
@@ -44,7 +48,7 @@ const Login = ({
         } catch (error) {
           clearAuthAction();
           setLoading(false);
-          console.error('Error fetching patient data:', error);
+          console.error('Error fetching patient data:', error); // eslint-disable-line no-console
           Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
         }
       };
@@ -55,7 +59,7 @@ const Login = ({
 
   const handleLogin = async () => {
     setLoading(true);
-    const authResponse = await authAsync();
+    const authResponse = await authAsync(fhirIss);
     if (authResponse) {
       setAuthAction(authResponse);
     } else {
@@ -66,7 +70,15 @@ const Login = ({
   return (
     <View>
       <View style={styles.body}>
-        { loading ? <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> : (
+        { loading && <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> }
+        <View style={styles.patientPicker}>
+          <PatientPicker
+            loading={loading}
+            patientId={mockPatientId}
+            setPatientId={setPatientId}
+          />
+        </View>
+        { !loading && (
           <TouchableOpacity
             style={styles.login}
             onPress={handleLogin}
@@ -120,6 +132,9 @@ const styles = StyleSheet.create({
   },
   body: {
     alignItems: 'center',
+  },
+  patientPicker: {
+    height: 250,
   },
   login: {
     backgroundColor: Colors.primary,
