@@ -12,12 +12,7 @@ const issDataString = JSON.stringify({
   b: MOCK_USER_ID,
 });
 
-const encode = () => {
-  if (typeof global !== 'undefined' && global?.btoa) {
-    return global?.btoa(issDataString);
-  }
-  return Buffer.from(issDataString).toString('base64');
-};
+const encode = () => Buffer.from(issDataString).toString('base64');
 
 // smartapp auth
 export const fhirIss = `https://launch.smarthealthit.org/v/r4/sim/${encode(issDataString)}/fhir`;
