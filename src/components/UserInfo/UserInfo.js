@@ -30,8 +30,8 @@ const UserInfo = ({
         {name}
       </Text>
       <View style={styles.dataRange}>
-        <Text>Data range</Text>
-        <Text>
+        <Text style={styles.dataRangeLabel}>Data range</Text>
+        <Text style={styles.dataRangeValue}>
           {dataStart}
           {' '}
           -
@@ -62,5 +62,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
 const styles = StyleSheet.create({
   dataRange: {
     flexDirection: 'row',
+  },
+  dataRangeLabel: {
+    textTransform: 'uppercase',
+    color: 'grey',
+    padding: 10,
+  },
+  dataRangeValue: {
+    padding: 10,
   },
 });
