@@ -2,6 +2,35 @@ import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
+const injectSubtype = (resource) => {
+  let subType
+  switch (resource.resourceType) {
+    case "Condition":
+    case "DiagnosticReport":
+    case "Procedure":
+    case "Observation":
+      subType = resource.code?.text
+      break
+    case "Encounter":
+      subType = resource.type?.[0]?.text
+      break
+    case "Immunization":
+      subType = resource.vaccineCode?.text
+      break
+    case "MedicationRequest":
+      subType = resource.medicationCodeableConcept?.text
+      break
+    case "CarePlan":
+      subType = resource.category?.[0]?.text
+      break
+    default:
+      subType = null
+      break
+  }
+  
+  return {...resource, subType}
+}
+
 const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 export const processBundle = (acc, resource, depth) => {
@@ -29,7 +58,7 @@ export const processBundle = (acc, resource, depth) => {
     if (acc[id]) {
       console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
     }
-    acc[id] = resource;
+    acc[id] = injectSubtype(resource);
   }
 };
 
