@@ -17,7 +17,7 @@ import {
   authAsync, buildFhirIssUrl, initializeFhirClient, getBundle,
 } from '../../resources/fhirAuth';
 
-import PatientPicker, { PATIENTS } from '../PatientPicker';
+import PatientPicker, { DEFAULT_PATIENT_ID } from '../PatientPicker';
 
 const Login = ({
   authResult,
@@ -28,7 +28,7 @@ const Login = ({
   setPatientDataAction,
 }) => {
   const [loading, setLoading] = useState(false);
-  const [mockPatientId, setPatientId] = useState(Object.keys(PATIENTS)[0]);
+  const [mockPatientId, setPatientId] = useState(DEFAULT_PATIENT_ID);
   const fhirIss = buildFhirIssUrl(mockPatientId);
 
   useEffect(() => {

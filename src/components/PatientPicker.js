@@ -2,10 +2,12 @@ import React from 'react';
 import { Picker } from 'react-native';
 import { func, string, bool } from 'prop-types';
 
-export const PATIENTS = {
+const PATIENTS = {
   '86512c6f-caf6-41f4-9503-e4270b37b94f': 'Blake Eichmann',
   'd0190651-b9b0-4513-8f3b-d542319220d1': 'Mr. Chadwick Von',
 };
+
+export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
   <Picker
