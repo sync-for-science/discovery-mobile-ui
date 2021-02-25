@@ -1,5 +1,7 @@
 import React from 'react';
-import { Picker } from 'react-native';
+import {
+  Picker, StyleSheet, Text, View,
+} from 'react-native';
 import { func, string, bool } from 'prop-types';
 
 const PATIENTS = {
@@ -10,19 +12,22 @@ const PATIENTS = {
 export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
-  <Picker
-    selectedValue={patientId}
-    onValueChange={(itemValue) => setPatientId(itemValue)}
-    style={{ height: 60, width: 600 }}
-  >
-    {Object.entries(PATIENTS).map(([id, name]) => (
-      <Picker.Item
-        key={id}
-        value={id}
-        label={name}
-      />
-    ))}
-  </Picker>
+  <View>
+    <View style={styles.label}><Text>Select Example Patient:</Text></View>
+    <Picker
+      selectedValue={patientId}
+      onValueChange={(itemValue) => setPatientId(itemValue)}
+      style={styles.picker}
+    >
+      {Object.entries(PATIENTS).map(([id, name]) => (
+        <Picker.Item
+          key={id}
+          value={id}
+          label={name}
+        />
+      ))}
+    </Picker>
+  </View>
 );
 
 PatientPicker.propTypes = {
@@ -32,3 +37,14 @@ PatientPicker.propTypes = {
 };
 
 export default PatientPicker;
+
+const styles = StyleSheet.create({
+  label: {
+    alignItems: 'center',
+    marginTop: 0,
+  },
+  picker: {
+    height: 60,
+    width: 600,
+  },
+});

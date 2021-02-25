@@ -71,7 +71,7 @@ const Login = ({
     <View>
       <View style={styles.body}>
         { loading && <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> }
-        <View style={styles.patientPicker}>
+        <View style={styles.patientPickerContainer}>
           <PatientPicker
             loading={loading}
             patientId={mockPatientId}
@@ -133,7 +133,12 @@ const styles = StyleSheet.create({
   body: {
     alignItems: 'center',
   },
-  patientPicker: {
+  patientPickerContainer: {
+    marginTop: 8,
+    marginBottom: 8,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignContent: 'flex-start',
     height: 250,
   },
   login: {
