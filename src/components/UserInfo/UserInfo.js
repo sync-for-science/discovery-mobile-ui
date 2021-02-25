@@ -25,8 +25,8 @@ const UserInfo = ({
   const [dataStart, dataEnd] = getDataRange(resources);
 
   return (
-    <View style={styles.UserInfoContainer}>
-      <Text style={styles.welcome}>
+    <View>
+      <Text style={styles.userName}>
         {name}
       </Text>
       <View style={styles.dataRange}>
@@ -60,6 +60,11 @@ const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
 export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
 
 const styles = StyleSheet.create({
+  userName: {
+    fontSize: 24,
+    textAlign: 'center',
+    padding: 20,
+  },
   dataRange: {
     flexDirection: 'row',
   },
