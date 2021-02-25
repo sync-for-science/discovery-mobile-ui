@@ -2,56 +2,19 @@ import React from 'react';
 import { func, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, ScrollView, SafeAreaView, StatusBar, Button,
+  StyleSheet, View, ScrollView, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
-import {
-  getResources,
-  getPatient,
-  getPatientName,
-  getResourceType,
-  getResourceCount,
-  getResourceCode,
-} from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
 import UserInfo from '../components/UserInfo/UserInfo';
-import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
-import RESOURCE_TYPES from '../resources/resourceTypes';
-
-const ResourceTypeRow = ({ resource }) => {
-  const resourceCount = getResourceCount(resource);
-  if (!resourceCount > 0) {
-    return null;
-  }
-
-  let resourceType = getResourceType(resource);
-  if (resourceType === 'Observation') {
-    resourceType = getResourceCode(resource);
-  }
-
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text>{resourceCount}</Text>
-    </View>
-  );
-};
-
-ResourceTypeRow.propTypes = {
-  resource: shape({}).isRequired,
-};
+import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 
 const SummaryScreen = ({
-  navigation, patientData, clearAuthAction, clearPatientDataAction,
+  navigation, clearAuthAction, clearPatientDataAction,
 }) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
-
-  const patent = getPatient(resources);
-  const patientName = getPatientName(patent);
-
   const handleLogout = () => {
     clearAuthAction();
     clearPatientDataAction();
@@ -66,16 +29,7 @@ const SummaryScreen = ({
           <UserInfo />
         </View>
         <Demographics />
-        <View style={styles.resourceTypeContainer}>
-          {resources.map(
-            (resource) => (
-              <ResourceTypeRow
-                key={`resourceTypeRow-${resource.resource.id}`}
-                resource={resource}
-              />
-            ),
-          )}
-        </View>
+        <RecordsSummary />
         <Button title="Logout" onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
@@ -84,13 +38,11 @@ const SummaryScreen = ({
 
 SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
-  patientData: shape({}),
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
 };
 
 SummaryScreen.defaultProps = {
-  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
@@ -145,9 +97,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     borderWidth: 1,
     borderColor: 'lightgray',
-  },
-  resourceTypeContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
   },
 });

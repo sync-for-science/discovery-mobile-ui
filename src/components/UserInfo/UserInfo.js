@@ -2,7 +2,7 @@ import React from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View, SectionList,
+  StyleSheet, Text, View,
 } from 'react-native';
 
 import {
@@ -11,7 +11,6 @@ import {
   getPatientName,
   getDataRange,
 } from '../../resources/fhirReader';
-import Colors from '../../constants/Colors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 
