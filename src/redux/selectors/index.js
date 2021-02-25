@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import RESOURCE_TYPES from '../resources/resourceTypes';
+import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
 
