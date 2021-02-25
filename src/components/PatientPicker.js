@@ -1,8 +1,7 @@
 import React from 'react';
-import {
-  Picker, StyleSheet, Text, View,
-} from 'react-native';
 import { func, string, bool } from 'prop-types';
+import { StyleSheet, Text, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 const PATIENTS = {
   '86512c6f-caf6-41f4-9503-e4270b37b94f': 'Blake Eichmann',
