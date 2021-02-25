@@ -60,7 +60,7 @@ export async function authAsync() {
   try {
     result = await AppAuth.authAsync(config);
   } catch (error) {
-    console.error('AppAuth Error:', error);
+    console.error('AppAuth Error:', error); // eslint-disable-line no-console
     Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
   }
 
