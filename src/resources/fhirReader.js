@@ -2,7 +2,7 @@ import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
-const injectSubtype = (resource) => {
+const injectSubType = (resource) => {
   let subType
   switch (resource.resourceType) {
     case "Condition":
@@ -57,7 +57,7 @@ export const processBundle = (acc, resource, depth) => {
     if (acc[id]) {
       console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
     }
-    acc[id] = injectSubtype(resource);
+    acc[id] = injectSubType(resource);
   }
 };
 
