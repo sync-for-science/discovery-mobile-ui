@@ -13,7 +13,7 @@ jobs:
         with:
           path: |
             node_modules
-          key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+          key: ${{ runner.arch }}-${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
       - run: yarn install --frozen-lockfile
       - uses: expo/expo-github-action@v5
         with:
