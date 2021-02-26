@@ -17,12 +17,15 @@ import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resourceIds }) => (
-  <View style={styles.resourceTypeRow}>
-    <Text>{RESOURCE_TYPES[resourceType]}</Text>
-    <Text>{resourceIds.size}</Text>
-  </View>
-);
+const ResourceTypeRow = ({ resourceType, resourceIds }) => {
+  // console.log('resourceIds', resourceIds)
+  return (
+    <View style={styles.resourceTypeRow}>
+      <Text>{RESOURCE_TYPES[resourceType]}</Text>
+      <Text>{resourceIds.size}</Text>
+    </View>
+  )
+  };
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
