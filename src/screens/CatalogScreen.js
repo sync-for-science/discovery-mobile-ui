@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
+import { shape } from 'prop-types';
 import TimelineWidget from '../components/Timeline/TimelineWidget';
 import CategorySelector from '../components/CategorySelector/CategorySelector';
 import RecordCardsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
@@ -35,6 +36,10 @@ const CatalogScreen = ({ resourceIdsGroupedByType }) => {
       </FilterDrawer>
     </SafeAreaView>
   );
+};
+
+CatalogScreen.propTypes = {
+  resourceIdsGroupedByType: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({

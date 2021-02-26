@@ -1,31 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Accordion } from 'native-base';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const SubTypeAccordion = ({ subType, resourcesIds }) => {
-  const dataArray = [
-    { title: subType, content: resourcesIds },
-  ];
+  const dataArray = [{ title: subType, content: resourcesIds }];
 
   const renderHeader = (item, expanded) => (
-    <View style={{
-      flexDirection: 'row',
-      padding: 10,
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: Colors.primary,
-    }}
-    >
-      <View style={{ width: '80%' }}>
-        <Text style={{ color: 'white' }}>
-          {item.title}
-          {' '}
-          [
-          {item.content.length}
-          ]
+    <View style={styles.header}>
+      <View style={styles.headerTextContainer}>
+        <Text style={styles.headerText}>
+          {`${item.title} [${item.content.length}]`}
         </Text>
       </View>
       { expanded
@@ -50,6 +38,25 @@ const SubTypeAccordion = ({ subType, resourcesIds }) => {
   );
 };
 
+SubTypeAccordion.propTypes = {
+  subType: string.isRequired,
+  resourcesIds: arrayOf(string.isRequired).isRequired,
+};
+
 export default SubTypeAccordion;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    padding: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+  },
+  headerTextContainer: {
+    width: '80%',
+  },
+  headerText: {
+    color: 'white',
+  },
+});
