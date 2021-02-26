@@ -1,5 +1,5 @@
 import React from 'react';
-import { node } from 'prop-types';
+import { node, shape, string } from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -8,32 +8,36 @@ import {
 } from 'react-native';
 import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux';
 
+import { supportedResourcesSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
-
-  const CategoryFilter = ({subType}) => {
-    const label = RESOURCE_TYPES[subType]
+  const CategoryFilter = ({ subType }) => {
+    const label = RESOURCE_TYPES[subType];
     return (
       <View style={styles.categoryRow}>
         <Text>{label}</Text>
         <Switch />
       </View>
-    )
-  }
+    );
+  };
+
+  CategoryFilter.propTypes = {
+    subType: string.isRequired,
+  };
 
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
-      {Object.keys(resourceIdsGroupedByType).map(subType => {
-        if (resourceIdsGroupedByType[subType].filterable) {
+      {Object.keys(resourceIdsGroupedByType).map((subType) => {
+        if (resourceIdsGroupedByType[subType]) {
           return (
             <CategoryFilter key={subType} subType={subType} />
-          )
+          );
         }
-        return null
+        return null;
       })}
     </View>
   );
@@ -57,12 +61,13 @@ const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
 };
 
 FilterDrawer.propTypes = {
+  resourceIdsGroupedByType: shape({}).isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  resourceIdsGroupedByType: state.resourceIdsGroupedByType
-})
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+});
 
 export default connect(mapStateToProps, null)(FilterDrawer);
 
