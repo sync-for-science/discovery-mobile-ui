@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Accordion, Icon} from "native-base";
+import { Accordion } from "native-base";
+import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../../constants/Colors'
 
@@ -21,9 +22,10 @@ const SubTypeAccordion = ({subType, resourcesIds}) => {
         <View style={{width: '80%'}}>
           <Text style={{color: 'white'}}>{item.title} [{item.content.length}]</Text>
         </View>
-        {expanded
-          ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
-          : <Icon style={{ fontSize: 18 }} name="add-circle" />}
+        { expanded
+          ? <Ionicons name="caret-down" size={20} color='white' />
+          : <Ionicons name="caret-up" size={20} color='white' />
+        }
       </View>
     )
   }
