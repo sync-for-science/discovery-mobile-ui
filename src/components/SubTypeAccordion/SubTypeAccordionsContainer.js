@@ -26,12 +26,12 @@ const SubTypeAccordionsContainer = ({ selectedCategory, resourceIdsGroupedByType
 
 SubTypeAccordionsContainer.propTypes = {
   selectedCategory: string,
-  resourceIdsGroupedByType: shape({}).isRequired
-}
+  resourceIdsGroupedByType: shape({}).isRequired,
+};
 
 SubTypeAccordionsContainer.defaultProps = {
-  selectedCategory: null
-}
+  selectedCategory: null,
+};
 
 const mapStateToProps = (state) => ({
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
