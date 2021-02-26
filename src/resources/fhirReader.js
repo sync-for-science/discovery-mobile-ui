@@ -3,33 +3,33 @@ import {
 } from 'date-fns';
 
 const injectSubType = (resource) => {
-  let subType
+  let subType;
   switch (resource.resourceType) {
-    case "Condition":
-    case "DiagnosticReport":
-    case "Procedure":
-    case "Observation":
-      subType = resource.code?.text
-      break
-    case "Encounter":
-      subType = resource.type?.[0]?.text
-      break
-    case "Immunization":
-      subType = resource.vaccineCode?.text
-      break
-    case "MedicationRequest":
-      subType = resource.medicationCodeableConcept?.text
-      break
-    case "CarePlan":
-      subType = resource.category?.[0]?.text
-      break
+    case 'Condition':
+    case 'DiagnosticReport':
+    case 'Procedure':
+    case 'Observation':
+      subType = resource.code?.text;
+      break;
+    case 'Encounter':
+      subType = resource.type?.[0]?.text;
+      break;
+    case 'Immunization':
+      subType = resource.vaccineCode?.text;
+      break;
+    case 'MedicationRequest':
+      subType = resource.medicationCodeableConcept?.text;
+      break;
+    case 'CarePlan':
+      subType = resource.category?.[0]?.text;
+      break;
     default:
-      subType = null
-      break
+      subType = null;
+      break;
   }
-  
-  return {...resource, subType}
-}
+
+  return { ...resource, subType };
+};
 
 const MAX_DEPTH = 4;
 export const processBundle = (acc, resource, depth) => {

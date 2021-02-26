@@ -1,38 +1,45 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, ScrollView,
+  StyleSheet, Text, ScrollView,
 } from 'react-native';
+import { Button } from 'native-base';
+import { array, func, string } from 'prop-types';
 
-import { Button } from 'native-base'
+import Colors from '../../constants/Colors';
+import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-import Colors from '../../constants/Colors'
-import RESOURCE_TYPES from '../../resources/resourceTypes'
-
-const CatalogScreen = ({categories, selectedCategory, setSelectedCategory}) => {
-  const CategoryButton = ({category}) => {
-    const categoryDisplay = RESOURCE_TYPES[category]
-    const buttonStyle = category === selectedCategory ? styles.buttonSelected : styles.button
-    const buttonTextStyle = category === selectedCategory ? styles.buttonSelectedText : null
+const CatalogScreen = ({ categories, selectedCategory, setSelectedCategory }) => {
+  const CategoryButton = ({ category }) => {
+    const categoryDisplay = RESOURCE_TYPES[category];
+    const buttonStyle = category === selectedCategory ? styles.buttonSelected : styles.button;
+    const buttonTextStyle = category === selectedCategory ? styles.buttonSelectedText : null;
     return (
       <Button style={buttonStyle} onPress={() => setSelectedCategory(category)}>
         <Text style={buttonTextStyle}>{categoryDisplay}</Text>
       </Button>
-    )
-  }
+    );
+  };
 
-  const scrubbedCategories = categories.filter(category => category !== "Patient" && category !== "Observation")
-
-  return(
+  return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-      {scrubbedCategories.map(category => {
-        if (category !== "Patient") {
-          return <CategoryButton key={category} category={category} />
+      {categories.map((category) => {
+        if (category !== 'Patient') {
+          return <CategoryButton key={category} category={category} />;
         }
       })}
     </ScrollView>
-  )
+  );
+};
+
+CatalogScreen.propTypes = {
+  categories: array.isRequired,
+  selectedCategory: string,
+  setSelectedCategory: func.isRequired,
 }
 
+CatalogScreen.defaultProps = {
+  selectedCategory: null
+}
 
 export default CatalogScreen;
 
@@ -57,6 +64,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   buttonSelectedText: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 });

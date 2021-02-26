@@ -4,5 +4,5 @@ export default {
   primaryDark: '#143263',
   secondary: '#4a8fe4',
   lightgrey: '#c2c2c2',
-  mediumgrey: '#d9d9d9'
+  mediumgrey: '#d9d9d9',
 };

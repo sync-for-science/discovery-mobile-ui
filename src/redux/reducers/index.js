@@ -56,14 +56,13 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
             acc[resourceType] = {};
           }
           if (!acc[resourceType][subType]) {
-            acc[resourceType][subType] = new Set()
-          } 
+            acc[resourceType][subType] = new Set();
+          }
           if (acc[resourceType][subType].has(resource.id)) {
             console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
           } else {
             acc[resourceType][subType].add(resource.id);
           }
-
         }
         return acc;
       }, {});
