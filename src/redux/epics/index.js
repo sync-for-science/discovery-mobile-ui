@@ -16,6 +16,7 @@ export const actionTypes = {
   FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
   REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
+  ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG'
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -78,10 +79,21 @@ const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
+const addFilterOpenFlag = (action$) => action$.pipe(
+  ofType(actionTypes.GROUP_BY_TYPE),
+  map(() => {
+    return ({
+      type: actionTypes.ADD_FILTER_OPEN_FLAG,
+    });
+  }),
+)
+
+
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
+  addFilterOpenFlag,
 );
 
 export default createEpicMiddleware({
