@@ -24,9 +24,11 @@ const CatalogScreen = ({resourceIdsGroupedByType}) => {
             selectedCategory={selectedCategory} 
             setSelectedCategory={setSelectedCategory} 
           />
-          <RecordCardsContainer 
-            selectedCategory={selectedCategory} 
-          />
+          { selectedCategory && (
+            <RecordCardsContainer 
+              selectedCategory={selectedCategory} 
+            />
+          )}
         </ScrollView>
       </FilterDrawer>
     </SafeAreaView>

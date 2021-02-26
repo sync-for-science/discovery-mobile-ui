@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   buttonSelected: {
     paddingHorizontal: 10,
     marginHorizontal: 10,
-    borderWidth: 2,
     backgroundColor: Colors.primary,
     borderRadius: 30,
   },
