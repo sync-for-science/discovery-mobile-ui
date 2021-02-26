@@ -16,9 +16,11 @@ const SubTypeAccordion = ({subType, resourcesIds}) => {
         padding: 10,
         justifyContent: "space-between",
         alignItems: "center" ,
-        backgroundColor: Colors.primary 
+        backgroundColor: Colors.primary,
       }} >
-        <Text style={{color: 'white'}}>{item.title}</Text>
+        <View style={{width: '80%'}}>
+          <Text style={{color: 'white'}}>{item.title} [{item.content.length}]</Text>
+        </View>
         {expanded
           ? <Icon style={{ fontSize: 18 }} name="remove-circle" />
           : <Icon style={{ fontSize: 18 }} name="add-circle" />}
@@ -27,7 +29,7 @@ const SubTypeAccordion = ({subType, resourcesIds}) => {
   }
 
   const renderContent = (item) => {
-    return item.content.map(resourceId => <View><Text>{resourceId}</Text></View>)
+    return item.content.map(resourceId => <View style={{backgroundColor: 'white', padding: 10}}><Text>{resourceId}</Text></View>)
   }
 
   return (
@@ -36,7 +38,7 @@ const SubTypeAccordion = ({subType, resourcesIds}) => {
         dataArray={dataArray}
         icon="add" 
         iconStyle={{ color: "green" }}
-        expanded={[0]}
+        expanded={[]}
         renderHeader={renderHeader}
         renderContent={renderContent}
       />

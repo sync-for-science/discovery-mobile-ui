@@ -6,8 +6,7 @@ import {connect} from 'react-redux'
 
 import SubTypeAccordion from '../SubTypeAccordion/SubTypeAccordion';
 
-const RecordCardsContainer = ({resourceIdsGroupedByType}) => {
-  const selectedCategory = "Condition"
+const RecordCardsContainer = ({selectedCategory, resourceIdsGroupedByType}) => {
   const categorySubTypes = resourceIdsGroupedByType[selectedCategory]
   
   return(
