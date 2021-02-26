@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
 import CategorySelector from '../components/CategorySelector/CategorySelector';
-import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer';
+import RecordCardsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 
 const CatalogScreen = ({ resourceIdsGroupedByType }) => {
-  const categories = Object.keys(resourceIdsGroupedByType)
+  const categories = Object.keys(resourceIdsGroupedByType);
   const scrubbedCategories = categories.filter((category) => category !== 'Patient' && category !== 'Observation');
   const [selectedCategory, setSelectedCategory] = useState(scrubbedCategories[0]);
 
