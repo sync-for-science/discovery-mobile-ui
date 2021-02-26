@@ -17,15 +17,13 @@ import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resourceIds }) => {
-  // console.log('resourceIds', resourceIds)
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text>{resourceIds.size}</Text>
-    </View>
-  )
-  };
+const ResourceTypeRow = ({ resourceType, total }) => (
+  <View style={styles.resourceTypeRow}>
+    <Text>{RESOURCE_TYPES[resourceType]}</Text>
+    <Text>{total}</Text>
+  </View>
+)
+
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
@@ -56,11 +54,11 @@ const SummaryScreen = ({
         <Demographics />
         <View style={styles.resourceTypeContainer}>
           {Object.entries(resourceIdsGroupedByType).map(
-            ([resourceType, resourceIds]) => (
+            ([resourceType, value]) => (
               <ResourceTypeRow
                 key={resourceType}
                 resourceType={resourceType}
-                resourceIds={resourceIds}
+                total={value.total}
                 resources={resources}
               />
             ),
