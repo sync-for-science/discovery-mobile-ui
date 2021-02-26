@@ -23,7 +23,7 @@ const CatalogScreen = ({categories, selectedCategory, setSelectedCategory}) => {
   const scrubbedCategories = categories.filter(category => category !== "Patient" && category !== "Observation")
 
   return(
-    <ScrollView style={styles.root} horizontal>
+    <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
       {scrubbedCategories.map(category => {
         if (category !== "Patient") {
           return <CategoryButton key={category} category={category} />
@@ -38,7 +38,7 @@ export default CatalogScreen;
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: Colors.primaryLight,
+    backgroundColor: Colors.mediumgrey,
     borderColor: 'gray',
     marginTop: 20,
     flexDirection: 'row',
