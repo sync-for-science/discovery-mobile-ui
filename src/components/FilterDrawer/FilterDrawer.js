@@ -49,7 +49,7 @@ const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
         keyboardDismissMode="on-drag"
         drawerPosition={DrawerLayout.positions.Left}
         drawerType="front"
-        drawerBackgroundColor="#ddd"
+        drawerBackgroundColor="white"
         renderNavigationView={renderDrawer}
       >
         <View style={styles.childrenContainer}>
