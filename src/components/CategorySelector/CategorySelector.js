@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, ScrollView,
 } from 'react-native';
 import { Button } from 'native-base';
-import { array, func, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 
 import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
@@ -20,26 +20,31 @@ const CatalogScreen = ({ categories, selectedCategory, setSelectedCategory }) =>
     );
   };
 
+  CategoryButton.propTypes = {
+    category: string.isRequired,
+  };
+
   return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
       {categories.map((category) => {
         if (category !== 'Patient') {
           return <CategoryButton key={category} category={category} />;
         }
+        return null;
       })}
     </ScrollView>
   );
 };
 
 CatalogScreen.propTypes = {
-  categories: array.isRequired,
+  categories: arrayOf(string.isRequired).isRequired,
   selectedCategory: string,
   setSelectedCategory: func.isRequired,
-}
+};
 
 CatalogScreen.defaultProps = {
-  selectedCategory: null
-}
+  selectedCategory: null,
+};
 
 export default CatalogScreen;
 

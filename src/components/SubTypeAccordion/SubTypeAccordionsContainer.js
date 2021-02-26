@@ -3,10 +3,11 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { string, shape } from 'prop-types';
 
-import SubTypeAccordion from '../SubTypeAccordion/SubTypeAccordion';
+import SubTypeAccordion from './SubTypeAccordion';
 
-const RecordCardsContainer = ({ selectedCategory, resourceIdsGroupedByType }) => {
+const SubTypeAccordionsContainer = ({ selectedCategory, resourceIdsGroupedByType }) => {
   const categorySubTypes = resourceIdsGroupedByType[selectedCategory];
 
   return (
@@ -23,11 +24,20 @@ const RecordCardsContainer = ({ selectedCategory, resourceIdsGroupedByType }) =>
   );
 };
 
+SubTypeAccordionsContainer.propTypes = {
+  selectedCategory: string,
+  resourceIdsGroupedByType: shape({}).isRequired
+}
+
+SubTypeAccordionsContainer.defaultProps = {
+  selectedCategory: null
+}
+
 const mapStateToProps = (state) => ({
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
 });
 
-export default connect(mapStateToProps, null)(RecordCardsContainer);
+export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);
 
 const styles = StyleSheet.create({
   root: {
