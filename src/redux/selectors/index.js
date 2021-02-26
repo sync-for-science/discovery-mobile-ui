@@ -12,7 +12,7 @@ export const patientSelector = createSelector(
     if (!patient) {
       return null;
     }
-    const patientId = Array.from(patient)[0];
+    const patientId = Array.from(patient.resourceIds)[0];
     return resources[patientId];
   },
 );

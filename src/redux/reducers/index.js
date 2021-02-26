@@ -71,8 +71,10 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     case actionTypes.ADD_FILTER_OPEN_FLAG: {
       return Object.entries(state).reduce((acc, [resourceType, value]) => {
         acc[resourceType] = { filterOpen: true };
+        
+        // if resourceType value is a Set, example: Patient
         if (Array.from(value).length > 0) {
-          acc[resourceType].resourceId = value;
+          acc[resourceType]['resourceIds'] = value;
         } else {
           Object.entries(value).forEach(
             ([subType, resourceIds]) => { acc[resourceType][subType] = resourceIds; },
