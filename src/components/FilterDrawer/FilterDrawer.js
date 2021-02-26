@@ -12,14 +12,18 @@ import { connect } from 'react-redux';
 
 import { supportedResourcesSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
+import Colors from '../../constants/Colors'
 
 const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
-  const CategoryFilter = ({ subType }) => {
+  const CategoryFilter = ({ subType, filterOpen }) => {
     const label = RESOURCE_TYPES[subType];
     return (
       <View style={styles.categoryRow}>
         <Text>{label}</Text>
-        <Switch />
+        <Switch
+          trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
+          value={filterOpen}
+        />
       </View>
     );
   };
@@ -31,10 +35,10 @@ const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
-      {Object.keys(resourceIdsGroupedByType).map((subType) => {
+      {Object.entries(resourceIdsGroupedByType).map(([subType, value]) => {
         if (resourceIdsGroupedByType[subType]) {
           return (
-            <CategoryFilter key={subType} subType={subType} />
+            <CategoryFilter key={subType} subType={subType} filterOpen={value.filterOpen}/>
           );
         }
         return null;

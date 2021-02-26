@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape, instanceOf, string,
+  func, shape, string, number,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -24,10 +24,9 @@ const ResourceTypeRow = ({ resourceType, total }) => (
   </View>
 )
 
-
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  resourceIds: instanceOf(Set).isRequired,
+  total: number.isRequired,
 };
 
 const SummaryScreen = ({
