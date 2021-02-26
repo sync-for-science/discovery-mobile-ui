@@ -65,23 +65,23 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
             acc[resourceType][subType].add(resource.id);
           }
         }
+        if (!acc[resourceType]['total']) {
+          acc[resourceType]['total'] = 0
+        }
+        acc[resourceType]['total'] += 1
         return acc;
       }, {});
     }
     case actionTypes.ADD_FILTER_OPEN_FLAG: {
-      return Object.entries(state).reduce((acc, [resourceType, value]) => {
-        acc[resourceType] = { filterOpen: true };
-        
-        // if resourceType value is a Set, example: Patient
+      let newState = {...state}
+      Object.entries(newState).forEach(([resourceType, value]) => {
         if (Array.from(value).length > 0) {
-          acc[resourceType]['resourceIds'] = value;
+          newState[resourceType] = { resourceIds: value, filterOpen: true }
         } else {
-          Object.entries(value).forEach(
-            ([subType, resourceIds]) => { acc[resourceType][subType] = resourceIds; },
-          );
+          newState[resourceType] = {...newState[resourceType], filterOpen: true}
         }
-        return acc;
-      }, {});
+      })
+      return newState
     }
     default:
       return state;
