@@ -2,6 +2,7 @@ import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
+const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 export const processBundle = (acc, resource, depth) => {
   if (depth > MAX_DEPTH) {
@@ -15,7 +16,7 @@ export const processBundle = (acc, resource, depth) => {
     }
     resource.entry.forEach((entry) => {
       const status = entry?.response?.status;
-      if (status !== '200 OK') {
+      if (!STATUSES_OK.includes(status)) {
         console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
       }
       processBundle(acc, entry.resource, depth + 1);
