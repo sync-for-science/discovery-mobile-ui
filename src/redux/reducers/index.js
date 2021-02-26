@@ -43,19 +43,20 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
             }
           }
         }
-        if (!subType) {
-          if (!acc[resourceType]) {
-            acc[resourceType] = new Set();
+        if (!acc[resourceType]) {
+          acc[resourceType] = {};
+        }
+
+        if(!subType) {
+          if (!acc[resourceType]['resourceIds']) {
+            acc[resourceType]['resourceIds'] = new Set();
           }
-          if (acc[resourceType].has(resource.id)) {
+          if (acc[resourceType]['resourceIds'].has(resource.id)) {
             console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
           } else {
-            acc[resourceType].add(resource.id);
+            acc[resourceType]['resourceIds'].add(resource.id);
           }
         } else {
-          if (!acc[resourceType]) {
-            acc[resourceType] = {};
-          }
           if (!acc[resourceType][subType]) {
             acc[resourceType][subType] = new Set();
           }
@@ -74,12 +75,8 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     }
     case actionTypes.ADD_FILTER_OPEN_FLAG: {
       let newState = {...state}
-      Object.entries(newState).forEach(([resourceType, value]) => {
-        if (Array.from(value).length > 0) {
-          newState[resourceType] = { resourceIds: value, filterOpen: true }
-        } else {
-          newState[resourceType] = {...newState[resourceType], filterOpen: true}
-        }
+      Object.entries(newState).forEach(([resourceType, _value]) => {
+        newState[resourceType] = {...newState[resourceType], filterOpen: true}
       })
       return newState
     }
