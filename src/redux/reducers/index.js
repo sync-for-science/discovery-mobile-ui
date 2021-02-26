@@ -69,10 +69,17 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
       }, {});
     }
     case actionTypes.ADD_FILTER_OPEN_FLAG: {
-      return Object.entries(state).reduce((acc, [resourceType, resourceIds]) => {
-        acc[resourceType] = {filterOpen: true, resourceIds}
-        return acc
-      }, {})
+      return Object.entries(state).reduce((acc, [resourceType, value]) => {
+        acc[resourceType] = { filterOpen: true };
+        if (Array.from(value).length > 0) {
+          acc[resourceType].resourceId = value;
+        } else {
+          Object.entries(value).forEach(
+            ([subType, resourceIds]) => { acc[resourceType][subType] = resourceIds; },
+          );
+        }
+        return acc;
+      }, {});
     }
     default:
       return state;
