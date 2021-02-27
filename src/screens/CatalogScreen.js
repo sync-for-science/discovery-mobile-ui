@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { shape } from 'prop-types';
 import TimelineWidget from '../components/Timeline/TimelineWidget';
 import CategorySelector from '../components/CategorySelector/CategorySelector';
-import RecordCardsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
+import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
@@ -22,11 +22,7 @@ const CatalogScreen = ({ resourceTypeFilters }) => {
         <ScrollView>
           <TimelineWidget />
           <CategorySelector />
-          { selectedCategory && (
-            <RecordCardsContainer
-              selectedCategory={selectedCategory}
-            />
-          )}
+          <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
     </SafeAreaView>
