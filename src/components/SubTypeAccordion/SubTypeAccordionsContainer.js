@@ -6,15 +6,16 @@ import { connect } from 'react-redux';
 import { string, shape } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
+import { selectedResourceTypeSelector } from '../../redux/selectors';
 
-const SubTypeAccordionsContainer = ({ selectedCategory, resourceIdsGroupedByType }) => {
-  const categorySubTypes = resourceIdsGroupedByType[selectedCategory];
-
+const SubTypeAccordionsContainer = ({ selectedResourceType, resourceIdsGroupedByType }) => {
+  const resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
+  
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        {Object.keys(categorySubTypes).map((subType) => {
-          const resourcesIds = Array.from(categorySubTypes[subType]);
+        {Object.keys(resourceSubTypes).map((subType) => {
+          const resourcesIds = Array.from(resourceSubTypes[subType]);
           return (
             <SubTypeAccordion subType={subType} resourcesIds={resourcesIds} />
           );
@@ -34,6 +35,7 @@ SubTypeAccordionsContainer.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  selectedResourceType: selectedResourceTypeSelector(state),
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
 });
 

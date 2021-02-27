@@ -44,3 +44,12 @@ export const supportedResourceTypeFiltersSelector = createSelector(
       [resourceType]: resourceIds,
     }), {}),
 );
+
+export const selectedResourceTypeSelector = createSelector(
+  [resourceTypeFiltersSelector],
+  (resourceTypeFilters) => {
+    const selectedResourceType = Object.entries(resourceTypeFilters)
+    .filter(([_resourceType, value]) => value.selected === true)[0][0]
+    return selectedResourceType
+  }
+)
