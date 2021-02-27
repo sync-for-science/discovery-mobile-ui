@@ -86,7 +86,8 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
       action.payload.forEach(resourceType => {resourceTypeFilters[resourceType] = true})
       return resourceTypeFilters
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS:
-      return
+      const currentSetting = state[action.payload]
+      return {...state, [action.payload]: !currentSetting}
     default:
       return state
   }

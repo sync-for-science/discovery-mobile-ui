@@ -45,6 +45,11 @@ const resourceTypeFilter = (action$, state$) => action$.pipe(
   }),
 );
 
+export const toggleResourceTypeFilter = (resourceType) => ({
+  type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
+  payload: resourceType
+})
+
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,

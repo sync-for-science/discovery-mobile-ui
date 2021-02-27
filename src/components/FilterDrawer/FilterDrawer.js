@@ -13,24 +13,24 @@ import { connect } from 'react-redux';
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors'
-import { actionTypes } from '../../redux/epics';
+import { toggleResourceTypeFilter } from '../../redux/epics';
 
-const FilterDrawer = ({ resourceTypeFilters, toggleCategoryFilter, children }) => {
-  const CategoryFilter = ({ resourceType, filterOpen }) => {
+const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
+  const ResourceTypeFilter = ({ resourceType, filterOpen }) => {
     const label = RESOURCE_TYPES[resourceType];
     return (
       <View style={styles.categoryRow}>
         <Text>{label}</Text>
         <Switch
           trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
-          onValueChange={() => toggleCategoryFilter(resourceType)}
+          onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
           value={filterOpen}
         />
       </View>
     );
   };
 
-  CategoryFilter.propTypes = {
+  ResourceTypeFilter.propTypes = {
     resourceType: string.isRequired,
   };
 
@@ -38,7 +38,7 @@ const FilterDrawer = ({ resourceTypeFilters, toggleCategoryFilter, children }) =
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
       {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => (
-        <CategoryFilter key={resourceType} resourceType={resourceType} filterOpen={filterOpen}/>
+        <ResourceTypeFilter key={resourceType} resourceType={resourceType} filterOpen={filterOpen}/>
       ))}
     </View>
   );
@@ -71,10 +71,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  toggleCategoryFilter: (resourceType) => ({
-    type: actionTypes.TOGGLE_CATEGORY_FILTER,
-    payload: resourceType
-  })
+  toggleResourceTypeFilterAction: toggleResourceTypeFilter
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
