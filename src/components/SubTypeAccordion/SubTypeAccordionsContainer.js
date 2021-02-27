@@ -18,6 +18,9 @@ const SubTypeAccordionsContainer = ({ selectedResourceType, resourceIdsGroupedBy
     <View style={styles.root}>
       <View style={styles.container}>
         {Object.keys(resourceSubTypes).map((subType) => {
+          if (subType === 'total') {
+            return null
+          }
           const resourcesIds = Array.from(resourceSubTypes[subType]);
           return (
             <SubTypeAccordion subType={subType} resourcesIds={resourcesIds} />

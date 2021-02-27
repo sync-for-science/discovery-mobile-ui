@@ -13,7 +13,7 @@ import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
-const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
+const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
   useEffect(() => {
     selectResourceTypeAction(Object.keys(resourceTypeFilters)[0]);
   }, []);
@@ -43,7 +43,7 @@ const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => 
   );
 };
 
-CategorySelector.propTypes = {
+ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
   selectResourceTypeAction: func.isRequired,
 };
@@ -56,7 +56,7 @@ const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategorySelector);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
 
 const styles = StyleSheet.create({
   root: {

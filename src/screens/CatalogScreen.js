@@ -5,7 +5,7 @@ import {
 import { connect } from 'react-redux';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
-import CategorySelector from '../components/CategorySelector/CategorySelector';
+import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
@@ -17,7 +17,7 @@ const CatalogScreen = () => (
     <FilterDrawer>
       <ScrollView>
         <TimelineWidget />
-        <CategorySelector />
+        <ResourceTypeSelector />
         <SubTypeAccordionsContainer />
       </ScrollView>
     </FilterDrawer>
