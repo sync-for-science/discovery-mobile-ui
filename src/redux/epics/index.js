@@ -18,7 +18,7 @@ export const actionTypes = {
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
   RESOURCE_TYPE_FILTERS: 'RESOURCE_TYPE_FILTERS',
-  TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS'
+  TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -84,18 +84,18 @@ const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
 const resourceTypeFilter = (action$, state$) => action$.pipe(
   ofType(actionTypes.GROUP_BY_TYPE),
   map(() => {
-    const resourceTypes = Object.keys(state$.value.resourceIdsGroupedByType)
+    const resourceTypes = Object.keys(state$.value.resourceIdsGroupedByType);
     return ({
       type: actionTypes.RESOURCE_TYPE_FILTERS,
-      payload: resourceTypes
-    })
+      payload: resourceTypes,
+    });
   }),
 );
 
 export const toggleResourceTypeFilter = (resourceType) => ({
   type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
-  payload: resourceType
-})
+  payload: resourceType,
+});
 
 export const rootEpic = combineEpics(
   flattenResources,

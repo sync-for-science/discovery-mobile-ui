@@ -5,7 +5,7 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters
+const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -43,4 +43,4 @@ export const supportedResourceTypeFiltersSelector = createSelector(
       ...acc,
       [resourceType]: resourceIds,
     }), {}),
-)
+);

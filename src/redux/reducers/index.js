@@ -47,14 +47,14 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
           acc[resourceType] = {};
         }
 
-        if(!subType) {
-          if (!acc[resourceType]['resourceIds']) {
-            acc[resourceType]['resourceIds'] = new Set();
+        if (!subType) {
+          if (!acc[resourceType].resourceIds) {
+            acc[resourceType].resourceIds = new Set();
           }
-          if (acc[resourceType]['resourceIds'].has(resource.id)) {
+          if (acc[resourceType].resourceIds.has(resource.id)) {
             console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
           } else {
-            acc[resourceType]['resourceIds'].add(resource.id);
+            acc[resourceType].resourceIds.add(resource.id);
           }
         } else {
           if (!acc[resourceType][subType]) {
@@ -66,10 +66,10 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
             acc[resourceType][subType].add(resource.id);
           }
         }
-        if (!acc[resourceType]['total']) {
-          acc[resourceType]['total'] = 0
+        if (!acc[resourceType].total) {
+          acc[resourceType].total = 0;
         }
-        acc[resourceType]['total'] += 1
+        acc[resourceType].total += 1;
         return acc;
       }, {});
     }
@@ -78,17 +78,19 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-const preloadResourceTypeFilters = {}
+const preloadResourceTypeFilters = {};
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
-    case actionTypes.RESOURCE_TYPE_FILTERS:
-      let resourceTypeFilters = {}
-      action.payload.forEach(resourceType => {resourceTypeFilters[resourceType] = true})
-      return resourceTypeFilters
-    case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS:
-      const currentSetting = state[action.payload]
-      return {...state, [action.payload]: !currentSetting}
+    case actionTypes.RESOURCE_TYPE_FILTERS: {
+      const resourceTypeFilters = {};
+      action.payload.forEach((resourceType) => { resourceTypeFilters[resourceType] = true; });
+      return resourceTypeFilters;
+    }
+    case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
+      const currentSetting = state[action.payload];
+      return { ...state, [action.payload]: !currentSetting };
+    }
     default:
-      return state
+      return state;
   }
-}
+};
