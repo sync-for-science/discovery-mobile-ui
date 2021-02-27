@@ -73,14 +73,21 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
         return acc;
       }, {});
     }
-    case actionTypes.ADD_FILTER_OPEN_FLAG: {
-      let newState = {...state}
-      Object.entries(newState).forEach(([resourceType, _value]) => {
-        newState[resourceType] = {...newState[resourceType], filterOpen: true}
-      })
-      return newState
-    }
     default:
       return state;
   }
 };
+
+const preloadCategoryFilters = {}
+export const categoryFiltersReducer = (state = preloadCategoryFilters, action) => {
+  switch (action.type) {
+    case actionTypes.CATEGORY_FILTERS:
+      let categoryFilters = {}
+      action.payload.forEach(resourceType => {categoryFilters[resourceType] = true})
+      return categoryFilters
+    case actionTypes.TOGGLE_CATEGORY_FILTERS:
+      return
+    default:
+      return state
+  }
+}

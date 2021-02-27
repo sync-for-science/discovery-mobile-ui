@@ -11,6 +11,7 @@ export const actionTypes = {
   FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
+  CATEGORY_FILTERS: 'CATEGORY_FILTERS'
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -32,17 +33,21 @@ const groupByType = (action$, state$) => action$.pipe(
   }),
 );
 
-const addFilterOpenFlag = (action$) => action$.pipe(
+const categoryFilters = (action$, state$) => action$.pipe(
   ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => ({
-    type: actionTypes.ADD_FILTER_OPEN_FLAG,
-  })),
+  map(() => {
+    const resourceTypes = Object.keys(state$.value.resourceIdsGroupedByType)
+    return ({
+      type: actionTypes.CATEGORY_FILTERS,
+      payload: resourceTypes
+    })
+  }),
 );
 
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
-  addFilterOpenFlag,
+  categoryFilters,
 );
 
 export default createEpicMiddleware({
