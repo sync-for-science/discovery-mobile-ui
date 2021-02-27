@@ -9,14 +9,15 @@ import { connect } from 'react-redux'
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { selectResourceType } from '../../redux/epics'
 
-const CatalogScreen = ({ resourceTypeFilters }) => {
+const CatalogScreen = ({ resourceTypeFilters, selectResourceTypeAction }) => {
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];
     const buttonStyle = selected ? styles.buttonSelected : styles.button;
     const buttonTextStyle = selected ? styles.buttonSelectedText : null;
     return (
-      <Button style={buttonStyle} onPress={() => setSelectedCategory(category)}>
+      <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
         <Text style={buttonTextStyle}>{categoryDisplay}</Text>
       </Button>
     );
@@ -50,7 +51,11 @@ const mapStateToProps = (state) => ({
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state)
 })
 
-export default connect(mapStateToProps, null)(CatalogScreen);
+const mapDispatchToProps = {
+  selectResourceTypeAction: selectResourceType
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogScreen);
 
 const styles = StyleSheet.create({
   root: {
