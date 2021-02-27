@@ -11,7 +11,7 @@ import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics'
 
-const CatalogScreen = ({ resourceTypeFilters, selectResourceTypeAction }) => {
+const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
   useEffect(() => {
     selectResourceTypeAction(Object.keys(resourceTypeFilters)[0])
   }, [])
@@ -41,13 +41,13 @@ const CatalogScreen = ({ resourceTypeFilters, selectResourceTypeAction }) => {
   );
 };
 
-CatalogScreen.propTypes = {
+CategorySelector.propTypes = {
   categories: arrayOf(string.isRequired).isRequired,
   selectedCategory: string,
   setSelectedCategory: func.isRequired,
 };
 
-CatalogScreen.defaultProps = {
+CategorySelector.defaultProps = {
   selectedCategory: null,
 };
 
@@ -59,7 +59,7 @@ const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CatalogScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CategorySelector);
 
 const styles = StyleSheet.create({
   root: {
