@@ -1,7 +1,6 @@
 import React from 'react';
 import {
-  bool,
-  func, node, shape, string,
+  bool, func, node, shape, string,
 } from 'prop-types';
 import {
   StyleSheet,
@@ -40,7 +39,7 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
 
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
-      <Text style={styles.drawerTitle}>Category Filters</Text>
+      <Text style={styles.drawerTitle}>Resource Type Filters</Text>
       {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
           key={resourceType}
