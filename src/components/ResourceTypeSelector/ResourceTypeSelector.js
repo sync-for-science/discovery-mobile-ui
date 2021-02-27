@@ -36,9 +36,18 @@ const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction })
 
   return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
-        <CategoryButton key={resourceType} resourceType={resourceType} selected={value.selected} />
-      ))}
+      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => {
+        if (value.filterOpen) {
+          return (
+            <CategoryButton
+              key={resourceType}
+              resourceType={resourceType}
+              selected={value.selected}
+            />
+          );
+        }
+        return null;
+      })}
     </ScrollView>
   );
 };

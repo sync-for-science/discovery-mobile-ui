@@ -93,6 +93,9 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const updatedSetting = { ...state[action.payload] };
       updatedSetting.filterOpen = !updatedSetting.filterOpen;
+      if (updatedSetting.selected) {
+        updatedSetting.selected = false;
+      }
       return { ...state, [action.payload]: updatedSetting };
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {

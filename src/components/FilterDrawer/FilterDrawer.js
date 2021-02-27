@@ -100,8 +100,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   childrenContainer: {
-    flex: 1,
-    alignItems: 'center',
+    width: '100%',
   },
   categoryRow: {
     flexDirection: 'row',
