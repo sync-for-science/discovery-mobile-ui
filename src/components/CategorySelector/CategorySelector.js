@@ -1,20 +1,22 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet, Text, ScrollView,
 } from 'react-native';
 import { Button } from 'native-base';
-import { arrayOf, bool, func, string } from 'prop-types';
-import { connect } from 'react-redux'
+import {
+  bool, func, shape, string,
+} from 'prop-types';
+import { connect } from 'react-redux';
 
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
-import { selectResourceType } from '../../redux/epics'
+import { selectResourceType } from '../../redux/epics';
 
 const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
   useEffect(() => {
-    selectResourceTypeAction(Object.keys(resourceTypeFilters)[0])
-  }, [])
+    selectResourceTypeAction(Object.keys(resourceTypeFilters)[0]);
+  }, []);
 
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];
@@ -29,7 +31,7 @@ const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => 
 
   CategoryButton.propTypes = {
     resourceType: string.isRequired,
-    selected: bool.isRequired
+    selected: bool.isRequired,
   };
 
   return (
@@ -42,22 +44,17 @@ const CategorySelector = ({ resourceTypeFilters, selectResourceTypeAction }) => 
 };
 
 CategorySelector.propTypes = {
-  categories: arrayOf(string.isRequired).isRequired,
-  selectedCategory: string,
-  setSelectedCategory: func.isRequired,
-};
-
-CategorySelector.defaultProps = {
-  selectedCategory: null,
+  resourceTypeFilters: shape({}).isRequired,
+  selectResourceTypeAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state)
-})
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+});
 
 const mapDispatchToProps = {
-  selectResourceTypeAction: selectResourceType
-}
+  selectResourceTypeAction: selectResourceType,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CategorySelector);
 

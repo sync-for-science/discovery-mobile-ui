@@ -10,10 +10,10 @@ import { selectedResourceTypeSelector } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({ selectedResourceType, resourceIdsGroupedByType }) => {
   if (!selectedResourceType) {
-    return null
+    return null;
   }
   const resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
-  
+
   return (
     <View style={styles.root}>
       <View style={styles.container}>
@@ -29,12 +29,12 @@ const SubTypeAccordionsContainer = ({ selectedResourceType, resourceIdsGroupedBy
 };
 
 SubTypeAccordionsContainer.propTypes = {
-  selectedCategory: string,
+  selectedResourceType: string,
   resourceIdsGroupedByType: shape({}).isRequired,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
-  selectedCategory: null,
+  selectedResourceType: null,
 };
 
 const mapStateToProps = (state) => ({

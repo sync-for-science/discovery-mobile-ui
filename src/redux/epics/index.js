@@ -19,7 +19,7 @@ export const actionTypes = {
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
   RESOURCE_TYPE_FILTERS: 'RESOURCE_TYPE_FILTERS',
   TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
-  SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE'
+  SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -100,8 +100,8 @@ export const toggleResourceTypeFilter = (resourceType) => ({
 
 export const selectResourceType = (resourceType) => ({
   type: actionTypes.SELECT_RESOURCE_TYPE,
-  payload: resourceType
-})
+  payload: resourceType,
+});
 
 export const rootEpic = combineEpics(
   flattenResources,
