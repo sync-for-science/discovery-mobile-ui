@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   StyleSheet, Text, ScrollView,
 } from 'react-native';
@@ -12,6 +12,10 @@ import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics'
 
 const CatalogScreen = ({ resourceTypeFilters, selectResourceTypeAction }) => {
+  useEffect(() => {
+    selectResourceTypeAction(Object.keys(resourceTypeFilters)[0])
+  }, [])
+
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];
     const buttonStyle = selected ? styles.buttonSelected : styles.button;
