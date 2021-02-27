@@ -22,7 +22,7 @@ const ResourceTypeRow = ({ resourceType, total }) => (
     <Text>{RESOURCE_TYPES[resourceType]}</Text>
     <Text>{total}</Text>
   </View>
-)
+);
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,

@@ -1,5 +1,8 @@
 import React from 'react';
-import { node, shape, string } from 'prop-types';
+import {
+  bool,
+  func, node, shape, string,
+} from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -12,7 +15,7 @@ import { connect } from 'react-redux';
 
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
 
 const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
@@ -32,13 +35,18 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
 
   ResourceTypeFilter.propTypes = {
     resourceType: string.isRequired,
+    filterOpen: bool.isRequired,
   };
 
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
       {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => (
-        <ResourceTypeFilter key={resourceType} resourceType={resourceType} filterOpen={filterOpen}/>
+        <ResourceTypeFilter
+          key={resourceType}
+          resourceType={resourceType}
+          filterOpen={filterOpen}
+        />
       ))}
     </View>
   );
@@ -63,6 +71,7 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
 
 FilterDrawer.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
@@ -71,8 +80,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  toggleResourceTypeFilterAction: toggleResourceTypeFilter
-}
+  toggleResourceTypeFilterAction: toggleResourceTypeFilter,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
 
