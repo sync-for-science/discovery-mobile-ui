@@ -84,9 +84,8 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
     case actionTypes.RESOURCE_TYPE_FILTERS: {
       const resourceTypeFilters = {};
       action.payload.forEach(
-        (resourceType, i) => { 
-          const selectedValue = i === 0 ? true : false
-          resourceTypeFilters[resourceType] = { filterOpen: true, selected: selectedValue}; 
+        (resourceType) => { 
+          resourceTypeFilters[resourceType] = { filterOpen: true, selected: false}; 
         }
       );
       return resourceTypeFilters;

@@ -3,16 +3,18 @@ import {
   StyleSheet, Text, ScrollView,
 } from 'react-native';
 import { Button } from 'native-base';
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, bool, func, string } from 'prop-types';
+import { connect } from 'react-redux'
 
+import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-const CatalogScreen = ({ categories, selectedCategory, setSelectedCategory }) => {
-  const CategoryButton = ({ category }) => {
-    const categoryDisplay = RESOURCE_TYPES[category];
-    const buttonStyle = category === selectedCategory ? styles.buttonSelected : styles.button;
-    const buttonTextStyle = category === selectedCategory ? styles.buttonSelectedText : null;
+const CatalogScreen = ({ resourceTypeFilters }) => {
+  const CategoryButton = ({ resourceType, selected }) => {
+    const categoryDisplay = RESOURCE_TYPES[resourceType];
+    const buttonStyle = selected ? styles.buttonSelected : styles.button;
+    const buttonTextStyle = selected ? styles.buttonSelectedText : null;
     return (
       <Button style={buttonStyle} onPress={() => setSelectedCategory(category)}>
         <Text style={buttonTextStyle}>{categoryDisplay}</Text>
@@ -21,17 +23,15 @@ const CatalogScreen = ({ categories, selectedCategory, setSelectedCategory }) =>
   };
 
   CategoryButton.propTypes = {
-    category: string.isRequired,
+    resourceType: string.isRequired,
+    selected: bool.isRequired
   };
 
   return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-      {categories.map((category) => {
-        if (category !== 'Patient') {
-          return <CategoryButton key={category} category={category} />;
-        }
-        return null;
-      })}
+      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
+        <CategoryButton key={resourceType} resourceType={resourceType} selected={value.selected} />
+      ))}
     </ScrollView>
   );
 };
@@ -46,7 +46,11 @@ CatalogScreen.defaultProps = {
   selectedCategory: null,
 };
 
-export default CatalogScreen;
+const mapStateToProps = (state) => ({
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state)
+})
+
+export default connect(mapStateToProps, null)(CatalogScreen);
 
 const styles = StyleSheet.create({
   root: {

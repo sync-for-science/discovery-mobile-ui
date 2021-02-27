@@ -21,10 +21,7 @@ const CatalogScreen = ({ resourceTypeFilters }) => {
       <FilterDrawer>
         <ScrollView>
           <TimelineWidget />
-          {/* <CategorySelector
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          /> */}
+          <CategorySelector />
           { selectedCategory && (
             <RecordCardsContainer
               selectedCategory={selectedCategory}
