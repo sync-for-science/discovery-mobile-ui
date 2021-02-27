@@ -78,14 +78,14 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-const preloadCategoryFilters = {}
-export const categoryFiltersReducer = (state = preloadCategoryFilters, action) => {
+const preloadResourceTypeFilters = {}
+export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
-    case actionTypes.CATEGORY_FILTERS:
-      let categoryFilters = {}
-      action.payload.forEach(resourceType => {categoryFilters[resourceType] = true})
-      return categoryFilters
-    case actionTypes.TOGGLE_CATEGORY_FILTERS:
+    case actionTypes.RESOURCE_TYPE_FILTERS:
+      let resourceTypeFilters = {}
+      action.payload.forEach(resourceType => {resourceTypeFilters[resourceType] = true})
+      return resourceTypeFilters
+    case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS:
       return
     default:
       return state
