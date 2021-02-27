@@ -95,6 +95,14 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
       updatedSetting.filterOpen = !updatedSetting.filterOpen
       return { ...state, [action.payload]: updatedSetting };
     }
+    case actionTypes.SELECT_RESOURCE_TYPE: {
+      let newState = Object.entries(state).reduce((acc, [resourceType, _value]) => {
+        acc[resourceType] = {...state[resourceType], selected: false}
+        return acc
+      }, {})
+      newState[action.payload].selected = true
+      return newState
+    }
     default:
       return state;
   }
