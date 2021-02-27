@@ -9,6 +9,9 @@ import SubTypeAccordion from './SubTypeAccordion';
 import { selectedResourceTypeSelector } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({ selectedResourceType, resourceIdsGroupedByType }) => {
+  if (!selectedResourceType) {
+    return null
+  }
   const resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
   
   return (

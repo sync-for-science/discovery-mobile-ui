@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
@@ -12,9 +12,7 @@ import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
 
-const CatalogScreen = ({ resourceTypeFilters }) => {
-  const [selectedCategory, setSelectedCategory] = useState(Object.keys(resourceTypeFilters)[0]);
-
+const CatalogScreen = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
