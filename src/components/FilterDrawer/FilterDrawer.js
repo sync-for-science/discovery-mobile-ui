@@ -10,18 +10,20 @@ import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
-import { supportedResourcesSelector } from '../../redux/selectors';
+import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors'
+import { actionTypes } from '../../redux/epics';
 
-const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
-  const CategoryFilter = ({ subType, filterOpen }) => {
-    const label = RESOURCE_TYPES[subType];
+const FilterDrawer = ({ resourceTypeFilters, toggleCategoryFilter, children }) => {
+  const CategoryFilter = ({ resourceType, filterOpen }) => {
+    const label = RESOURCE_TYPES[resourceType];
     return (
       <View style={styles.categoryRow}>
         <Text>{label}</Text>
         <Switch
           trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
+          onValueChange={() => toggleCategoryFilter(resourceType)}
           value={filterOpen}
         />
       </View>
@@ -29,20 +31,15 @@ const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
   };
 
   CategoryFilter.propTypes = {
-    subType: string.isRequired,
+    resourceType: string.isRequired,
   };
 
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
-      {Object.entries(resourceIdsGroupedByType).map(([subType, value]) => {
-        if (resourceIdsGroupedByType[subType]) {
-          return (
-            <CategoryFilter key={subType} subType={subType} filterOpen={value.filterOpen}/>
-          );
-        }
-        return null;
-      })}
+      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => (
+        <CategoryFilter key={resourceType} resourceType={resourceType} filterOpen={filterOpen}/>
+      ))}
     </View>
   );
 
@@ -65,15 +62,22 @@ const FilterDrawer = ({ resourceIdsGroupedByType, children }) => {
 };
 
 FilterDrawer.propTypes = {
-  resourceIdsGroupedByType: shape({}).isRequired,
+  resourceTypeFilters: shape({}).isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
 });
 
-export default connect(mapStateToProps, null)(FilterDrawer);
+const mapDispatchToProps = {
+  toggleCategoryFilter: (resourceType) => ({
+    type: actionTypes.TOGGLE_CATEGORY_FILTER,
+    payload: resourceType
+  })
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
 
 const styles = StyleSheet.create({
   container: {
