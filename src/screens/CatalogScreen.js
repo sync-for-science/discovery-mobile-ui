@@ -10,11 +10,10 @@ import CategorySelector from '../components/CategorySelector/CategorySelector';
 import RecordCardsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
+import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
 
-const CatalogScreen = ({ resourceIdsGroupedByType }) => {
-  const categories = Object.keys(resourceIdsGroupedByType);
-  const scrubbedCategories = categories.filter((category) => category !== 'Patient' && category !== 'Observation');
-  const [selectedCategory, setSelectedCategory] = useState(scrubbedCategories[0]);
+const CatalogScreen = ({ resourceTypeFilters }) => {
+  const [selectedCategory, setSelectedCategory] = useState(Object.keys(resourceTypeFilters)[0]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -22,11 +21,10 @@ const CatalogScreen = ({ resourceIdsGroupedByType }) => {
       <FilterDrawer>
         <ScrollView>
           <TimelineWidget />
-          <CategorySelector
-            categories={scrubbedCategories}
+          {/* <CategorySelector
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
-          />
+          /> */}
           { selectedCategory && (
             <RecordCardsContainer
               selectedCategory={selectedCategory}
@@ -43,7 +41,7 @@ CatalogScreen.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceIdsGroupedByType: state.resourceIdsGroupedByType,
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);

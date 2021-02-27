@@ -41,11 +41,11 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Category Filters</Text>
-      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => (
+      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
-          filterOpen={filterOpen}
+          filterOpen={value.filterOpen}
         />
       ))}
     </View>

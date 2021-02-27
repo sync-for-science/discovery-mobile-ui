@@ -83,12 +83,18 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
   switch (action.type) {
     case actionTypes.RESOURCE_TYPE_FILTERS: {
       const resourceTypeFilters = {};
-      action.payload.forEach((resourceType) => { resourceTypeFilters[resourceType] = true; });
+      action.payload.forEach(
+        (resourceType, i) => { 
+          const selectedValue = i === 0 ? true : false
+          resourceTypeFilters[resourceType] = { filterOpen: true, selected: selectedValue}; 
+        }
+      );
       return resourceTypeFilters;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const currentSetting = state[action.payload];
-      return { ...state, [action.payload]: !currentSetting };
+      const updatedSetting = {...state[action.payload]}
+      updatedSetting.filterOpen = !updatedSetting.filterOpen
+      return { ...state, [action.payload]: updatedSetting };
     }
     default:
       return state;
