@@ -84,24 +84,24 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
     case actionTypes.RESOURCE_TYPE_FILTERS: {
       const resourceTypeFilters = {};
       action.payload.forEach(
-        (resourceType) => { 
-          resourceTypeFilters[resourceType] = { filterOpen: true, selected: false}; 
-        }
+        (resourceType) => {
+          resourceTypeFilters[resourceType] = { filterOpen: true, selected: false };
+        },
       );
       return resourceTypeFilters;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const updatedSetting = {...state[action.payload]}
-      updatedSetting.filterOpen = !updatedSetting.filterOpen
+      const updatedSetting = { ...state[action.payload] };
+      updatedSetting.filterOpen = !updatedSetting.filterOpen;
       return { ...state, [action.payload]: updatedSetting };
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
-      let newState = Object.entries(state).reduce((acc, [resourceType, _value]) => {
-        acc[resourceType] = {...state[resourceType], selected: false}
-        return acc
-      }, {})
-      newState[action.payload].selected = true
-      return newState
+      const newState = Object.entries(state).reduce((acc, [resourceType]) => {
+        acc[resourceType] = { ...state[resourceType], selected: false };
+        return acc;
+      }, {});
+      newState[action.payload].selected = true;
+      return newState;
     }
     default:
       return state;
