@@ -4,32 +4,28 @@ import { Alert } from 'react-native';
 
 const { Buffer } = require('buffer');
 
-const MOCK_USER_ID = '86512c6f-caf6-41f4-9503-e4270b37b94f'; // Blake Eichmann
-// const MOCK_USER_ID = 'd0190651-b9b0-4513-8f3b-d542319220d1'; // Mr. Chadwick Von
+export const buildFhirIssUrl = (patientId) => {
+  const issDataString = JSON.stringify({
+    k: '1',
+    b: patientId,
+  });
+  // smartapp auth
+  return `https://launch.smarthealthit.org/v/r4/sim/${Buffer.from(issDataString).toString('base64')}/fhir`;
+};
 
-const issDataString = JSON.stringify({
-  k: '1',
-  b: MOCK_USER_ID,
-});
-
-const encode = () => Buffer.from(issDataString).toString('base64');
-
-// smartapp auth
-export const fhirIss = `https://launch.smarthealthit.org/v/r4/sim/${encode(issDataString)}/fhir`;
-
-export const initializeFhirClient = (baseUrl, accessToken) => {
+export const initializeFhirClient = (fhirIss, accessToken) => {
   if (!accessToken) {
-    return new Client({ baseUrl });
+    return new Client({ baseUrl: fhirIss });
   }
   return new Client({
-    baseUrl,
+    baseUrl: fhirIss,
     customHeaders: {
       Authorization: `Bearer ${accessToken}`,
     },
   });
 };
 
-export async function authAsync() {
+export async function authAsync(fhirIss) {
   const fhirClient = initializeFhirClient(fhirIss);
   const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
 
