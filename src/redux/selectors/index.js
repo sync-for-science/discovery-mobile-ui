@@ -14,7 +14,7 @@ export const patientSelector = createSelector(
     if (!patient) {
       return null;
     }
-    const patientId = Array.from(patient.resourceIds)[0];
+    const patientId = Array.from(patient?.Other)[0];
     return resources[patientId];
   },
 );

@@ -46,25 +46,13 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
         if (!acc[resourceType]) {
           acc[resourceType] = {};
         }
-
-        if (!subType) {
-          if (!acc[resourceType].resourceIds) {
-            acc[resourceType].resourceIds = new Set();
-          }
-          if (acc[resourceType].resourceIds.has(resource.id)) {
-            console.warn(`${resourceType} already contains ${id}`); // eslint-disable-line no-console
-          } else {
-            acc[resourceType].resourceIds.add(resource.id);
-          }
+        if (!acc[resourceType][subType]) {
+          acc[resourceType][subType] = new Set();
+        }
+        if (acc[resourceType][subType].has(resource.id)) {
+          console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
         } else {
-          if (!acc[resourceType][subType]) {
-            acc[resourceType][subType] = new Set();
-          }
-          if (acc[resourceType][subType].has(resource.id)) {
-            console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
-          } else {
-            acc[resourceType][subType].add(resource.id);
-          }
+          acc[resourceType][subType].add(resource.id);
         }
         if (!acc[resourceType].total) {
           acc[resourceType].total = 0;

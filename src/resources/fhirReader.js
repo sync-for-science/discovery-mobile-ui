@@ -24,7 +24,8 @@ const injectSubType = (resource) => {
       subType = resource.category?.[0]?.text;
       break;
     default:
-      subType = null;
+      console.warn(`No subType found for resource: ${resource}`)
+      subType = "Other";
       break;
   }
 
