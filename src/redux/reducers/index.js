@@ -69,6 +69,9 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
 const preloadResourceTypeFilters = {};
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadedResourceIdsGroupedByType;
+    }
     case actionTypes.RESOURCE_TYPE_FILTERS: {
       const resourceTypeFilters = {};
       action.payload.forEach(
