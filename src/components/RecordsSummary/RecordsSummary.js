@@ -8,15 +8,16 @@ import {
 import {
   getRecordsTotal,
 } from '../../resources/fhirReader';
-import { patientSelector, supportedResourcesSelector } from '../../redux/selectors';
+import { supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({ resourceType, resourceIds }) => (
   <View style={styles.resourceTypeRow}>
-    <Text>{RESOURCE_TYPES[resourceType]}</Text>
-    <Text>{resourceIds.size}</Text>
+    <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
+    <Text style={styles.resourceCount}>{resourceIds.size}</Text>
+    <Text style={styles.resourceLatestDate}>{resourceIds.size}</Text>
   </View>
 );
 
@@ -43,6 +44,11 @@ const RecordsSummary = ({
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>
+        <View style={styles.resourceTypeRow}>
+          <Text style={styles.resourceName} />
+          <Text style={styles.resourceCountLabel}>COUNT</Text>
+          <Text style={styles.resourceLatestDateLabel}>NEWEST</Text>
+        </View>
         {Object.entries(resourceIdsGroupedByType).map(
           ([resourceType, resourceIds]) => (
             <ResourceTypeRow
@@ -107,13 +113,49 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 5,
 
     padding: 10,
     backgroundColor: 'white',
-    borderBottomColor: Colors.secondary,
+    borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
+
+  },
+  resourceName: {
+    alignSelf: 'flex-start',
+    // borderColor: 'green',
+    // borderWidth: 1,
+    flex: 6,
+  },
+  resourceCount: {
+    alignSelf: 'flex-end',
+    // borderColor: 'grey',
+    // borderWidth: 1,
+    textAlign: 'right',
+    paddingRight: 10,
+    flex: 1,
+  },
+  resourceLatestDate: {
+    alignSelf: 'flex-end',
+    // borderColor: 'red',
+    // borderWidth: 1,
+    flex: 1,
+  },
+  resourceCountLabel: {
+    color: Colors.secondary,
+    fontSize: 10,
+    alignSelf: 'flex-end',
+    // borderColor: 'grey',
+    // borderWidth: 1,
+    flex: 1,
+  },
+  resourceLatestDateLabel: {
+    color: Colors.secondary,
+    fontSize: 10,
+    alignSelf: 'flex-end',
+    // borderColor: 'red',
+    // borderWidth: 1,
+    flex: 1,
   },
 });
