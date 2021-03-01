@@ -1,5 +1,5 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import { shape, instanceOf, string } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
@@ -13,29 +13,20 @@ import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resource }) => {
-  // resourceIdsGroupedByType
-  const resourceCount = 100;
-  if (!resourceCount > 0) {
-    return null;
-  }
-
-  const resourceType = 'Blah';
-
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text>{resourceCount}</Text>
-    </View>
-  );
-};
+const ResourceTypeRow = ({ resourceType, resourceIds }) => (
+  <View style={styles.resourceTypeRow}>
+    <Text>{RESOURCE_TYPES[resourceType]}</Text>
+    <Text>{resourceIds.size}</Text>
+  </View>
+);
 
 ResourceTypeRow.propTypes = {
-  resource: shape({}).isRequired,
+  resourceType: string.isRequired,
+  resourceIds: instanceOf(Set).isRequired,
 };
 
 const RecordsSummary = ({
-  patientResource, resourceIdsGroupedByType, resources,
+  resourceIdsGroupedByType, resources,
 }) => {
   const recordsTotal = getRecordsTotal(resources);
 
@@ -48,7 +39,7 @@ const RecordsSummary = ({
         <Text style={styles.recordsHeaderTotal}>
           {recordsTotal}
           {' '}
-          total
+          Total
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>
@@ -70,19 +61,16 @@ const RecordsSummary = ({
 RecordsSummary.propTypes = {
   resourceIdsGroupedByType: shape({}),
   resources: shape({}),
-  patientResource: shape({}),
 };
 
 RecordsSummary.defaultProps = {
   resourceIdsGroupedByType: {},
   resources: null,
-  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
   resourceIdsGroupedByType: supportedResourcesSelector(state),
-  patientResource: patientSelector(state),
 });
 
 const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
@@ -92,6 +80,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(RecordsSummary);
 const styles = StyleSheet.create({
   recordSummaryContainer: {
     marginTop: 10,
+    marginBottom: 20,
     marginHorizontal: 20,
     justifyContent: 'center',
   },
