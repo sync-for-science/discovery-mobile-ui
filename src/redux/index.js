@@ -1,7 +1,7 @@
 import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/authSlice';
 import patientDataReducer from '../features/patient/patientDataSlice';
-import { flattenedResourcesReducer, resourceTypesReducer, resourceTypeFiltersReducer } from './reducers';
+import { flattenedResourcesReducer, resourceTypesReducer, resourceTypeFiltersReducer, selectedResourceTypeReducer } from './reducers';
 import epicMiddleware, { rootEpic } from './epics';
 
 const rootReducer = combineReducers({
@@ -10,6 +10,7 @@ const rootReducer = combineReducers({
   resources: flattenedResourcesReducer,
   resourceIdsGroupedByType: resourceTypesReducer,
   resourceTypeFilters: resourceTypeFiltersReducer,
+  selectedResourceType: selectedResourceTypeReducer
 });
 
 const store = configureStore({

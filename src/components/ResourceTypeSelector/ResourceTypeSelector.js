@@ -13,17 +13,13 @@ import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
-const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
-  // useEffect(() => {
-  //   selectResourceTypeAction(Object.keys(resourceTypeFilters)[0]);
-  // }, []);
-
+const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceType, selectedResourceType }) => {
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];
-    const buttonStyle = selected ? styles.buttonSelected : styles.button;
-    const buttonTextStyle = selected ? styles.buttonSelectedText : null;
+    const buttonStyle = selected === resourceType ? styles.buttonSelected : styles.button;
+    const buttonTextStyle = selected === resourceType ? styles.buttonSelectedText : null;
     return (
-      <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+      <Button style={buttonStyle} onPress={() => selectResourceType(resourceType)}>
         <Text style={buttonTextStyle}>{categoryDisplay}</Text>
       </Button>
     );
@@ -36,13 +32,13 @@ const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction })
 
   return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => {
-        if (value.filterOpen) {
+      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
+        if (filterOpen) {
           return (
             <CategoryButton
               key={resourceType}
               resourceType={resourceType}
-              selected={value.selected}
+              selected={selectedResourceType}
             />
           );
         }
@@ -54,15 +50,16 @@ const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction })
 
 ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
-  selectResourceTypeAction: func.isRequired,
+  selectResourceType: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  selectedResourceType: state.selectedResourceType
 });
 
 const mapDispatchToProps = {
-  selectResourceTypeAction: selectResourceType,
+  selectResourceType,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
