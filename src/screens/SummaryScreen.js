@@ -53,11 +53,11 @@ const SummaryScreen = ({
         <Demographics />
         <View style={styles.resourceTypeContainer}>
           {Object.entries(resourceIdsGroupedByType).map(
-            ([resourceType, value]) => (
+            ([resourceType, _value]) => (
               <ResourceTypeRow
                 key={resourceType}
                 resourceType={resourceType}
-                total={value.total}
+                total="TBD"
                 resources={resources}
               />
             ),
