@@ -5,15 +5,11 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 
-// import {
-//   getResources,
-//   getResourceCount,
-//   getResourceType,
-//   getResourceCode,
-// } from '../../resources/fhirReader';
+import {
+  getRecordsTotal,
+} from '../../resources/fhirReader';
 import { patientSelector, supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
@@ -26,10 +22,6 @@ const ResourceTypeRow = ({ resource }) => {
 
   const resourceType = 'Blah';
 
-  // let resourceType = getResourceType(resource);
-  // if (resourceType === 'Observation') {
-  //   resourceType = getResourceCode(resource);
-  // }
 
   return (
     <View style={styles.resourceTypeRow}>
@@ -45,14 +37,17 @@ ResourceTypeRow.propTypes = {
 
 const RecordsSummary = ({
   patientResource, resourceIdsGroupedByType, resources,
-}) =>
-  // const resourcesOff = patientData ? getResources(patientData) : getResources(mockBundle);
+}) => {
+  const recordsTotal = getRecordsTotal(resources);
 
-   (
+  return (
     <View style={styles.recordSummaryContainer}>
-      <View style={styles.panelHeader}>
-        <Text style={styles.panelText}>
-          Demographics
+      <View style={styles.recordsHeader}>
+        <Text style={styles.recordsHeaderText}>
+          Records
+        </Text>
+        <Text style={styles.recordsHeaderTotal}>
+          {recordsTotal} total
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>
@@ -68,8 +63,8 @@ const RecordsSummary = ({
         )}
       </View>
     </View>
-  )
-;
+  );
+};
 
 RecordsSummary.propTypes = {
   resourceIdsGroupedByType: shape({}),
@@ -99,14 +94,22 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     justifyContent: 'center',
   },
-  panelHeader: {
+  recordsHeader: {
     padding: 5,
     backgroundColor: Colors.secondary,
+    flexDirection: 'row',
   },
-  panelText: {
+  recordsHeaderText: {
     color: 'white',
     fontSize: 16,
     padding: 5,
+  },
+  recordsHeaderTotal: {
+    color: 'white',
+    fontSize: 12,
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   resourceTypeContainer: {
     alignItems: 'center',

@@ -48,7 +48,7 @@ export const getDataRange = (resourceSet) => {
   ];
 };
 
-export const getRecordsTotal = (resources) => resources.reduce((acc, n) => n + 1);
+export const getRecordsTotal = (resourceSet) => Object.keys(resourceSet).length;
 
 export const getPatientName = (patientResource) => {
   if (!patientResource) {

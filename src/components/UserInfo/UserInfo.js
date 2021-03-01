@@ -19,7 +19,6 @@ const UserInfo = ({
   patientResource, resourceIdsGroupedByType, resources,
 }) => {
   const name = getPatientName(patientResource);
-  console.log(resources);
   const [dataStart, dataEnd] = getDataRange(resources);
 
   return (
