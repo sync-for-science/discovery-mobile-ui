@@ -22,7 +22,6 @@ const ResourceTypeRow = ({ resource }) => {
 
   const resourceType = 'Blah';
 
-
   return (
     <View style={styles.resourceTypeRow}>
       <Text>{RESOURCE_TYPES[resourceType]}</Text>
@@ -47,7 +46,9 @@ const RecordsSummary = ({
           Records
         </Text>
         <Text style={styles.recordsHeaderTotal}>
-          {recordsTotal} total
+          {recordsTotal}
+          {' '}
+          total
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>
@@ -107,9 +108,7 @@ const styles = StyleSheet.create({
   recordsHeaderTotal: {
     color: 'white',
     fontSize: 12,
-    paddingBottom: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 9, // FIXME, not the right way to align
   },
   resourceTypeContainer: {
     alignItems: 'center',
