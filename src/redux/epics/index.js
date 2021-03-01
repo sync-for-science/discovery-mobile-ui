@@ -6,7 +6,7 @@ import {
 import {
   catchError, map, concatMap,
 } from 'rxjs/operators';
-import { pathEq } from 'ramda';
+import { pathEq, flatten } from 'ramda';
 
 export const actionTypes = {
   // SET_PATIENT_DATA string is implicitly derived from:
@@ -37,26 +37,18 @@ const groupByType = (action$, state$) => action$.pipe(
   }),
 );
 
-const extractLinksFromBundle = (resourceBundle) => {
-  if (resourceBundle.resourceType === 'Bundle') {
-    const accumulatedLinks = [];
-    const hasNextLink = pathEq(['relation'], 'next');
+const extractNextUrls = (() => {
+  const hasNextLink = pathEq(['relation'], 'next');
+  const extractNextUrlFromLink = (link) => link?.find(hasNextLink)?.url;
 
-    const topLinkObject = resourceBundle?.link?.find(hasNextLink);
-    if (topLinkObject?.url) {
-      accumulatedLinks.push(topLinkObject.url);
+  return ({ link, entry }, depth = 0) => {
+    let urls = [extractNextUrlFromLink(link)];
+    if (entry && depth < 4) {
+      urls = urls.concat(entry.map(({ resource }) => extractNextUrls(resource, depth + 1)));
     }
-
-    return resourceBundle.entry.reduce((acc, item) => {
-      const nextLinkObject = item?.resource?.link?.find(hasNextLink);
-      if (nextLinkObject) {
-        acc.push(nextLinkObject.url);
-      }
-      return acc;
-    }, accumulatedLinks);
-  }
-  return [];
-};
+    return flatten(urls).filter((url) => !!url);
+  };
+})();
 
 const handleError = (error, message) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
@@ -69,17 +61,15 @@ const handleError = (error, message) => {
 
 const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
   ofType(actionTypes.FLATTEN_RESOURCES),
-  // delay(1000),
+  // delay(1000), // e.g.: for debugging
   concatMap(({ payload }) => {
-    const accumulatedLinks = extractLinksFromBundle(payload);
-    // console.info('accumulatedLinks: ', JSON.stringify(accumulatedLinks));
+    const accumulatedLinks = extractNextUrls(payload);
     const nextRequests$ = from(accumulatedLinks).pipe(
       concatMap((url) => rxAjax.getJSON(url)),
     );
     return nextRequests$.pipe(
       map((result) => ({
-        // type: actionTypes.FLATTEN_RESOURCES,
-        type: actionTypes.SET_PATIENT_DATA,
+        type: actionTypes.FLATTEN_RESOURCES,
         payload: result,
       })),
       catchError((error) => handleError(error, 'Error in requestNextItems nextRequests$.pipe')),
