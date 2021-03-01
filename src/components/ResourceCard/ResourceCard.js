@@ -12,6 +12,42 @@ import RESOURCE_TYPES from '../../resources/resourceTypes'
 import { getResourceDate } from '../../resources/fhirReader'
 import GenericCardBody from '../ResourceCardBody/GenericCardBody'
 
+const selectCardBody = (resource) => {
+  switch (resource.resourceType) {
+    case 'Condition':
+    case 'Document References':
+    case 'Meds Administration':
+    case 'Procedures':
+    case 'Procedure Requests':
+      return <GenericCardBody resource={resource} />;
+    // case 'Meds Dispensed':
+    // case 'Meds Requested':
+    //   return <MedicationCardBody fieldsData={fieldsData} />;
+    // case 'Benefits':
+    //   return <BenefitCardBody fieldsData={fieldsData} />;
+    // case 'Claims':
+    //   return <ClaimCardBody fieldsData={fieldsData} />;
+    // case 'Encounters':
+    //   return <EncounterCardBody fieldsData={fieldsData} />;
+    // case 'Immunizations':
+    //   return <ImmunizationCardBody fieldsData={fieldsData} />;
+    // case 'Lab Results':
+    //   return <LabResultCardBody fieldsData={fieldsData} />;
+    // case 'Exams':
+    //   return <ExamCardBody fieldsData={fieldsData} />;
+    // case 'Meds Statement':
+    //   return <MedicationStatementCardBody fieldsData={fieldsData} />;
+    // case 'Social History':
+    //   return <SocialHistoryCardBody fieldsData={fieldsData} />;
+    // case 'Other':
+    //   return <UnimplementedCardBody fieldsData={fieldsData} />;
+    // case 'Vital Signs':
+    //   return <VitalSignCardBody fieldsData={fieldsData} />;
+    default:
+      return (<View><Text>Card Body Not Implemented Yet</Text></View>);
+  }
+}
+
 const ResourceCard = ({resourceId, resources}) => {
   const resource = resources[resourceId]
   const resourceType = RESOURCE_TYPES[resource?.resourceType]
@@ -26,7 +62,7 @@ const ResourceCard = ({resourceId, resources}) => {
       </CardItem>
       <CardItem >
         <View style={styles.cardBody}>
-          <GenericCardBody resource={resource}/>
+          {selectCardBody(resource)}
         </View>
       </CardItem>
       <BaseDivider />

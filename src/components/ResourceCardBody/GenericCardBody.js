@@ -11,15 +11,11 @@ import {
   // getOnsetDateTime,
   // getAbatementDateTime
 } from '../../resources/fhirReader'
-// import CARD_BODY_LABEL from '../../../resources/cardBodyLabel'
+import CARD_BODY_LABEL from '../../resources/cardBodyLabel'
 
 const GenericCardBody = ({resource}) => {
-
-  return (
-    <View>
-      <Text>GenericCardBody</Text>
-    </View>
-  )
+  const resourceType = resource.resourceType
+  const subType = resource.subType
 
   return (
     <View>
@@ -30,7 +26,7 @@ const GenericCardBody = ({resource}) => {
       /> */}
       <CardBodyField
         dependency={subType}
-        label={RESOURCE_TYPES[resource]}
+        label={CARD_BODY_LABEL[resourceType]}
         value={subType}
         bold
       />
