@@ -78,28 +78,28 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
       return resourceTypeFilters;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const currentSetting = state[action.payload]
+      const currentSetting = state[action.payload];
       return { ...state, [action.payload]: !currentSetting };
     }
-    
+
     default:
       return state;
   }
 };
 
-const preloadSelectedResourceType = null
+const preloadSelectedResourceType = null;
 export const selectedResourceTypeReducer = (state = preloadSelectedResourceType, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedResourceType;
     }
     case actionTypes.CREATE_RESOURCE_TYPE_SELECTION: {
-      return state
+      return state;
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       return action.payload;
     }
     default:
-      return state
+      return state;
   }
-}
+};

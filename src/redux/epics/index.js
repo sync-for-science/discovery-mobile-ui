@@ -20,7 +20,7 @@ export const actionTypes = {
   RESOURCE_TYPE_FILTERS: 'RESOURCE_TYPE_FILTERS',
   TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
   SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
-  CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION'
+  CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -102,11 +102,9 @@ export const toggleResourceTypeFilter = (resourceType) => ({
 // how to create simply state slice without pipe, ofType, map
 const createSelectedResourceType = (action$) => action$.pipe(
   ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => {
-    return ({
-      type: actionTypes.CREATE_RESOURCE_TYPE_SELECTION,
-    });
-  }),
+  map(() => ({
+    type: actionTypes.CREATE_RESOURCE_TYPE_SELECTION,
+  })),
 );
 
 export const selectResourceType = (resourceType) => ({
@@ -119,7 +117,7 @@ export const rootEpic = combineEpics(
   groupByType,
   requestNextItems,
   resourceTypeFilter,
-  createSelectedResourceType
+  createSelectedResourceType,
 );
 
 export default createEpicMiddleware({

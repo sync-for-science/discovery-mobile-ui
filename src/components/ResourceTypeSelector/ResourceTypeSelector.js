@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet, Text, ScrollView,
 } from 'react-native';
@@ -13,13 +13,17 @@ import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
-const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceType, selectedResourceType }) => {
+const ResourceTypeSelector = ({
+  resourceTypeFilters,
+  selectResourceTypeAction,
+  selectedResourceType,
+}) => {
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];
     const buttonStyle = selected === resourceType ? styles.buttonSelected : styles.button;
     const buttonTextStyle = selected === resourceType ? styles.buttonSelectedText : null;
     return (
-      <Button style={buttonStyle} onPress={() => selectResourceType(resourceType)}>
+      <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
         <Text style={buttonTextStyle}>{categoryDisplay}</Text>
       </Button>
     );
@@ -50,16 +54,17 @@ const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceType, selecte
 
 ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
-  selectResourceType: func.isRequired,
+  selectedResourceType: string.isRequired,
+  selectResourceTypeAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
-  selectedResourceType: state.selectedResourceType
+  selectedResourceType: state.selectedResourceType,
 });
 
 const mapDispatchToProps = {
-  selectResourceType,
+  selectResourceTypeAction: selectResourceType,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);

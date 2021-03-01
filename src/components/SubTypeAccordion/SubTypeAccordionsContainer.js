@@ -8,8 +8,12 @@ import { string, shape } from 'prop-types';
 import SubTypeAccordion from './SubTypeAccordion';
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 
-const SubTypeAccordionsContainer = ({ selectedResourceType, resourceTypeFilters, resourceIdsGroupedByType }) => {
-  if (!selectedResourceType || !resourceTypeFilters[selectedResourceType] ) {
+const SubTypeAccordionsContainer = ({
+  selectedResourceType,
+  resourceTypeFilters,
+  resourceIdsGroupedByType,
+}) => {
+  if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
     return null;
   }
   const resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
@@ -31,6 +35,7 @@ const SubTypeAccordionsContainer = ({ selectedResourceType, resourceTypeFilters,
 SubTypeAccordionsContainer.propTypes = {
   selectedResourceType: string,
   resourceIdsGroupedByType: shape({}).isRequired,
+  resourceTypeFilters: shape({}).isRequired,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
