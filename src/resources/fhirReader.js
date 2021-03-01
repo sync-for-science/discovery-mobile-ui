@@ -113,3 +113,12 @@ export const getPatientAge = (patient) => {
 
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
+
+export const getResourceDate = (resource) => {
+  switch (resource.resourceType) {
+    case "CarePlan":
+      return format(new Date(resource.period?.start), 'MMM d, y h:mm:ssaaa')
+    default:
+      return null;
+  }
+}
