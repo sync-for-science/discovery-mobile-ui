@@ -3,9 +3,9 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 
-const CatalogScreen = () => (
+const CatalogScreen = ({resourceId}) => (
   <View style={styles.root}>
-    <Text>RecordCard</Text>
+    <Text>{resourceId}</Text>
   </View>
 );
 
@@ -16,10 +16,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 100,
     backgroundColor: 'white',
-    borderWidth: 2,
+    borderBottomWidth: 2,
     borderColor: 'gray',
-    borderRadius: 15,
-    marginVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -2,8 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-
 import { arrayOf, string } from 'prop-types';
+
+import ResourceCard from '../ResourceCard/ResourceCard'
 import Colors from '../../constants/Colors';
 
 const SubTypeAccordion = ({ subType, resourcesIds }) => {
@@ -22,7 +23,7 @@ const SubTypeAccordion = ({ subType, resourcesIds }) => {
     </View>
   );
 
-  const renderContent = (item) => item.content.map((resourceId) => <View style={{ backgroundColor: 'white', padding: 10 }}><Text>{resourceId}</Text></View>);
+  const renderContent = (item) => item.content.map((resourceId) => <ResourceCard key={resourceId} resourceId={resourceId} />);
 
   return (
     <View style={{ marginBottom: 10 }}>
