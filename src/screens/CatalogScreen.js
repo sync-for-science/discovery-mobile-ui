@@ -1,15 +1,24 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar,
+  StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
+
+import TimelineWidget from '../components/Timeline/TimelineWidget';
+import CategorySelector from '../components/CategorySelector/CategorySelector';
+import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer';
 import Colors from '../constants/Colors';
+import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View style={styles.screen}>
-      <Text>Catalog Screen</Text>
-    </View>
+    <FilterDrawer>
+      <ScrollView style={styles.content}>
+        <TimelineWidget />
+        <CategorySelector />
+        <RecordCardsContainer />
+      </ScrollView>
+    </FilterDrawer>
   </SafeAreaView>
 );
 
@@ -23,5 +32,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  content: {
+    width: '90%',
   },
 });

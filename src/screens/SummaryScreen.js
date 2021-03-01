@@ -1,20 +1,40 @@
 import React from 'react';
-import { func, shape } from 'prop-types';
+import {
+  func, shape, instanceOf, string,
+} from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, View, ScrollView, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 
+import { patientSelector, supportedResourcesSelector } from '../redux/selectors';
 import Colors from '../constants/Colors';
+import {
+  getPatientName,
+} from '../resources/fhirReader';
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
-import UserInfo from '../components/UserInfo/UserInfo';
-import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
+import RESOURCE_TYPES from '../resources/resourceTypes';
+
+const ResourceTypeRow = ({ resourceType, resourceIds }) => (
+  <View style={styles.resourceTypeRow}>
+    <Text>{RESOURCE_TYPES[resourceType]}</Text>
+    <Text>{resourceIds.size}</Text>
+  </View>
+);
+
+ResourceTypeRow.propTypes = {
+  resourceType: string.isRequired,
+  resourceIds: instanceOf(Set).isRequired,
+};
 
 const SummaryScreen = ({
-  navigation, clearAuthAction, clearPatientDataAction,
+  patientResource, resourceIdsGroupedByType, resources, navigation,
+  clearAuthAction, clearPatientDataAction,
 }) => {
+  const patientName = getPatientName(patientResource);
+
   const handleLogout = () => {
     clearAuthAction();
     clearPatientDataAction();
@@ -40,16 +60,27 @@ SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
+  resourceIdsGroupedByType: shape({}),
+  resources: shape({}),
+  patientResource: shape({}),
 };
 
 SummaryScreen.defaultProps = {
+  resourceIdsGroupedByType: {},
+  resources: null,
+  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  resources: state.resources,
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  patientResource: patientSelector(state),
 });
 
-const mapDispatchToProps = { clearAuthAction: clearAuth, clearPatientDataAction: clearPatientData };
+const mapDispatchToProps = {
+  clearAuthAction: clearAuth,
+  clearPatientDataAction: clearPatientData,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
 
