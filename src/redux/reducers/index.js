@@ -37,7 +37,7 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
               resourceType = code;
               break;
             default: {
-              console.warn(`Unsupported code type for ${id}: `, code); // eslint-disable-line no-console
+              console.info(`Unsupported code type for ${id}: `, code); // eslint-disable-line no-console
               break;
             }
           }
