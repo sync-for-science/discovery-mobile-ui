@@ -54,10 +54,6 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
         } else {
           acc[resourceType][subType].add(resource.id);
         }
-        if (!acc[resourceType].total) {
-          acc[resourceType].total = 0;
-        }
-        acc[resourceType].total += 1;
         return acc;
       }, {});
     }
