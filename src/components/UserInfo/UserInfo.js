@@ -6,17 +6,14 @@ import {
 } from 'react-native';
 
 import {
-  getResources,
-  getPatient,
   getPatientName,
   getDataRange,
 } from '../../resources/fhirReader';
-import { patientSelector, supportedResourcesSelector } from '../../redux/selectors';
-import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
+import { patientSelector } from '../../redux/selectors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const UserInfo = ({
-  patientResource, resourceIdsGroupedByType, resources,
+  patientResource, resources,
 }) => {
   const name = getPatientName(patientResource);
   const [dataStart, dataEnd] = getDataRange(resources);
@@ -41,20 +38,17 @@ const UserInfo = ({
 };
 
 UserInfo.propTypes = {
-  resourceIdsGroupedByType: shape({}),
   resources: shape({}),
   patientResource: shape({}),
 };
 
 UserInfo.defaultProps = {
-  resourceIdsGroupedByType: {},
   resources: null,
   patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  resourceIdsGroupedByType: supportedResourcesSelector(state),
   patientResource: patientSelector(state),
 });
 
