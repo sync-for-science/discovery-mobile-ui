@@ -6,16 +6,19 @@ import CardBodyField from '../CardBodyField/CardBodyField'
 import {
   // getResources, 
   // getPatient, 
-  // getPatientAge, 
+  getPatientAge, 
   // getResourceText, 
   // getOnsetDateTime,
   // getAbatementDateTime
+  getPatientAgeAtResourceDate
 } from '../../resources/fhirReader'
 import CARD_BODY_LABEL from '../../resources/cardBodyLabel'
 
-const GenericCardBody = ({resource}) => {
+const GenericCardBody = ({resource, patientResource}) => {
   const resourceType = resource.resourceType
   const subType = resource.subType
+  const ageAtResourceDate = getPatientAgeAtResourceDate(resource, patientResource)
+  console.log('ageAtResourceDate', ageAtResourceDate)
 
   return (
     <View>

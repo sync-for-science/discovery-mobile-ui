@@ -8,18 +8,19 @@ import { connect } from 'react-redux'
 
 import BaseText from '../Generic/BaseText'
 import BaseDivider from '../Generic/BaseDivider'
+import GenericCardBody from '../ResourceCardBody/GenericCardBody'
+import { patientSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes'
 import { getResourceDate } from '../../resources/fhirReader'
-import GenericCardBody from '../ResourceCardBody/GenericCardBody'
 
-const selectCardBody = (resource) => {
+const selectCardBody = (resource, patientResource) => {
   switch (resource.resourceType) {
     case 'Condition':
     case 'Document References':
     case 'Meds Administration':
     case 'Procedures':
     case 'Procedure Requests':
-      return <GenericCardBody resource={resource} />;
+      return <GenericCardBody resource={resource} patientResource={patientResource}/>;
     // case 'Meds Dispensed':
     // case 'Meds Requested':
     //   return <MedicationCardBody fieldsData={fieldsData} />;
@@ -48,7 +49,7 @@ const selectCardBody = (resource) => {
   }
 }
 
-const ResourceCard = ({resourceId, resources}) => {
+const ResourceCard = ({resourceId, resources, patientResource}) => {
   const resource = resources[resourceId]
   const resourceType = RESOURCE_TYPES[resource?.resourceType]
   const resourceDate = getResourceDate(resource)
@@ -62,7 +63,7 @@ const ResourceCard = ({resourceId, resources}) => {
       </CardItem>
       <CardItem >
         <View style={styles.cardBody}>
-          {selectCardBody(resource)}
+          {selectCardBody(resource, patientResource)}
         </View>
       </CardItem>
       <BaseDivider />
@@ -81,7 +82,8 @@ ResourceCard.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  resources: state.resources
+  resources: state.resources,
+  patientResource: patientSelector(state)
 })
 
 export default connect(mapStateToProps, null)(ResourceCard);
