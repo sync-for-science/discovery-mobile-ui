@@ -5,27 +5,31 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 
-import {
-  getResources,
-  getResourceCount,
-  getResourceType,
-  getResourceCode,
-} from '../../resources/fhirReader';
+// import {
+//   getResources,
+//   getResourceCount,
+//   getResourceType,
+//   getResourceCode,
+// } from '../../resources/fhirReader';
+import { patientSelector, supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({ resource }) => {
-  const resourceCount = getResourceCount(resource);
+  // resourceIdsGroupedByType
+  const resourceCount = 100;
   if (!resourceCount > 0) {
     return null;
   }
 
-  let resourceType = getResourceType(resource);
-  if (resourceType === 'Observation') {
-    resourceType = getResourceCode(resource);
-  }
+  const resourceType = 'Blah';
+
+  // let resourceType = getResourceType(resource);
+  // if (resourceType === 'Observation') {
+  //   resourceType = getResourceCode(resource);
+  // }
 
   return (
     <View style={styles.resourceTypeRow}>
@@ -40,11 +44,11 @@ ResourceTypeRow.propTypes = {
 };
 
 const RecordsSummary = ({
-  patientData,
-}) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
+  patientResource, resourceIdsGroupedByType, resources,
+}) =>
+  // const resourcesOff = patientData ? getResources(patientData) : getResources(mockBundle);
 
-  return (
+   (
     <View style={styles.recordSummaryContainer}>
       <View style={styles.panelHeader}>
         <Text style={styles.panelText}>
@@ -52,29 +56,37 @@ const RecordsSummary = ({
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>
-        {resources.map(
-          (resource) => (
+        {Object.entries(resourceIdsGroupedByType).map(
+          ([resourceType, resourceIds]) => (
             <ResourceTypeRow
-              key={`resourceTypeRow-${resource.resource.id}`}
-              resource={resource}
+              key={resourceType}
+              resourceType={resourceType}
+              resourceIds={resourceIds}
+              resources={resources}
             />
           ),
         )}
       </View>
     </View>
-  );
-};
+  )
+;
 
 RecordsSummary.propTypes = {
-  patientData: shape({}),
+  resourceIdsGroupedByType: shape({}),
+  resources: shape({}),
+  patientResource: shape({}),
 };
 
 RecordsSummary.defaultProps = {
-  patientData: null,
+  resourceIdsGroupedByType: {},
+  resources: null,
+  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  resources: state.resources,
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  patientResource: patientSelector(state),
 });
 
 const mapDispatchToProps = { clearPatientDataAction: clearPatientData };

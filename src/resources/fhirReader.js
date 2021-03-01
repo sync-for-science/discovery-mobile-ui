@@ -35,11 +35,9 @@ export const processBundle = (acc, resource, depth) => {
   }
 };
 
-// incorrect - doesn't go into 'nested' bundles which shouldn't be nested,
-// will be fixed with Observables
-export const getDataRange = (resources) => {
-  const timestamps = resources.reduce((acc, cur) => {
-    const date = cur.resource?.meta?.lastUpdated;
+export const getDataRange = (resourceSet) => {
+  const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
+    const date = cur.meta?.lastUpdated;
     return acc.concat(date ? parseISO(date) : []);
   }, [])
     .sort(compareAsc);

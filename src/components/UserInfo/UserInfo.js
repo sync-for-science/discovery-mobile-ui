@@ -11,16 +11,15 @@ import {
   getPatientName,
   getDataRange,
 } from '../../resources/fhirReader';
+import { patientSelector, supportedResourcesSelector } from '../../redux/selectors';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const UserInfo = ({
-  patientData,
+  patientResource, resourceIdsGroupedByType, resources,
 }) => {
-  const resources = patientData ? getResources(patientData) : getResources(mockBundle);
-
-  const patient = getPatient(resources);
-  const name = getPatientName(patient);
+  const name = getPatientName(patientResource);
+  console.log(resources);
   const [dataStart, dataEnd] = getDataRange(resources);
 
   return (
@@ -43,15 +42,21 @@ const UserInfo = ({
 };
 
 UserInfo.propTypes = {
-  patientData: shape({}),
+  resourceIdsGroupedByType: shape({}),
+  resources: shape({}),
+  patientResource: shape({}),
 };
 
 UserInfo.defaultProps = {
-  patientData: null,
+  resourceIdsGroupedByType: {},
+  resources: null,
+  patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  resources: state.resources,
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  patientResource: patientSelector(state),
 });
 
 const mapDispatchToProps = { clearPatientDataAction: clearPatientData };

@@ -15,6 +15,8 @@ import {
 import { clearAuth } from '../features/auth/authSlice';
 import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
+import UserInfo from '../components/UserInfo/UserInfo';
+import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
 const ResourceTypeRow = ({ resourceType, resourceIds }) => (
