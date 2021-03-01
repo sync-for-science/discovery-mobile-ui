@@ -14,9 +14,9 @@ import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
 const ResourceTypeSelector = ({ resourceTypeFilters, selectResourceTypeAction }) => {
-  useEffect(() => {
-    selectResourceTypeAction(Object.keys(resourceTypeFilters)[0]);
-  }, []);
+  // useEffect(() => {
+  //   selectResourceTypeAction(Object.keys(resourceTypeFilters)[0]);
+  // }, []);
 
   const CategoryButton = ({ resourceType, selected }) => {
     const categoryDisplay = RESOURCE_TYPES[resourceType];

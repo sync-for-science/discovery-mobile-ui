@@ -44,7 +44,7 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
-          filterOpen={value.filterOpen}
+          filterOpen={value}
         />
       ))}
     </View>
