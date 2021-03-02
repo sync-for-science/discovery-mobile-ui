@@ -5,7 +5,7 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const selectedResourceTypeSelector = (state) => state.selectedResourceType
+const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -35,7 +35,7 @@ export const supportedResourcesSelector = createSelector(
 export const flattenedSubTypeResourcesSelector = createSelector(
   [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
   (supportedResources, resourceIdsGroupedByType) => {
-    let resourceSubTypes = {}
+    const resourceSubTypes = {};
     const resourceTypes = Object.keys(supportedResources);
     resourceTypes.forEach((resourceType) => {
       const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
@@ -43,13 +43,13 @@ export const flattenedSubTypeResourcesSelector = createSelector(
         resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
       });
     });
-    return resourceSubTypes
-  }
-)
+    return resourceSubTypes;
+  },
+);
 
 export const selectedSubTypeResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector, selectedResourceTypeSelector],
-  (resourceIdsGroupedByType, selectedResourceType) => (resourceIdsGroupedByType[selectedResourceType])
-)
-
-
+  (resourceIdsGroupedByType, selectedResourceType) => (
+    resourceIdsGroupedByType[selectedResourceType]
+  ),
+);
