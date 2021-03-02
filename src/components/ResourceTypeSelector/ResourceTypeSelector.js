@@ -13,26 +13,32 @@ import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
+const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
+  const categoryDisplay = RESOURCE_TYPES[resourceType];
+  const buttonStyle = selectedResourceType === resourceType ? styles.buttonSelected : styles.button;
+  const buttonTextStyle = selectedResourceType === resourceType ? styles.buttonSelectedText : null;
+  return (
+    <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+      <Text style={buttonTextStyle}>{categoryDisplay}</Text>
+    </Button>
+  );
+};
+
+CategoryButton.propTypes = {
+  resourceType: string.isRequired,
+  selectedResourceType: string,
+  selectResourceTypeAction: func.isRequired
+};
+
+CategoryButton.defaultProps = {
+  selectedResourceType: null
+}
+
 const ResourceTypeSelector = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
 }) => {
-  const CategoryButton = ({ resourceType, selected }) => {
-    const categoryDisplay = RESOURCE_TYPES[resourceType];
-    const buttonStyle = selected === resourceType ? styles.buttonSelected : styles.button;
-    const buttonTextStyle = selected === resourceType ? styles.buttonSelectedText : null;
-    return (
-      <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-        <Text style={buttonTextStyle}>{categoryDisplay}</Text>
-      </Button>
-    );
-  };
-
-  CategoryButton.propTypes = {
-    resourceType: string.isRequired,
-    selected: bool.isRequired,
-  };
 
   return (
     <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
@@ -42,7 +48,8 @@ const ResourceTypeSelector = ({
             <CategoryButton
               key={resourceType}
               resourceType={resourceType}
-              selected={selectedResourceType}
+              selectedResourceType={selectedResourceType}
+              selectResourceTypeAction={selectResourceTypeAction}
             />
           );
         }
@@ -54,9 +61,13 @@ const ResourceTypeSelector = ({
 
 ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
-  selectedResourceType: string.isRequired,
+  selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
 };
+
+ResourceTypeSelector.defaultProps = {
+  selectedResourceType: null
+}
 
 const mapStateToProps = (state) => ({
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),

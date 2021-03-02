@@ -26,8 +26,9 @@ const ResourceTypeRow = ({ resourceType, total }) => (
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  total: number.isRequired,
+  total: string,
 };
+
 
 const SummaryScreen = ({
   patientResource, resourceIdsGroupedByType, resources, navigation,
