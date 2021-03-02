@@ -1,6 +1,6 @@
 import { actionTypes } from '../epics';
 import { processBundle } from '../../resources/fhirReader';
-import RESOURCE_TYPES from '../../resources/resourceTypes'
+import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const preloadedResources = {};
 
@@ -63,13 +63,15 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-
 const preloadResourceTypeFilters = Object.keys(RESOURCE_TYPES)
-  .sort((a, b) => {if (a.toLowerCase() > b.toLowerCase()) return 1; if(b.toLowerCase() > a.toLowerCase()) return -1})
+  .sort((a, b) => {
+    if (a.toLowerCase() > b.toLowerCase()) return 1;
+    return -1;
+  })
   .reduce((acc, resourceType) => ({
-  ...acc,
-  [resourceType]: true
-}), {})
+    ...acc,
+    [resourceType]: true,
+  }), {});
 
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {

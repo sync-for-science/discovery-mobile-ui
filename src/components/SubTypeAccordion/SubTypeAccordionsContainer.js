@@ -13,7 +13,7 @@ const SubTypeAccordionsContainer = ({
   resourceTypeFilters,
   showAllResourceTypes,
   flattenedSubTypeResources,
-  selectedSubTypeResources
+  selectedSubTypeResources,
 }) => {
   let resourceSubTypes = {};
   if (!showAllResourceTypes) {
@@ -21,10 +21,10 @@ const SubTypeAccordionsContainer = ({
     if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
       return null;
     }
-    resourceSubTypes = selectedSubTypeResources
+    resourceSubTypes = selectedSubTypeResources;
   } else {
     // show all resourceTypes
-    resourceSubTypes = flattenedSubTypeResources
+    resourceSubTypes = flattenedSubTypeResources;
   }
 
   return (
@@ -45,11 +45,13 @@ SubTypeAccordionsContainer.propTypes = {
   selectedResourceType: string,
   resourceTypeFilters: shape({}).isRequired,
   showAllResourceTypes: bool,
-  flattenedSubTypeResources: shape({}).isRequired
+  flattenedSubTypeResources: shape({}).isRequired,
+  selectedSubTypeResources: shape({}),
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   selectedResourceType: null,
+  selectedSubTypeResources: null,
   showAllResourceTypes: false,
 };
 
@@ -57,7 +59,7 @@ const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
   resourceTypeFilters: state.resourceTypeFilters,
   flattenedSubTypeResources: flattenedSubTypeResourcesSelector(state),
-  selectedSubTypeResources: selectedSubTypeResourcesSelector(state)
+  selectedSubTypeResources: selectedSubTypeResourcesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);
