@@ -31,8 +31,3 @@ export const supportedResourcesSelector = createSelector(
       [resourceType]: resourceIds,
     }), {}),
 );
-
-export const supportedResourceTypeFiltersSelector = createSelector(
-  [resourceTypeFiltersSelector],
-  (resourceTypeFilters) => resourceTypeFilters,
-);
