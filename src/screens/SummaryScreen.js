@@ -47,7 +47,7 @@ SummaryScreen.propTypes = {
 SummaryScreen.defaultProps = {
 };
 
-const mapStateToProps = (_) => ({
+const mapStateToProps = () => ({
 });
 
 const mapDispatchToProps = {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { shape, instanceOf, string } from 'prop-types';
+import { pick } from 'ramda';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
@@ -7,37 +8,40 @@ import {
 
 import {
   getRecordsTotal,
+  getDataRange,
 } from '../../resources/fhirReader';
 import { supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resources }) => {
-  // const newest =
-
+const ResourceTypeRow = ({ resourceType, resources, resourceIdsGroupedByType }) => {
+  const consolidatedIds = Object.values(resourceIdsGroupedByType[resourceType])
+    .reduce((acc, cur) => {
+      acc.push(...cur);
+      return acc;
+    }, []);
+  const inflatedObjects = pick(consolidatedIds, resources);
+  const [, latestDate] = getDataRange(inflatedObjects, 'Y');
   return (
-  <View style={styles.resourceTypeRow}>
-    <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
-    <Text style={styles.resourceCount}>100</Text>
-    <Text style={styles.resourceLatestDate}>100</Text>
-  </View>
+    <View style={styles.resourceTypeRow}>
+      <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
+      <Text style={styles.resourceCount}>{consolidatedIds.length}</Text>
+      <Text style={styles.resourceLatestDate}>{latestDate}</Text>
+    </View>
   );
 };
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  resources: instanceOf(Set).isRequired,
+  resources: instanceOf(Object).isRequired,
+  resourceIdsGroupedByType: instanceOf(Object).isRequired,
 };
 
 const RecordsSummary = ({
   resourceIdsGroupedByType, resources,
 }) => {
   const recordsTotal = getRecordsTotal(resources);
-  console.log(`resources:`);
-  console.log(resources);
-  console.log(`resourceIdsGroupedByType:`);
-  console.log(resourceIdsGroupedByType);
 
   return (
     <View style={styles.recordSummaryContainer}>
@@ -63,6 +67,7 @@ const RecordsSummary = ({
               key={resourceType}
               resourceType={resourceType}
               resources={resources}
+              resourceIdsGroupedByType={resourceIdsGroupedByType}
             />
           ),
         )}

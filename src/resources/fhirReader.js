@@ -67,7 +67,7 @@ export const processBundle = (acc, resource, depth) => {
   }
 };
 
-export const getDataRange = (resourceSet) => {
+export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
   const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
     const date = cur.meta?.lastUpdated;
     return acc.concat(date ? parseISO(date) : []);
@@ -75,8 +75,8 @@ export const getDataRange = (resourceSet) => {
     .sort(compareAsc);
 
   return [
-    format(timestamps[0], UI_DATE_FORMAT),
-    format(timestamps[timestamps.length - 1], UI_DATE_FORMAT),
+    format(timestamps[0], dateFormat),
+    format(timestamps[timestamps.length - 1], dateFormat),
   ];
 };
 
