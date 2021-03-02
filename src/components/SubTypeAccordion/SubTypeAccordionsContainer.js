@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { string, shape } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
-import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
+import { resourceTypeFiltersSelector } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({
   selectedResourceType,
@@ -44,7 +44,7 @@ SubTypeAccordionsContainer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  resourceTypeFilters: resourceTypeFiltersSelector(state),
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
 });
 

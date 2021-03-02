@@ -9,7 +9,7 @@ import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTyp
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
-import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
+import { resourceTypeFiltersSelector } from '../redux/selectors';
 
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
@@ -25,7 +25,7 @@ const CatalogScreen = () => (
 );
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  resourceTypeFilters: resourceTypeFiltersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
