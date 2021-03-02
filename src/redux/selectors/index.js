@@ -34,13 +34,5 @@ export const supportedResourcesSelector = createSelector(
 
 export const supportedResourceTypeFiltersSelector = createSelector(
   [resourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.entries(resourceTypeFilters)
-  // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
-    // sort by label:
-    .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, resourceIds]) => ({
-      ...acc,
-      [resourceType]: resourceIds,
-    }), {}),
+  (resourceTypeFilters) => resourceTypeFilters,
 );
