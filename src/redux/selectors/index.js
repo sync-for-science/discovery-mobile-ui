@@ -5,7 +5,7 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
+const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -26,21 +26,30 @@ export const supportedResourcesSelector = createSelector(
     .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
     // sort by label:
     .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, resourceIds]) => ({
+    .reduce((acc, [resourceType, subType]) => ({
       ...acc,
-      [resourceType]: resourceIds,
+      [resourceType]: subType,
     }), {}),
 );
 
-export const supportedResourceTypeFiltersSelector = createSelector(
-  [resourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.entries(resourceTypeFilters)
-  // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
-    // sort by label:
-    .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, resourceIds]) => ({
-      ...acc,
-      [resourceType]: resourceIds,
-    }), {}),
+export const flattenedSubTypeResourcesSelector = createSelector(
+  [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
+  (supportedResources, resourceIdsGroupedByType) => {
+    const resourceSubTypes = {};
+    const resourceTypes = Object.keys(supportedResources);
+    resourceTypes.forEach((resourceType) => {
+      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
+      subTypes.forEach((subType) => {
+        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
+      });
+    });
+    return resourceSubTypes;
+  },
+);
+
+export const selectedSubTypeResourcesSelector = createSelector(
+  [resourceIdsGroupedByTypeSelector, selectedResourceTypeSelector],
+  (resourceIdsGroupedByType, selectedResourceType) => (
+    resourceIdsGroupedByType[selectedResourceType]
+  ),
 );
