@@ -64,10 +64,6 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
 };
 
 const preloadResourceTypeFilters = Object.keys(RESOURCE_TYPES)
-  .sort((a, b) => {
-    if (a.toLowerCase() > b.toLowerCase()) return 1;
-    return -1;
-  })
   .reduce((acc, resourceType) => ({
     ...acc,
     [resourceType]: true,
