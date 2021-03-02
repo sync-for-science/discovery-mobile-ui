@@ -74,3 +74,36 @@ export const getPatientAge = (patient) => {
 
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
+
+export const getPatientAgeAtResourceDate = (resource, patientResource) => {
+  const birthDate = patientResource?.birthDate
+  const resourceDate = getRawResourceDate(resource)
+  console.log('birthDate', birthDate)
+  console.log('resourceDate', resourceDate)
+  const ageAtResourceDate = intervalToDuration({
+    start: parse(birthDate, 'yyyy-MM-dd', new Date()),
+    end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
+  })
+
+  return formatDuration(ageAtResourceDate, ageAtResourceDate.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
+}
+
+const getRawResourceDate = (resource) => {
+  switch (resource.resourceType) {
+    case "Condition":
+      return resource.onsetDateTime;
+    case "CarePlan":
+      return resource.period?.start;
+    default:
+      console.warn(`No date found for resource: ${resource}`)
+      return null;
+  }
+}
+
+export const getResourceDate = (resource) => {
+  const rawResourceDate = getRawResourceDate(resource)
+  if (rawResourceDate) {
+    return format(new Date(rawResourceDate), 'MMM d, y h:mm:ssaaa')
+  }
+  return "No Date Found"
+}
