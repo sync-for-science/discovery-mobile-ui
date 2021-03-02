@@ -104,7 +104,6 @@ export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  // resourceTypeFilter,
   createSelectedResourceType,
 );
 
