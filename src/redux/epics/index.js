@@ -16,6 +16,11 @@ export const actionTypes = {
   FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
   REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
+  ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
+  RESOURCE_TYPE_FILTERS: 'RESOURCE_TYPE_FILTERS',
+  TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
+  SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
+  CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -78,10 +83,41 @@ const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
+const resourceTypeFilter = (action$, state$) => action$.pipe(
+  ofType(actionTypes.GROUP_BY_TYPE),
+  map(() => {
+    const resourceTypes = Object.keys(state$.value.resourceIdsGroupedByType);
+    return ({
+      type: actionTypes.RESOURCE_TYPE_FILTERS,
+      payload: resourceTypes,
+    });
+  }),
+);
+
+export const toggleResourceTypeFilter = (resourceType) => ({
+  type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
+  payload: resourceType,
+});
+
+// how to create simply state slice without pipe, ofType, map
+const createSelectedResourceType = (action$) => action$.pipe(
+  ofType(actionTypes.GROUP_BY_TYPE),
+  map(() => ({
+    type: actionTypes.CREATE_RESOURCE_TYPE_SELECTION,
+  })),
+);
+
+export const selectResourceType = (resourceType) => ({
+  type: actionTypes.SELECT_RESOURCE_TYPE,
+  payload: resourceType,
+});
+
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
+  resourceTypeFilter,
+  createSelectedResourceType,
 );
 
 export default createEpicMiddleware({

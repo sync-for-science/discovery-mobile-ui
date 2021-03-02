@@ -2,27 +2,33 @@ import React from 'react';
 import {
   StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
+import { connect } from 'react-redux';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
-import CategorySelector from '../components/CategorySelector/CategorySelector';
-import RecordCardsContainer from '../components/RecordCard/RecordCardsContainer';
+import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
+import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
+import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
 
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <FilterDrawer>
-      <ScrollView style={styles.content}>
+      <ScrollView>
         <TimelineWidget />
-        <CategorySelector />
-        <RecordCardsContainer />
+        <ResourceTypeSelector />
+        <SubTypeAccordionsContainer />
       </ScrollView>
     </FilterDrawer>
   </SafeAreaView>
 );
 
-export default CatalogScreen;
+const mapStateToProps = (state) => ({
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+});
+
+export default connect(mapStateToProps, null)(CatalogScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -32,8 +38,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  content: {
-    width: '90%',
   },
 });

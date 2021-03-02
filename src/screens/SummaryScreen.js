@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape, instanceOf, string,
+  func, shape, string, number,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -17,16 +17,16 @@ import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
 import RESOURCE_TYPES from '../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resourceIds }) => (
+const ResourceTypeRow = ({ resourceType, total }) => (
   <View style={styles.resourceTypeRow}>
     <Text>{RESOURCE_TYPES[resourceType]}</Text>
-    <Text>{resourceIds.size}</Text>
+    <Text>{total}</Text>
   </View>
 );
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  resourceIds: instanceOf(Set).isRequired,
+  total: number.isRequired,
 };
 
 const SummaryScreen = ({
@@ -53,11 +53,11 @@ const SummaryScreen = ({
         <Demographics />
         <View style={styles.resourceTypeContainer}>
           {Object.entries(resourceIdsGroupedByType).map(
-            ([resourceType, resourceIds]) => (
+            ([resourceType]) => (
               <ResourceTypeRow
                 key={resourceType}
                 resourceType={resourceType}
-                resourceIds={resourceIds}
+                total="TBD"
                 resources={resources}
               />
             ),

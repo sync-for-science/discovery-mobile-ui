@@ -1,5 +1,7 @@
 import React from 'react';
-import { node } from 'prop-types';
+import {
+  bool, func, node, shape, string,
+} from 'prop-types';
 import {
   StyleSheet,
   Text,
@@ -8,38 +10,56 @@ import {
 } from 'react-native';
 import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
 
-const FilterDrawer = ({ children }) => {
+import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
+import RESOURCE_TYPES from '../../resources/resourceTypes';
+import Colors from '../../constants/Colors';
+import { toggleResourceTypeFilter } from '../../redux/epics';
+
+const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
+  const label = RESOURCE_TYPES[resourceType];
+  return (
+    <View style={styles.categoryRow}>
+      <Text>{label}</Text>
+      <Switch
+        trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
+        onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
+        value={filterOpen}
+      />
+    </View>
+  );
+};
+
+ResourceTypeFilter.propTypes = {
+  resourceType: string.isRequired,
+  filterOpen: bool.isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
+};
+
+const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
-      <Text style={styles.drawerTitle}>Category Filters</Text>
-      <View style={styles.categoryRow}>
-        <Text>Category</Text>
-        <Switch />
-      </View>
-      <View style={styles.categoryRow}>
-        <Text>Category</Text>
-        <Switch />
-      </View>
-      <View style={styles.categoryRow}>
-        <Text>Category</Text>
-        <Switch />
-      </View>
-      <View style={styles.categoryRow}>
-        <Text>Category</Text>
-        <Switch />
-      </View>
+      <Text style={styles.drawerTitle}>Resource Type Filters</Text>
+      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
+        <ResourceTypeFilter
+          key={resourceType}
+          resourceType={resourceType}
+          filterOpen={value}
+          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+        />
+      ))}
     </View>
   );
 
   return (
     <View style={styles.container}>
       <DrawerLayout
-        drawerWidth={wp('50%')}
+        drawerWidth={wp('60%')}
         keyboardDismissMode="on-drag"
         drawerPosition={DrawerLayout.positions.Left}
         drawerType="front"
-        drawerBackgroundColor="#ddd"
+        drawerBackgroundColor="white"
         renderNavigationView={renderDrawer}
       >
         <View style={styles.childrenContainer}>
@@ -51,10 +71,20 @@ const FilterDrawer = ({ children }) => {
 };
 
 FilterDrawer.propTypes = {
+  resourceTypeFilters: shape({}).isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
-export default FilterDrawer;
+const mapStateToProps = (state) => ({
+  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+});
+
+const mapDispatchToProps = {
+  toggleResourceTypeFilterAction: toggleResourceTypeFilter,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
 
 const styles = StyleSheet.create({
   container: {
@@ -71,8 +101,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   childrenContainer: {
-    flex: 1,
-    alignItems: 'center',
+    width: '100%',
   },
   categoryRow: {
     flexDirection: 'row',
