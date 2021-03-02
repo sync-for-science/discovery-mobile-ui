@@ -17,26 +17,27 @@ import RESOURCE_TYPES from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
 
+const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
+  const label = RESOURCE_TYPES[resourceType];
+  return (
+    <View style={styles.categoryRow}>
+      <Text>{label}</Text>
+      <Switch
+        trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
+        onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
+        value={filterOpen}
+      />
+    </View>
+  );
+};
+
+ResourceTypeFilter.propTypes = {
+  resourceType: string.isRequired,
+  filterOpen: bool.isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
+};
+
 const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
-  const ResourceTypeFilter = ({ resourceType, filterOpen }) => {
-    const label = RESOURCE_TYPES[resourceType];
-    return (
-      <View style={styles.categoryRow}>
-        <Text>{label}</Text>
-        <Switch
-          trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
-          onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
-          value={filterOpen}
-        />
-      </View>
-    );
-  };
-
-  ResourceTypeFilter.propTypes = {
-    resourceType: string.isRequired,
-    filterOpen: bool.isRequired,
-  };
-
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
@@ -45,6 +46,7 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
           key={resourceType}
           resourceType={resourceType}
           filterOpen={value}
+          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
         />
       ))}
     </View>
