@@ -22,7 +22,7 @@ const SubTypeAccordion = ({ subType, resourcesIds }) => {
     </View>
   );
 
-  const renderContent = (item) => item.content.map((resourceId) => <View style={{ backgroundColor: 'white', padding: 10 }}><Text>{resourceId}</Text></View>);
+  const renderContent = (item) => item.content.map((resourceId) => <View key={resourceId} style={{ backgroundColor: 'white', padding: 10 }}><Text>{resourceId}</Text></View>);
 
   return (
     <View style={{ marginBottom: 10 }}>
