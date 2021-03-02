@@ -1,20 +1,30 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, ScrollView } from 'react-native'
+import { connect } from 'react-redux'
 
-const ContentPanel = () => {
+import { supportedResourcesSelector } from '../../redux/selectors';
+import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer'
+
+const ContentPanel = ({resourceIdsGroupedByType}) => {
   return (
-    <View>
-      <Text style={styles.title}>Content Panel</Text>
-    </View>
+    <ScrollView>
+      <View>
+        <Text style={styles.title}>Content Panel</Text>
+      </View>
+      <SubTypeAccordionsContainer showAllResourceTypes/>
+    </ScrollView>
   )
 }
 
-export default ContentPanel
+const mapStateToProps = (state) => ({
+  resourceIdsGroupedByType: supportedResourcesSelector(state),
+})
+
+export default connect(mapStateToProps, null)(ContentPanel);
 
 const styles = StyleSheet.create({
   title: {
     marginTop: 10,
-    marginBottom: 20,
     fontSize: 20,
     textAlign: 'center',
   },

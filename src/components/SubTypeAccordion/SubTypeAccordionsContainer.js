@@ -3,7 +3,7 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { string, shape } from 'prop-types';
+import { string, shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
 import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
@@ -12,11 +12,25 @@ const SubTypeAccordionsContainer = ({
   selectedResourceType,
   resourceTypeFilters,
   resourceIdsGroupedByType,
+  showAllResourceTypes
 }) => {
-  if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
-    return null;
+  let resourceSubTypes = {}
+  if (!showAllResourceTypes) {
+    // show only selectedResourceType
+    if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
+      return null;
+    }
+    resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
+  } else {
+    // show all resourceTypes 
+    const resourceTypes = Object.keys(resourceIdsGroupedByType)
+    resourceTypes.forEach(resourceType => {
+      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType])
+      subTypes.forEach(subType => {
+        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType]
+      })
+    })
   }
-  const resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
 
   return (
     <View style={styles.root}>
@@ -36,10 +50,12 @@ SubTypeAccordionsContainer.propTypes = {
   selectedResourceType: string,
   resourceIdsGroupedByType: shape({}).isRequired,
   resourceTypeFilters: shape({}).isRequired,
+  showAllResourceTypes: bool
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   selectedResourceType: null,
+  showAllResourceTypes: false
 };
 
 const mapStateToProps = (state) => ({
