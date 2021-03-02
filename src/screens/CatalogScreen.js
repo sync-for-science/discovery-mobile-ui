@@ -11,6 +11,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
+import ContentPanel from '../components/ContentPanel/ContentPanel'
 
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
@@ -27,9 +28,7 @@ const CatalogScreen = () => (
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Content Panel</Text>
-      </View>
+      <ContentPanel />
     </Swiper>
   </SafeAreaView>
 );
