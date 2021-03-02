@@ -124,38 +124,28 @@ const styles = StyleSheet.create({
   },
   resourceName: {
     alignSelf: 'flex-start',
-    // borderColor: 'green',
-    // borderWidth: 1,
     flex: 6,
   },
   resourceCount: {
     alignSelf: 'flex-end',
-    // borderColor: 'grey',
-    // borderWidth: 1,
     textAlign: 'right',
     paddingRight: 10,
     flex: 1,
   },
   resourceLatestDate: {
     alignSelf: 'flex-end',
-    // borderColor: 'red',
-    // borderWidth: 1,
     flex: 1,
   },
   resourceCountLabel: {
     color: Colors.secondary,
     fontSize: 10,
     alignSelf: 'flex-end',
-    // borderColor: 'grey',
-    // borderWidth: 1,
     flex: 1,
   },
   resourceLatestDateLabel: {
     color: Colors.secondary,
     fontSize: 10,
     alignSelf: 'flex-end',
-    // borderColor: 'red',
-    // borderWidth: 1,
     flex: 1,
   },
 });
