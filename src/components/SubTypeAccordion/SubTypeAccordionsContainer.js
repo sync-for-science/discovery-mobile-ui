@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { string, shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
-import { supportedResourceTypeFiltersSelector, flattenedSubTypeResourcesSelector } from '../../redux/selectors';
+import { flattenedSubTypeResourcesSelector } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({
   selectedResourceType,
@@ -23,14 +23,6 @@ const SubTypeAccordionsContainer = ({
     }
     resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
   } else {
-    // show all resourceTypes
-    // const resourceTypes = Object.keys(resourceIdsGroupedByType);
-    // resourceTypes.forEach((resourceType) => {
-    //   const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
-    //   subTypes.forEach((subType) => {
-    //     resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
-    //   });
-    // });
     resourceSubTypes = flattenedSubTypes
   }
 
@@ -62,7 +54,7 @@ SubTypeAccordionsContainer.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  resourceTypeFilters: state.resourceTypeFilters,
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
   flattenedSubTypes: flattenedSubTypeResourcesSelector(state)
 });

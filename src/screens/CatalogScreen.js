@@ -2,7 +2,6 @@ import React from 'react';
 import {
   StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
-import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
@@ -10,7 +9,6 @@ import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTyp
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
-import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
 
 const CatalogScreen = () => (
@@ -33,11 +31,7 @@ const CatalogScreen = () => (
   </SafeAreaView>
 );
 
-const mapStateToProps = (state) => ({
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
-});
-
-export default connect(mapStateToProps, null)(CatalogScreen);
+export default CatalogScreen;
 
 const styles = StyleSheet.create({
   safeAreaView: {

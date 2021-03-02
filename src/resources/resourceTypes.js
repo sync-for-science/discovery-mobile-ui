@@ -1,7 +1,6 @@
 const RESOURCE_TYPES = {
   'vital-signs': 'Vital Signs',
   CarePlan: 'Care Plans',
-  Category: 'Categories',
   Condition: 'Conditions',
   DiagnosticReport: 'Diagnostic Report',
   Encounter: 'Encounters',

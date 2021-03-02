@@ -6,8 +6,6 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
-
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
@@ -27,40 +25,29 @@ export const supportedResourcesSelector = createSelector(
     .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
     // sort by label:
     .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1].toLowerCase() < RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1)) // eslint-disable-line max-len
-    .reduce((acc, [resourceType, subtypes]) => {
-      const totalCount = values(subtypes).reduce((count, idSet) => count + idSet.size, 0);
+    .reduce((acc, [resourceType, subTypes]) => {
+      const totalCount = values(subTypes).reduce((count, idSet) => count + idSet.size, 0);
       return acc.concat({
         resourceType,
         totalCount,
-        subtypes,
+        subTypes,
       });
     }, []),
-);
-
-export const supportedResourceTypeFiltersSelector = createSelector(
-  [resourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.entries(resourceTypeFilters)
-    // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
-    // sort by label:
-    .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, filterOpen]) => ({
-      ...acc,
-      [resourceType]: filterOpen,
-    }), {}),
 );
 
 export const flattenedSubTypeResourcesSelector = createSelector(
   [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
   (supportedResources, resourceIdsGroupedByType) => {
     let resourceSubTypes = {}
-    const resourceTypes = Object.keys(supportedResources);
-    resourceTypes.forEach((resourceType) => {
-      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
-      subTypes.forEach((subType) => {
+    supportedResources.forEach((resourceTypeObject) => {
+      const { resourceType, subTypes } = resourceTypeObject
+      const subTypesArray = Object.keys(subTypes);
+      subTypesArray.forEach((subType) => {
         resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
       });
     });
     return resourceSubTypes
   }
 )
+
+
