@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import {
-  bool, func, shape, string,
+  func, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -27,37 +27,34 @@ const CategoryButton = ({ resourceType, selectedResourceType, selectResourceType
 CategoryButton.propTypes = {
   resourceType: string.isRequired,
   selectedResourceType: string,
-  selectResourceTypeAction: func.isRequired
+  selectResourceTypeAction: func.isRequired,
 };
 
 CategoryButton.defaultProps = {
-  selectedResourceType: null
-}
+  selectedResourceType: null,
+};
 
 const ResourceTypeSelector = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
-}) => {
-
-  return (
-    <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
-        if (filterOpen) {
-          return (
-            <CategoryButton
-              key={resourceType}
-              resourceType={resourceType}
-              selectedResourceType={selectedResourceType}
-              selectResourceTypeAction={selectResourceTypeAction}
-            />
-          );
-        }
-        return null;
-      })}
-    </ScrollView>
-  );
-};
+}) => (
+  <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
+    {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
+      if (filterOpen) {
+        return (
+          <CategoryButton
+            key={resourceType}
+            resourceType={resourceType}
+            selectedResourceType={selectedResourceType}
+            selectResourceTypeAction={selectResourceTypeAction}
+          />
+        );
+      }
+      return null;
+    })}
+  </ScrollView>
+);
 
 ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
@@ -66,8 +63,8 @@ ResourceTypeSelector.propTypes = {
 };
 
 ResourceTypeSelector.defaultProps = {
-  selectedResourceType: null
-}
+  selectedResourceType: null,
+};
 
 const mapStateToProps = (state) => ({
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),

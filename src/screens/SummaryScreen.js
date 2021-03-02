@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape, string, number,
+  func, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -26,9 +26,8 @@ const ResourceTypeRow = ({ resourceType, total }) => (
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  total: string,
+  total: string.isRequired,
 };
-
 
 const SummaryScreen = ({
   patientResource, resourceIdsGroupedByType, resources, navigation,
