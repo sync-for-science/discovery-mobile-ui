@@ -6,13 +6,14 @@ import { connect } from 'react-redux';
 import { string, shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
-import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
+import { supportedResourceTypeFiltersSelector, flattenedSubTypeResourcesSelector } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({
   selectedResourceType,
   resourceTypeFilters,
   resourceIdsGroupedByType,
   showAllResourceTypes,
+  flattenedSubTypes,
 }) => {
   let resourceSubTypes = {};
   if (!showAllResourceTypes) {
@@ -23,13 +24,14 @@ const SubTypeAccordionsContainer = ({
     resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
   } else {
     // show all resourceTypes
-    const resourceTypes = Object.keys(resourceIdsGroupedByType);
-    resourceTypes.forEach((resourceType) => {
-      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
-      subTypes.forEach((subType) => {
-        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
-      });
-    });
+    // const resourceTypes = Object.keys(resourceIdsGroupedByType);
+    // resourceTypes.forEach((resourceType) => {
+    //   const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
+    //   subTypes.forEach((subType) => {
+    //     resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
+    //   });
+    // });
+    resourceSubTypes = flattenedSubTypes
   }
 
   return (
@@ -62,6 +64,7 @@ const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
   resourceIdsGroupedByType: state.resourceIdsGroupedByType,
+  flattenedSubTypes: flattenedSubTypeResourcesSelector(state)
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);

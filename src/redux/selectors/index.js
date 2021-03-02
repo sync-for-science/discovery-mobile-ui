@@ -39,8 +39,23 @@ export const supportedResourceTypeFiltersSelector = createSelector(
     .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
     // sort by label:
     .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, resourceIds]) => ({
+    .reduce((acc, [resourceType, filterOpen]) => ({
       ...acc,
-      [resourceType]: resourceIds,
+      [resourceType]: filterOpen,
     }), {}),
 );
+
+export const flattenedSubTypeResourcesSelector = createSelector(
+  [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
+  (supportedResources, resourceIdsGroupedByType) => {
+    let resourceSubTypes = {}
+    const resourceTypes = Object.keys(supportedResources);
+    resourceTypes.forEach((resourceType) => {
+      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
+      subTypes.forEach((subType) => {
+        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
+      });
+    });
+    return resourceSubTypes
+  }
+)
