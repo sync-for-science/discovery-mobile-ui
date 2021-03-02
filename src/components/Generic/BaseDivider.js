@@ -1,8 +1,8 @@
-import { string } from 'prop-types';
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import { string } from 'prop-types';
+
 import Colors from '../../constants/Colors'
-import {string} from 'prop-types'
 
 const BaseDivider = ({ color }) => (
     <View style={{...styles.divider, borderBottomColor: color}} />

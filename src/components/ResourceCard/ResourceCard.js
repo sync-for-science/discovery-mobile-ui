@@ -6,9 +6,9 @@ import { string, shape } from 'prop-types';
 import { Card, CardItem, Button } from 'native-base';
 import { connect } from 'react-redux'
 
+import GenericCardBody from './ResourceCardBody/GenericCardBody'
 import BaseText from '../Generic/BaseText'
 import BaseDivider from '../Generic/BaseDivider'
-import GenericCardBody from '../ResourceCardBody/GenericCardBody'
 import { patientSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes'
 import { getResourceDate } from '../../resources/fhirReader'

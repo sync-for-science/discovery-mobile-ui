@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { connect } from 'react-redux'
 
-import CardBodyField from '../CardBodyField/CardBodyField'
+import CardBodyField from './CardBodyField'
 import {
   // getResources, 
   // getPatient, 
@@ -11,8 +11,8 @@ import {
   // getOnsetDateTime,
   // getAbatementDateTime
   getPatientAgeAtResourceDate
-} from '../../resources/fhirReader'
-import CARD_BODY_LABEL from '../../resources/cardBodyLabel'
+} from '../../../resources/fhirReader'
+import CARD_BODY_LABEL from '../../../resources/cardBodyLabel'
 
 const GenericCardBody = ({resource, patientResource}) => {
   const resourceType = resource.resourceType
