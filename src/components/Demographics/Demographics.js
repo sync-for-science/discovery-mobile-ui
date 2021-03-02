@@ -114,5 +114,5 @@ const styles = StyleSheet.create({
   },
   demographicsData: {
     textTransform: 'capitalize',
-  }
+  },
 });
