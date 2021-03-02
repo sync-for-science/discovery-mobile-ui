@@ -5,7 +5,7 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
+export const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
