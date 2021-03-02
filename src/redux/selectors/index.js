@@ -6,7 +6,7 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const selectedResourceTypeSelector = (state) => state.selectedResourceType
+const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -48,13 +48,13 @@ export const flattenedSubTypeResourcesSelector = createSelector(
         resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
       });
     });
-    return resourceSubTypes
-  }
-)
+    return resourceSubTypes;
+  },
+);
 
 export const selectedSubTypeResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector, selectedResourceTypeSelector],
-  (resourceIdsGroupedByType, selectedResourceType) => (resourceIdsGroupedByType[selectedResourceType])
-)
-
-
+  (resourceIdsGroupedByType, selectedResourceType) => (
+    resourceIdsGroupedByType[selectedResourceType]
+  ),
+);
