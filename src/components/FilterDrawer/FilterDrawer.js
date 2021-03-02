@@ -12,7 +12,7 @@ import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
-import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
+import { supportedResourcesSelector, supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
@@ -37,15 +37,17 @@ ResourceTypeFilter.propTypes = {
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
-const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
+const FilterDrawer = ({
+  supportedResources, resourceTypeFilters, toggleResourceTypeFilterAction, children,
+}) => {
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
+      {Object.keys(supportedResources).map((resourceType) => (
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
-          filterOpen={value}
+          filterOpen={resourceTypeFilters[resourceType]}
           toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
         />
       ))}
@@ -71,12 +73,14 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
 };
 
 FilterDrawer.propTypes = {
+  supportedResources: shape({}).isRequired,
   resourceTypeFilters: shape({}).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  supportedResources: supportedResourcesSelector(state),
   resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
 });
 
