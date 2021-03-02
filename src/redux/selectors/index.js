@@ -1,4 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
+import { values } from 'ramda';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
@@ -26,10 +27,14 @@ export const supportedResourcesSelector = createSelector(
     .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
     // sort by label:
     .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1].toLowerCase() < RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1)) // eslint-disable-line max-len
-    .reduce((acc, [resourceType, subtypes]) => acc.concat({
-      resourceType,
-      subtypes,
-    }), []),
+    .reduce((acc, [resourceType, subtypes]) => {
+      const totalCount = values(subtypes).reduce((count, idSet) => count + idSet.size, 0);
+      return acc.concat({
+        resourceType,
+        totalCount,
+        subtypes,
+      });
+    }, []),
 );
 
 export const supportedResourceTypeFiltersSelector = createSelector(

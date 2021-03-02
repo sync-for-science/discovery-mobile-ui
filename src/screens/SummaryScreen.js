@@ -52,11 +52,11 @@ const SummaryScreen = ({
         </View>
         <Demographics />
         <View style={styles.resourceTypeContainer}>
-          {sortedResourceTypes.map(({ resourceType }) => (
+          {sortedResourceTypes.map(({ resourceType, totalCount }) => (
             <ResourceTypeRow
               key={resourceType}
               resourceType={resourceType}
-              total="TBD"
+              total={totalCount}
               resources={resources}
             />
           ))}
