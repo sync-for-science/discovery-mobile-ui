@@ -46,7 +46,7 @@ const Demographics = ({
   // eslint-disable-next-line react/prop-types
   const Item = ({ title }) => (
     <View style={styles.demographicsRow}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.demographicsData}>{title}</Text>
     </View>
   );
 
@@ -112,4 +112,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.secondary,
     borderBottomWidth: 1,
   },
+  demographicsData: {
+    textTransform: 'capitalize',
+  }
 });
