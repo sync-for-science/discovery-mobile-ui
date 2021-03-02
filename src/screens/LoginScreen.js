@@ -77,14 +77,13 @@ const styles = StyleSheet.create({
   },
   discoveryContainer: {
     justifyContent: 'space-between',
-    height: '75%',
   },
   slogo: {
     height: 70,
-    marginVertical: 50,
+    marginVertical: 32,
   },
   logoContainer: {
-    marginTop: 100,
+    marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },

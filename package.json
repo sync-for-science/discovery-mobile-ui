@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.10",
+    "@react-native-picker/picker": "^1.9.11",
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
@@ -30,6 +31,7 @@
     "fhir-kit-client": "^1.6.2",
     "native-base": "^2.15.2",
     "prop-types": "^15.7.2",
+    "ramda": "^0.27.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-40.0.1.tar.gz",
