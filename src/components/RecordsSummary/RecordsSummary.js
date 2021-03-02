@@ -13,21 +13,21 @@ import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resourceIds }) => {
+const ResourceTypeRow = ({ resourceType, resources }) => {
   // const newest =
 
   return (
   <View style={styles.resourceTypeRow}>
     <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
-    <Text style={styles.resourceCount}>{resourceIds.size}</Text>
-    <Text style={styles.resourceLatestDate}>{resourceIds.size}</Text>
+    <Text style={styles.resourceCount}>100</Text>
+    <Text style={styles.resourceLatestDate}>100</Text>
   </View>
   );
 };
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  resourceIds: instanceOf(Set).isRequired,
+  resources: instanceOf(Set).isRequired,
 };
 
 const RecordsSummary = ({
@@ -58,11 +58,10 @@ const RecordsSummary = ({
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
         {Object.entries(resourceIdsGroupedByType).map(
-          ([resourceType, resourceIds]) => (
+          ([resourceType]) => (
             <ResourceTypeRow
               key={resourceType}
               resourceType={resourceType}
-              resourceIds={resourceIds}
               resources={resources}
             />
           ),
