@@ -26,8 +26,8 @@ export const supportedResourcesSelector = createSelector(
     .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
     // sort by label:
     .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1] < RESOURCE_TYPES[t2]) ? -1 : 1))
-    .reduce((acc, [resourceType, resourceIds]) => ({
+    .reduce((acc, [resourceType, subtype]) => ({
       ...acc,
-      [resourceType]: resourceIds,
+      [resourceType]: subtype,
     }), {}),
 );
