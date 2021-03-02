@@ -17,7 +17,6 @@ export const actionTypes = {
   REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
-  RESOURCE_TYPE_FILTERS: 'RESOURCE_TYPE_FILTERS',
   TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
   SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
   CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
@@ -83,17 +82,6 @@ const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
-const resourceTypeFilter = (action$, state$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => {
-    const resourceTypes = Object.keys(state$.value.resourceIdsGroupedByType);
-    return ({
-      type: actionTypes.RESOURCE_TYPE_FILTERS,
-      payload: resourceTypes,
-    });
-  }),
-);
-
 export const toggleResourceTypeFilter = (resourceType) => ({
   type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
   payload: resourceType,
@@ -116,7 +104,7 @@ export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  resourceTypeFilter,
+  // resourceTypeFilter,
   createSelectedResourceType,
 );
 

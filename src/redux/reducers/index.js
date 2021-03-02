@@ -1,5 +1,6 @@
 import { actionTypes } from '../epics';
 import { processBundle } from '../../resources/fhirReader';
+import RESOURCE_TYPES from '../../resources/resourceTypes'
 
 const preloadedResources = {};
 
@@ -62,20 +63,18 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-const preloadResourceTypeFilters = {};
+
+const preloadResourceTypeFilters = Object.keys(RESOURCE_TYPES)
+  .sort((a, b) => {if (a.toLowerCase() > b.toLowerCase()) return 1; if(b.toLowerCase() > a.toLowerCase()) return -1})
+  .reduce((acc, resourceType) => ({
+  ...acc,
+  [resourceType]: true
+}), {})
+
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadedResourceIdsGroupedByType;
-    }
-    case actionTypes.RESOURCE_TYPE_FILTERS: {
-      const resourceTypeFilters = {};
-      action.payload.forEach(
-        (resourceType) => {
-          resourceTypeFilters[resourceType] = true;
-        },
-      );
-      return resourceTypeFilters;
+      return preloadResourceTypeFilters;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
