@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, ScrollView, View, Text,
+  StyleSheet, SafeAreaView, StatusBar, ScrollView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import Swiper from 'react-native-swiper';
@@ -11,7 +11,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
-import ContentPanel from '../components/ContentPanel/ContentPanel'
+import ContentPanel from '../components/ContentPanel/ContentPanel';
 
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>

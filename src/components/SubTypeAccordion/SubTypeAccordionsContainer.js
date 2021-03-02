@@ -12,9 +12,9 @@ const SubTypeAccordionsContainer = ({
   selectedResourceType,
   resourceTypeFilters,
   resourceIdsGroupedByType,
-  showAllResourceTypes
+  showAllResourceTypes,
 }) => {
-  let resourceSubTypes = {}
+  let resourceSubTypes = {};
   if (!showAllResourceTypes) {
     // show only selectedResourceType
     if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
@@ -22,14 +22,14 @@ const SubTypeAccordionsContainer = ({
     }
     resourceSubTypes = resourceIdsGroupedByType[selectedResourceType];
   } else {
-    // show all resourceTypes 
-    const resourceTypes = Object.keys(resourceIdsGroupedByType)
-    resourceTypes.forEach(resourceType => {
-      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType])
-      subTypes.forEach(subType => {
-        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType]
-      })
-    })
+    // show all resourceTypes
+    const resourceTypes = Object.keys(resourceIdsGroupedByType);
+    resourceTypes.forEach((resourceType) => {
+      const subTypes = Object.keys(resourceIdsGroupedByType[resourceType]);
+      subTypes.forEach((subType) => {
+        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
+      });
+    });
   }
 
   return (
@@ -50,12 +50,12 @@ SubTypeAccordionsContainer.propTypes = {
   selectedResourceType: string,
   resourceIdsGroupedByType: shape({}).isRequired,
   resourceTypeFilters: shape({}).isRequired,
-  showAllResourceTypes: bool
+  showAllResourceTypes: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   selectedResourceType: null,
-  showAllResourceTypes: false
+  showAllResourceTypes: false,
 };
 
 const mapStateToProps = (state) => ({
