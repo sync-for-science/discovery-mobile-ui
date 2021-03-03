@@ -11,8 +11,7 @@ import {
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
 const EncounterCardBody = ({ resource, patientResource }) => {
-  const { resourceType } = resource;
-  const { subType } = resource;
+  const { type, subType } = resource;
 
   return (
     <>
@@ -23,7 +22,7 @@ const EncounterCardBody = ({ resource, patientResource }) => {
       />
       <CardBodyField
         dependency={subType}
-        label={CARD_BODY_LABEL[resourceType]}
+        label={CARD_BODY_LABEL[type]}
         value={subType}
         bold
       />

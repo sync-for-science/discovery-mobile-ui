@@ -49,7 +49,7 @@ const selectCardBody = (resource, patientResource) => {
     // case 'Vital Signs':
     //   return <VitalSignCardBody fieldsData={fieldsData} />;
     default:
-      console.warn(`Unassigned CardBody rendered for resource: ${JSON.stringify(resource, null, 2)}`) // eslint-disable-line no-console
+      console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`) // eslint-disable-line no-console
       return <UnassignedCardBody resource={resource} patientResource={patientResource}/>;
   }
 };
