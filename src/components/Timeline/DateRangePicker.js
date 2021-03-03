@@ -1,5 +1,5 @@
 import React from 'react';
-import { func, shape, string } from 'prop-types';
+import { func, instanceOf, shape } from 'prop-types';
 import {
   SafeAreaView, StyleSheet,
 } from 'react-native';
@@ -42,12 +42,12 @@ const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter
 
 DateRangePicker.propTypes = {
   timelineProps: shape({
-    minimumDate: string.isRequired,
-    maximumDate: string.isRequired,
+    minimumDate: instanceOf(Date),
+    maximumDate: instanceOf(Date),
   }).isRequired,
   dateRangeFilter: shape({
-    // dateRangeStart: string.isRequired,
-    // dateRangeEnd: string.isRequired,
+    dateRangeStart: instanceOf(Date),
+    dateRangeEnd: instanceOf(Date),
   }).isRequired,
   updateDateRangeFilter: func.isRequired,
 };
