@@ -68,9 +68,9 @@ const RecordsSummary = ({
           <ResourceTypeRow
             key={resourceType}
             resourceType={resourceType}
+            totalCount={totalCount}
             resources={resources}
             resourceIdsGroupedByType={resourceIdsGroupedByType}
-            totalCount={totalCount}
           />
         ))}
       </View>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   recordsHeaderTotal: {
     color: 'white',
     fontSize: 12,
-    padding: 9, // FIXME, not the right way to align
+    padding: 9,
   },
   resourceTypeContainer: {
     alignItems: 'center',
