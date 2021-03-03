@@ -18,7 +18,7 @@ import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { getResourceDate } from '../../resources/fhirReader';
 
 const selectCardBody = (resource, patientResource) => {
-  switch (resource.resourceType) {
+  switch (resource.type) {
     case 'Condition':
     case 'Procedure':
     case 'Document References': // legacy name from webUI, rename to correct resourceType
@@ -49,14 +49,14 @@ const selectCardBody = (resource, patientResource) => {
     // case 'Vital Signs':
     //   return <VitalSignCardBody fieldsData={fieldsData} />;
     default:
-      console.warn(`Unassigned CardBody rendered for resource: ${resource}`) // eslint-disable-line no-console
+      console.warn(`Unassigned CardBody rendered for resource: ${JSON.stringify(resource, null, 2)}`) // eslint-disable-line no-console
       return <UnassignedCardBody resource={resource} patientResource={patientResource}/>;
   }
 };
 
 const ResourceCard = ({ resourceId, resources, patientResource }) => {
   const resource = resources[resourceId];
-  const resourceType = RESOURCE_TYPES[resource?.resourceType];
+  const resourceType = RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
   return (
     <Card>

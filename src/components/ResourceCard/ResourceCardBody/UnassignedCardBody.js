@@ -16,8 +16,7 @@ import {
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
 const UnassignedCardBody = ({ resource, patientResource }) => {
-  const { resourceType } = resource;
-  const { subType } = resource;
+  const { type, subType } = resource;
 
   return (
     <>
@@ -28,7 +27,7 @@ const UnassignedCardBody = ({ resource, patientResource }) => {
       />
       <CardBodyField
         dependency={subType}
-        label={resourceType}
+        label={type}
         value={subType}
         bold
       />
