@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { string, func, instanceOf } from 'prop-types';
 import {
   Text, SafeAreaView, StyleSheet,
@@ -8,12 +8,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const DatePicker = ({
   label, activeDate, minimumDate, maximumDate, onDateSelect,
 }) => {
-  const [date, setDate] = useState(new Date(activeDate));
-
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate || activeDate;
     // (Platform.OS === 'ios');
-    setDate(currentDate);
     onDateSelect(currentDate);
   };
 
@@ -23,7 +20,7 @@ const DatePicker = ({
       <DateTimePicker
         style={styles.picker}
         mode="date"
-        value={date}
+        value={activeDate}
         minimumDate={minimumDate}
         maximumDate={maximumDate}
         display="default"
