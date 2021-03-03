@@ -51,23 +51,23 @@ const getTimelineDate = (resource) => {
   if (resource.effectiveDateTime) {
     // Observations
     return new Date(resource.effectiveDateTime);
-  } else if (resource.occurrenceDateTime) {
+  } if (resource.occurrenceDateTime) {
     // Immunization
-    return new Date(resource.occurrenceDateTime)
-  } else if (resource.period?.start) {
+    return new Date(resource.occurrenceDateTime);
+  } if (resource.period?.start) {
     // CarePlan, Encounter
-    return new Date(resource.period.start)
-  } else if (resource.onsetDateTime) {
+    return new Date(resource.period.start);
+  } if (resource.onsetDateTime) {
     // Condition
-    return new Date(resource.onsetDateTime)
-  } else if (resource.performedPeriod?.start) {
+    return new Date(resource.onsetDateTime);
+  } if (resource.performedPeriod?.start) {
     // Procedure
-    return new Date(resource.performedPeriod.start)
-  } else if (resource.authoredOn) {
+    return new Date(resource.performedPeriod.start);
+  } if (resource.authoredOn) {
     // MedicationRequest
-    return new Date(resource.authoredOn)
+    return new Date(resource.authoredOn);
   }
-  console.warn(`No date found for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`)
+  console.warn(`No date found for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`);
   return null;
 };
 
