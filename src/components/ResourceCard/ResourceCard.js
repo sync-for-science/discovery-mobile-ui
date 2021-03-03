@@ -7,6 +7,7 @@ import { Card, CardItem, Button } from 'native-base';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
+import MedicationCardBody from './ResourceCardBody/MedicationCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -16,14 +17,14 @@ import { getResourceDate } from '../../resources/fhirReader';
 const selectCardBody = (resource, patientResource) => {
   switch (resource.resourceType) {
     case 'Condition':
-    case 'Document References':
-    case 'Meds Administration':
+    case 'Document References': // legacy from web, rename to correct resourceType
+    case 'Meds Administration': // legacy from web, rename to correct resourceType
     case 'Procedure':
-    case 'Procedure Requests':
+    case 'Procedure Requests': // legacy from web, rename to correct resourceType
       return <GenericCardBody resource={resource} patientResource={patientResource} />;
-    // case 'Meds Dispensed':
-    // case 'Meds Requested':
-    //   return <MedicationCardBody fieldsData={fieldsData} />;
+    case 'Meds Dispensed':
+    case 'MedicationRequest':
+      return <MedicationCardBody resource={resource} patientResource={patientResource}/>;
     // case 'Benefits':
     //   return <BenefitCardBody fieldsData={fieldsData} />;
     // case 'Claims':

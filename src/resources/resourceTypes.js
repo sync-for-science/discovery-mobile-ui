@@ -5,7 +5,7 @@ const RESOURCE_TYPES = {
   DiagnosticReport: 'Diagnostic Report',
   Encounter: 'Encounters',
   Immunization: 'Immunizations',
-  MedicationRequest: 'Medication Requests',
+  MedicationRequest: 'Med Requests',
   Procedure: 'Procedures',
   laboratory: 'Lab Results',
 };

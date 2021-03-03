@@ -92,6 +92,10 @@ const getRawResourceDate = (resource) => {
       return resource.onsetDateTime;
     case 'CarePlan':
       return resource.period?.start;
+    case 'Procedure':
+      return resource.performedPeriod?.start;
+    case 'MedicationRequest':
+      return resource.authoredOn;
     default:
       console.warn(`No date found for resource: ${resource}`); // eslint-disable-line no-console
       return null;
