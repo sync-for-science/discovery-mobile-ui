@@ -14,12 +14,12 @@ const CardBodyField = ({
     return (
       <Grid style={styles.root}>
         <Row>
-          <Col size={1}>
+          <Col size={40}>
             <BaseText>
               {label}
             </BaseText>
           </Col>
-          <Col size={2}>
+          <Col size={60}>
             <BaseText variant={variantStyle}>
               {value}
             </BaseText>

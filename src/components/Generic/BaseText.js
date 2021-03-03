@@ -5,7 +5,7 @@ import { shape, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const BaseText = ({ variant, style, children }) => {
-  const formattedChildren = variant === 'header' ? children.toUpperCase() : children;
+  const formattedChildren = variant === 'header' ? children?.toUpperCase() : children;
 
   return (
     <Text style={{ ...styles.base, ...styles[variant], ...style }}>{formattedChildren}</Text>
