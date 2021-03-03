@@ -50,9 +50,7 @@ const RecordsSummary = ({
           Records
         </Text>
         <Text style={styles.recordsHeaderTotal}>
-          {recordsTotal}
-          {' '}
-          Total
+          {`${recordsTotal} Total`}
         </Text>
       </View>
       <View style={styles.resourceTypeContainer}>

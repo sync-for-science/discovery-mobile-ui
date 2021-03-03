@@ -26,11 +26,7 @@ const UserInfo = ({
       <View style={styles.dataRange}>
         <Text style={styles.dataRangeLabel}>Data range</Text>
         <Text style={styles.dataRangeValue}>
-          {dataStart}
-          {' '}
-          -
-          {' '}
-          {dataEnd}
+          {`${dataStart} - ${dataEnd}`}
         </Text>
       </View>
     </View>
