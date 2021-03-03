@@ -18,9 +18,9 @@ import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
-  resourceType, resources, resourceIdsGroupedByType, totalCount,
+  resourceType, total, resources, subtypes,
 }) => {
-  const consolidatedIds = Object.values(resourceIdsGroupedByType[resourceType])
+  const consolidatedIds = Object.values(subtypes)
     .reduce((acc, cur) => {
       acc.push(...cur);
       return acc;
@@ -30,7 +30,7 @@ const ResourceTypeRow = ({
   return (
     <View style={styles.resourceTypeRow}>
       <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text style={styles.resourceCount}>{totalCount}</Text>
+      <Text style={styles.resourceCount}>{total}</Text>
       <Text style={styles.resourceLatestDate}>{latestDate}</Text>
     </View>
   );
@@ -39,12 +39,12 @@ const ResourceTypeRow = ({
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
   resources: shape({}).isRequired,
-  resourceIdsGroupedByType: shape({}).isRequired,
-  totalCount: number.isRequired,
+  subtypes: shape({}).isRequired,
+  total: number.isRequired,
 };
 
 const RecordsSummary = ({
-  resourceIdsGroupedByType, resources, sortedResourceTypes,
+  resources, sortedResourceTypes,
 }) => {
   const recordsTotal = getRecordsTotal(resources);
 
@@ -64,13 +64,13 @@ const RecordsSummary = ({
           <Text style={styles.resourceCountLabel}>count</Text>
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
-        {sortedResourceTypes.map(({ resourceType, totalCount }) => (
+        {sortedResourceTypes.map(({ resourceType, totalCount, subtypes }) => (
           <ResourceTypeRow
             key={resourceType}
             resourceType={resourceType}
-            totalCount={totalCount}
+            total={totalCount}
+            subtypes={subtypes}
             resources={resources}
-            resourceIdsGroupedByType={resourceIdsGroupedByType}
           />
         ))}
       </View>
@@ -79,19 +79,16 @@ const RecordsSummary = ({
 };
 
 RecordsSummary.propTypes = {
-  resourceIdsGroupedByType: shape({}),
   resources: shape({}),
   sortedResourceTypes: arrayOf(shape({})).isRequired,
 };
 
 RecordsSummary.defaultProps = {
-  resourceIdsGroupedByType: {},
   resources: null,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  resourceIdsGroupedByType: supportedResourcesSelector(state),
   sortedResourceTypes: supportedResourcesSelector(state),
 });
 
