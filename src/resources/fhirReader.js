@@ -77,7 +77,7 @@ export const getPatientAge = (patient) => {
 
 export const getPatientAgeAtResourceDate = (resource, patientResource) => {
   const birthDate = patientResource?.birthDate;
-  const resourceDate = format(new Date(getRawResourceDate(resource)), 'yyyy-MM-dd');
+  const resourceDate = format(resource.timelineDate, 'yyyy-MM-dd');
   const ageAtResourceDate = intervalToDuration({
     start: parse(birthDate, 'yyyy-MM-dd', new Date()),
     end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
@@ -86,32 +86,9 @@ export const getPatientAgeAtResourceDate = (resource, patientResource) => {
   return formatDuration(ageAtResourceDate, { format: ['years', 'months'], delimiter: ', ' });
 };
 
-const getRawResourceDate = (resource) => {
-  switch (resource.resourceType) {
-    case 'Condition':
-      return resource.onsetDateTime;
-    case 'CarePlan':
-    case 'Encounter':
-      return resource.period?.start;
-    case 'Procedure':
-      return resource.performedPeriod?.start;
-    case 'MedicationRequest':
-      return resource.authoredOn;
-    case 'Immunization':
-      return resource.occurrenceDateTime;
-    default:
-      console.warn(`No date found for resource: ${resource}`); // eslint-disable-line no-console
-      return null;
-  }
-};
-
-export const getResourceDate = (resource) => {
-  const rawResourceDate = getRawResourceDate(resource);
-  if (rawResourceDate) {
-    return format(new Date(rawResourceDate), 'MMM d, y h:mm:ssaaa');
-  }
-  return 'No Date Found';
-};
+export const getResourceDate = (resource) => (
+  resource.timelineDate ? formatDate(resource.timelineDate, true) : "No Date Found"
+)
 
 const formatDate = (date, includeTime = false) => {
   const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : 'MMM d, y'
