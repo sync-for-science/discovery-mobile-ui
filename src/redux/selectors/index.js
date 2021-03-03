@@ -40,9 +40,9 @@ export const supportedResourcesSelector = createSelector(
 export const flattenedSubTypeResourcesSelector = createSelector(
   [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
   (supportedResources, resourceIdsGroupedByType) => {
-    let resourceSubTypes = {}
+    const resourceSubTypes = {};
     supportedResources.forEach((resourceTypeObject) => {
-      const { resourceType, subTypes } = resourceTypeObject
+      const { resourceType, subTypes } = resourceTypeObject;
       const subTypesArray = Object.keys(subTypes);
       subTypesArray.forEach((subType) => {
         resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
