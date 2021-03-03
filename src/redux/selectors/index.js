@@ -1,5 +1,6 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
+import { compareAsc } from 'date-fns';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
@@ -62,7 +63,7 @@ export const selectedSubTypeResourcesSelector = createSelector(
 );
 
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
-const sortByDate = () => ({ timelineDate: t1 }, { timelineDate: t2 }) => (t1.toISOString() < t2.toISOString() ? -1 : 1);
+const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
 const timelineItemSelector = createSelector(
   [resourcesSelector],
