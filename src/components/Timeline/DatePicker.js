@@ -17,8 +17,6 @@ const DatePicker = ({
     onDateSelect(currentDate);
   };
 
-  console.info('minimumDate: ', minimumDate);
-  console.info('maximumDate: ', maximumDate);
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -45,7 +43,7 @@ DatePicker.propTypes = {
   onDateSelect: func.isRequired,
 };
 
-export default DatePicker;
+export default React.memo(DatePicker);
 
 const styles = StyleSheet.create({
   container: {
