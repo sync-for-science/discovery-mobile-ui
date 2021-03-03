@@ -1,8 +1,7 @@
-import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { connect } from 'react-redux'
+import React from 'react';
 
-import CardBodyField from './CardBodyField'
+import { shape } from 'prop-types';
+import CardBodyField from './CardBodyField';
 import {
   getPatientAgeAtResourceDate,
   getReason,
@@ -12,17 +11,17 @@ import {
   getAssertedDate,
   getStatus,
   getClinicalStatus,
-  getVerficationStatus
-} from '../../../resources/fhirReader'
-import CARD_BODY_LABEL from '../../../resources/cardBodyLabel'
+  getVerficationStatus,
+} from '../../../resources/fhirReader';
+import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const GenericCardBody = ({resource, patientResource}) => {
-  const resourceType = resource.resourceType
-  const subType = resource.subType
+const GenericCardBody = ({ resource, patientResource }) => {
+  const { resourceType } = resource;
+  const { subType } = resource;
 
   return (
-    <View>
-      <CardBodyField 
+    <>
+      <CardBodyField
         dependency={getPatientAgeAtResourceDate(resource, patientResource)}
         label={CARD_BODY_LABEL.age}
         value={getPatientAgeAtResourceDate(resource, patientResource)}
@@ -78,14 +77,13 @@ const GenericCardBody = ({resource, patientResource}) => {
         label={CARD_BODY_LABEL.verificationStatus}
         value={getVerficationStatus(resource)}
       />
-    </View>
-  )
-}
+    </>
+  );
+};
 
-const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
-});
+GenericCardBody.propTypes = {
+  resource: shape({}).isRequired,
+  patientResource: shape({}).isRequired,
+};
 
-export default connect(mapStateToProps, null)(GenericCardBody);
-
-const styles = StyleSheet.create({})
+export default GenericCardBody;

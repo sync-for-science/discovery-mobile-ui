@@ -76,51 +76,55 @@ export const getPatientAge = (patient) => {
 };
 
 export const getPatientAgeAtResourceDate = (resource, patientResource) => {
-  const birthDate = patientResource?.birthDate
-  const resourceDate = format(new Date(getRawResourceDate(resource)), 'yyyy-MM-dd')
+  const birthDate = patientResource?.birthDate;
+  const resourceDate = format(new Date(getRawResourceDate(resource)), 'yyyy-MM-dd');
   const ageAtResourceDate = intervalToDuration({
     start: parse(birthDate, 'yyyy-MM-dd', new Date()),
     end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
-  })
-  
+  });
+
   return formatDuration(ageAtResourceDate, { format: ['years', 'months'], delimiter: ', ' });
-}
+};
 
 const getRawResourceDate = (resource) => {
   switch (resource.resourceType) {
-    case "Condition":
+    case 'Condition':
       return resource.onsetDateTime;
-    case "CarePlan":
+    case 'CarePlan':
       return resource.period?.start;
     default:
-      console.warn(`No date found for resource: ${resource}`)
+      console.warn(`No date found for resource: ${resource}`); // eslint-disable-line no-console
       return null;
   }
-}
+};
 
 export const getResourceDate = (resource) => {
-  const rawResourceDate = getRawResourceDate(resource)
+  const rawResourceDate = getRawResourceDate(resource);
   if (rawResourceDate) {
-    return format(new Date(rawResourceDate), 'MMM d, y h:mm:ssaaa')
+    return format(new Date(rawResourceDate), 'MMM d, y h:mm:ssaaa');
   }
-  return "No Date Found"
-}
+  return 'No Date Found';
+};
 
-const formatDate = (date) => date ? format(new Date(date), 'MMM d, y') : null
-const titleCase = (text) => text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null
+const formatDate = (date) => (date ? format(new Date(date), 'MMM d, y') : null);
+const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
 
-export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display
+export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display;
 
-export const getOnsetDateTime = (resource) => formatDate(resource.onsetDateTime)
+export const getOnsetDateTime = (resource) => formatDate(resource.onsetDateTime);
 
-export const getAbatementDateTime = (resource) => formatDate(resource.abatementDateTime)
+export const getAbatementDateTime = (resource) => formatDate(resource.abatementDateTime);
 
-export const getOrderedBy = (resource) => titleCase(resource.orderer?.display)
+export const getOrderedBy = (resource) => titleCase(resource.orderer?.display);
 
-export const getAssertedDate = (resource) => formatDate(resource.assertedDate)
+export const getAssertedDate = (resource) => formatDate(resource.assertedDate);
 
-export const getStatus = (resource) => titleCase(resource.status)
+export const getStatus = (resource) => titleCase(resource.status);
 
-export const getClinicalStatus = (resource) => titleCase(resource.clinicalStatus?.coding?.[0]?.code)
+export const getClinicalStatus = (resource) => (
+  titleCase(resource.clinicalStatus?.coding?.[0]?.code)
+);
 
-export const getVerficationStatus = (resource) => titleCase(resource.verificationStatus?.coding?.[0]?.code)
+export const getVerficationStatus = (resource) => (
+  titleCase(resource.verificationStatus?.coding?.[0]?.code)
+);

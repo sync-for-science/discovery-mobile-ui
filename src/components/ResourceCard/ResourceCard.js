@@ -4,14 +4,14 @@ import {
 } from 'react-native';
 import { string, shape } from 'prop-types';
 import { Card, CardItem, Button } from 'native-base';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
-import GenericCardBody from './ResourceCardBody/GenericCardBody'
-import BaseText from '../Generic/BaseText'
-import BaseDivider from '../Generic/BaseDivider'
+import GenericCardBody from './ResourceCardBody/GenericCardBody';
+import BaseText from '../Generic/BaseText';
+import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
-import RESOURCE_TYPES from '../../resources/resourceTypes'
-import { getResourceDate } from '../../resources/fhirReader'
+import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { getResourceDate } from '../../resources/fhirReader';
 
 const selectCardBody = (resource, patientResource) => {
   switch (resource.resourceType) {
@@ -20,7 +20,7 @@ const selectCardBody = (resource, patientResource) => {
     case 'Meds Administration':
     case 'Procedure':
     case 'Procedure Requests':
-      return <GenericCardBody resource={resource} patientResource={patientResource}/>;
+      return <GenericCardBody resource={resource} patientResource={patientResource} />;
     // case 'Meds Dispensed':
     // case 'Meds Requested':
     //   return <MedicationCardBody fieldsData={fieldsData} />;
@@ -47,21 +47,19 @@ const selectCardBody = (resource, patientResource) => {
     default:
       return (<View><Text>Card Body Not Implemented Yet</Text></View>);
   }
-}
+};
 
-const ResourceCard = ({resourceId, resources, patientResource}) => {
-  const resource = resources[resourceId]
-  const resourceType = RESOURCE_TYPES[resource?.resourceType]
-  const resourceDate = getResourceDate(resource)
-  console.log('resource', resource)
-  console.log('resourceDate', resourceDate)
+const ResourceCard = ({ resourceId, resources, patientResource }) => {
+  const resource = resources[resourceId];
+  const resourceType = RESOURCE_TYPES[resource?.resourceType];
+  const resourceDate = getResourceDate(resource);
   return (
     <Card>
       <CardItem style={styles.header}>
-        <BaseText variant='header'>{resourceType}</BaseText>
+        <BaseText variant="header">{resourceType}</BaseText>
         <BaseText>{resourceDate}</BaseText>
       </CardItem>
-      <CardItem >
+      <CardItem>
         <View style={styles.cardBody}>
           {selectCardBody(resource, patientResource)}
         </View>
@@ -73,35 +71,36 @@ const ResourceCard = ({resourceId, resources, patientResource}) => {
         </Button>
       </View>
     </Card>
-  )
-}
+  );
+};
 
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
-  resources: shape({}).isRequired
-}
+  resources: shape({}).isRequired,
+  patientResource: shape({}).isRequired,
+};
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  patientResource: patientSelector(state)
-})
+  patientResource: patientSelector(state),
+});
 
 export default connect(mapStateToProps, null)(ResourceCard);
 
 const styles = StyleSheet.create({
   cardSelected: {
-    backgroundColor: 'blue'
+    backgroundColor: 'blue',
   },
   header: {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   button: {
-    flex: 1, 
-    flexDirection: 'row', 
-    justifyContent: 'flex-end'
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
   cardBody: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
