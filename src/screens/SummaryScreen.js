@@ -13,6 +13,7 @@ import { clearPatientData } from '../features/patient/patientDataSlice';
 import Demographics from '../components/Demographics/Demographics';
 import UserInfo from '../components/UserInfo/UserInfo';
 import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
+import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 
 const SummaryScreen = ({
   navigation, clearAuthAction, clearPatientDataAction,
@@ -32,6 +33,7 @@ const SummaryScreen = ({
         </View>
         <Demographics />
         <RecordsSummary />
+        <ProvidersSummary />
         <Button title="Logout" onPress={handleLogout} />
       </ScrollView>
     </SafeAreaView>
