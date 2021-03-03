@@ -91,6 +91,7 @@ const getRawResourceDate = (resource) => {
     case 'Condition':
       return resource.onsetDateTime;
     case 'CarePlan':
+    case 'Encounter':
       return resource.period?.start;
     case 'Procedure':
       return resource.performedPeriod?.start;
@@ -110,7 +111,10 @@ export const getResourceDate = (resource) => {
   return 'No Date Found';
 };
 
-const formatDate = (date) => (date ? format(new Date(date), 'MMM d, y') : null);
+const formatDate = (date, includeTime = false) => {
+  const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : 'MMM d, y'
+  return date ? format(new Date(date), dateFormat) : null
+};
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
 
 export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display;
@@ -132,3 +136,7 @@ export const getClinicalStatus = (resource) => (
 export const getVerficationStatus = (resource) => (
   titleCase(resource.verificationStatus?.coding?.[0]?.code)
 );
+
+export const getEnding = (resource) => formatDate(resource.period?.end, true)
+
+export const getClass = (resource) => resource.class?.code

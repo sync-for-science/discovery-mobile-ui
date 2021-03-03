@@ -12,6 +12,7 @@ const CARD_BODY_LABEL = {
   diagnosis: 'Diagnosis',
   diastolic: 'Diastolic',
   dosage: 'Dosage',
+  Encounter: 'Encounter',
   ending: 'Ending',
   given: 'Given',
   measure: 'Measure',

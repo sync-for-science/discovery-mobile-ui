@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
+import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -17,10 +18,10 @@ import { getResourceDate } from '../../resources/fhirReader';
 const selectCardBody = (resource, patientResource) => {
   switch (resource.resourceType) {
     case 'Condition':
-    case 'Document References': // legacy from web, rename to correct resourceType
-    case 'Meds Administration': // legacy from web, rename to correct resourceType
     case 'Procedure':
-    case 'Procedure Requests': // legacy from web, rename to correct resourceType
+    case 'Document References': // legacy name from webUI, rename to correct resourceType
+    case 'Meds Administration': // legacy name from webUI, rename to correct resourceType
+    case 'Procedure Requests': // legacy name from webUI, rename to correct resourceType
       return <GenericCardBody resource={resource} patientResource={patientResource} />;
     case 'Meds Dispensed':
     case 'MedicationRequest':
@@ -29,8 +30,8 @@ const selectCardBody = (resource, patientResource) => {
     //   return <BenefitCardBody fieldsData={fieldsData} />;
     // case 'Claims':
     //   return <ClaimCardBody fieldsData={fieldsData} />;
-    // case 'Encounters':
-    //   return <EncounterCardBody fieldsData={fieldsData} />;
+    case 'Encounter':
+      return <EncounterCardBody resource={resource} patientResource={patientResource} />;
     // case 'Immunizations':
     //   return <ImmunizationCardBody fieldsData={fieldsData} />;
     // case 'Lab Results':
