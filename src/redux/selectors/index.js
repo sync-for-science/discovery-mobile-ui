@@ -1,5 +1,5 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { values } from 'ramda';
+import { pick, values } from 'ramda';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
@@ -7,6 +7,8 @@ const resourcesSelector = (state) => state.resources;
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
 const selectedResourceTypeSelector = (state) => state.selectedResourceType;
+
+export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -57,4 +59,24 @@ export const selectedSubTypeResourcesSelector = createSelector(
   (resourceIdsGroupedByType, selectedResourceType) => (
     resourceIdsGroupedByType[selectedResourceType]
   ),
+);
+
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
+const sortByDate = () => ({ timelineDate: t1 }, { timelineDate: t2 }) => (t1.toISOString() < t2.toISOString() ? -1 : 1);
+
+const timelineItemSelector = createSelector(
+  [resourcesSelector],
+  (resources) => values(resources)
+    .filter(({ type }) => RESOURCE_TYPES[type])
+    .filter((r) => r.timelineDate) // must have timelineDate
+    .map(pickTimelineFields)
+    .sort(sortByDate),
+);
+
+export const timelinePropsSelector = createSelector(
+  [timelineItemSelector],
+  (timelineItems) => ({
+    minimumDate: timelineItems[0]?.timelineDate,
+    maximumDate: timelineItems[timelineItems.length - 1]?.timelineDate,
+  }),
 );
