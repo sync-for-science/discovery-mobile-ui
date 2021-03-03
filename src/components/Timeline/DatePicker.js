@@ -63,6 +63,8 @@ export default React.memo(DatePicker);
 const styles = StyleSheet.create({
   container: {
     width: 150,
+    height: 64,
+    margin: 8,
     alignItems: 'center',
   },
   label: {
