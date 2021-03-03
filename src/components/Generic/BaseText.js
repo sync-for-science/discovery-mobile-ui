@@ -27,7 +27,7 @@ export default BaseText;
 
 const styles = StyleSheet.create({
   base: {
-    color: Colors.baseFont,
+    color: Colors.baseText,
   },
   header: {
     fontWeight: '700',
