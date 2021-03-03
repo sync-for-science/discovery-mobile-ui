@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape, string, number,
+  arrayOf, func, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -26,11 +26,11 @@ const ResourceTypeRow = ({ resourceType, total }) => (
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  total: number.isRequired,
+  total: string.isRequired,
 };
 
 const SummaryScreen = ({
-  patientResource, resourceIdsGroupedByType, resources, navigation,
+  patientResource, sortedResourceTypes, resources, navigation,
   clearAuthAction, clearPatientDataAction,
 }) => {
   const patientName = getPatientName(patientResource);
@@ -52,16 +52,14 @@ const SummaryScreen = ({
         </View>
         <Demographics />
         <View style={styles.resourceTypeContainer}>
-          {Object.entries(resourceIdsGroupedByType).map(
-            ([resourceType]) => (
-              <ResourceTypeRow
-                key={resourceType}
-                resourceType={resourceType}
-                total="TBD"
-                resources={resources}
-              />
-            ),
-          )}
+          {sortedResourceTypes.map(({ resourceType, totalCount }) => (
+            <ResourceTypeRow
+              key={resourceType}
+              resourceType={resourceType}
+              total={totalCount}
+              resources={resources}
+            />
+          ))}
         </View>
         <Button title="Logout" onPress={handleLogout} />
       </ScrollView>
@@ -73,20 +71,19 @@ SummaryScreen.propTypes = {
   navigation: shape({}).isRequired,
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
-  resourceIdsGroupedByType: shape({}),
+  sortedResourceTypes: arrayOf(shape({})).isRequired,
   resources: shape({}),
   patientResource: shape({}),
 };
 
 SummaryScreen.defaultProps = {
-  resourceIdsGroupedByType: {},
   resources: null,
   patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  resourceIdsGroupedByType: supportedResourcesSelector(state),
+  sortedResourceTypes: supportedResourcesSelector(state),
   patientResource: patientSelector(state),
 });
 

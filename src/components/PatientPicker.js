@@ -10,7 +10,7 @@ const PATIENTS = {
   '494743a2-fea5-4827-8f02-c2b91e4a4c9e': 'Mr. Barrett Cummings',
   'd64b37f5-d3b5-4c25-abe8-23ebe8f5a04e': 'Mr. Benito Lucio',
   '57a5a683-f51e-4976-ad1d-c2c4d3385cec': 'Ms. Beatriz Salazar',
-  'bf3cb50a-d753-4ddc-ad83-839250edcba': 'Ms. Angelita Howe',
+  'bf3cb50a-d753-4ddc-ad83-839250edcba9': 'Ms. Angelita Howe',
   'ab4e7a7d-8b0d-41e1-9ce9-3877d7615aed': 'Mrs. Renea Quigley',
 };
 
