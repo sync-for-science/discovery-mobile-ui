@@ -4,20 +4,28 @@ import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
   getPatientAgeAtResourceDate,
-  getValueRatio,
-  getRefRangeLabel,
-  getRefRange,
   getStatus,
-  getValueQuantity
+  getValueQuantity,
+  getBloodPressureData
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
 const VitalSignCardBody = ({ resource, patientResource }) => {
   const { subType } = resource;
-  if (subType === 'Blood Pressure') {
-    console.log('vital sings', resource.id)
-  }
 
+  let displayBloodPressureFields = null
+  const bloodPressureData = getBloodPressureData(resource)
+  if (bloodPressureData) {
+    displayBloodPressureFields = bloodPressureData.map(datum => {
+      const label = datum.code === "Diastolic Blood Pressure" ? CARD_BODY_LABEL.diastolic : CARD_BODY_LABEL.systolic
+      return (
+        <CardBodyField
+          label={label}
+          value={datum.valueQuantity}
+        />
+      )
+    })
+  }
   return (
     <>
       <CardBodyField
@@ -33,14 +41,7 @@ const VitalSignCardBody = ({ resource, patientResource }) => {
         label={CARD_BODY_LABEL.valueQuantity}
         value={getValueQuantity(resource)}
       />
-      <CardBodyField
-        label={CARD_BODY_LABEL.valueRatio}
-        value={getValueRatio(resource)}
-      />
-      <CardBodyField
-        label={getRefRangeLabel(resource)}
-        value={getRefRange(resource)}
-      />
+      {displayBloodPressureFields}
       <CardBodyField
         label={CARD_BODY_LABEL.provider}
         value={null}

@@ -146,3 +146,19 @@ export const getRefRange = (resource) => {
 }
 
 export const getValueQuantity = (resource) => resource.valueQuantity ? `${+resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}` : null
+
+export const getBloodPressureData = (resource) => {
+  if (resource.component) {
+    let bloodPressureData = []
+    resource.component.forEach(measurement => {
+      bloodPressureData.push(
+        {
+          code: measurement.code.text, 
+          valueQuantity: `${+measurement.valueQuantity.value.toFixed(2)} ${measurement.valueQuantity.unit}`
+        }
+      )
+    })
+    return bloodPressureData
+  }
+  return null
+}
