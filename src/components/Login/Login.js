@@ -134,12 +134,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   patientPickerContainer: {
-    marginTop: 8,
-    marginBottom: 8,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    width: '100%',
+    height: 280,
+    alignItems: 'flex-start',
     alignContent: 'flex-start',
-    height: 250,
+    marginTop: 16,
+    marginBottom: 16,
   },
   login: {
     backgroundColor: Colors.primary,

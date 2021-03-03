@@ -17,7 +17,7 @@ const PATIENTS = {
 export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
-  <View>
+  <View style={styles.container}>
     <View style={styles.label}><Text>Select Example Patient:</Text></View>
     <Picker
       selectedValue={patientId}
@@ -44,12 +44,14 @@ PatientPicker.propTypes = {
 export default PatientPicker;
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+  },
   label: {
+    width: '100%',
     alignItems: 'center',
-    marginTop: 0,
   },
   picker: {
-    height: 60,
-    width: 600,
+    width: '100%',
   },
 });
