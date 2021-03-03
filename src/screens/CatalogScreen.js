@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, ScrollView,
+  StyleSheet, SafeAreaView, StatusBar, ScrollView, View, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
+import Swiper from 'react-native-swiper';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
@@ -14,13 +15,22 @@ import { supportedResourceTypeFiltersSelector } from '../redux/selectors';
 const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <FilterDrawer>
-      <ScrollView>
-        <TimelineWidget />
-        <ResourceTypeSelector />
-        <SubTypeAccordionsContainer />
-      </ScrollView>
-    </FilterDrawer>
+    <Swiper
+      loop={false}
+      showsPagination={false}
+      index={0}
+    >
+      <FilterDrawer>
+        <ScrollView>
+          <TimelineWidget />
+          <ResourceTypeSelector />
+          <SubTypeAccordionsContainer />
+        </ScrollView>
+      </FilterDrawer>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>Content Panel</Text>
+      </View>
+    </Swiper>
   </SafeAreaView>
 );
 

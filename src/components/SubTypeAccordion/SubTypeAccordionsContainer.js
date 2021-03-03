@@ -24,7 +24,7 @@ const SubTypeAccordionsContainer = ({
         {Object.keys(resourceSubTypes).map((subType) => {
           const resourcesIds = Array.from(resourceSubTypes[subType]);
           return (
-            <SubTypeAccordion subType={subType} resourcesIds={resourcesIds} />
+            <SubTypeAccordion key={subType} subType={subType} resourcesIds={resourcesIds} />
           );
         })}
       </View>

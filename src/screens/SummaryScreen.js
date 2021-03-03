@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  func, shape,
+  arrayOf, func, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
