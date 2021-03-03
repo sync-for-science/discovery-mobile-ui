@@ -8,7 +8,7 @@ import {
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const UnassignedCardBody = ({ resource, patientResource }) => {
+const LabResultCardBody = ({ resource, patientResource }) => {
   const { type, subType } = resource;
 
   return (
@@ -18,21 +18,21 @@ const UnassignedCardBody = ({ resource, patientResource }) => {
         value={getPatientAgeAtResourceDate(resource, patientResource)}
       />
       <CardBodyField
-        label={type}
+        label={CARD_BODY_LABEL.measure}
         value={subType}
         bold
       />
-      <CardBodyField
+      {/* <CardBodyField
         label={CARD_BODY_LABEL.status}
-        value={getStatus(resource)}
-      />
+        value={getValueRatio(resource)}
+      /> */}
     </>
   );
 };
 
-UnassignedCardBody.propTypes = {
+LabResultCardBody.propTypes = {
   resource: shape({}).isRequired,
   patientResource: shape({}).isRequired,
 };
 
-export default UnassignedCardBody;
+export default LabResultCardBody;

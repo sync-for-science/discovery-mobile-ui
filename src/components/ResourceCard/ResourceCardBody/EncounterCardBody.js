@@ -16,33 +16,27 @@ const EncounterCardBody = ({ resource, patientResource }) => {
   return (
     <>
       <CardBodyField
-        dependency={getPatientAgeAtResourceDate(resource, patientResource)}
         label={CARD_BODY_LABEL.age}
         value={getPatientAgeAtResourceDate(resource, patientResource)}
       />
       <CardBodyField
-        dependency={subType}
         label={CARD_BODY_LABEL[type]}
         value={subType}
         bold
       />
       <CardBodyField
-        dependency={getEnding(resource)}
         label={CARD_BODY_LABEL.ending}
         value={getEnding(resource)}
       />
       <CardBodyField
-        dependency={getClass(resource)}
         label={CARD_BODY_LABEL.class}
         value={getClass(resource)}
       />
       <CardBodyField
-        dependency={getStatus(resource)}
         label={CARD_BODY_LABEL.status}
         value={getStatus(resource)}
       />
       <CardBodyField
-        dependency={null}
         label={CARD_BODY_LABEL.provider}
         value={null}
       />

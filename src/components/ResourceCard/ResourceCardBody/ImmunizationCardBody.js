@@ -15,38 +15,31 @@ const ImmunizationCardBody = ({ resource, patientResource }) => {
   return (
     <>
       <CardBodyField
-        dependency={getPatientAgeAtResourceDate(resource, patientResource)}
         label={CARD_BODY_LABEL.age}
         value={getPatientAgeAtResourceDate(resource, patientResource)}
       />
       <CardBodyField
-        dependency={subType}
         label={CARD_BODY_LABEL[type]}
         value={subType}
         bold
       />
       <CardBodyField
-        dependency={null}
         label={CARD_BODY_LABEL.given}
         value={null}
       />
       <CardBodyField
-        dependency={null}
         label={CARD_BODY_LABEL.reported}
         value={null}
       />
       <CardBodyField
-        dependency={getPrimarySource(resource)}
         label={CARD_BODY_LABEL.primarySource}
         value={getPrimarySource(resource)}
       />
       <CardBodyField
-        dependency={null}
         label={CARD_BODY_LABEL.provider}
         value={null}
       />
       <CardBodyField
-        dependency={getStatus(resource)}
         label={CARD_BODY_LABEL.status}
         value={getStatus(resource)}
       />

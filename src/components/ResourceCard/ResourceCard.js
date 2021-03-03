@@ -11,6 +11,7 @@ import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
 import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
 import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody'
 import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody'
+import LabResultCardBody from './ResourceCardBody/LabResultCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -36,8 +37,8 @@ const selectCardBody = (resource, patientResource) => {
       return <EncounterCardBody resource={resource} patientResource={patientResource} />;
     case 'Immunization':
       return <ImmunizationCardBody resource={resource} patientResource={patientResource} />;
-    // case 'Lab Results':
-    //   return <LabResultCardBody fieldsData={fieldsData} />;
+    case 'laboratory':
+      return <LabResultCardBody resource={resource} patientResource={patientResource} />;
     // case 'Exams':
     //   return <ExamCardBody fieldsData={fieldsData} />;
     // case 'Meds Statement':

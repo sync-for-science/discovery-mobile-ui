@@ -5,12 +5,10 @@ import { Col, Row, Grid } from 'react-native-easy-grid'; // eslint-disable-line 
 
 import BaseText from '../../Generic/BaseText';
 
-const CardBodyField = ({
-  dependency, label, value, bold,
-}) => {
+const CardBodyField = ({ label, value, bold }) => {
   const variantStyle = bold ? 'title' : '';
 
-  if (dependency) {
+  if (value) {
     return (
       <Grid style={styles.root}>
         <Row>
@@ -33,14 +31,12 @@ const CardBodyField = ({
 };
 
 CardBodyField.propTypes = {
-  dependency: string,
   label: string,
   value: string,
   bold: bool,
 };
 
 CardBodyField.defaultProps = {
-  dependency: null,
   label: null,
   value: null,
   bold: false,
