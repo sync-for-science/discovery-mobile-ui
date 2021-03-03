@@ -5,11 +5,11 @@ import { string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const BaseDivider = ({ color }) => {
-  const borderBottomColor = color ? {borderBottomColor: color} : {}
+  const borderBottomColor = color ? { borderBottomColor: color } : {};
   return (
-    <View style={{ ...styles.divider, ...borderBottomColor}} />
-  )
-}
+    <View style={{ ...styles.divider, ...borderBottomColor }} />
+  );
+};
 
 BaseDivider.propTypes = {
   color: string,

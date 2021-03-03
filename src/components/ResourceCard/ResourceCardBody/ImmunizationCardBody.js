@@ -5,7 +5,7 @@ import CardBodyField from './CardBodyField';
 import {
   getPatientAgeAtResourceDate,
   getPrimarySource,
-  getStatus
+  getStatus,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 

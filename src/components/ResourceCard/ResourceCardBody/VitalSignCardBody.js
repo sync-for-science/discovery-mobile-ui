@@ -6,25 +6,25 @@ import {
   getPatientAgeAtResourceDate,
   getStatus,
   getValueQuantity,
-  getBloodPressureData
+  getBloodPressureData,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
 const VitalSignCardBody = ({ resource, patientResource }) => {
   const { subType } = resource;
 
-  let displayBloodPressureFields = null
-  const bloodPressureData = getBloodPressureData(resource)
+  let displayBloodPressureFields = null;
+  const bloodPressureData = getBloodPressureData(resource);
   if (bloodPressureData) {
-    displayBloodPressureFields = bloodPressureData.map(datum => {
-      const label = datum.code === "Diastolic Blood Pressure" ? CARD_BODY_LABEL.diastolic : CARD_BODY_LABEL.systolic
+    displayBloodPressureFields = bloodPressureData.map((datum) => {
+      const label = datum.code === 'Diastolic Blood Pressure' ? CARD_BODY_LABEL.diastolic : CARD_BODY_LABEL.systolic;
       return (
         <CardBodyField
           label={label}
           value={datum.valueQuantity}
         />
-      )
-    })
+      );
+    });
   }
   return (
     <>

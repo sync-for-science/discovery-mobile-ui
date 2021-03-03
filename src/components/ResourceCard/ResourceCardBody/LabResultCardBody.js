@@ -8,7 +8,7 @@ import {
   getRefRangeLabel,
   getRefRange,
   getStatus,
-  getValueQuantity
+  getValueQuantity,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 

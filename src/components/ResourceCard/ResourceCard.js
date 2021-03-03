@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, View,
 } from 'react-native';
 import { string, shape } from 'prop-types';
 import { Card, CardItem, Button } from 'native-base';
@@ -8,11 +8,11 @@ import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
-import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
-import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody'
-import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody'
-import LabResultCardBody from './ResourceCardBody/LabResultCardBody'
-import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody'
+import EncounterCardBody from './ResourceCardBody/EncounterCardBody';
+import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody';
+import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
+import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
+import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -51,8 +51,8 @@ const selectCardBody = (resource, patientResource) => {
     case 'vital-signs':
       return <VitalSignCardBody resource={resource} patientResource={patientResource} />;
     default:
-      console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`) // eslint-disable-line no-console
-      return <UnassignedCardBody resource={resource} patientResource={patientResource}/>;
+      console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
+      return <UnassignedCardBody resource={resource} patientResource={patientResource} />;
   }
 };
 

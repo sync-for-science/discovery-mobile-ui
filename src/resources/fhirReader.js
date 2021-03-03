@@ -87,12 +87,12 @@ export const getPatientAgeAtResourceDate = (resource, patientResource) => {
 };
 
 export const getResourceDate = (resource) => (
-  resource.timelineDate ? formatDate(resource.timelineDate, true) : "No Date Found"
-)
+  resource.timelineDate ? formatDate(resource.timelineDate, true) : 'No Date Found'
+);
 
 const formatDate = (date, includeTime = false) => {
-  const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : 'MMM d, y'
-  return date ? format(new Date(date), dateFormat) : null
+  const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : 'MMM d, y';
+  return date ? format(new Date(date), dateFormat) : null;
 };
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
 
@@ -116,18 +116,18 @@ export const getVerficationStatus = (resource) => (
   titleCase(resource.verificationStatus?.coding?.[0]?.code)
 );
 
-export const getEnding = (resource) => formatDate(resource.period?.end, true)
+export const getEnding = (resource) => formatDate(resource.period?.end, true);
 
-export const getClass = (resource) => resource.class?.code
+export const getClass = (resource) => resource.class?.code;
 
 export const getPrimarySource = (resource) => {
-  const displayPrimarySource = resource.primarySource ? "yes" : "no"
-  return titleCase(displayPrimarySource)
-}
+  const displayPrimarySource = resource.primarySource ? 'yes' : 'no';
+  return titleCase(displayPrimarySource);
+};
 
 export const getValueRatio = (resource) => (
   resource.valueRatio ? `${resource.valueRatio?.numerator?.value} / ${resource.valueRatio?.denominator?.value}` : null
-)
+);
 
 export const getRefRangeLabel = (resource) => resource.referenceRange?.[0]?.meaning?.coding?.[0]?.display || 'REFERENCE RANGE';
 
@@ -139,26 +139,26 @@ export const getRefRange = (resource) => {
     const highUnits = resource.referenceRange?.[0]?.high?.unit;
 
     return lowValue && lowUnits && highValue && highUnits
-    ? `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`
-    : fieldsData.referenceRange?.text;
+      ? `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`
+      : resource.referenceRange?.text;
   }
-  return null
-}
+  return null;
+};
 
-export const getValueQuantity = (resource) => resource.valueQuantity ? `${+resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}` : null
+export const getValueQuantity = (resource) => (resource.valueQuantity ? `${+resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}` : null);
 
 export const getBloodPressureData = (resource) => {
   if (resource.component) {
-    let bloodPressureData = []
-    resource.component.forEach(measurement => {
+    const bloodPressureData = [];
+    resource.component.forEach((measurement) => {
       bloodPressureData.push(
         {
-          code: measurement.code.text, 
-          valueQuantity: `${+measurement.valueQuantity.value.toFixed(2)} ${measurement.valueQuantity.unit}`
-        }
-      )
-    })
-    return bloodPressureData
+          code: measurement.code.text,
+          valueQuantity: `${+measurement.valueQuantity.value.toFixed(2)} ${measurement.valueQuantity.unit}`,
+        },
+      );
+    });
+    return bloodPressureData;
   }
-  return null
-}
+  return null;
+};
