@@ -1,5 +1,7 @@
 import React from 'react';
-import { shape, instanceOf, string } from 'prop-types';
+import {
+  shape, string, arrayOf, number,
+} from 'prop-types';
 import { pick } from 'ramda';
 import { connect } from 'react-redux';
 import {
@@ -15,7 +17,9 @@ import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
-const ResourceTypeRow = ({ resourceType, resources, resourceIdsGroupedByType }) => {
+const ResourceTypeRow = ({
+  resourceType, resources, resourceIdsGroupedByType, totalCount,
+}) => {
   const consolidatedIds = Object.values(resourceIdsGroupedByType[resourceType])
     .reduce((acc, cur) => {
       acc.push(...cur);
@@ -26,7 +30,7 @@ const ResourceTypeRow = ({ resourceType, resources, resourceIdsGroupedByType }) 
   return (
     <View style={styles.resourceTypeRow}>
       <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
-      <Text style={styles.resourceCount}>{consolidatedIds.length}</Text>
+      <Text style={styles.resourceCount}>{totalCount}</Text>
       <Text style={styles.resourceLatestDate}>{latestDate}</Text>
     </View>
   );
@@ -34,12 +38,13 @@ const ResourceTypeRow = ({ resourceType, resources, resourceIdsGroupedByType }) 
 
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
-  resources: instanceOf(Object).isRequired,
-  resourceIdsGroupedByType: instanceOf(Object).isRequired,
+  resources: shape({}).isRequired,
+  resourceIdsGroupedByType: shape({}).isRequired,
+  totalCount: number.isRequired,
 };
 
 const RecordsSummary = ({
-  resourceIdsGroupedByType, resources,
+  resourceIdsGroupedByType, resources, sortedResourceTypes,
 }) => {
   const recordsTotal = getRecordsTotal(resources);
 
@@ -59,16 +64,15 @@ const RecordsSummary = ({
           <Text style={styles.resourceCountLabel}>count</Text>
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
-        {Object.entries(resourceIdsGroupedByType).map(
-          ([resourceType]) => (
-            <ResourceTypeRow
-              key={resourceType}
-              resourceType={resourceType}
-              resources={resources}
-              resourceIdsGroupedByType={resourceIdsGroupedByType}
-            />
-          ),
-        )}
+        {sortedResourceTypes.map(({ resourceType, totalCount }) => (
+          <ResourceTypeRow
+            key={resourceType}
+            resourceType={resourceType}
+            resources={resources}
+            resourceIdsGroupedByType={resourceIdsGroupedByType}
+            totalCount={totalCount}
+          />
+        ))}
       </View>
     </View>
   );
@@ -77,6 +81,7 @@ const RecordsSummary = ({
 RecordsSummary.propTypes = {
   resourceIdsGroupedByType: shape({}),
   resources: shape({}),
+  sortedResourceTypes: arrayOf(shape({})).isRequired,
 };
 
 RecordsSummary.defaultProps = {
@@ -87,6 +92,7 @@ RecordsSummary.defaultProps = {
 const mapStateToProps = (state) => ({
   resources: state.resources,
   resourceIdsGroupedByType: supportedResourcesSelector(state),
+  sortedResourceTypes: supportedResourcesSelector(state),
 });
 
 const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
