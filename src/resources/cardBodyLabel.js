@@ -43,6 +43,7 @@ const CARD_BODY_LABEL = {
   use: 'Use',
   vaccine: 'Vaccine',
   value: 'Value',
+  valueQuantity: 'Value',
   valueRatio: 'Value Ratio',
   verificationStatus: 'Verification',
 };

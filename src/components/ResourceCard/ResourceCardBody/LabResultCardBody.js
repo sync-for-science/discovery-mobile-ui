@@ -4,12 +4,16 @@ import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
   getPatientAgeAtResourceDate,
+  getValueRatio,
+  getRefRangeLabel,
+  getRefRange,
   getStatus,
+  getValueQuantity
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
 const LabResultCardBody = ({ resource, patientResource }) => {
-  const { type, subType } = resource;
+  const { subType } = resource;
 
   return (
     <>
@@ -22,10 +26,27 @@ const LabResultCardBody = ({ resource, patientResource }) => {
         value={subType}
         bold
       />
-      {/* <CardBodyField
-        label={CARD_BODY_LABEL.status}
+      <CardBodyField
+        label={CARD_BODY_LABEL.valueRatio}
         value={getValueRatio(resource)}
-      /> */}
+      />
+      <CardBodyField
+        label={getRefRangeLabel(resource)}
+        value={getRefRange(resource)}
+      />
+      <CardBodyField
+        label={CARD_BODY_LABEL.valueQuantity}
+        value={getValueQuantity(resource)}
+      />
+      <CardBodyField
+        label={CARD_BODY_LABEL.provider}
+        value={null}
+      />
+      <CardBodyField
+        label={CARD_BODY_LABEL.status}
+        value={getStatus(resource)}
+      />
+      {/* add TimeSeries */}
     </>
   );
 };

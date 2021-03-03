@@ -124,3 +124,25 @@ export const getPrimarySource = (resource) => {
   const displayPrimarySource = resource.primarySource ? "yes" : "no"
   return titleCase(displayPrimarySource)
 }
+
+export const getValueRatio = (resource) => (
+  resource.valueRatio ? `${resource.valueRatio?.numerator?.value} / ${resource.valueRatio?.denominator?.value}` : null
+)
+
+export const getRefRangeLabel = (resource) => resource.referenceRange?.[0]?.meaning?.coding?.[0]?.display || 'REFERENCE RANGE';
+
+export const getRefRange = (resource) => {
+  if (resource.referenceRange) {
+    const lowValue = resource.referenceRange?.[0]?.low?.value;
+    const lowUnits = resource.referenceRange?.[0]?.low?.unit;
+    const highValue = resource.referenceRange?.[0]?.high?.value;
+    const highUnits = resource.referenceRange?.[0]?.high?.unit;
+
+    return lowValue && lowUnits && highValue && highUnits
+    ? `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`
+    : fieldsData.referenceRange?.text;
+  }
+  return null
+}
+
+export const getValueQuantity = (resource) => resource.valueQuantity ? `${+resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}` : null
