@@ -1,13 +1,13 @@
 const RESOURCE_TYPES = {
+  'vital-signs': 'Vital Signs',
   CarePlan: 'Care Plans',
   Condition: 'Conditions',
   DiagnosticReport: 'Diagnostic Report',
   Encounter: 'Encounters',
   Immunization: 'Immunizations',
-  laboratory: 'Lab Results',
   MedicationRequest: 'Medication Requests',
   Procedure: 'Procedures',
-  'vital-signs': 'Vital Signs',
+  laboratory: 'Lab Results',
 };
 
 export default RESOURCE_TYPES;
