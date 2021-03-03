@@ -5,13 +5,13 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DateRangePicker from './DateRangePicker';
 
-const CatalogScreen = () => (
+const Timeline = () => (
   <View style={styles.root}>
     <DateRangePicker />
   </View>
 );
 
-export default CatalogScreen;
+export default Timeline;
 
 const styles = StyleSheet.create({
   root: {
