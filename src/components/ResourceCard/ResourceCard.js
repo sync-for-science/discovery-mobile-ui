@@ -18,7 +18,7 @@ const selectCardBody = (resource, patientResource) => {
     case 'Condition':
     case 'Document References':
     case 'Meds Administration':
-    case 'Procedures':
+    case 'Procedure':
     case 'Procedure Requests':
       return <GenericCardBody resource={resource} patientResource={patientResource}/>;
     // case 'Meds Dispensed':

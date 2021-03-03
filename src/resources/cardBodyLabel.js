@@ -7,7 +7,7 @@ const CARD_BODY_LABEL = {
   class: 'Class',
   clinicalStatus: 'Clinical Status',
   concept: 'Concept',
-  Condition: 'Conditions',
+  Condition: 'Condition',
   coverage: 'Coverage',
   diagnosis: 'Diagnosis',
   diastolic: 'Diastolic',
@@ -22,6 +22,7 @@ const CARD_BODY_LABEL = {
   period: 'Period',
   primarySource: 'Primary Source',
   provider: 'Provider',
+  Procedure: 'Procedure',
   quantity: 'Quantity',
   reason: 'Reason',
   referral: 'Referral',
@@ -42,7 +43,7 @@ const CARD_BODY_LABEL = {
   vaccine: 'Vaccine',
   value: 'Value',
   valueRatio: 'Value Ratio',
-  verification: 'Verification',
+  verificationStatus: 'Verification',
 };
 
 export default CARD_BODY_LABEL;

@@ -77,15 +77,13 @@ export const getPatientAge = (patient) => {
 
 export const getPatientAgeAtResourceDate = (resource, patientResource) => {
   const birthDate = patientResource?.birthDate
-  const resourceDate = getRawResourceDate(resource)
-  console.log('birthDate', birthDate)
-  console.log('resourceDate', resourceDate)
+  const resourceDate = format(new Date(getRawResourceDate(resource)), 'yyyy-MM-dd')
   const ageAtResourceDate = intervalToDuration({
     start: parse(birthDate, 'yyyy-MM-dd', new Date()),
     end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
   })
-
-  return formatDuration(ageAtResourceDate, ageAtResourceDate.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
+  
+  return formatDuration(ageAtResourceDate, { format: ['years', 'months'], delimiter: ', ' });
 }
 
 const getRawResourceDate = (resource) => {
@@ -107,3 +105,22 @@ export const getResourceDate = (resource) => {
   }
   return "No Date Found"
 }
+
+const formatDate = (date) => date ? format(new Date(date), 'MMM d, y') : null
+const titleCase = (text) => text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null
+
+export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display
+
+export const getOnsetDateTime = (resource) => formatDate(resource.onsetDateTime)
+
+export const getAbatementDateTime = (resource) => formatDate(resource.abatementDateTime)
+
+export const getOrderedBy = (resource) => titleCase(resource.orderer?.display)
+
+export const getAssertedDate = (resource) => formatDate(resource.assertedDate)
+
+export const getStatus = (resource) => titleCase(resource.status)
+
+export const getClinicalStatus = (resource) => titleCase(resource.clinicalStatus?.coding?.[0]?.code)
+
+export const getVerficationStatus = (resource) => titleCase(resource.verificationStatus?.coding?.[0]?.code)
