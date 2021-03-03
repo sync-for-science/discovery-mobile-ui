@@ -97,6 +97,8 @@ const getRawResourceDate = (resource) => {
       return resource.performedPeriod?.start;
     case 'MedicationRequest':
       return resource.authoredOn;
+    case 'Immunization':
+      return resource.occurrenceDateTime;
     default:
       console.warn(`No date found for resource: ${resource}`); // eslint-disable-line no-console
       return null;
@@ -140,3 +142,8 @@ export const getVerficationStatus = (resource) => (
 export const getEnding = (resource) => formatDate(resource.period?.end, true)
 
 export const getClass = (resource) => resource.class?.code
+
+export const getPrimarySource = (resource) => {
+  const displayPrimarySource = resource.primarySource ? "yes" : "no"
+  return titleCase(displayPrimarySource)
+}

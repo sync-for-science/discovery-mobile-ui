@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
 import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
+import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -32,8 +33,8 @@ const selectCardBody = (resource, patientResource) => {
     //   return <ClaimCardBody fieldsData={fieldsData} />;
     case 'Encounter':
       return <EncounterCardBody resource={resource} patientResource={patientResource} />;
-    // case 'Immunizations':
-    //   return <ImmunizationCardBody fieldsData={fieldsData} />;
+    case 'Immunization':
+      return <ImmunizationCardBody resource={resource} patientResource={patientResource} />;
     // case 'Lab Results':
     //   return <LabResultCardBody fieldsData={fieldsData} />;
     // case 'Exams':
