@@ -133,6 +133,9 @@ const styles = StyleSheet.create({
   body: {
     alignItems: 'center',
   },
+  spinnerContainer: {
+    margin: 16,
+  },
   patientPickerContainer: {
     width: '100%',
     height: 280,
