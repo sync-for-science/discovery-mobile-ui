@@ -10,6 +10,7 @@ import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
 import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
 import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody'
+import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -48,7 +49,8 @@ const selectCardBody = (resource, patientResource) => {
     // case 'Vital Signs':
     //   return <VitalSignCardBody fieldsData={fieldsData} />;
     default:
-      return (<View><Text>Card Body Not Implemented Yet</Text></View>);
+      console.warn(`Unassigned CardBody rendered for resource: ${resource}`) // eslint-disable-line no-console
+      return <UnassignedCardBody resource={resource} patientResource={patientResource}/>;
   }
 };
 
