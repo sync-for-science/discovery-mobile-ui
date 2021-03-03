@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import {
   getPatientName,
@@ -22,7 +22,7 @@ const UserInfo = ({
   return (
     <View>
       <View style={styles.userContainer}>
-        <MaterialIcons name="face" size={40} color="black" style={styles.userIcon} />
+        <Ionicons name="person-circle-outline" size={40} color="black" />
         <Text style={styles.userName}>
           {name}
         </Text>
@@ -59,6 +59,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
 const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   userName: {
     fontSize: 24,
@@ -67,9 +68,6 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   userIcon: {
-    paddingTop: 20,
-    paddingLeft: 15,
-    paddingBottom: 15,
   },
   dataRange: {
     flexDirection: 'row',
