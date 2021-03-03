@@ -7,11 +7,8 @@ import {
   getReason,
   getOnsetDateTime,
   getAbatementDateTime,
-  getOrderedBy,
   getAssertedDate,
   getStatus,
-  getClinicalStatus,
-  getVerficationStatus,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 

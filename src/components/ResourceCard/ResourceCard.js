@@ -7,7 +7,7 @@ import { Card, CardItem, Button } from 'native-base';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
-import MedicationCardBody from './ResourceCardBody/MedicationCardBody'
+import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -24,7 +24,7 @@ const selectCardBody = (resource, patientResource) => {
       return <GenericCardBody resource={resource} patientResource={patientResource} />;
     case 'Meds Dispensed':
     case 'MedicationRequest':
-      return <MedicationCardBody resource={resource} patientResource={patientResource}/>;
+      return <MedicationCardBody resource={resource} patientResource={patientResource} />;
     // case 'Benefits':
     //   return <BenefitCardBody fieldsData={fieldsData} />;
     // case 'Claims':
