@@ -12,7 +12,6 @@ import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
-import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
@@ -77,7 +76,7 @@ FilterDrawer.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  resourceTypeFilters: state.resourceTypeFilters,
 });
 
 const mapDispatchToProps = {

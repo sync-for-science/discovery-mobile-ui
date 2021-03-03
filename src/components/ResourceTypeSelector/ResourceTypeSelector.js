@@ -8,7 +8,6 @@ import {
 } from 'prop-types';
 import { connect } from 'react-redux';
 
-import { supportedResourceTypeFiltersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
@@ -67,7 +66,7 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: supportedResourceTypeFiltersSelector(state),
+  resourceTypeFilters: state.resourceTypeFilters,
   selectedResourceType: state.selectedResourceType,
 });
 
