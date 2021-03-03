@@ -4,6 +4,7 @@ import {
   Platform, SafeAreaView, Text, Button, StyleSheet,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
 
 const DatePicker = ({
   label, activeDate, minimumDate, maximumDate, onDateSelect,
@@ -27,7 +28,7 @@ const DatePicker = ({
       {
         isAndroid && (
           <Button
-            title="DATE HERE"
+            title={format(activeDate, 'MMM do, yyyy')}
             onPress={() => setVisible(true)}
           />
         )
