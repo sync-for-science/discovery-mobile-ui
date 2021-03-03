@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { string, func, instanceOf } from 'prop-types';
 import {
-  View, Text, SafeAreaView, StyleSheet,
+  Text, SafeAreaView, StyleSheet,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -18,19 +18,17 @@ const DatePicker = ({
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <Text>{label}</Text>
-        <DateTimePicker
-          style={styles.picker}
-          mode="date"
-          value={date}
-          minimumDate={minimumDate}
-          maximumDate={maximumDate}
-          display="default"
-          onChange={onChange}
-        />
-      </View>
+    <SafeAreaView style={styles.container}>
+      <Text>{label}</Text>
+      <DateTimePicker
+        style={styles.picker}
+        mode="date"
+        value={date}
+        minimumDate={minimumDate}
+        maximumDate={maximumDate}
+        display="default"
+        onChange={onChange}
+      />
     </SafeAreaView>
   );
 };

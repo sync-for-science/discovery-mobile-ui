@@ -69,7 +69,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(DateRangePicker);
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    // alignItems: 'center',
     justifyContent: 'space-between',
     width: '50%',
     marginTop: 0,
