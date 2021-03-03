@@ -12,6 +12,7 @@ import EncounterCardBody from './ResourceCardBody/EncounterCardBody'
 import ImmunizationCardBody from './ResourceCardBody/ImmunizationCardBody'
 import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody'
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody'
+import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody'
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector } from '../../redux/selectors';
@@ -47,8 +48,8 @@ const selectCardBody = (resource, patientResource) => {
     //   return <SocialHistoryCardBody fieldsData={fieldsData} />;
     // case 'Other':
     //   return <UnimplementedCardBody fieldsData={fieldsData} />;
-    // case 'Vital Signs':
-    //   return <VitalSignCardBody fieldsData={fieldsData} />;
+    case 'vital-signs':
+      return <VitalSignCardBody resource={resource} patientResource={patientResource} />;
     default:
       console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`) // eslint-disable-line no-console
       return <UnassignedCardBody resource={resource} patientResource={patientResource}/>;
