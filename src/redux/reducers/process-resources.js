@@ -39,7 +39,7 @@ const getSubType = (resource) => {
       subType = resource.category?.[0]?.text;
       break;
     default:
-      console.warn(`No subType found for resource: ${resource}`); // eslint-disable-line no-console
+      console.warn(`No subType found for resource: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
       subType = 'Other';
       break;
   }
@@ -48,11 +48,26 @@ const getSubType = (resource) => {
 };
 
 const getTimelineDate = (resource) => {
-  // TODO: use other fields, if available, e.g.: occurrenceDateTime
-  const { effectiveDateTime } = resource;
-  if (effectiveDateTime) {
-    return new Date(effectiveDateTime);
+  if (resource.effectiveDateTime) {
+    // Observations
+    return new Date(resource.effectiveDateTime);
+  } if (resource.occurrenceDateTime) {
+    // Immunization
+    return new Date(resource.occurrenceDateTime);
+  } if (resource.period?.start) {
+    // CarePlan, Encounter
+    return new Date(resource.period.start);
+  } if (resource.onsetDateTime) {
+    // Condition
+    return new Date(resource.onsetDateTime);
+  } if (resource.performedPeriod?.start) {
+    // Procedure
+    return new Date(resource.performedPeriod.start);
+  } if (resource.authoredOn) {
+    // MedicationRequest
+    return new Date(resource.authoredOn);
   }
+  console.warn(`No date found for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
   return null;
 };
 
