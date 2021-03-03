@@ -2,67 +2,6 @@ import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
-const injectSubType = (resource) => {
-  let subType;
-  switch (resource.resourceType) {
-    case 'Condition':
-    case 'DiagnosticReport':
-    case 'Procedure':
-    case 'Observation':
-      subType = resource.code?.text;
-      break;
-    case 'Encounter':
-      subType = resource.type?.[0]?.text;
-      break;
-    case 'Immunization':
-      subType = resource.vaccineCode?.text;
-      break;
-    case 'MedicationRequest':
-      subType = resource.medicationCodeableConcept?.text;
-      break;
-    case 'CarePlan':
-      subType = resource.category?.[0]?.text;
-      break;
-    default:
-      console.warn(`No subType found for resource: ${resource}`);
-      subType = 'Other';
-      break;
-  }
-
-  return { ...resource, subType };
-};
-
-const STATUSES_OK = ['200 OK', '201 Created'];
-const MAX_DEPTH = 4;
-export const processBundle = (acc, resource, depth) => {
-  if (depth > MAX_DEPTH) {
-    return;
-  }
-  const { id, resourceType } = resource;
-  if (resourceType === 'Bundle') {
-    if (!resource.entry) {
-      console.warn(`No resource.entry -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
-      return;
-    }
-    resource.entry.forEach((entry) => {
-      const status = entry?.response?.status;
-      if (!STATUSES_OK.includes(status)) {
-        console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
-      }
-      processBundle(acc, entry.resource, depth + 1);
-    });
-  } else {
-    if (!id) {
-      console.warn(`No id -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
-      return;
-    }
-    if (acc[id]) {
-      console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
-    }
-    acc[id] = injectSubType(resource);
-  }
-};
-
 export const getPatientName = (patientResource) => {
   if (!patientResource) {
     return '';
