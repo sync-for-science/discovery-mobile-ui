@@ -4,6 +4,8 @@ import {
   SafeAreaView, StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { min, max } from 'date-fns';
+
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/epics';
@@ -15,20 +17,22 @@ const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter
   }
 
   const { dateRangeStart, dateRangeEnd } = dateRangeFilter;
+  const activeDateStart = dateRangeStart || minimumDate;
+  const activeDateEnd = dateRangeEnd || maximumDate;
 
   return (
     <SafeAreaView style={styles.container}>
       <DatePicker
         label="start date"
-        activeDate={dateRangeStart || minimumDate}
+        activeDate={activeDateStart}
         minimumDate={minimumDate}
-        maximumDate={maximumDate}
+        maximumDate={min([maximumDate, activeDateEnd])}
         onDateSelect={(d) => updateDateRangeFilter('dateRangeStart', d)}
       />
       <DatePicker
         label="end date"
-        activeDate={dateRangeEnd || maximumDate}
-        minimumDate={minimumDate}
+        activeDate={activeDateEnd}
+        minimumDate={max([minimumDate, activeDateStart])}
         maximumDate={maximumDate}
         onDateSelect={(d) => updateDateRangeFilter('dateRangeEnd', d)}
       />
