@@ -33,9 +33,7 @@ const ProvidersSummary = () => {
           providers
         </Text>
         <Text style={styles.providersHeaderTotal}>
-          {providers.length}
-          {' '}
-          Total
+          {`${providers.length} Total`}
         </Text>
       </View>
       <View style={styles.providerTypeContainer}>

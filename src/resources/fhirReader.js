@@ -69,6 +69,8 @@ export const processBundle = (acc, resource, depth) => {
 
 export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
   const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
+    // TODO: this should consider the actual time the event happened,
+    // instead of the last resource update date, for the resources that support this
     const date = cur.meta?.lastUpdated;
     return acc.concat(date ? parseISO(date) : []);
   }, [])
