@@ -18,9 +18,9 @@ import { clearPatientData } from '../../features/patient/patientDataSlice';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
-  resourceType, total, resources, subtypes,
+  resourceType, total, resources, subTypes,
 }) => {
-  const consolidatedIds = Object.values(subtypes)
+  const consolidatedIds = Object.values(subTypes)
     .reduce((acc, cur) => {
       acc.push(...cur);
       return acc;
@@ -39,7 +39,7 @@ const ResourceTypeRow = ({
 ResourceTypeRow.propTypes = {
   resourceType: string.isRequired,
   resources: shape({}).isRequired,
-  subtypes: shape({}).isRequired,
+  subTypes: shape({}).isRequired,
   total: number.isRequired,
 };
 
@@ -64,12 +64,12 @@ const RecordsSummary = ({
           <Text style={styles.resourceCountLabel}>count</Text>
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
-        {sortedResourceTypes.map(({ resourceType, totalCount, subtypes }) => (
+        {sortedResourceTypes.map(({ resourceType, totalCount, subTypes }) => (
           <ResourceTypeRow
             key={resourceType}
             resourceType={resourceType}
             total={totalCount}
-            subtypes={subtypes}
+            subTypes={subTypes}
             resources={resources}
           />
         ))}
