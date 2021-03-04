@@ -6,12 +6,11 @@ import {
 const UI_DATE_FORMAT = 'MMM d, Y';
 
 export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
-  const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
+  const timestamps = Object.values(resourceSet).reduce((acc, { timelineDate }) => {
     // TODO: this should consider the actual time the event happened,
     // instead of the last resource update date, for the resources that support this
-    const date = cur.meta?.lastUpdated;
-    if (date) {
-      return acc.concat(parseISO(date));
+    if (timelineDate) {
+      return acc.concat(parseISO(timelineDate));
     }
     return acc;
   }, [])
