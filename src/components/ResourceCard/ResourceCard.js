@@ -23,6 +23,7 @@ import {
   collectionResourceIdsSelector 
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
+import Colors from '../../constants/Colors';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -76,38 +77,61 @@ const ResourceCard = ({
   lastAddedResourceId,
   collectionResourceIds
 }) => {
-  console.log('collectionResourceIds', collectionResourceIds)
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-  let sampleText
+
+  let displayButton = (
+    <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
+      <BaseText style={{textAlign: 'center'}} variant="button">Add To Detail Panel</BaseText>
+    </Button>
+  )
+  let rootStyle = styles.root
   if (collectionResourceIds[resourceId]) {
-    sampleText = "I was selected!"
+    displayButton = (
+      <Button transparent onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}>
+        <BaseText style={{color: 'red'}} variant="button">Remove From Detail Panel</BaseText>
+      </Button>
+    )
+    rootStyle = styles.rootSelected
     if (lastAddedResourceId === resourceId) {
-      sampleText = "I was selected last!"
+      rootStyle = styles.rootLastSelected
     }
   }
-  console.log('sampleText', sampleText)
+
+  console.log('rootStyle', rootStyle)
   return (
-    <Card>
-      <Text>{sampleText}</Text>
-      <CardItem style={styles.header}>
+    <View style={rootStyle}>
+      <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
         <BaseText>{resourceDate}</BaseText>
-      </CardItem>
-      <CardItem>
-        <View style={styles.cardBody}>
-          {selectCardBody(resource, patientAgeAtResources[resourceId])}
-        </View>
-      </CardItem>
-      <BaseDivider />
-      <View style={styles.button}>
-        <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
-          <BaseText variant="button">Add To Collection</BaseText>
-        </Button>
       </View>
-    </Card>
+      <View style={styles.body}>
+        {selectCardBody(resource, patientAgeAtResources[resourceId])}
+      </View>
+      <BaseDivider />
+      <View style={styles.buttonContainer}>
+        {displayButton}
+      </View>
+    </View>
   );
+  // return (
+  //   <Card style={{backgroundColor: 'red'}}>
+  //     <CardItem style={styles.header}>
+  //       <BaseText variant="header">{resourceType}</BaseText>
+  //       <BaseText>{resourceDate}</BaseText>
+  //     </CardItem>
+  //     <CardItem>
+  //       <View style={styles.cardBody}>
+  //         {selectCardBody(resource, patientAgeAtResources[resourceId])}
+  //       </View>
+  //     </CardItem>
+  //     <BaseDivider />
+  //     <View style={styles.button}>
+  //       {displayButton}
+  //     </View>
+  //   </Card>
+  // );
 };
 
 ResourceCard.propTypes = {
@@ -127,19 +151,53 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, null)(ResourceCard);
 
 const styles = StyleSheet.create({
-  cardSelected: {
-    backgroundColor: 'blue',
+  root: {
+    marginVertical: 10,
+    backgroundColor: 'white',
+    borderWidth: 1,
+    borderColor: Colors.lightgrey
+  },
+  rootSelected: {
+    marginVertical: 10,
+    backgroundColor: Colors.selected,
+    borderWidth: 1,
+    borderColor: Colors.lightgrey
+  },
+  rootLastSelected: {
+    marginVertical: 10,
+    backgroundColor: Colors.lastSelected,
+    borderWidth: 1,
+    borderColor: Colors.lightgrey
   },
   header: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  button: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    padding: 15,
+    paddingBottom: 0,
   },
-  cardBody: {
-    width: '100%',
+  body: {
+    padding: 15,
   },
+  buttonContainer: {
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  }
 });
+// const styles = StyleSheet.create({
+//   cardSelected: {
+//     backgroundColor: 'blue',
+//   },
+//   header: {
+//     flex: 1,
+//     justifyContent: 'space-between',
+//   },
+//   button: {
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//   },
+//   cardBody: {
+//     width: '100%',
+//   },
+// });

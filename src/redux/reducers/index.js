@@ -151,7 +151,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const newCollection = {
         ...collection, 
         resourceIds: updatedResourceIds,
-        lastAddedResourceIds: updatedLastAddedResourceId
+        lastAddedResourceId: updatedLastAddedResourceId
       }
       return {...state, [collectionId]: newCollection}
     }

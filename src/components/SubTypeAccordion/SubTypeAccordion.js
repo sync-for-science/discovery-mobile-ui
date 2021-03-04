@@ -40,7 +40,7 @@ const SubTypeAccordion = ({
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
         addResourceToCollection={addResourceToCollectionAction}
-        removeResourceToCollection={removeResourceToCollection}
+        removeResourceToCollection={removeResourceToCollectionAction}
       />
     ),
   );
