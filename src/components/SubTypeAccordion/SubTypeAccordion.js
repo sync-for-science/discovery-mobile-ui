@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 
 import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
+import ResourceCard from '../ResourceCard/ResourceCard';
 
 const SubTypeAccordion = ({ subType, resourcesIds }) => {
   const dataArray = [{ title: subType, content: resourcesIds }];
@@ -22,7 +23,9 @@ const SubTypeAccordion = ({ subType, resourcesIds }) => {
     </View>
   );
 
-  const renderContent = (item) => item.content.map((resourceId) => <View key={resourceId} style={{ backgroundColor: 'white', padding: 10 }}><Text>{resourceId}</Text></View>);
+  const renderContent = (item) => item.content.map(
+    (resourceId) => <ResourceCard key={resourceId} resourceId={resourceId} />,
+  );
 
   return (
     <View style={{ marginBottom: 10 }}>

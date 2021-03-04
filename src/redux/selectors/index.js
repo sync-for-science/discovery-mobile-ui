@@ -1,6 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
-import { compareAsc } from 'date-fns';
+import {
+  compareAsc, format, parse, intervalToDuration,
+} from 'date-fns';
+
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
@@ -80,4 +83,25 @@ export const timelinePropsSelector = createSelector(
     minimumDate: timelineItems[0]?.timelineDate,
     maximumDate: timelineItems[timelineItems.length - 1]?.timelineDate,
   }),
+);
+
+export const patientAgeAtResourcesSelector = createSelector(
+  [patientSelector, timelineItemSelector],
+  (patient, timelineItems) => {
+    if (!patient) {
+      return {};
+    }
+    const birthDate = parse(patient?.birthDate, 'yyyy-MM-dd', new Date());
+    return timelineItems.reduce((acc, { id, timelineDate }) => {
+      const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
+      const ageAtResourceDate = intervalToDuration({
+        start: birthDate,
+        end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
+      });
+
+      acc[id] = ageAtResourceDate;
+
+      return acc;
+    });
+  },
 );
