@@ -1,6 +1,7 @@
 import { actionTypes } from '../epics';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 const preloadedResources = {};
 
@@ -106,3 +107,30 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
       return state;
   }
 };
+
+const defaultCollectionId = uuidv4()
+const timeCreated = new Date()
+const preloadCollections = {
+  [defaultCollectionId]: {
+    created: timeCreated,
+    lastUpdated: timeCreated,
+    label: 'Untitled Collection',
+    resourceIds: {},
+    lastAddedResourceIds: []
+  }
+}
+
+export const collectionsReducer = (state = preloadCollections, action) => {
+  switch (action.type) {
+    case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
+      console.log('ADD_RESOURCE_TO_COLLECTION')
+      return state
+    }
+    case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
+      console.log('REMOVE_RESOURCE_FROM_COLLECTION')
+      return state
+    }
+    default:
+      return state;
+  }
+}
