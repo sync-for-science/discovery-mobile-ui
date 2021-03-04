@@ -16,7 +16,9 @@ import { selectResourceType } from '../../redux/epics';
 const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
   const categoryDisplay = RESOURCE_TYPES[resourceType];
   const buttonStyle = selectedResourceType === resourceType ? styles.buttonSelected : styles.button;
-  const buttonTextStyle = selectedResourceType === resourceType ? styles.buttonSelectedText : null;
+  const buttonTextStyle = selectedResourceType
+    === resourceType ? styles.buttonSelectedText : styles.buttonText;
+
   return (
     <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
       <Text style={buttonTextStyle}>{categoryDisplay}</Text>
@@ -99,5 +101,8 @@ const styles = StyleSheet.create({
   },
   buttonSelectedText: {
     color: 'white',
+  },
+  buttonText: {
+    color: 'black',
   },
 });
