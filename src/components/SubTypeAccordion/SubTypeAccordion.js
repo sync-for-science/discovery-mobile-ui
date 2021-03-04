@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux'
@@ -23,13 +23,16 @@ const SubTypeAccordion = ({
   const renderHeader = (item, expanded) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
-        <Text style={styles.headerText}>
-          {`${item.title} [${item.content.length}]`}
-        </Text>
+        { expanded
+          ? <Ionicons name="caret-down" size={20} color="white" />
+          : <Ionicons name="caret-up" size={20} color="white" />}
+          <Text style={styles.headerText}>
+            {`${item.title} [${item.content.length}]`}
+          </Text>
       </View>
-      { expanded
-        ? <Ionicons name="caret-down" size={20} color="white" />
-        : <Ionicons name="caret-up" size={20} color="white" />}
+      <TouchableOpacity style={styles.addAllButton} onPress={() => console.log('hello')}>
+        <Text>Add All To Detail Panel</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -85,9 +88,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
   },
   headerTextContainer: {
-    width: '80%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '50%'
   },
   headerText: {
+    marginLeft: 10,
     color: 'white',
   },
+  addAllButton: {
+    backgroundColor: Colors.primaryLight2, 
+    paddingVertical: 5,
+    paddingHorizontal: 10, 
+    borderRadius: 20,
+  }
 });

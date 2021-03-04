@@ -148,8 +148,10 @@ const styles = StyleSheet.create({
   root: {
     marginVertical: 10,
     backgroundColor: 'white',
-    borderWidth: 1,
-    borderColor: Colors.lightgrey
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: Colors.lightgrey,
+    borderBottomColor: Colors.lightgrey
   },
   header: {
     flexDirection: 'row',
@@ -159,7 +161,8 @@ const styles = StyleSheet.create({
     height: 50,
   },
   body: {
-    padding: 15,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
   buttonContainer: {
     padding: 5,
