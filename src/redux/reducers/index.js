@@ -129,12 +129,29 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       if(!updatedResourceIds[resourceId]) {
         updatedResourceIds[resourceId] = true
       }
-      const newCollection = {...collection, resourceIds: updatedResourceIds}
+      const updatedLastAddedResourceIds = [...collection.lastAddedResourceIds]
+      updatedLastAddedResourceIds.push(resourceId)
+      const newCollection = {
+        ...collection, 
+        resourceIds: updatedResourceIds, 
+        lastAddedResourceIds: updatedLastAddedResourceIds
+      }
       return {...state, [collectionId]: newCollection}
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      console.log('REMOVE_RESOURCE_FROM_COLLECTION')
-      return state
+      const {collectionId, resourceId} = action.payload
+      const collection = state[collectionId]
+      const updatedResourceIds = {...collection.resourceIds}
+      if(updatedResourceIds[resourceId]) {
+        delete updatedResourceIds[resourceId]
+      }
+      const updatedLastAddedResourceIds = collection.lastAddedResourceIds.filter(stateResourceId => stateResourceId !== resourceId)
+      const newCollection = {
+        ...collection, 
+        resourceIds: updatedResourceIds,
+        lastAddedResourceIds: updatedLastAddedResourceIds
+      }
+      return {...state, [collectionId]: newCollection}
     }
     default:
       return state;

@@ -108,6 +108,11 @@ export const addResourceToCollection = (collectionId, resourceId) => ({
   payload: {collectionId, resourceId}
 })
 
+export const removeResourceToCollection = (collectionId, resourceId) => ({
+  type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+  payload: {collectionId, resourceId}
+})
+
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
