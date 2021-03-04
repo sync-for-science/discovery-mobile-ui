@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, Text, ScrollView,
+  StyleSheet, Text,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
 import {
   func, shape, string,
