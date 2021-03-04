@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, ScrollView,
+  StyleSheet, Text, View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 

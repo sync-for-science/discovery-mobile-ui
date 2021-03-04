@@ -4,8 +4,9 @@ import {
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, ScrollView, SafeAreaView, StatusBar, Button,
+  StyleSheet, View, SafeAreaView, StatusBar, Button,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
