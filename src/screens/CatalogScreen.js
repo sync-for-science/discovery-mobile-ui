@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, ScrollView,
+  StyleSheet, SafeAreaView, StatusBar,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
 
 import TimelineWidget from '../components/Timeline/TimelineWidget';
