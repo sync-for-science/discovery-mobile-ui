@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, Text
 } from 'react-native';
 import { string, shape } from 'prop-types';
 import { Card, CardItem, Button } from 'native-base';
@@ -15,8 +15,8 @@ import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
-import { patientSelector, patientAgeAtResourcesSelector } from '../../redux/selectors';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { patientSelector, patientAgeAtResourcesSelector, lastAddedResourceIdSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
@@ -67,13 +67,16 @@ const ResourceCard = ({
   patientAgeAtResources,
   selectedCollectionId,
   addResourceToCollection, 
-  removeResourceToCollection 
+  removeResourceToCollection,
+  lastAddedResourceId
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
+  const lastSelectText = lastAddedResourceId === resourceId ? 'Im last Select!' : ''
   return (
     <Card>
+      <Text>{lastSelectText}</Text>
       <CardItem style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
         <BaseText>{resourceDate}</BaseText>
@@ -103,6 +106,7 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
+  lastAddedResourceId: lastAddedResourceIdSelector(state)
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

@@ -116,7 +116,7 @@ const preloadCollections = {
     lastUpdated: timeCreated,
     label: 'Untitled Collection',
     resourceIds: {},
-    lastAddedResourceIds: []
+    lastAddedResourceId: null
   }
 }
 
@@ -129,12 +129,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       if(!updatedResourceIds[resourceId]) {
         updatedResourceIds[resourceId] = true
       }
-      const updatedLastAddedResourceIds = [...collection.lastAddedResourceIds]
-      updatedLastAddedResourceIds.push(resourceId)
+      const updatedLastAddedResourceId = resourceId
       const newCollection = {
         ...collection, 
         resourceIds: updatedResourceIds, 
-        lastAddedResourceIds: updatedLastAddedResourceIds
+        lastAddedResourceId: updatedLastAddedResourceId
       }
       return {...state, [collectionId]: newCollection}
     }
@@ -145,11 +144,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       if(updatedResourceIds[resourceId]) {
         delete updatedResourceIds[resourceId]
       }
-      const updatedLastAddedResourceIds = collection.lastAddedResourceIds.filter(stateResourceId => stateResourceId !== resourceId)
+      let updatedLastAddedResourceId = collection.lastAddedResourceId
+      if (collection.lastAddedResourceId === resourceId) {
+        updatedLastAddedResourceId = null
+      }
       const newCollection = {
         ...collection, 
         resourceIds: updatedResourceIds,
-        lastAddedResourceIds: updatedLastAddedResourceIds
+        lastAddedResourceIds: updatedLastAddedResourceId
       }
       return {...state, [collectionId]: newCollection}
     }

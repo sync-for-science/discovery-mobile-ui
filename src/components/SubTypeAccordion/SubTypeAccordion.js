@@ -8,13 +8,15 @@ import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import {addResourceToCollection, removeResourceToCollection } from '../../redux/epics'
+import { lastAddedResourceIdSelector } from '../../redux/selectors'
 
 const SubTypeAccordion = ({ 
   subType, 
   resourcesIds, 
   addResourceToCollectionAction, 
   removeResourceToCollectionAction,
-  selectedCollectionId
+  selectedCollectionId,
+  lastAddedResourceId
 }) => {
   const dataArray = [{ title: subType, content: resourcesIds }];
 
@@ -63,7 +65,8 @@ SubTypeAccordion.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  selectedCollectionId: state.selectedCollection
+  selectedCollectionId: state.selectedCollection,
+  lastAddedResourceId: lastAddedResourceIdSelector(state)
 })
 
 const mapDispatchToProps = {

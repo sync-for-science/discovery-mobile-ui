@@ -18,6 +18,10 @@ export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
 const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
+const collectionsSelector = (state) => state.collections
+
+const selectedCollectionSelector = (state) => state.selectedCollection
+
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
@@ -218,3 +222,8 @@ export const orderedResourceTypeFiltersSelector = createSelector(
       return acc;
     }, {}),
 );
+
+export const lastAddedResourceIdSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId
+)
