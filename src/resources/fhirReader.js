@@ -10,7 +10,10 @@ export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
     // TODO: this should consider the actual time the event happened,
     // instead of the last resource update date, for the resources that support this
     const date = cur.meta?.lastUpdated;
-    return acc.concat(date ? parseISO(date) : []);
+    if (date) {
+      return acc.concat(parseISO(date));
+    }
+    return acc;
   }, [])
     .sort(compareAsc);
 
