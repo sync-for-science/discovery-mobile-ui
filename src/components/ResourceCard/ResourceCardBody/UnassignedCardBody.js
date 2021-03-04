@@ -3,19 +3,19 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResourceDate,
+  getPatientAgeAtResource,
   getStatus,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const UnassignedCardBody = ({ resource, patientResource }) => {
+const UnassignedCardBody = ({ resource, patientAgeAtResource }) => {
   const { type, subType } = resource;
 
   return (
     <>
       <CardBodyField
         label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResourceDate(resource, patientResource)}
+        value={getPatientAgeAtResource(patientAgeAtResource)}
       />
       <CardBodyField
         label={type}
@@ -32,7 +32,7 @@ const UnassignedCardBody = ({ resource, patientResource }) => {
 
 UnassignedCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientResource: shape({}).isRequired,
+  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default UnassignedCardBody;

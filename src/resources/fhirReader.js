@@ -75,19 +75,10 @@ export const getPatientAge = (patient) => {
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
 
-export const getPatientAgeAtResourceDate = (resource, patientResource) => {
-  const birthDate = patientResource?.birthDate;
-  const resourceDate = format(resource.timelineDate, 'yyyy-MM-dd');
-  const ageAtResourceDate = intervalToDuration({
-    start: parse(birthDate, 'yyyy-MM-dd', new Date()),
-    end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
-  });
-
-  return formatDuration(ageAtResourceDate, { format: ['years', 'months'], delimiter: ', ' });
-};
+export const getPatientAgeAtResource = (duration) => formatDuration(duration, { format: ['years', 'months'], delimiter: ', ' });
 
 export const getResourceDate = (resource) => (
-  resource.timelineDate ? formatDate(resource.timelineDate, true) : 'No Date Found'
+  resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
 );
 
 const formatDate = (date, includeTime = false) => {

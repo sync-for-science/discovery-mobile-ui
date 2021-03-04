@@ -15,31 +15,36 @@ import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
-import { patientSelector } from '../../redux/selectors';
+import { patientSelector, patientAgeAtResourcesSelector } from '../../redux/selectors';
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 import { getResourceDate } from '../../resources/fhirReader';
 
-const selectCardBody = (resource, patientResource) => {
+const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
     case 'Condition':
     case 'Procedure':
     case 'Document References': // legacy name from webUI, rename to correct resourceType
     case 'Meds Administration': // legacy name from webUI, rename to correct resourceType
     case 'Procedure Requests': // legacy name from webUI, rename to correct resourceType
-      return <GenericCardBody resource={resource} patientResource={patientResource} />;
+      return <GenericCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
     case 'Meds Dispensed':
     case 'MedicationRequest':
-      return <MedicationCardBody resource={resource} patientResource={patientResource} />;
+      return <MedicationCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
     // case 'Benefits':
     //   return <BenefitCardBody fieldsData={fieldsData} />;
     // case 'Claims':
     //   return <ClaimCardBody fieldsData={fieldsData} />;
     case 'Encounter':
-      return <EncounterCardBody resource={resource} patientResource={patientResource} />;
+      return <EncounterCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
     case 'Immunization':
-      return <ImmunizationCardBody resource={resource} patientResource={patientResource} />;
+      return (
+        <ImmunizationCardBody
+          resource={resource}
+          patientAgeAtResource={patientAgeAtResource}
+        />
+      );
     case 'laboratory':
-      return <LabResultCardBody resource={resource} patientResource={patientResource} />;
+      return <LabResultCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
     // case 'Exams':
     //   return <ExamCardBody fieldsData={fieldsData} />;
     // case 'Meds Statement':
@@ -49,14 +54,14 @@ const selectCardBody = (resource, patientResource) => {
     // case 'Other':
     //   return <UnimplementedCardBody fieldsData={fieldsData} />;
     case 'vital-signs':
-      return <VitalSignCardBody resource={resource} patientResource={patientResource} />;
+      return <VitalSignCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
     default:
       console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
-      return <UnassignedCardBody resource={resource} patientResource={patientResource} />;
+      return <UnassignedCardBody resource={resource} patientAgeAtResource={patientAgeAtResource} />;
   }
 };
 
-const ResourceCard = ({ resourceId, resources, patientResource }) => {
+const ResourceCard = ({ resourceId, resources, patientAgeAtResources }) => {
   const resource = resources[resourceId];
   const resourceType = RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
@@ -68,7 +73,7 @@ const ResourceCard = ({ resourceId, resources, patientResource }) => {
       </CardItem>
       <CardItem>
         <View style={styles.cardBody}>
-          {selectCardBody(resource, patientResource)}
+          {selectCardBody(resource, patientAgeAtResources[resourceId])}
         </View>
       </CardItem>
       <BaseDivider />
@@ -84,12 +89,13 @@ const ResourceCard = ({ resourceId, resources, patientResource }) => {
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resources: shape({}).isRequired,
-  patientResource: shape({}).isRequired,
+  patientAgeAtResources: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
+  patientAgeAtResources: patientAgeAtResourcesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

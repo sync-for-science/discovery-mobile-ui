@@ -3,20 +3,20 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResourceDate,
+  getPatientAgeAtResource,
   getPrimarySource,
   getStatus,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const ImmunizationCardBody = ({ resource, patientResource }) => {
+const ImmunizationCardBody = ({ resource, patientAgeAtResource }) => {
   const { type, subType } = resource;
 
   return (
     <>
       <CardBodyField
         label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResourceDate(resource, patientResource)}
+        value={getPatientAgeAtResource(patientAgeAtResource)}
       />
       <CardBodyField
         label={CARD_BODY_LABEL[type]}
@@ -49,7 +49,7 @@ const ImmunizationCardBody = ({ resource, patientResource }) => {
 
 ImmunizationCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientResource: shape({}).isRequired,
+  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default ImmunizationCardBody;
