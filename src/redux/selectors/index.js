@@ -91,11 +91,11 @@ export const patientAgeAtResourcesSelector = createSelector(
     if (!patient) {
       return {};
     }
+    const birthDate = parse(patient?.birthDate, 'yyyy-MM-dd', new Date());
     return timelineItems.reduce((acc, { id, timelineDate }) => {
-      const birthDate = patient?.birthDate;
       const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
       const ageAtResourceDate = intervalToDuration({
-        start: parse(birthDate, 'yyyy-MM-dd', new Date()),
+        start: birthDate,
         end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
       });
 
