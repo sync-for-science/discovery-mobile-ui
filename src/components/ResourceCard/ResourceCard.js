@@ -61,7 +61,14 @@ const selectCardBody = (resource, patientAgeAtResource) => {
   }
 };
 
-const ResourceCard = ({ resourceId, resources, patientAgeAtResources }) => {
+const ResourceCard = ({ 
+  resourceId, 
+  resources, 
+  patientAgeAtResources,
+  selectedCollectionId,
+  addResourceToCollection, 
+  removeResourceToCollection 
+}) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
@@ -78,7 +85,7 @@ const ResourceCard = ({ resourceId, resources, patientAgeAtResources }) => {
       </CardItem>
       <BaseDivider />
       <View style={styles.button}>
-        <Button transparent>
+        <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
           <BaseText variant="button">Add To Collection</BaseText>
         </Button>
       </View>

@@ -2,12 +2,20 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { connect } from 'react-redux'
 
 import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
+import {addResourceToCollection, removeResourceToCollection } from '../../redux/epics'
 
-const SubTypeAccordion = ({ subType, resourcesIds }) => {
+const SubTypeAccordion = ({ 
+  subType, 
+  resourcesIds, 
+  addResourceToCollectionAction, 
+  removeResourceToCollectionAction,
+  selectedCollectionId
+}) => {
   const dataArray = [{ title: subType, content: resourcesIds }];
 
   const renderHeader = (item, expanded) => (
@@ -24,7 +32,15 @@ const SubTypeAccordion = ({ subType, resourcesIds }) => {
   );
 
   const renderContent = (item) => item.content.map(
-    (resourceId) => <ResourceCard key={resourceId} resourceId={resourceId} />,
+    (resourceId) => (
+      <ResourceCard 
+        key={resourceId} 
+        resourceId={resourceId}
+        selectedCollectionId={selectedCollectionId}
+        addResourceToCollection={addResourceToCollectionAction}
+        removeResourceToCollection={removeResourceToCollection}
+      />
+    ),
   );
 
   return (
@@ -46,7 +62,16 @@ SubTypeAccordion.propTypes = {
   resourcesIds: arrayOf(string.isRequired).isRequired,
 };
 
-export default SubTypeAccordion;
+const mapStateToProps = (state) => ({
+  selectedCollectionId: state.selectedCollection
+})
+
+const mapDispatchToProps = {
+  addResourceToCollectionAction: addResourceToCollection,
+  removeResourceToCollectionAction: removeResourceToCollection
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);
 
 const styles = StyleSheet.create({
   header: {
