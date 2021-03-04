@@ -123,8 +123,14 @@ const preloadCollections = {
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
-      console.log('ADD_RESOURCE_TO_COLLECTION')
-      return state
+      const {collectionId, resourceId} = action.payload
+      const collection = state[collectionId]
+      const updatedResourceIds = {...collection.resourceIds}
+      if(!updatedResourceIds[resourceId]) {
+        updatedResourceIds[resourceId] = true
+      }
+      const newCollection = {...collection, resourceIds: updatedResourceIds}
+      return {...state, [collectionId]: newCollection}
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       console.log('REMOVE_RESOURCE_FROM_COLLECTION')

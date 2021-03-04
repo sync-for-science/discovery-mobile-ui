@@ -22,7 +22,7 @@ export const actionTypes = {
   CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
   UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
-  REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION'
+  REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -102,6 +102,11 @@ export const selectResourceType = (resourceType) => ({
   type: actionTypes.SELECT_RESOURCE_TYPE,
   payload: resourceType,
 });
+
+export const addResourceToCollection = (collectionId, resourceId) => ({
+  type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
+  payload: {collectionId, resourceId}
+})
 
 export const rootEpic = combineEpics(
   flattenResources,
