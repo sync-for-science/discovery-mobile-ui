@@ -91,17 +91,17 @@ const ResourceCard = ({
   if (collectionResourceIds[resourceId]) {
     displayButton = (
       <Button transparent onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}>
-        <BaseText style={{color: 'red'}} variant="button">Remove From Detail Panel</BaseText>
+        <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
       </Button>
     )
     starIcon = (
-        <View style={{marginRight: 10}}>
+        <View style={styles.iconContainer}>
           <Ionicons name="checkbox-outline" size={24} color={Colors.lastSelected} />
         </View>
       )
     if (lastAddedResourceId === resourceId) {
       starIcon = (
-        <View style={{marginRight: 10}}>
+        <View style={styles.iconContainer}>
           <Ionicons name="checkbox" size={24} color={Colors.lastSelected} />
         </View>
       )
@@ -126,23 +126,6 @@ const ResourceCard = ({
       </View>
     </View>
   );
-  // return (
-  //   <Card style={{backgroundColor: 'red'}}>
-  //     <CardItem style={styles.header}>
-  //       <BaseText variant="header">{resourceType}</BaseText>
-  //       <BaseText>{resourceDate}</BaseText>
-  //     </CardItem>
-  //     <CardItem>
-  //       <View style={styles.cardBody}>
-  //         {selectCardBody(resource, patientAgeAtResources[resourceId])}
-  //       </View>
-  //     </CardItem>
-  //     <BaseDivider />
-  //     <View style={styles.button}>
-  //       {displayButton}
-  //     </View>
-  //   </Card>
-  // );
 };
 
 ResourceCard.propTypes = {
@@ -168,18 +151,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Colors.lightgrey
   },
-  rootSelected: {
-    marginVertical: 10,
-    backgroundColor: Colors.selected,
-    borderWidth: 1,
-    borderColor: Colors.lightgrey
-  },
-  rootLastSelected: {
-    marginVertical: 10,
-    backgroundColor: Colors.lastSelected,
-    borderWidth: 1,
-    borderColor: Colors.lightgrey
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -194,22 +165,11 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  removeButton: {
+    color: 'red'
+  },
+  iconContainer: {
+    marginRight: 10,
   }
 });
-// const styles = StyleSheet.create({
-//   cardSelected: {
-//     backgroundColor: 'blue',
-//   },
-//   header: {
-//     flex: 1,
-//     justifyContent: 'space-between',
-//   },
-//   button: {
-//     flex: 1,
-//     flexDirection: 'row',
-//     justifyContent: 'center',
-//   },
-//   cardBody: {
-//     width: '100%',
-//   },
-// });
