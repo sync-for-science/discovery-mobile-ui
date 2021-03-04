@@ -16,6 +16,10 @@ import { clearPatientData } from '../../features/patient/patientDataSlice';
 const UserInfo = ({
   patientResource, resources,
 }) => {
+  if (!patientResource) {
+    return <View />;
+  }
+
   const name = getPatientName(patientResource);
   const [dataStart, dataEnd] = getDataRange(resources);
 
