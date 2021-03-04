@@ -86,23 +86,22 @@ export const timelinePropsSelector = createSelector(
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, resourcesSelector],
-  (patient, resources) => Object.entries(resources)
-    .filter(([, resource]) => !!resource.timelineDate)
-    .reduce((acc, [resourceId, resource]) => {
+  [patientSelector, timelineItemSelector],
+  (patient, timelineItems) => {
+    if (!patient) {
+      return {};
+    }
+    return timelineItems.reduce((acc, { id, timelineDate }) => {
       const birthDate = patient?.birthDate;
-      if (!resource.timelineDate) {
-        acc[resourceId] = null;
-      } else {
-        const resourceDate = format(new Date(resource.timelineDate), 'yyyy-MM-dd');
-        const ageAtResourceDate = intervalToDuration({
-          start: parse(birthDate, 'yyyy-MM-dd', new Date()),
-          end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
-        });
+      const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
+      const ageAtResourceDate = intervalToDuration({
+        start: parse(birthDate, 'yyyy-MM-dd', new Date()),
+        end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
+      });
 
-        acc[resourceId] = ageAtResourceDate;
-      }
+      acc[id] = ageAtResourceDate;
 
       return acc;
-    }, {}),
+    });
+  },
 );
