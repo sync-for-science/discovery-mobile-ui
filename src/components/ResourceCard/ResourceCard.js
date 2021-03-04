@@ -5,6 +5,7 @@ import {
 import { string, shape } from 'prop-types';
 import { Card, CardItem, Button } from 'native-base';
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -86,24 +87,34 @@ const ResourceCard = ({
       <BaseText style={{textAlign: 'center'}} variant="button">Add To Detail Panel</BaseText>
     </Button>
   )
-  let rootStyle = styles.root
+  let starIcon
   if (collectionResourceIds[resourceId]) {
     displayButton = (
       <Button transparent onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}>
         <BaseText style={{color: 'red'}} variant="button">Remove From Detail Panel</BaseText>
       </Button>
     )
-    rootStyle = styles.rootSelected
+    starIcon = (
+        <View style={{marginRight: 10}}>
+          <Ionicons name="checkbox-outline" size={24} color={Colors.lastSelected} />
+        </View>
+      )
     if (lastAddedResourceId === resourceId) {
-      rootStyle = styles.rootLastSelected
+      starIcon = (
+        <View style={{marginRight: 10}}>
+          <Ionicons name="checkbox" size={24} color={Colors.lastSelected} />
+        </View>
+      )
     }
   }
 
-  console.log('rootStyle', rootStyle)
   return (
-    <View style={rootStyle}>
+    <View style={styles.root}>
       <View style={styles.header}>
-        <BaseText variant="header">{resourceType}</BaseText>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {starIcon}
+          <BaseText variant="header">{resourceType}</BaseText>
+        </View>
         <BaseText>{resourceDate}</BaseText>
       </View>
       <View style={styles.body}>
@@ -172,8 +183,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 15,
-    paddingBottom: 0,
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    height: 50,
   },
   body: {
     padding: 15,
