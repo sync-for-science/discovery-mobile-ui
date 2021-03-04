@@ -227,3 +227,8 @@ export const lastAddedResourceIdSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
   (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId
 )
+
+export const collectionResourceIdsSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds
+)

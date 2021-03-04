@@ -16,7 +16,12 @@ import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { patientSelector, patientAgeAtResourcesSelector, lastAddedResourceIdSelector } from '../../redux/selectors';
+import { 
+  patientSelector, 
+  patientAgeAtResourcesSelector, 
+  lastAddedResourceIdSelector, 
+  collectionResourceIdsSelector 
+} from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
@@ -68,15 +73,24 @@ const ResourceCard = ({
   selectedCollectionId,
   addResourceToCollection, 
   removeResourceToCollection,
-  lastAddedResourceId
+  lastAddedResourceId,
+  collectionResourceIds
 }) => {
+  console.log('collectionResourceIds', collectionResourceIds)
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-  const lastSelectText = lastAddedResourceId === resourceId ? 'Im last Select!' : ''
+  let sampleText
+  if (collectionResourceIds[resourceId]) {
+    sampleText = "I was selected!"
+    if (lastAddedResourceId === resourceId) {
+      sampleText = "I was selected last!"
+    }
+  }
+  console.log('sampleText', sampleText)
   return (
     <Card>
-      <Text>{lastSelectText}</Text>
+      <Text>{sampleText}</Text>
       <CardItem style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
         <BaseText>{resourceDate}</BaseText>
@@ -106,7 +120,8 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  lastAddedResourceId: lastAddedResourceIdSelector(state)
+  lastAddedResourceId: lastAddedResourceIdSelector(state),
+  collectionResourceIds: collectionResourceIdsSelector(state)
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
