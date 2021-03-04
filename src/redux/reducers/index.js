@@ -1,5 +1,6 @@
 import { actionTypes } from '../epics';
-import { processBundle } from '../../resources/fhirReader';
+import processResource from './process-resources';
+import RESOURCE_TYPES from '../../resources/resourceTypes';
 
 const preloadedResources = {};
 
@@ -10,7 +11,7 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
     }
     case actionTypes.FLATTEN_RESOURCES: {
       const newState = { ...state }; // detect mutation
-      processBundle(newState, action.payload, 0);
+      processResource(newState, action.payload, 0);
       return newState;
     }
     default:
@@ -28,21 +29,7 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     case actionTypes.GROUP_BY_TYPE: {
       const { payload } = action;
       return Object.entries(payload).reduce((acc, [id, resource]) => {
-        let { resourceType } = resource;
-        const { subType } = resource;
-        if (resourceType === 'Observation') {
-          const { code } = resource.category[0].coding[0];
-          switch (code) {
-            case 'laboratory':
-            case 'vital-signs':
-              resourceType = code;
-              break;
-            default: {
-              console.info(`Unsupported code type for ${id}: `, code); // eslint-disable-line no-console
-              break;
-            }
-          }
-        }
+        const { type: resourceType, subType } = resource;
         if (!acc[resourceType]) {
           acc[resourceType] = {};
         }
@@ -62,20 +49,16 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-const preloadResourceTypeFilters = {};
+const preloadResourceTypeFilters = Object.keys(RESOURCE_TYPES)
+  .reduce((acc, resourceType) => ({
+    ...acc,
+    [resourceType]: true,
+  }), {});
+
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadedResourceIdsGroupedByType;
-    }
-    case actionTypes.RESOURCE_TYPE_FILTERS: {
-      const resourceTypeFilters = {};
-      action.payload.forEach(
-        (resourceType) => {
-          resourceTypeFilters[resourceType] = true;
-        },
-      );
-      return resourceTypeFilters;
+      return preloadResourceTypeFilters;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
