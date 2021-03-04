@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Text
 } from 'react-native';
 import { string, shape } from 'prop-types';
-import { Card, CardItem, Button } from 'native-base';
+import { Button } from 'native-base';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 

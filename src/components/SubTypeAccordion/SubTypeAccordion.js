@@ -8,7 +8,6 @@ import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import {addResourceToCollection, removeResourceToCollection } from '../../redux/epics'
-import { lastAddedResourceIdSelector } from '../../redux/selectors'
 
 const SubTypeAccordion = ({ 
   subType, 
@@ -16,25 +15,27 @@ const SubTypeAccordion = ({
   addResourceToCollectionAction, 
   removeResourceToCollectionAction,
   selectedCollectionId,
-  lastAddedResourceId
 }) => {
   const dataArray = [{ title: subType, content: resourcesIds }];
 
-  const renderHeader = (item, expanded) => (
-    <View style={styles.header}>
-      <View style={styles.headerTextContainer}>
-        { expanded
-          ? <Ionicons name="caret-down" size={20} color="white" />
-          : <Ionicons name="caret-up" size={20} color="white" />}
-          <Text style={styles.headerText}>
-            {`${item.title} [${item.content.length}]`}
-          </Text>
+  const renderHeader = (item, expanded) => {
+    console.log('item', item.content)
+    return(
+      <View style={styles.header}>
+        <View style={styles.headerTextContainer}>
+          { expanded
+            ? <Ionicons name="caret-down" size={20} color="white" />
+            : <Ionicons name="caret-up" size={20} color="white" />}
+            <Text style={styles.headerText}>
+              {`${item.title} [${item.content.length}]`}
+            </Text>
+        </View>
+        <TouchableOpacity onPress={() => console.log('hello')}>
+          <Ionicons name="square-outline" size={24} color="white" />
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.addAllButton} onPress={() => console.log('hello')}>
-        <Text>Add All To Detail Panel</Text>
-      </TouchableOpacity>
-    </View>
-  );
+    )
+  }
 
   const renderContent = (item) => item.content.map(
     (resourceId) => (
@@ -69,7 +70,6 @@ SubTypeAccordion.propTypes = {
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
-  lastAddedResourceId: lastAddedResourceIdSelector(state)
 })
 
 const mapDispatchToProps = {
@@ -90,16 +90,10 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%'
+    width: '80%'
   },
   headerText: {
     marginLeft: 10,
     color: 'white',
   },
-  addAllButton: {
-    backgroundColor: Colors.primaryLight2, 
-    paddingVertical: 5,
-    paddingHorizontal: 10, 
-    borderRadius: 20,
-  }
 });
