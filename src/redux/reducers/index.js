@@ -88,8 +88,8 @@ export const selectedResourceTypeReducer = (state = preloadSelectedResourceType,
 };
 
 const preloadSelectedTimelineRange = {
-  dateRangeStart: null,
-  dateRangeEnd: null,
+  dateRangeStart: undefined,
+  dateRangeEnd: undefined,
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
