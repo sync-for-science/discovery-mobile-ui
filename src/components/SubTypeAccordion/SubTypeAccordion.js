@@ -16,13 +16,19 @@ import { checkResourceIdsGroupedBySubTypeSelector } from '../../redux/selectors'
 
 const SubTypeAccordion = ({
   subType,
-  resourcesIds,
   addResourceToCollectionAction,
   removeResourceToCollectionAction,
   selectedCollectionId,
   checkResourceIdsGroupedBySubType,
+  subTypeValues
 }) => {
-  const dataArray = [{ title: subType, content: resourcesIds }];
+  const { 
+    dateFilteredCount, 
+    dateFilteredResourceIds,
+    collectionDateFilteredCount, 
+  } = subTypeValues
+
+  const dataArray = [{ title: subType, content: dateFilteredResourceIds }];
   const renderHeader = (item, expanded) => {
     let subTypeHeaderIcon = (
       <TouchableOpacity
@@ -50,7 +56,7 @@ const SubTypeAccordion = ({
         );
       }
     }
-
+    
     return (
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>

@@ -327,27 +327,40 @@ export const filteredResourceTypesSelector = createSelector(
         if ( selectedResourceType === resourceType ) {
           acc[resourceType]['selected'] = true
         }
-
-        Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) =>{
+        Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
           // inside subType
-          acc[resourceType][subType] = {}
+          if ( !acc[resourceType]['subTypes'] ){
+            acc[resourceType]['subTypes'] = {}
+          }
+          if (!acc[resourceType]['subTypes'][subType]) {
+            acc[resourceType]['subTypes'][subType] = {}
+          }
           const subTypeResourceIds = Array.from(resourceIds)
-          acc[resourceType][subType]['resourceIds'] = subTypeResourceIds
-          acc[resourceType][subType]['count'] = subTypeResourceIds.length
+          acc[resourceType]['subTypes'][subType]['resourceIds'] = subTypeResourceIds
+          acc[resourceType]['subTypes'][subType]['count'] = subTypeResourceIds.length
           const dateFilteredResourceIds = subTypeResourceIds.filter(
             subTypeResourceId => isResourceInDateRange(resources[subTypeResourceId], dateRangeStart, dateRangeEnd)
           )
-          acc[resourceType][subType]['dateFilteredResourceIds'] = dateFilteredResourceIds
-          acc[resourceType][subType]['dateFilteredCount'] = dateFilteredResourceIds.length
+          acc[resourceType]['subTypes'][subType]['dateFilteredResourceIds'] = dateFilteredResourceIds
+          acc[resourceType]['subTypes'][subType]['dateFilteredCount'] = dateFilteredResourceIds.length
           const collectionDateFilteredResourceIds = subTypeResourceIds.filter( subTypeResourceId => selectedCollectionResourceIds.includes(subTypeResourceId))
-          acc[resourceType][subType]['collectionDateFilteredResourceIds'] = collectionDateFilteredResourceIds
-          acc[resourceType][subType]['collectionDateFilteredResourceIdsCount'] = collectionDateFilteredResourceIds.length
-
+          acc[resourceType]['subTypes'][subType]['collectionDateFilteredResourceIds'] = collectionDateFilteredResourceIds
+          acc[resourceType]['subTypes'][subType]['collectionDateFilteredCount'] = collectionDateFilteredResourceIds.length
         })
       }
 
       return acc
     }, {})
+  }
+)
+
+export const selectedFlattenedSubTypesSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
+    if (!selectedResourceType) {
+      return {}
+    }
+    return filteredResourceTypes[selectedResourceType].subTypes
   }
 )
 
