@@ -138,16 +138,18 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return {...state, [collectionId]: newCollection}
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const {collectionId, resourceId} = action.payload
+      const {collectionId, resourceIds} = action.payload
       const collection = state[collectionId]
       const updatedResourceIds = {...collection.resourceIds}
-      if(updatedResourceIds[resourceId]) {
-        delete updatedResourceIds[resourceId]
-      }
       let updatedLastAddedResourceId = collection.lastAddedResourceId
-      if (collection.lastAddedResourceId === resourceId) {
-        updatedLastAddedResourceId = null
-      }
+      resourceIds.forEach(resourceId => {
+        if(updatedResourceIds[resourceId]) {
+          delete updatedResourceIds[resourceId]
+        }
+        if (collection.lastAddedResourceId === resourceId) {
+          updatedLastAddedResourceId = null
+        }
+      })
       const newCollection = {
         ...collection, 
         resourceIds: updatedResourceIds,

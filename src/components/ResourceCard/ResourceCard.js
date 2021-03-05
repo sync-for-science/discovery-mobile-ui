@@ -96,7 +96,7 @@ const ResourceCard = ({
         <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
       </Button>
     )
-    selectedIconName = "checkbox"
+    selectedIconName = "checkbox-outline"
     if (lastAddedResourceId === resourceId) {
       selectedIconName = "checkbox"
       selectedIconColor = Colors.lastSelected

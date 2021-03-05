@@ -19,15 +19,26 @@ const SubTypeAccordion = ({
   collectionResourceIds,
   checkResourceIdsGroupedBySubType
 }) => {
-  console.log('checkResourceIdsGroupedBySubType', checkResourceIdsGroupedBySubType)
   const dataArray = [{ title: subType, content: resourcesIds }];
-
   const renderHeader = (item, expanded) => {
-    let subTypeSelectorIconName = "square-outline"
+    let subTypeHeaderIcon = (
+      <TouchableOpacity onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}>
+        <Ionicons name="square-outline" size={24} color="white" />
+      </TouchableOpacity>
+    )
+
     if (checkResourceIdsGroupedBySubType[item.title]) {
-      subTypeSelectorIconName = "checkbox-outline"
+      subTypeHeaderIcon = (
+        <TouchableOpacity onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}>
+          <Ionicons name="checkbox-outline" size={24} color="white" />
+        </TouchableOpacity>
+      )
       if (checkResourceIdsGroupedBySubType[item.title] === "full") {
-        subTypeSelectorIconName = "checkbox"
+        subTypeHeaderIcon = (
+          <TouchableOpacity onPress={() => removeResourceToCollectionAction(selectedCollectionId, item.content)}>
+            <Ionicons name="checkbox" size={24} color="white" />
+          </TouchableOpacity>
+        )
       }
     }
 
@@ -41,9 +52,7 @@ const SubTypeAccordion = ({
               {`${item.title} [${item.content.length}]`}
             </Text>
         </View>
-        <TouchableOpacity onPress={() => console.log('hello')}>
-          <Ionicons name={subTypeSelectorIconName} size={24} color="white" />
-        </TouchableOpacity>
+        {subTypeHeaderIcon}
       </View>
     )
   }
