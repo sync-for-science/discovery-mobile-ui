@@ -68,7 +68,7 @@ export const selectedSubTypeResourcesSelector = createSelector(
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
-const timelineItemSelector = createSelector(
+export const timelineItemsSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources)
     .filter(({ type }) => RESOURCE_TYPES[type])
@@ -78,7 +78,7 @@ const timelineItemSelector = createSelector(
 );
 
 export const timelinePropsSelector = createSelector(
-  [timelineItemSelector],
+  [timelineItemsSelector],
   (timelineItems) => ({
     minimumDate: timelineItems[0]?.timelineDate,
     maximumDate: timelineItems[timelineItems.length - 1]?.timelineDate,
@@ -86,7 +86,7 @@ export const timelinePropsSelector = createSelector(
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, timelineItemSelector],
+  [patientSelector, timelineItemsSelector],
   (patient, timelineItems) => {
     if (!patient) {
       return {};
