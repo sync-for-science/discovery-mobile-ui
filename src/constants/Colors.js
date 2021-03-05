@@ -7,10 +7,8 @@ const blue3 = '#143263';
 const blue4 = '#4a8fe4';
 const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
-const yellow1 = "#e4c66a" // desktop selected
-const yellow2 = "#d78c14" // desktop last selected
-const yellow3 = "#f0dfaa"
-const yellow4 = "#f2cf96"
+const yellow1 = '#e4c66a'; // desktop selected
+const yellow2 = '#d78c14'; // desktop last selected
 
 export default {
   primary: blue1,
@@ -24,5 +22,5 @@ export default {
   baseText: gray3,
   divider: gray1,
   selected: yellow1,
-  lastSelected: yellow2, 
+  lastSelected: yellow2,
 };

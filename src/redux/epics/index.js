@@ -104,19 +104,20 @@ export const selectResourceType = (resourceType) => ({
 });
 
 export const addResourceToCollection = (collectionId, resourceIds) => {
-  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds]
+  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds];
   return ({
     type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
-    payload: {collectionId, resourceIds: packageResourceIds}
-  })
-}
+    payload: { collectionId, resourceIds: packageResourceIds },
+  });
+};
 
 export const removeResourceToCollection = (collectionId, resourceIds) => {
-  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds]
+  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds];
   return ({
-  type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
-  payload: {collectionId, resourceIds: packageResourceIds}
-})}
+    type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+    payload: { collectionId, resourceIds: packageResourceIds },
+  });
+};
 
 export const rootEpic = combineEpics(
   flattenResources,

@@ -11,7 +11,7 @@ const ContentPanel = () => (
     <View>
       <Text style={styles.title}>Content Panel</Text>
     </View>
-    <SubTypeAccordionsContainer showAllResourceTypes />
+    <SubTypeAccordionsContainer showCollectionResourceTypes />
   </ScrollView>
 );
 

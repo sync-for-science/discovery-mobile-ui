@@ -20,9 +20,7 @@ const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 const collectionsSelector = (state) => state.collections
 
-const selectedCollectionSelector = (state) => state.selectedCollection
-
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters
+const selectedCollectionSelector = (state) => state.selectedCollection;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -227,65 +225,65 @@ export const orderedResourceTypeFiltersSelector = createSelector(
 
 export const lastAddedResourceIdSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId
-)
+  (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
+);
 
 export const collectionResourceIdsSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds
-)
+  (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds,
+);
 
 export const checkResourceIdsGroupedBySubTypeSelector = createSelector(
   [flattenedSubTypeResourcesSelector, collectionResourceIdsSelector, resourcesSelector],
   (flattenedSubTypeResources, collectionResourceIdsObjects, resources) => {
     if (collectionResourceIdsObjects) {
-      let portionSelectedOfSubtype = {}
-      const collectionResourceIds = Object.keys(collectionResourceIdsObjects)
-      collectionResourceIds.forEach(resourceId => {
-        const resource = resources[resourceId]
-        const subType = resource.subType
+      const portionSelectedOfSubtype = {};
+      const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
+      collectionResourceIds.forEach((resourceId) => {
+        const resource = resources[resourceId];
+        const { subType } = resource;
         // mark subType as at least partial filled
-        portionSelectedOfSubtype[subType] = "partial"
-  
-        const resourceIdsOfSubType = Array.from(flattenedSubTypeResources[subType])
-  
+        portionSelectedOfSubtype[subType] = 'partial';
+
+        const resourceIdsOfSubType = Array.from(flattenedSubTypeResources[subType]);
+
         try {
-          resourceIdsOfSubType.forEach(resourceIdOfSubType => {
-            if (!collectionResourceIds.includes(resourceIdOfSubType)) throw BreakException
-          })
+          resourceIdsOfSubType.forEach((resourceIdOfSubType) => {
+            if (!collectionResourceIds.includes(resourceIdOfSubType)) throw new Error('subType incomplete');
+          });
           // all resourceIdOfSubType found in collectionResourceIds, mark as full
-          portionSelectedOfSubtype[subType] = "full"
-        } catch {
+          portionSelectedOfSubtype[subType] = 'full';
+        } catch (e) {
+          console.log(e); // eslint-disable-line no-console
         }
-      })
-      console.log('portionSelectedOfSubtype', portionSelectedOfSubtype)
-      return portionSelectedOfSubtype
+      });
+      return portionSelectedOfSubtype;
     }
-    return {}
-  }
-)
+    return {};
+  },
+);
 
 export const collectionFlattenedSubTypeResourcesSelector = createSelector(
   [
-    collectionResourceIdsSelector, 
+    collectionResourceIdsSelector,
     resourceTypeFiltersSelector,
-    resourcesSelector
+    resourcesSelector,
   ],
   (
-    collectionResourceIdsObject, 
+    collectionResourceIdsObject,
     resourceTypeFilters,
-    resources
+    resources,
   ) => {
     // TODO hook into the CollectionResourceIds boolean value
-    let collectionFlattenedResources = {}
-    const collectionResourceIds = Object.keys(collectionResourceIdsObject)
-    collectionResourceIds.forEach(resourceId => {
-      const resource = resources[resourceId]
+    const collectionFlattenedResources = {};
+    const collectionResourceIds = Object.keys(collectionResourceIdsObject);
+    collectionResourceIds.forEach((resourceId) => {
+      const resource = resources[resourceId];
       if (!collectionFlattenedResources[resource.subType]) {
-        collectionFlattenedResources[resource.subType] = new Set()
+        collectionFlattenedResources[resource.subType] = new Set();
       }
-      collectionFlattenedResources[resource.subType].add(resourceId)
-    })
-    return collectionFlattenedResources
-  }
-)
+      collectionFlattenedResources[resource.subType].add(resourceId);
+    });
+    return collectionFlattenedResources;
+  },
+);

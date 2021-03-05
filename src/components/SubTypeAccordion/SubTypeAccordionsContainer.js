@@ -6,27 +6,27 @@ import { connect } from 'react-redux';
 import { string, shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
-import { 
-  selectedSubTypeResourcesSelector, 
-  collectionFlattenedSubTypeResourcesSelector 
+import {
+  selectedSubTypeResourcesSelector,
+  collectionFlattenedSubTypeResourcesSelector,
 } from '../../redux/selectors';
 
 const SubTypeAccordionsContainer = ({
   selectedResourceType,
   resourceTypeFilters,
-  showAllResourceTypes,
+  showCollectionResourceTypes,
   selectedSubTypeResources,
-  collectionFlattenedSubTypeResources
+  collectionFlattenedSubTypeResources,
 }) => {
   let resourceSubTypes = {};
-  if (!showAllResourceTypes) {
+  if (!showCollectionResourceTypes) {
     // show only selectedResourceType
     if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
       return null;
     }
     resourceSubTypes = selectedSubTypeResources;
   } else {
-    // show all resourceTypes
+    // show collection included resourceTypes
     resourceSubTypes = collectionFlattenedSubTypeResources;
   }
 
@@ -47,22 +47,23 @@ const SubTypeAccordionsContainer = ({
 SubTypeAccordionsContainer.propTypes = {
   selectedResourceType: string,
   resourceTypeFilters: shape({}).isRequired,
-  showAllResourceTypes: bool,
-  flattenedSubTypeResources: shape({}).isRequired,
+  showCollectionResourceTypes: bool,
   selectedSubTypeResources: shape({}),
+  collectionFlattenedSubTypeResources: shape({}),
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   selectedResourceType: null,
   selectedSubTypeResources: null,
-  showAllResourceTypes: false,
+  showCollectionResourceTypes: false,
+  collectionFlattenedSubTypeResources: {},
 };
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
   resourceTypeFilters: state.resourceTypeFilters,
   selectedSubTypeResources: selectedSubTypeResourcesSelector(state),
-  collectionFlattenedSubTypeResources: collectionFlattenedSubTypeResourcesSelector(state)
+  collectionFlattenedSubTypeResources: collectionFlattenedSubTypeResourcesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);

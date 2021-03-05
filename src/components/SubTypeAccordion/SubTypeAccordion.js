@@ -1,66 +1,75 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  StyleSheet, Text, TouchableOpacity, View,
+} from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
-import { arrayOf, string } from 'prop-types';
+import {
+  arrayOf, func, shape, string,
+} from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import {addResourceToCollection, removeResourceToCollection } from '../../redux/epics'
-import { collectionResourceIdsSelector, checkResourceIdsGroupedBySubTypeSelector } from '../../redux/selectors';
+import { addResourceToCollection, removeResourceToCollection } from '../../redux/epics';
+import { checkResourceIdsGroupedBySubTypeSelector } from '../../redux/selectors';
 
-const SubTypeAccordion = ({ 
-  subType, 
-  resourcesIds, 
-  addResourceToCollectionAction, 
+const SubTypeAccordion = ({
+  subType,
+  resourcesIds,
+  addResourceToCollectionAction,
   removeResourceToCollectionAction,
   selectedCollectionId,
-  collectionResourceIds,
-  checkResourceIdsGroupedBySubType
+  checkResourceIdsGroupedBySubType,
 }) => {
   const dataArray = [{ title: subType, content: resourcesIds }];
   const renderHeader = (item, expanded) => {
     let subTypeHeaderIcon = (
-      <TouchableOpacity onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}>
+      <TouchableOpacity
+        onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
+      >
         <Ionicons name="square-outline" size={24} color="white" />
       </TouchableOpacity>
-    )
+    );
 
     if (checkResourceIdsGroupedBySubType[item.title]) {
       subTypeHeaderIcon = (
-        <TouchableOpacity onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}>
+        <TouchableOpacity
+          onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
+        >
           <Ionicons name="checkbox-outline" size={24} color="white" />
         </TouchableOpacity>
-      )
-      if (checkResourceIdsGroupedBySubType[item.title] === "full") {
+      );
+      if (checkResourceIdsGroupedBySubType[item.title] === 'full') {
         subTypeHeaderIcon = (
-          <TouchableOpacity onPress={() => removeResourceToCollectionAction(selectedCollectionId, item.content)}>
+          <TouchableOpacity
+            onPress={() => removeResourceToCollectionAction(selectedCollectionId, item.content)}
+          >
             <Ionicons name="checkbox" size={24} color="white" />
           </TouchableOpacity>
-        )
+        );
       }
     }
 
-    return(
+    return (
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
           { expanded
             ? <Ionicons name="caret-down" size={20} color="white" />
             : <Ionicons name="caret-up" size={20} color="white" />}
-            <Text style={styles.headerText}>
-              {`${item.title} [${item.content.length}]`}
-            </Text>
+          <Text style={styles.headerText}>
+            {`${item.title} [${item.content.length}]`}
+          </Text>
         </View>
         {subTypeHeaderIcon}
       </View>
-    )
-  }
+    );
+  };
 
   const renderContent = (item) => item.content.map(
     (resourceId) => (
-      <ResourceCard 
-        key={resourceId} 
+      <ResourceCard
+        key={resourceId}
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
         addResourceToCollection={addResourceToCollectionAction}
@@ -86,18 +95,25 @@ const SubTypeAccordion = ({
 SubTypeAccordion.propTypes = {
   subType: string.isRequired,
   resourcesIds: arrayOf(string.isRequired).isRequired,
+  addResourceToCollectionAction: func.isRequired,
+  removeResourceToCollectionAction: func.isRequired,
+  selectedCollectionId: string.isRequired,
+  checkResourceIdsGroupedBySubType: shape({}),
+};
+
+SubTypeAccordion.defaultProps = {
+  checkResourceIdsGroupedBySubType: {},
 };
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
-  collectionResourceIds: collectionResourceIdsSelector(state),
-  checkResourceIdsGroupedBySubType: checkResourceIdsGroupedBySubTypeSelector(state)
-})
+  checkResourceIdsGroupedBySubType: checkResourceIdsGroupedBySubTypeSelector(state),
+});
 
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
   removeResourceToCollectionAction: removeResourceToCollection,
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);
 
@@ -112,7 +128,7 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '80%'
+    width: '80%',
   },
   headerText: {
     marginLeft: 10,

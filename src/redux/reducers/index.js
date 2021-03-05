@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import { actionTypes } from '../epics';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
@@ -108,58 +109,65 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
   }
 };
 
-const defaultCollectionId = uuidv4()
-const timeCreated = new Date()
+const defaultCollectionId = uuidv4();
+const timeCreated = new Date();
 const preloadCollections = {
   [defaultCollectionId]: {
     created: timeCreated,
     lastUpdated: timeCreated,
     label: 'Untitled Collection',
     resourceIds: {},
-    lastAddedResourceId: null
-  }
-}
+    lastAddedResourceId: null,
+  },
+};
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
-      const {collectionId, resourceIds} = action.payload
-      const collection = state[collectionId]
-      const updatedResourceIds = {...collection.resourceIds}
-      resourceIds.forEach(resourceId => {
-        if(!updatedResourceIds[resourceId]) {
-          updatedResourceIds[resourceId] = true
+      const { collectionId, resourceIds } = action.payload;
+      const collection = state[collectionId];
+      const updatedResourceIds = { ...collection.resourceIds };
+      resourceIds.forEach((resourceId) => {
+        if (!updatedResourceIds[resourceId]) {
+          updatedResourceIds[resourceId] = true;
         }
-      })
-      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds : null
+      });
+      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds : null;
       const newCollection = {
-        ...collection, 
-        resourceIds: updatedResourceIds, 
-        lastAddedResourceId: updatedLastAddedResourceId
-      }
-      return {...state, [collectionId]: newCollection}
+        ...collection,
+        resourceIds: updatedResourceIds,
+        lastAddedResourceId: updatedLastAddedResourceId,
+      };
+      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const {collectionId, resourceIds} = action.payload
-      const collection = state[collectionId]
-      const updatedResourceIds = {...collection.resourceIds}
-      let updatedLastAddedResourceId = collection.lastAddedResourceId
-      resourceIds.forEach(resourceId => {
-        if(updatedResourceIds[resourceId]) {
-          delete updatedResourceIds[resourceId]
+      const { collectionId, resourceIds } = action.payload;
+      const collection = state[collectionId];
+      const updatedResourceIds = { ...collection.resourceIds };
+      let updatedLastAddedResourceId = collection.lastAddedResourceId;
+      resourceIds.forEach((resourceId) => {
+        if (updatedResourceIds[resourceId]) {
+          delete updatedResourceIds[resourceId];
         }
         if (collection.lastAddedResourceId === resourceId) {
-          updatedLastAddedResourceId = null
+          updatedLastAddedResourceId = null;
         }
-      })
+      });
       const newCollection = {
-        ...collection, 
+        ...collection,
         resourceIds: updatedResourceIds,
-        lastAddedResourceId: updatedLastAddedResourceId
-      }
-      return {...state, [collectionId]: newCollection}
+        lastAddedResourceId: updatedLastAddedResourceId,
+      };
+      return { ...state, [collectionId]: newCollection };
     }
     default:
       return state;
   }
-}
+};
+
+export const selectedCollectionReducer = (state = defaultCollectionId, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+};

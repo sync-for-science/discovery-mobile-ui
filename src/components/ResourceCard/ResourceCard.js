@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text
+  StyleSheet, View,
 } from 'react-native';
-import { string, shape } from 'prop-types';
+import { string, shape, func } from 'prop-types';
 import { Button } from 'native-base';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
@@ -17,11 +17,11 @@ import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { 
-  patientSelector, 
-  patientAgeAtResourcesSelector, 
-  lastAddedResourceIdSelector, 
-  collectionResourceIdsSelector 
+import {
+  patientSelector,
+  patientAgeAtResourcesSelector,
+  lastAddedResourceIdSelector,
+  collectionResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
@@ -68,15 +68,15 @@ const selectCardBody = (resource, patientAgeAtResource) => {
   }
 };
 
-const ResourceCard = ({ 
-  resourceId, 
-  resources, 
+const ResourceCard = ({
+  resourceId,
+  resources,
   patientAgeAtResources,
   selectedCollectionId,
-  addResourceToCollection, 
+  addResourceToCollection,
   removeResourceToCollection,
   lastAddedResourceId,
-  collectionResourceIds
+  collectionResourceIds,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
@@ -84,22 +84,25 @@ const ResourceCard = ({
 
   let displayButton = (
     <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
-      <BaseText style={{textAlign: 'center'}} variant="button">Add To Detail Panel</BaseText>
+      <BaseText style={{ textAlign: 'center' }} variant="button">Add To Detail Panel</BaseText>
     </Button>
-  )
-  let selectedIconName = "square-outline"
-  let selectedIconColor = Colors.lightgrey
+  );
+  let selectedIconName = 'square-outline';
+  let selectedIconColor = Colors.lightgrey;
   if (collectionResourceIds[resourceId]) {
-    selectedIconColor = Colors.lastSelected
+    selectedIconColor = Colors.lastSelected;
     displayButton = (
-      <Button transparent onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}>
+      <Button
+        transparent
+        onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}
+      >
         <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
       </Button>
-    )
-    selectedIconName = "checkbox-outline"
+    );
+    selectedIconName = 'checkbox-outline';
     if (lastAddedResourceId === resourceId) {
-      selectedIconName = "checkbox"
-      selectedIconColor = Colors.lastSelected
+      selectedIconName = 'checkbox';
+      selectedIconColor = Colors.lastSelected;
     }
   }
 
@@ -129,6 +132,16 @@ ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
+  selectedCollectionId: string.isRequired,
+  addResourceToCollection: func.isRequired,
+  removeResourceToCollection: func.isRequired,
+  lastAddedResourceId: string,
+  collectionResourceIds: shape({}),
+};
+
+ResourceCard.defaultProps = {
+  lastAddedResourceId: null,
+  collectionResourceIds: {},
 };
 
 const mapStateToProps = (state) => ({
@@ -136,7 +149,7 @@ const mapStateToProps = (state) => ({
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
   lastAddedResourceId: lastAddedResourceIdSelector(state),
-  collectionResourceIds: collectionResourceIdsSelector(state)
+  collectionResourceIds: collectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
@@ -148,7 +161,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderTopColor: Colors.lightgrey,
-    borderBottomColor: Colors.lightgrey
+    borderBottomColor: Colors.lightgrey,
   },
   header: {
     flexDirection: 'row',
@@ -167,13 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   removeButton: {
-    color: 'red'
+    color: 'red',
   },
   iconContainer: {
     marginLeft: 10,
   },
   dateIconContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center'
-  }
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });
