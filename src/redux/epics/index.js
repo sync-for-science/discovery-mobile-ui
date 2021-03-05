@@ -103,10 +103,13 @@ export const selectResourceType = (resourceType) => ({
   payload: resourceType,
 });
 
-export const addResourceToCollection = (collectionId, resourceId) => ({
-  type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
-  payload: {collectionId, resourceId}
-})
+export const addResourceToCollection = (collectionId, resourceIds) => {
+  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds]
+  return ({
+    type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
+    payload: {collectionId, resourceIds: packageResourceIds}
+  })
+}
 
 export const removeResourceToCollection = (collectionId, resourceIds) => {
   const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds]
