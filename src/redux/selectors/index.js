@@ -232,3 +232,45 @@ export const collectionResourceIdsSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
   (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds
 )
+
+const resourceIdsGroupedBySubTypeSelector = createSelector(
+  [supportedResourcesSelector],
+  (supportedResources) => {
+    let subTypeResourceIdsObject = {}
+    supportedResources.forEach(resource => {
+      Object.entries(resource.subTypes).forEach(([subType, resourceIds]) => {
+        subTypeResourceIdsObject[subType] = Array.from(resourceIds)
+      })
+    })
+    return subTypeResourceIdsObject
+  }
+)
+
+export const checkResourceIdsGroupedBySubTypeSelector = createSelector(
+  [resourceIdsGroupedBySubTypeSelector, collectionResourceIdsSelector, resourcesSelector],
+  (resourceIdsGroupedBySubType, collectionResourceIdsObjects, resources) => {
+    if (collectionResourceIdsObjects) {
+      let object = {}
+      const collectionResourceIds = Object.keys(collectionResourceIdsObjects)
+      collectionResourceIds.forEach(resourceId => {
+        const resource = resources[resourceId]
+        const subType = resource.subType
+        // mark subType as at least partial filled
+        object[subType] = "partial"
+  
+        const resourceIdsOfSubType = resourceIdsGroupedBySubType[subType]
+  
+        try {
+          resourceIdsOfSubType.forEach(resourceIdOfSubType => {
+            if (!collectionResourceIds.includes(resourceIdOfSubType)) throw BreakException
+          })
+          // all resourceIdOfSubType found in collectionResourceIds, mark as full
+          object[subType] = "full"
+        } catch {
+        }
+      })
+      return object
+    }
+    return {}
+  }
+)

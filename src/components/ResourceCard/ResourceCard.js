@@ -87,35 +87,32 @@ const ResourceCard = ({
       <BaseText style={{textAlign: 'center'}} variant="button">Add To Detail Panel</BaseText>
     </Button>
   )
-  let starIcon
+  let selectedIconName = "square-outline"
+  let selectedIconColor = Colors.lightgrey
   if (collectionResourceIds[resourceId]) {
+    selectedIconColor = Colors.lastSelected
     displayButton = (
       <Button transparent onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}>
         <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
       </Button>
     )
-    starIcon = (
-        <View style={styles.iconContainer}>
-          <Ionicons name="checkbox-outline" size={24} color={Colors.lastSelected} />
-        </View>
-      )
+    selectedIconName = "checkbox-outline"
     if (lastAddedResourceId === resourceId) {
-      starIcon = (
-        <View style={styles.iconContainer}>
-          <Ionicons name="checkbox" size={24} color={Colors.lastSelected} />
-        </View>
-      )
+      selectedIconName = "checkbox"
+      selectedIconColor = Colors.lastSelected
     }
   }
 
   return (
     <View style={styles.root}>
       <View style={styles.header}>
+        <BaseText variant="header">{resourceType}</BaseText>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          {starIcon}
-          <BaseText variant="header">{resourceType}</BaseText>
+          <BaseText>{resourceDate}</BaseText>
+          <View style={styles.iconContainer}>
+            <Ionicons name={selectedIconName} size={24} color={selectedIconColor} />
+          </View>
         </View>
-        <BaseText>{resourceDate}</BaseText>
       </View>
       <View style={styles.body}>
         {selectCardBody(resource, patientAgeAtResources[resourceId])}
@@ -157,11 +154,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     height: 50,
   },
   body: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     paddingBottom: 15,
   },
   buttonContainer: {
@@ -173,6 +170,6 @@ const styles = StyleSheet.create({
     color: 'red'
   },
   iconContainer: {
-    marginRight: 10,
+    marginLeft: 10,
   }
 });

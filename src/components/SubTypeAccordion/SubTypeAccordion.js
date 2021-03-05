@@ -8,6 +8,7 @@ import { arrayOf, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import {addResourceToCollection, removeResourceToCollection } from '../../redux/epics'
+import { collectionResourceIdsSelector, checkResourceIdsGroupedBySubTypeSelector } from '../../redux/selectors';
 
 const SubTypeAccordion = ({ 
   subType, 
@@ -15,11 +16,20 @@ const SubTypeAccordion = ({
   addResourceToCollectionAction, 
   removeResourceToCollectionAction,
   selectedCollectionId,
+  collectionResourceIds,
+  checkResourceIdsGroupedBySubType
 }) => {
+  console.log('checkResourceIdsGroupedBySubType', checkResourceIdsGroupedBySubType)
   const dataArray = [{ title: subType, content: resourcesIds }];
 
   const renderHeader = (item, expanded) => {
-    console.log('item', item.content)
+    // console.log('item', item.content)
+    // console.log('collectionResourceIds', collectionResourceIds)
+    let subTypeSelectorIconName = "square-outline"
+    if (item.content.some(resourceId=> Object.keys(collectionResourceIds).indexOf(resourceId) >= 0)) {
+      subTypeSelectorIconName = "checkbox"
+    }
+
     return(
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
@@ -31,7 +41,7 @@ const SubTypeAccordion = ({
             </Text>
         </View>
         <TouchableOpacity onPress={() => console.log('hello')}>
-          <Ionicons name="square-outline" size={24} color="white" />
+          <Ionicons name={subTypeSelectorIconName} size={24} color="white" />
         </TouchableOpacity>
       </View>
     )
@@ -70,11 +80,13 @@ SubTypeAccordion.propTypes = {
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
+  collectionResourceIds: collectionResourceIdsSelector(state),
+  checkResourceIdsGroupedBySubType: checkResourceIdsGroupedBySubTypeSelector(state)
 })
 
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
-  removeResourceToCollectionAction: removeResourceToCollection
+  removeResourceToCollectionAction: removeResourceToCollection,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);
