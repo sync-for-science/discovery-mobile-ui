@@ -24,7 +24,7 @@ const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
     <Picker
       selectedValue={patientId}
       onValueChange={(itemValue) => setPatientId(itemValue)}
-      style={Platform.OS === 'android' ? styles.pickerAndroid : styles.pickeriOS}
+      style={styles.picker}
     >
       {Object.entries(PATIENTS).map(([id, name]) => (
         <Picker.Item
@@ -53,12 +53,14 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  pickeriOS: {
-    width: '100%',
-  },
-  pickerAndroid: {
-    width: '70%',
-    alignSelf: 'center',
-    margin: 20,
-  },
+  picker: Platform.select({
+    ios: {
+      width: '100%',
+    },
+    android: {
+      width: '70%',
+      alignSelf: 'center',
+      margin: 20,
+    },
+  }),
 });
