@@ -96,7 +96,7 @@ const ResourceCard = ({
         <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
       </Button>
     )
-    selectedIconName = "checkbox-outline"
+    selectedIconName = "checkbox"
     if (lastAddedResourceId === resourceId) {
       selectedIconName = "checkbox"
       selectedIconColor = Colors.lastSelected
@@ -107,7 +107,7 @@ const ResourceCard = ({
     <View style={styles.root}>
       <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
           <View style={styles.iconContainer}>
             <Ionicons name={selectedIconName} size={24} color={selectedIconColor} />
@@ -171,5 +171,9 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginLeft: 10,
+  },
+  dateIconContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
   }
 });
