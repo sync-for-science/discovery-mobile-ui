@@ -13,7 +13,7 @@ export const PLURAL_RESOURCE_TYPES = {
 export const SINGULAR_RESOURCE_TYPES = {
   'vital-signs': 'Vital sign',
   CarePlan: 'Care plan',
-  Condition: 'Conditions',
+  Condition: 'Condition',
   DiagnosticReport: 'Diagnostic Report',
   Encounter: 'Encounter',
   Immunization: 'Immunization',
