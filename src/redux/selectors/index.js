@@ -236,30 +236,27 @@ export const collectionResourceIdsSelector = createSelector(
 export const checkResourceIdsGroupedBySubTypeSelector = createSelector(
   [flattenedSubTypeResourcesSelector, collectionResourceIdsSelector, resourcesSelector],
   (flattenedSubTypeResources, collectionResourceIdsObjects, resources) => {
+    const portionSelectedOfSubtype = {};
     if (collectionResourceIdsObjects) {
-      const portionSelectedOfSubtype = {};
       const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
       collectionResourceIds.forEach((resourceId) => {
         const resource = resources[resourceId];
         const { subType } = resource;
         // mark subType as at least partial filled
-        portionSelectedOfSubtype[subType] = 'partial';
+        portionSelectedOfSubtype[subType] = 'full';
 
         const resourceIdsOfSubType = Array.from(flattenedSubTypeResources[subType]);
 
-        try {
-          resourceIdsOfSubType.forEach((resourceIdOfSubType) => {
-            if (!collectionResourceIds.includes(resourceIdOfSubType)) throw new Error('subType incomplete');
-          });
-          // all resourceIdOfSubType found in collectionResourceIds, mark as full
-          portionSelectedOfSubtype[subType] = 'full';
-        } catch (e) {
-          console.log(e); // eslint-disable-line no-console
+        for (let i = 0; i < resourceIdsOfSubType.length; i++) {
+          if (!collectionResourceIds.includes(resourceIdsOfSubType[i])) {
+            portionSelectedOfSubtype[subType] = 'partial'
+            break
+          }
         }
-      });
-      return portionSelectedOfSubtype;
+
+      })
     }
-    return {};
+    return portionSelectedOfSubtype;
   },
 );
 
