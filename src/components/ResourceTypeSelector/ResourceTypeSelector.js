@@ -10,11 +10,11 @@ import {
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/epics';
 
 const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
-  const categoryDisplay = RESOURCE_TYPES[resourceType];
+  const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
   const buttonStyle = selectedResourceType === resourceType ? styles.buttonSelected : styles.button;
   const buttonTextStyle = selectedResourceType
     === resourceType ? styles.buttonSelectedText : styles.buttonText;

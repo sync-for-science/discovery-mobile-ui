@@ -16,7 +16,7 @@ import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
 import { patientSelector, patientAgeAtResourcesSelector } from '../../redux/selectors';
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { getResourceDate } from '../../resources/fhirReader';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
@@ -63,7 +63,7 @@ const selectCardBody = (resource, patientAgeAtResource) => {
 
 const ResourceCard = ({ resourceId, resources, patientAgeAtResources }) => {
   const resource = resources[resourceId];
-  const resourceType = RESOURCE_TYPES[resource?.type];
+  const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
   return (
     <Card>

@@ -12,12 +12,12 @@ import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
-  const label = RESOURCE_TYPES[resourceType];
+  const label = PLURAL_RESOURCE_TYPES[resourceType];
   return (
     <View style={styles.categoryRow}>
       <Text>{label}</Text>

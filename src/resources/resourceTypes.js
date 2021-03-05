@@ -1,13 +1,23 @@
-const RESOURCE_TYPES = {
+export const PLURAL_RESOURCE_TYPES = {
   'vital-signs': 'Vital Signs',
   CarePlan: 'Care Plans',
   Condition: 'Conditions',
-  DiagnosticReport: 'Diagnostic Report',
+  DiagnosticReport: 'Diagnostic Reports',
   Encounter: 'Encounters',
   Immunization: 'Immunizations',
-  MedicationRequest: 'Med Requests',
+  MedicationRequest: 'Prescriptions',
   Procedure: 'Procedures',
   laboratory: 'Lab Results',
 };
 
-export default RESOURCE_TYPES;
+export const SINGULAR_RESOURCE_TYPES = {
+  'vital-signs': 'Vital sign',
+  CarePlan: 'Care plan',
+  Condition: 'Conditions',
+  DiagnosticReport: 'Diagnostic Report',
+  Encounter: 'Encounter',
+  Immunization: 'Immunization',
+  MedicationRequest: 'Prescription',
+  Procedure: 'Procedure',
+  laboratory: 'Lab result',
+};

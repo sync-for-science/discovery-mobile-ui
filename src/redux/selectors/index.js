@@ -4,7 +4,7 @@ import {
   compareAsc, format, parse, intervalToDuration,
 } from 'date-fns';
 
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const resourcesSelector = (state) => state.resources;
 
@@ -30,9 +30,9 @@ export const supportedResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector],
   (resourceIdsGroupedByType) => Object.entries(resourceIdsGroupedByType)
     // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([resourceType]) => !!RESOURCE_TYPES[resourceType])
+    .filter(([resourceType]) => !!PLURAL_RESOURCE_TYPES[resourceType])
     // sort by label:
-    .sort(([t1], [t2]) => ((RESOURCE_TYPES[t1].toLowerCase() < RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1)) // eslint-disable-line max-len
+    .sort(([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1)) // eslint-disable-line max-len
     .reduce((acc, [resourceType, subTypes]) => {
       const totalCount = values(subTypes).reduce((count, idSet) => count + idSet.size, 0);
       return acc.concat({
@@ -71,7 +71,7 @@ const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1
 const timelineItemSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources)
-    .filter(({ type }) => RESOURCE_TYPES[type])
+    .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
     .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
