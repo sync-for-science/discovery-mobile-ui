@@ -1,6 +1,8 @@
 import React from 'react';
 import { func, string, bool } from 'prop-types';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, Platform,
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 const PATIENTS = {
@@ -18,11 +20,11 @@ export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
   <View style={styles.container}>
-    <View style={styles.label}><Text>Select Example Patient:</Text></View>
+    <View style={styles.label}><Text>Select synthetic patient:</Text></View>
     <Picker
       selectedValue={patientId}
       onValueChange={(itemValue) => setPatientId(itemValue)}
-      style={styles.picker}
+      style={Platform.OS === 'android' ? styles.pickerAndroid : styles.pickeriOS}
     >
       {Object.entries(PATIENTS).map(([id, name]) => (
         <Picker.Item
@@ -51,7 +53,12 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  picker: {
+  pickeriOS: {
     width: '100%',
+  },
+  pickerAndroid: {
+    width: '70%',
+    alignSelf: 'center',
+    margin: 20,
   },
 });
