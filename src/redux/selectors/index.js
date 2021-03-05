@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration, isWithinInterval,
+  compareAsc, format, parse, intervalToDuration, isWithinInterval, startOfDay, endOfDay
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
@@ -284,3 +284,70 @@ export const collectionFlattenedSubTypeResourcesSelector = createSelector(
     return collectionFlattenedResources;
   },
 );
+
+const selectedCollectionResourceIdsSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollection) => collections[selectedCollection]?.resourceIds
+)
+
+const isResourceInDateRange = (resource, dateRangeStart, dateRangeEnd) => {
+  const { timelineDate } = resource
+  if ( !timelineDate ) {
+    console.info('record does not have an timelineDate, resourceId: ', resource.id); // eslint-disable-line no-console
+    return false;
+  }
+  if (!dateRangeStart || !dateRangeEnd) { return true }
+  return isWithinInterval(timelineDate, {start: startOfDay(dateRangeStart), end: endOfDay(dateRangeEnd)})
+}
+
+export const filteredResourceTypesSelector = createSelector(
+  [
+    resourceTypeFiltersSelector, 
+    resourceIdsGroupedByTypeSelector, 
+    selectedResourceTypeSelector,
+    selectedCollectionResourceIdsSelector,
+    dateRangeFilterFiltersSelector,
+    resourcesSelector,
+  ],
+  (
+    resourceTypeFilter, 
+    resourceIdsGroupedByType, 
+    selectedResourceType,
+    selectedCollectionResourceIdsObjects,
+    dateRangeFilterFilters,
+    resources
+  ) => {
+    const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters
+    const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects)
+    return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
+      if (resourceTypeFilter[resourceType]) {
+        // inside resourceType
+        acc[resourceType] = {}
+        acc[resourceType]['selected'] = false
+        if ( selectedResourceType === resourceType ) {
+          acc[resourceType]['selected'] = true
+        }
+
+        Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) =>{
+          // inside subType
+          acc[resourceType][subType] = {}
+          const subTypeResourceIds = Array.from(resourceIds)
+          acc[resourceType][subType]['resourceIds'] = subTypeResourceIds
+          acc[resourceType][subType]['count'] = subTypeResourceIds.length
+          const dateFilteredResourceIds = subTypeResourceIds.filter(
+            subTypeResourceId => isResourceInDateRange(resources[subTypeResourceId], dateRangeStart, dateRangeEnd)
+          )
+          acc[resourceType][subType]['dateFilteredResourceIds'] = dateFilteredResourceIds
+          acc[resourceType][subType]['dateFilteredCount'] = dateFilteredResourceIds.length
+          const collectionDateFilteredResourceIds = subTypeResourceIds.filter( subTypeResourceId => selectedCollectionResourceIds.includes(subTypeResourceId))
+          acc[resourceType][subType]['collectionDateFilteredResourceIds'] = collectionDateFilteredResourceIds
+          acc[resourceType][subType]['collectionDateFilteredResourceIdsCount'] = collectionDateFilteredResourceIds.length
+
+        })
+      }
+
+      return acc
+    }, {})
+  }
+)
+

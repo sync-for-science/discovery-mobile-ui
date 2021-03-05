@@ -18,6 +18,7 @@ const SubTypeAccordionsContainer = ({
   selectedSubTypeResources,
   collectionFlattenedSubTypeResources,
 }) => {
+  console.log('filteredResourceTypes', filteredResourceTypes)
   let resourceSubTypes = {};
   if (!showCollectionResourceTypes) {
     // show only selectedResourceType
