@@ -22,6 +22,8 @@ const collectionsSelector = (state) => state.collections
 
 const selectedCollectionSelector = (state) => state.selectedCollection
 
+const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters
+
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
@@ -233,44 +235,57 @@ export const collectionResourceIdsSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds
 )
 
-const resourceIdsGroupedBySubTypeSelector = createSelector(
-  [supportedResourcesSelector],
-  (supportedResources) => {
-    let subTypeResourceIdsObject = {}
-    supportedResources.forEach(resource => {
-      Object.entries(resource.subTypes).forEach(([subType, resourceIds]) => {
-        subTypeResourceIdsObject[subType] = Array.from(resourceIds)
-      })
-    })
-    return subTypeResourceIdsObject
-  }
-)
-
 export const checkResourceIdsGroupedBySubTypeSelector = createSelector(
-  [resourceIdsGroupedBySubTypeSelector, collectionResourceIdsSelector, resourcesSelector],
-  (resourceIdsGroupedBySubType, collectionResourceIdsObjects, resources) => {
+  [flattenedSubTypeResourcesSelector, collectionResourceIdsSelector, resourcesSelector],
+  (flattenedSubTypeResources, collectionResourceIdsObjects, resources) => {
     if (collectionResourceIdsObjects) {
-      let object = {}
+      let portionSelectedOfSubtype = {}
       const collectionResourceIds = Object.keys(collectionResourceIdsObjects)
       collectionResourceIds.forEach(resourceId => {
         const resource = resources[resourceId]
         const subType = resource.subType
         // mark subType as at least partial filled
-        object[subType] = "partial"
+        portionSelectedOfSubtype[subType] = "partial"
   
-        const resourceIdsOfSubType = resourceIdsGroupedBySubType[subType]
+        const resourceIdsOfSubType = Array.from(flattenedSubTypeResources[subType])
   
         try {
           resourceIdsOfSubType.forEach(resourceIdOfSubType => {
             if (!collectionResourceIds.includes(resourceIdOfSubType)) throw BreakException
           })
           // all resourceIdOfSubType found in collectionResourceIds, mark as full
-          object[subType] = "full"
+          portionSelectedOfSubtype[subType] = "full"
         } catch {
         }
       })
-      return object
+      console.log('portionSelectedOfSubtype', portionSelectedOfSubtype)
+      return portionSelectedOfSubtype
     }
     return {}
+  }
+)
+
+export const collectionFlattenedSubTypeResourcesSelector = createSelector(
+  [
+    collectionResourceIdsSelector, 
+    resourceTypeFiltersSelector,
+    resourcesSelector
+  ],
+  (
+    collectionResourceIdsObject, 
+    resourceTypeFilters,
+    resources
+  ) => {
+    // TODO hook into the CollectionResourceIds boolean value
+    let collectionFlattenedResources = {}
+    const collectionResourceIds = Object.keys(collectionResourceIdsObject)
+    collectionResourceIds.forEach(resourceId => {
+      const resource = resources[resourceId]
+      if (!collectionFlattenedResources[resource.subType]) {
+        collectionFlattenedResources[resource.subType] = new Set()
+      }
+      collectionFlattenedResources[resource.subType].add(resourceId)
+    })
+    return collectionFlattenedResources
   }
 )
