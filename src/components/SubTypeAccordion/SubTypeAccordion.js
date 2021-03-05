@@ -23,11 +23,12 @@ const SubTypeAccordion = ({
   const dataArray = [{ title: subType, content: resourcesIds }];
 
   const renderHeader = (item, expanded) => {
-    // console.log('item', item.content)
-    // console.log('collectionResourceIds', collectionResourceIds)
     let subTypeSelectorIconName = "square-outline"
-    if (item.content.some(resourceId=> Object.keys(collectionResourceIds).indexOf(resourceId) >= 0)) {
-      subTypeSelectorIconName = "checkbox"
+    if (checkResourceIdsGroupedBySubType[item.title]) {
+      subTypeSelectorIconName = "checkbox-outline"
+      if (checkResourceIdsGroupedBySubType[item.title] === "full") {
+        subTypeSelectorIconName = "checkbox"
+      }
     }
 
     return(
