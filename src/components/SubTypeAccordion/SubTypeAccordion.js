@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import { connect } from 'react-redux';
 
 import {
-  arrayOf, func, number, shape, string,
+  arrayOf, func, number, string,
 } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
