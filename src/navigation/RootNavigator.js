@@ -7,7 +7,6 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-// import CollectionsScreen from '../screens/CollectionsScreen';
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
@@ -26,8 +25,6 @@ function selectIconName(name, focused) {
   }
 }
 
-  <Ionicons name="albums-outline" size={24} color="black" />;
-
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
   tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
@@ -45,11 +42,13 @@ const PostAuthScreens = () => (
     tabBarOptions={{
       activeTintColor: Colors.primary,
       inactiveTintColor: 'gray',
+      style: {
+        paddingVertical: 10,
+      },
     }}
   >
     <Tab.Screen name="Summary" component={SummaryScreen} />
     <Tab.Screen name="Catalog" component={CatalogScreen} />
-    {/* <Tab.Screen name="Collections" component={CollectionsScreen} /> */}
   </Tab.Navigator>
 );
 

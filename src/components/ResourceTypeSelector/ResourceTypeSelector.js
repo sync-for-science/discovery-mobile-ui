@@ -20,7 +20,7 @@ const CategoryButton = ({ resourceType, selectedResourceType, selectResourceType
     === resourceType ? styles.buttonSelectedText : styles.buttonText;
 
   return (
-    <Button style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+    <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
       <Text style={buttonTextStyle}>{categoryDisplay}</Text>
     </Button>
   );
@@ -91,13 +91,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginHorizontal: 10,
     backgroundColor: 'white',
-    borderRadius: 30,
   },
   buttonSelected: {
     paddingHorizontal: 10,
     marginHorizontal: 10,
     backgroundColor: Colors.primary,
-    borderRadius: 30,
   },
   buttonSelectedText: {
     color: 'white',
