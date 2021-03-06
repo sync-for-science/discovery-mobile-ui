@@ -238,6 +238,7 @@ const filteredResourceTypesSelector = createSelector(
     selectedCollectionResourceIdsSelector,
     dateRangeFilterFiltersSelector,
     resourcesSelector,
+    timelinePropsSelector,
   ],
   (
     resourceTypeFilter,
@@ -246,8 +247,12 @@ const filteredResourceTypesSelector = createSelector(
     selectedCollectionResourceIdsObjects,
     dateRangeFilterFilters,
     resources,
+    timelineProps,
   ) => {
+    const { minimumDate, maximumDate } = timelineProps;
     const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters;
+    const activeDateStart = dateRangeStart || minimumDate;
+    const activeDateEnd = dateRangeEnd || maximumDate;
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
@@ -268,7 +273,7 @@ const filteredResourceTypesSelector = createSelector(
           acc[resourceType].subTypes[subType].count = subTypeResourceIds.length;
           const dateFilteredResourceIds = subTypeResourceIds
             .filter((subTypeResourceId) => isResourceInDateRange(
-              resources[subTypeResourceId], dateRangeStart, dateRangeEnd,
+              resources[subTypeResourceId], activeDateStart, activeDateEnd,
             ));
           acc[resourceType].subTypes[subType].dateFilteredResourceIds = dateFilteredResourceIds;
           acc[resourceType].subTypes[subType].dateFilteredCount = dateFilteredResourceIds.length;
