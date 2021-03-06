@@ -3,19 +3,25 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {connect} from 'react-redux'
 
+import { collectionFlattenedSubTypesSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
-const ContentPanel = () => (
+const ContentPanel = ({collectionFlattenedSubTypes}) => (
   <ScrollView>
     <View>
       <Text style={styles.title}>Content Panel</Text>
     </View>
-    <SubTypeAccordionsContainer showCollectionResourceTypes />
+    <SubTypeAccordionsContainer fromContentPanel subTypeData={collectionFlattenedSubTypes}/>
   </ScrollView>
-);
+)
 
-export default ContentPanel;
+const mapStateToProps = (state) => ({
+  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state),
+})
+
+export default connect(mapStateToProps, null)(ContentPanel);
 
 const styles = StyleSheet.create({
   title: {

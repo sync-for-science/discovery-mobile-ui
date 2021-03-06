@@ -364,3 +364,22 @@ export const selectedFlattenedSubTypesSelector = createSelector(
   }
 )
 
+export const collectionFlattenedSubTypesSelector = createSelector(
+  [filteredResourceTypesSelector],
+  (filteredResourceTypes) => {
+    let collectionFlattenedSubTypes = {}
+    Object.entries(filteredResourceTypes).forEach(([resourceType, resourceTypeValues]) => {
+      const { subTypes } = resourceTypeValues
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.collectionDateFilteredCount > 0) {
+          if (!collectionFlattenedSubTypes[subType]) {
+            collectionFlattenedSubTypes[subType] = {}
+          }
+          collectionFlattenedSubTypes[subType] = subTypeValues
+        }
+      })
+    })
+    return collectionFlattenedSubTypes
+  }
+)
+

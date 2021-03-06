@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
+import { connect } from 'react-redux'
 
 import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
@@ -11,8 +12,9 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
+import { selectedFlattenedSubTypesSelector } from '../redux/selectors';
 
-const CatalogScreen = () => (
+const CatalogScreen = ({selectedResourceType, selectedFlattenedSubTypes}) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -24,15 +26,22 @@ const CatalogScreen = () => (
         <ScrollView>
           <Timeline />
           <ResourceTypeSelector />
-          <SubTypeAccordionsContainer />
+          { selectedResourceType && <SubTypeAccordionsContainer subTypeData={selectedFlattenedSubTypes}/>}
         </ScrollView>
       </FilterDrawer>
       <ContentPanel />
     </Swiper>
   </SafeAreaView>
-);
+)
 
-export default CatalogScreen;
+
+
+const mapStateToProps = (state) => ({
+  selectedResourceType: state.selectedResourceType,
+  selectedFlattenedSubTypes: selectedFlattenedSubTypesSelector(state),
+})
+
+export default connect(mapStateToProps, null)(CatalogScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {

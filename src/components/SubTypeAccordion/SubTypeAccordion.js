@@ -12,23 +12,17 @@ import {
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import { addResourceToCollection, removeResourceToCollection } from '../../redux/epics';
-import { checkResourceIdsGroupedBySubTypeSelector } from '../../redux/selectors';
 
 const SubTypeAccordion = ({
-  subType,
   addResourceToCollectionAction,
   removeResourceToCollectionAction,
   selectedCollectionId,
-  checkResourceIdsGroupedBySubType,
-  subTypeValues
+  subType,
+  resourceIds,
+  dateFilteredCount,
+  collectionDateFilteredCount
 }) => {
-  const { 
-    dateFilteredCount, 
-    dateFilteredResourceIds,
-    collectionDateFilteredCount, 
-  } = subTypeValues
-
-  const dataArray = [{ title: subType, content: dateFilteredResourceIds }];
+  const dataArray = [{ title: subType, content: resourceIds }];
   const renderHeader = (item, expanded) => {
     let subTypeHeaderIcon = (
       <TouchableOpacity
@@ -38,7 +32,7 @@ const SubTypeAccordion = ({
       </TouchableOpacity>
     );
 
-    if (checkResourceIdsGroupedBySubType[item.title]) {
+    if (collectionDateFilteredCount > 0) {
       subTypeHeaderIcon = (
         <TouchableOpacity
           onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
@@ -46,7 +40,7 @@ const SubTypeAccordion = ({
           <Ionicons name="checkbox-outline" size={24} color="white" />
         </TouchableOpacity>
       );
-      if (checkResourceIdsGroupedBySubType[item.title] === 'full') {
+      if (collectionDateFilteredCount === dateFilteredCount) {
         subTypeHeaderIcon = (
           <TouchableOpacity
             onPress={() => removeResourceToCollectionAction(selectedCollectionId, item.content)}
@@ -56,7 +50,7 @@ const SubTypeAccordion = ({
         );
       }
     }
-    
+
     return (
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
@@ -104,16 +98,11 @@ SubTypeAccordion.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   removeResourceToCollectionAction: func.isRequired,
   selectedCollectionId: string.isRequired,
-  checkResourceIdsGroupedBySubType: shape({}),
 };
 
-SubTypeAccordion.defaultProps = {
-  checkResourceIdsGroupedBySubType: {},
-};
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
-  checkResourceIdsGroupedBySubType: checkResourceIdsGroupedBySubTypeSelector(state),
 });
 
 const mapDispatchToProps = {
