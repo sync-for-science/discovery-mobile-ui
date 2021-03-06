@@ -94,7 +94,7 @@ const SubTypeAccordion = ({
 
 SubTypeAccordion.propTypes = {
   addResourceToCollectionAction: func.isRequired,
-  collectionDateFilteredCount: shape({}).isRequired,
+  collectionDateFilteredCount: number.isRequired,
   dateFilteredCount: number.isRequired,
   removeResourceToCollectionAction: func.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,

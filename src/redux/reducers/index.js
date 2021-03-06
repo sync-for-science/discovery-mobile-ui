@@ -132,7 +132,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           updatedResourceIds[resourceId] = true;
         }
       });
-      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds : null;
+      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds[0] : null;
       const newCollection = {
         ...collection,
         resourceIds: updatedResourceIds,
