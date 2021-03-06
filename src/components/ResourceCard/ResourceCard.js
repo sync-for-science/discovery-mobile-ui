@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity,
 } from 'react-native';
 import { string, shape, func } from 'prop-types';
 import { Button } from 'native-base';
@@ -89,7 +89,9 @@ const ResourceCard = ({
   );
   let selectedIconName = 'square-outline';
   let selectedIconColor = Colors.lightgrey;
+  let handleOnPress = () => addResourceToCollection(selectedCollectionId, resourceId);
   if (collectionResourceIds[resourceId]) {
+    handleOnPress = () => removeResourceToCollection(selectedCollectionId, resourceId);
     selectedIconColor = Colors.lastSelected;
     displayButton = (
       <Button
@@ -112,9 +114,9 @@ const ResourceCard = ({
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
-          <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconContainer} onPress={handleOnPress}>
             <Ionicons name={selectedIconName} size={24} color={selectedIconColor} />
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.body}>
