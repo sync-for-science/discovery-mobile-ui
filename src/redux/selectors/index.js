@@ -357,7 +357,7 @@ export const filteredResourceTypesSelector = createSelector(
 export const selectedFlattenedSubTypesSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
-    if (!selectedResourceType) {
+    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {}
     }
     return filteredResourceTypes[selectedResourceType].subTypes
