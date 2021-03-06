@@ -3,24 +3,26 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { string, shape, bool } from 'prop-types';
+import { shape, bool } from 'prop-types';
 
-import SubTypeAccordion from './SubTypeAccordion'
+import SubTypeAccordion from './SubTypeAccordion';
 
 const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
   if (subTypeData === {}) {
-    return null
+    return null;
   }
 
   return (
     <View style={styles.root}>
       <View style={styles.container}>
         {Object.entries(subTypeData).map(([subType, values]) => {
-          const resourceIds = fromContentPanel ? values.collectionDateFilteredResourceIds : values.dateFilteredResourceIds
+          const resourceIds = fromContentPanel
+            ? values.collectionDateFilteredResourceIds
+            : values.dateFilteredResourceIds;
           return (
-            <SubTypeAccordion 
-              key={subType} 
-              subType={subType} 
+            <SubTypeAccordion
+              key={subType}
+              subType={subType}
               resourceIds={resourceIds}
               dateFilteredCount={values.dateFilteredCount}
               collectionDateFilteredCount={values.collectionDateFilteredCount}
@@ -38,7 +40,6 @@ SubTypeAccordionsContainer.propTypes = {
 };
 
 SubTypeAccordionsContainer.defaultProps = {
-  selectedResourceType: null,
   fromContentPanel: false,
 };
 

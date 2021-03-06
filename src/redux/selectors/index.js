@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration, isWithinInterval, startOfDay, endOfDay
+  compareAsc, format, parse, intervalToDuration, isWithinInterval, startOfDay, endOfDay,
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
@@ -49,28 +49,6 @@ export const supportedResourcesSelector = createSelector(
         subTypes,
       });
     }, []),
-);
-
-export const flattenedSubTypeResourcesSelector = createSelector(
-  [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
-  (supportedResources, resourceIdsGroupedByType) => {
-    const resourceSubTypes = {};
-    supportedResources.forEach((resourceTypeObject) => {
-      const { resourceType, subTypes } = resourceTypeObject;
-      const subTypesArray = Object.keys(subTypes);
-      subTypesArray.forEach((subType) => {
-        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
-      });
-    });
-    return resourceSubTypes;
-  },
-);
-
-export const selectedSubTypeResourcesSelector = createSelector(
-  [resourceIdsGroupedByTypeSelector, selectedResourceTypeSelector],
-  (resourceIdsGroupedByType, selectedResourceType) => (
-    resourceIdsGroupedByType[selectedResourceType]
-  ),
 );
 
 const timelineResourcesSelector = createSelector(
@@ -233,151 +211,107 @@ export const collectionResourceIdsSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds,
 );
 
-export const checkResourceIdsGroupedBySubTypeSelector = createSelector(
-  [flattenedSubTypeResourcesSelector, collectionResourceIdsSelector, resourcesSelector],
-  (flattenedSubTypeResources, collectionResourceIdsObjects, resources) => {
-    const portionSelectedOfSubtype = {};
-    if (collectionResourceIdsObjects) {
-      const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
-      collectionResourceIds.forEach((resourceId) => {
-        const resource = resources[resourceId];
-        const { subType } = resource;
-        // mark subType as at least partial filled
-        portionSelectedOfSubtype[subType] = 'full';
-
-        const resourceIdsOfSubType = Array.from(flattenedSubTypeResources[subType]);
-
-        for (let i = 0; i < resourceIdsOfSubType.length; i++) {
-          if (!collectionResourceIds.includes(resourceIdsOfSubType[i])) {
-            portionSelectedOfSubtype[subType] = 'partial'
-            break
-          }
-        }
-
-      })
-    }
-    return portionSelectedOfSubtype;
-  },
-);
-
-export const collectionFlattenedSubTypeResourcesSelector = createSelector(
-  [
-    collectionResourceIdsSelector,
-    resourceTypeFiltersSelector,
-    resourcesSelector,
-  ],
-  (
-    collectionResourceIdsObject,
-    resourceTypeFilters,
-    resources,
-  ) => {
-    // TODO hook into the CollectionResourceIds boolean value
-    const collectionFlattenedResources = {};
-    const collectionResourceIds = Object.keys(collectionResourceIdsObject);
-    collectionResourceIds.forEach((resourceId) => {
-      const resource = resources[resourceId];
-      if (!collectionFlattenedResources[resource.subType]) {
-        collectionFlattenedResources[resource.subType] = new Set();
-      }
-      collectionFlattenedResources[resource.subType].add(resourceId);
-    });
-    return collectionFlattenedResources;
-  },
-);
-
 const selectedCollectionResourceIdsSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollection) => collections[selectedCollection]?.resourceIds
-)
+  (collections, selectedCollection) => collections[selectedCollection]?.resourceIds,
+);
 
 const isResourceInDateRange = (resource, dateRangeStart, dateRangeEnd) => {
-  const { timelineDate } = resource
-  if ( !timelineDate ) {
+  const { timelineDate } = resource;
+  if (!timelineDate) {
     console.info('record does not have an timelineDate, resourceId: ', resource.id); // eslint-disable-line no-console
     return false;
   }
-  if (!dateRangeStart || !dateRangeEnd) { return true }
-  return isWithinInterval(timelineDate, {start: startOfDay(dateRangeStart), end: endOfDay(dateRangeEnd)})
-}
+  if (!dateRangeStart || !dateRangeEnd) { return true; }
+  return (
+    isWithinInterval(
+      timelineDate, { start: startOfDay(dateRangeStart), end: endOfDay(dateRangeEnd) },
+    )
+  );
+};
 
-export const filteredResourceTypesSelector = createSelector(
+const filteredResourceTypesSelector = createSelector(
   [
-    resourceTypeFiltersSelector, 
-    resourceIdsGroupedByTypeSelector, 
+    resourceTypeFiltersSelector,
+    resourceIdsGroupedByTypeSelector,
     selectedResourceTypeSelector,
     selectedCollectionResourceIdsSelector,
     dateRangeFilterFiltersSelector,
     resourcesSelector,
   ],
   (
-    resourceTypeFilter, 
-    resourceIdsGroupedByType, 
+    resourceTypeFilter,
+    resourceIdsGroupedByType,
     selectedResourceType,
     selectedCollectionResourceIdsObjects,
     dateRangeFilterFilters,
-    resources
+    resources,
   ) => {
-    const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters
-    const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects)
+    const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters;
+    const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
-        acc[resourceType] = {}
-        acc[resourceType]['selected'] = false
-        if ( selectedResourceType === resourceType ) {
-          acc[resourceType]['selected'] = true
+        acc[resourceType] = {};
+        acc[resourceType].selected = false;
+        if (selectedResourceType === resourceType) {
+          acc[resourceType].selected = true;
         }
         Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
-          if ( !acc[resourceType]['subTypes'] ){
-            acc[resourceType]['subTypes'] = {}
+          if (!acc[resourceType].subTypes) {
+            acc[resourceType].subTypes = {};
           }
-          if (!acc[resourceType]['subTypes'][subType]) {
-            acc[resourceType]['subTypes'][subType] = {}
+          if (!acc[resourceType].subTypes[subType]) {
+            acc[resourceType].subTypes[subType] = {};
           }
-          const subTypeResourceIds = Array.from(resourceIds)
-          acc[resourceType]['subTypes'][subType]['resourceIds'] = subTypeResourceIds
-          acc[resourceType]['subTypes'][subType]['count'] = subTypeResourceIds.length
-          const dateFilteredResourceIds = subTypeResourceIds.filter(
-            subTypeResourceId => isResourceInDateRange(resources[subTypeResourceId], dateRangeStart, dateRangeEnd)
-          )
-          acc[resourceType]['subTypes'][subType]['dateFilteredResourceIds'] = dateFilteredResourceIds
-          acc[resourceType]['subTypes'][subType]['dateFilteredCount'] = dateFilteredResourceIds.length
-          const collectionDateFilteredResourceIds = dateFilteredResourceIds.filter( dateFilteredResourceId => selectedCollectionResourceIds.includes(dateFilteredResourceId))
-          acc[resourceType]['subTypes'][subType]['collectionDateFilteredResourceIds'] = collectionDateFilteredResourceIds
-          acc[resourceType]['subTypes'][subType]['collectionDateFilteredCount'] = collectionDateFilteredResourceIds.length
-        })
+          const subTypeResourceIds = Array.from(resourceIds);
+          acc[resourceType].subTypes[subType].resourceIds = subTypeResourceIds;
+          acc[resourceType].subTypes[subType].count = subTypeResourceIds.length;
+          const dateFilteredResourceIds = subTypeResourceIds
+            .filter((subTypeResourceId) => isResourceInDateRange(
+              resources[subTypeResourceId], dateRangeStart, dateRangeEnd,
+            ));
+          acc[resourceType].subTypes[subType].dateFilteredResourceIds = dateFilteredResourceIds;
+          acc[resourceType].subTypes[subType].dateFilteredCount = dateFilteredResourceIds.length;
+          const collectionDateFilteredResourceIds = dateFilteredResourceIds
+            .filter((dateFilteredResourceId) => selectedCollectionResourceIds
+              .includes(dateFilteredResourceId));
+          acc[resourceType].subTypes[subType]
+            .collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
+          acc[resourceType].subTypes[subType]
+            .collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
+        });
       }
 
-      return acc
-    }, {})
-  }
-)
+      return acc;
+    }, {});
+  },
+);
 
 export const selectedFlattenedSubTypesSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {}
+      return {};
     }
-    return filteredResourceTypes[selectedResourceType].subTypes
-  }
-)
+    return filteredResourceTypes[selectedResourceType].subTypes;
+  },
+);
 
 export const collectionFlattenedSubTypesSelector = createSelector(
   [filteredResourceTypesSelector],
   (filteredResourceTypes) => {
-    let collectionFlattenedSubTypes = {}
-    Object.entries(filteredResourceTypes).forEach(([resourceType, resourceTypeValues]) => {
-      const { subTypes } = resourceTypeValues
+    const collectionFlattenedSubTypes = {};
+    Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
+      const { subTypes } = resourceTypeValues;
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         if (subTypeValues.collectionDateFilteredCount > 0) {
           if (!collectionFlattenedSubTypes[subType]) {
-            collectionFlattenedSubTypes[subType] = {}
+            collectionFlattenedSubTypes[subType] = {};
           }
-          collectionFlattenedSubTypes[subType] = subTypeValues
+          collectionFlattenedSubTypes[subType] = subTypeValues;
         }
-      })
-    })
-    return collectionFlattenedSubTypes
-  }
-)
-
+      });
+    });
+    return collectionFlattenedSubTypes;
+  },
+);

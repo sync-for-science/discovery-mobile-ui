@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import { connect } from 'react-redux';
 
 import {
-  arrayOf, func, shape, string,
+  arrayOf, func, number, shape, string,
 } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
@@ -15,12 +15,12 @@ import { addResourceToCollection, removeResourceToCollection } from '../../redux
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
+  collectionDateFilteredCount,
+  dateFilteredCount,
   removeResourceToCollectionAction,
+  resourceIds,
   selectedCollectionId,
   subType,
-  resourceIds,
-  dateFilteredCount,
-  collectionDateFilteredCount
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
   const renderHeader = (item, expanded) => {
@@ -93,13 +93,14 @@ const SubTypeAccordion = ({
 };
 
 SubTypeAccordion.propTypes = {
-  subType: string.isRequired,
-  resourcesIds: arrayOf(string.isRequired).isRequired,
   addResourceToCollectionAction: func.isRequired,
+  collectionDateFilteredCount: shape({}).isRequired,
+  dateFilteredCount: number.isRequired,
   removeResourceToCollectionAction: func.isRequired,
+  resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
+  subType: string.isRequired,
 };
-
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
