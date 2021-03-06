@@ -321,14 +321,12 @@ export const filteredResourceTypesSelector = createSelector(
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects)
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
-        // inside resourceType
         acc[resourceType] = {}
         acc[resourceType]['selected'] = false
         if ( selectedResourceType === resourceType ) {
           acc[resourceType]['selected'] = true
         }
         Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
-          // inside subType
           if ( !acc[resourceType]['subTypes'] ){
             acc[resourceType]['subTypes'] = {}
           }
@@ -343,7 +341,7 @@ export const filteredResourceTypesSelector = createSelector(
           )
           acc[resourceType]['subTypes'][subType]['dateFilteredResourceIds'] = dateFilteredResourceIds
           acc[resourceType]['subTypes'][subType]['dateFilteredCount'] = dateFilteredResourceIds.length
-          const collectionDateFilteredResourceIds = subTypeResourceIds.filter( subTypeResourceId => selectedCollectionResourceIds.includes(subTypeResourceId))
+          const collectionDateFilteredResourceIds = dateFilteredResourceIds.filter( dateFilteredResourceId => selectedCollectionResourceIds.includes(dateFilteredResourceId))
           acc[resourceType]['subTypes'][subType]['collectionDateFilteredResourceIds'] = collectionDateFilteredResourceIds
           acc[resourceType]['subTypes'][subType]['collectionDateFilteredCount'] = collectionDateFilteredResourceIds.length
         })
