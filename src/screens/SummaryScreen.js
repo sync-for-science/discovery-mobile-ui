@@ -4,9 +4,10 @@ import {
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button,
+  StyleSheet, View, SafeAreaView, StatusBar, Button, BackHandler,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
@@ -19,11 +20,23 @@ import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 const SummaryScreen = ({
   navigation, clearAuthAction, clearPatientDataAction,
 }) => {
-  const handleLogout = () => {
+  const clearData = () => {
     clearAuthAction();
     clearPatientDataAction();
+  };
+
+  const handleLogout = () => {
+    clearData();
     navigation.navigate('PreAuth');
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      BackHandler.addEventListener('hardwareBackPress', clearData);
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', clearData);
+    }, []),
+  );
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
