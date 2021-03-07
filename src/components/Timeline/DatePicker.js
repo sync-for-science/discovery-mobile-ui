@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { string, func, instanceOf } from 'prop-types';
 import {
-  Platform, SafeAreaView, Text, Button, StyleSheet,
+  Platform, SafeAreaView, View, Text, Button, StyleSheet,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
@@ -24,28 +24,32 @@ const DatePicker = ({
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text>{label}</Text>
-      {
-        isAndroid && (
-          <Button
-            title={format(activeDate, 'MMM do, yyyy')}
-            onPress={() => setVisible(true)}
-          />
-        )
-      }
-      {
-        isVisible && (
-          <DateTimePicker
-            style={styles.picker}
-            mode="date"
-            value={activeDate}
-            minimumDate={minimumDate}
-            maximumDate={maximumDate}
-            display="default"
-            onChange={onChange}
-          />
-        )
-      }
+      <View style={styles.labelContainer}>
+        <Text style={styles.label}>{label}</Text>
+        {
+          isAndroid && (
+            <Button
+              title={format(activeDate, 'MMM do, yyyy')}
+              onPress={() => setVisible(true)}
+            />
+          )
+        }
+      </View>
+      <View style={styles.pickerContainer}>
+        {
+          isVisible && (
+            <DateTimePicker
+              style={styles.picker}
+              mode="date"
+              value={activeDate}
+              minimumDate={minimumDate}
+              maximumDate={maximumDate}
+              display="default"
+              onChange={onChange}
+            />
+          )
+        }
+      </View>
     </SafeAreaView>
   );
 };
@@ -62,17 +66,20 @@ export default React.memo(DatePicker);
 
 const styles = StyleSheet.create({
   container: {
-    width: 150,
-    height: 64,
+    flexDirection: 'row',
+    alignItems: 'center',
     margin: 8,
+  },
+  labelContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
   },
   label: {
-    width: 150,
-    alignItems: 'center',
+    marginRight: 8,
+  },
+  pickerContainer: {
   },
   picker: {
-    width: 150,
-    alignItems: 'center',
+    width: 136,
   },
 });

@@ -5,7 +5,7 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
 
-import TimelineWidget from '../components/Timeline/TimelineWidget';
+import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
@@ -22,7 +22,7 @@ const CatalogScreen = () => (
     >
       <FilterDrawer>
         <ScrollView>
-          <TimelineWidget />
+          <Timeline />
           <ResourceTypeSelector />
           <SubTypeAccordionsContainer />
         </ScrollView>
