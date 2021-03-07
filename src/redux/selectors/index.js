@@ -16,6 +16,8 @@ const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
+const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
+
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
@@ -74,7 +76,7 @@ const timelineResourcesSelector = createSelector(
     .filter((r) => r.timelineDate), // must have timelineDate
 );
 
-const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
@@ -107,18 +109,20 @@ const timelineRangeSelector = createSelector(
 );
 
 const timelineItemsInRangeSelector = createSelector(
-  [sortedTimelineItemsSelector, timelineRangeSelector],
-  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }) => {
+  [sortedTimelineItemsSelector, timelineRangeSelector, resourceTypeFiltersSelector],
+  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
     }
-    return sortedTimelineItems.filter(({ timelineDate }) => isWithinInterval(
-      timelineDate,
-      {
-        start: dateRangeStart,
-        end: dateRangeEnd,
-      },
-    ));
+    return sortedTimelineItems
+      .filter(({ type }) => resourceTypeFilters[type])
+      .filter(({ timelineDate }) => isWithinInterval(
+        timelineDate,
+        {
+          start: dateRangeStart,
+          end: dateRangeEnd,
+        },
+      ));
   },
 );
 
