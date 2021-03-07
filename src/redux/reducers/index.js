@@ -166,8 +166,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-export const selectedCollectionReducer = (state = defaultCollectionId, action) => {
+const preloadSelectedCollection = null
+export const selectedCollectionReducer = (state = defaultCollectionId || preloadSelectedCollection, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadSelectedCollection;
+    }
     default:
       return state;
   }

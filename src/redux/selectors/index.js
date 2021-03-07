@@ -249,10 +249,13 @@ const filteredResourceTypesSelector = createSelector(
     resources,
     timelineProps,
   ) => {
-    const { minimumDate, maximumDate } = timelineProps;
+    const minimumDate = timelineProps?.miniumumDate || {}
+    const maximumDate = timelineProps?.maximumDate || {}
     const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters;
-    const activeDateStart = dateRangeStart || minimumDate;
-    const activeDateEnd = dateRangeEnd || maximumDate;
+    console.log('dateRangeStart', dateRangeStart)
+    console.log('minimumDate', minimumDate)
+    const activeDateStart = dateRangeStart || minimumDate
+    const activeDateEnd = dateRangeEnd || maximumDate
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
