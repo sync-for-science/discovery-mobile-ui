@@ -157,18 +157,16 @@ export const timelineIntervalsSelector = createSelector(
       intervals = intervalMap;
     }
 
-    let meanCountPerInterval = null;
     const intervalsWithItems = intervals.filter(({ items }) => items.length); // has items
 
-    let populationSD = null;
     if (intervalsWithItems.length) {
       const itemCounts = intervalsWithItems.map(({ items }) => items.length);
       const totalItemCount = itemCounts.reduce((acc, count) => acc + count, 0);
-      meanCountPerInterval = totalItemCount / itemCounts.length;
+      const meanCountPerInterval = totalItemCount / itemCounts.length;
       const sumOfSquaredDifferences = itemCounts
         .reduce((acc, count) => acc + ((count - meanCountPerInterval) ** 2), 0);
 
-      populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
+      const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
       // inject z score:
       intervalsWithItems.forEach((interval) => {
