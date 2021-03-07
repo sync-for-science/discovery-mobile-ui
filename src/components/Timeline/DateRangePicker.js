@@ -23,14 +23,14 @@ const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter
   return (
     <SafeAreaView style={styles.container}>
       <DatePicker
-        label="start"
+        label="Start"
         activeDate={dateRangeStart}
         minimumDate={minimumDate}
         maximumDate={min([maximumDate, dateRangeEnd])}
         onDateSelect={(d) => updateDateRangeFilter('dateRangeStart', startOfDay(d))}
       />
       <DatePicker
-        label="end"
+        label="End"
         activeDate={dateRangeEnd}
         minimumDate={max([minimumDate, dateRangeStart])}
         maximumDate={maximumDate}
