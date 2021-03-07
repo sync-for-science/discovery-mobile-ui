@@ -7,6 +7,7 @@ import {
   Text,
   View,
   Switch,
+  Platform,
 } from 'react-native';
 import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -15,14 +16,27 @@ import { connect } from 'react-redux';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
+import { orderedResourceTypeFiltersSelector } from '../../redux/selectors'
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
   const label = PLURAL_RESOURCE_TYPES[resourceType];
+  const handleThumbColor = filterOpen
+    ? Platform.OS=='ios' 
+      ? 'white' 
+      : Colors.primary 
+    : Platform.OS=='ios' 
+      ? 'white' 
+      : Colors.lightgrey
+      
   return (
     <View style={styles.categoryRow}>
       <Text>{label}</Text>
       <Switch
-        trackColor={{ false: Colors.mediumgrey, true: Colors.primary }}
+        trackColor={{ 
+          false: Colors.mediumgrey, 
+          true: Platform.OS=='ios' ? Colors.primary : Colors.primaryLight 
+        }}
+        thumbColor={handleThumbColor}
         onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
         value={filterOpen}
       />
@@ -36,11 +50,15 @@ ResourceTypeFilter.propTypes = {
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
-const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, children }) => {
+const FilterDrawer = ({ 
+  toggleResourceTypeFilterAction, 
+  orderedResourceTypeFilters, 
+  children 
+}) => {
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
+      {Object.entries(orderedResourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
@@ -70,13 +88,13 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
 };
 
 FilterDrawer.propTypes = {
-  resourceTypeFilters: shape({}).isRequired,
+  orderedResourceTypeFilters: shape({}).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: state.resourceTypeFilters,
+  orderedResourceTypeFilters: orderedResourceTypeFiltersSelector(state),
 });
 
 const mapDispatchToProps = {
