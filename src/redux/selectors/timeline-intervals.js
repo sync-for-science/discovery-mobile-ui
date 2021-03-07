@@ -1,6 +1,6 @@
 import { endOfDay, isWithinInterval, startOfDay } from 'date-fns';
 
-// Object representation
+// initialize representation of all intervals, whether they have items or not:
 export const createIntervalMap = (minDate, maxDate, intervalCount) => {
   const intervalMap = [];
   const startTime = minDate.getTime();
@@ -13,7 +13,7 @@ export const createIntervalMap = (minDate, maxDate, intervalCount) => {
       key: `interval-${i}`,
       index: i,
       items: [],
-      position: (i * intervalWidth + intervalWidth / 2),
+      position: (i * intervalWidth + intervalWidth / 2), // a number from 0..1
       interval: {
         start: startOfDay(new Date(intervalStart)),
         end: endOfDay(new Date(intervalStart + intervalLength)), // intervals will overlap
