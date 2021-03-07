@@ -110,20 +110,26 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
   }
 };
 
-const defaultCollectionId = uuidv4();
-const timeCreated = new Date();
-const preloadCollections = {
-  [defaultCollectionId]: {
-    created: timeCreated,
-    lastUpdated: timeCreated,
-    label: 'Untitled Collection',
-    resourceIds: {},
-    lastAddedResourceId: null,
-  },
-};
-
+const preloadCollections = {}
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadCollections;
+    }
+    case actionTypes.CREATE_DEFAULT_COLLECTIONS: {
+      const defaultCollectionId = uuidv4();
+      const timeCreated = new Date();
+      const defaultCollections = {
+        [defaultCollectionId]: {
+          created: timeCreated,
+          lastUpdated: timeCreated,
+          label: 'Untitled Collection',
+          resourceIds: {},
+          lastAddedResourceId: null,
+        },
+      };
+      return defaultCollections
+    }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
       const collection = state[collectionId];
@@ -167,10 +173,13 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 };
 
 const preloadSelectedCollection = null
-export const selectedCollectionReducer = (state = defaultCollectionId || preloadSelectedCollection, action) => {
+export const selectedCollectionReducer = (state = preloadSelectedCollection, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedCollection;
+    }
+    case actionTypes.SELECT_DEFAULT_COLLECTION: {
+      return action.payload
     }
     default:
       return state;

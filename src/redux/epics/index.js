@@ -23,6 +23,8 @@ export const actionTypes = {
   UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
   REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
+  CREATE_DEFAULT_COLLECTIONS: 'CREATE_DEFAULT_COLLECTIONS',
+  SELECT_DEFAULT_COLLECTION: 'SELECT_DEFAULT_COLLECTION'
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -90,7 +92,8 @@ export const toggleResourceTypeFilter = (resourceType) => ({
   payload: resourceType,
 });
 
-// how to create simply state slice without pipe, ofType, map
+// dont care about GROUP_BY_TYPE but not sure how to fire off
+// CREATE_RESOURCE_TYPE_SELECTION without using ofType
 const createSelectedResourceType = (action$) => action$.pipe(
   ofType(actionTypes.GROUP_BY_TYPE),
   map(() => ({
@@ -119,11 +122,34 @@ export const removeResourceToCollection = (collectionId, resourceIds) => {
   });
 };
 
+// dont care about GROUP_BY_TYPE but not sure how to fire off
+// CREATE_DEFAULT_COLLECTIONS without using ofType
+const createDefaultCollections = (action$) => action$.pipe(
+  ofType(actionTypes.GROUP_BY_TYPE), 
+  map(() => ({
+    type: actionTypes.CREATE_DEFAULT_COLLECTIONS,
+  })),
+);
+
+const selectDefaultCollection = (action$, state$) => action$.pipe(
+  ofType(actionTypes.CREATE_DEFAULT_COLLECTIONS),
+  map(() => {
+    const { value: { collections }} = state$
+    const collectionId = Object.keys(collections)[0]
+    return ({
+      type: actionTypes.SELECT_DEFAULT_COLLECTION,
+      payload: collectionId
+    })
+  }),
+);
+
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
   createSelectedResourceType,
+  createDefaultCollections,
+  selectDefaultCollection
 );
 
 export default createEpicMiddleware({
