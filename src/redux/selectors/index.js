@@ -126,7 +126,7 @@ const timelineItemsInRangeSelector = createSelector(
   },
 );
 
-const INTERVAL_COUNT = 50;
+const INTERVAL_COUNT = 100;
 
 export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
@@ -138,7 +138,7 @@ export const timelineIntervalsSelector = createSelector(
     // const minDate = timelineItemsInRange[0]?.timelineDate;
     // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
 
-    if (minDate && maxDate) {
+    if (minDate && maxDate && timelineItemsInRange.length) {
       const intervalMap = createIntervalMap(minDate, maxDate, INTERVAL_COUNT);
       const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, INTERVAL_COUNT);
 
@@ -156,11 +156,33 @@ export const timelineIntervalsSelector = createSelector(
       intervals = intervalMap;
     }
 
+    let meanCountPerInterval = null;
+    const intervalsWithItems = intervals.filter(({ items }) => items.length); // has items
+
+    let populationSD = null;
+    if (intervalsWithItems.length) {
+      const itemCount = intervalsWithItems.reduce((acc, { items }) => acc + items.length, 0);
+      console.info('itemCount: ', itemCount);
+      meanCountPerInterval = itemCount / intervalsWithItems.length;
+
+      const sumOfSquaredDifferences = intervalsWithItems
+        .reduce((acc, { items }) => acc + ((items.length - meanCountPerInterval) ** 2), 0);
+      console.info('sumOfSquaredDifferences: ', sumOfSquaredDifferences);
+
+      populationSD = (sumOfSquaredDifferences / itemCount) ** 0.5;
+    }
+
+    console.info('meanCountPerInterval: ', meanCountPerInterval);
+
+    console.info('populationSD: ', populationSD);
+
     return {
       startDate: minDate,
       endDate: maxDate,
       intervals,
       maxCount,
+      meanCountPerInterval,
+      populationSD,
     };
   },
 );
