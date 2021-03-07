@@ -19,9 +19,7 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flexDirection: 'column',
-    // minHeight: 120,
-    // height: hp('20%'),
-    backgroundColor: 'lightgray',
+    minHeight: 160,
     borderColor: 'gray',
     marginTop: 16,
   },
