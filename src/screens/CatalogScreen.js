@@ -6,8 +6,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
 import { connect } from 'react-redux';
 
-import Timeline from '../components/Timeline';
 import { shape, string } from 'prop-types';
+import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
