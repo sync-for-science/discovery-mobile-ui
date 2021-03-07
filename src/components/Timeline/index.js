@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+// import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DateRangePicker from './DateRangePicker';
 import TimelineBrowser from './TimelineBrowser';
 
@@ -19,7 +19,8 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flexDirection: 'column',
-    height: hp('20%'),
+    // minHeight: 120,
+    // height: hp('20%'),
     backgroundColor: 'lightgray',
     borderColor: 'gray',
     marginTop: 16,
