@@ -25,7 +25,7 @@ const DatePicker = ({
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.labelContainer}>
-        <Text>{label}</Text>
+        <Text style={styles.label}>{label}</Text>
         {
           isAndroid && (
             <Button
@@ -71,6 +71,10 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  label: {
     marginRight: 8,
   },
   pickerContainer: {
