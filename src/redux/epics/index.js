@@ -114,7 +114,7 @@ export const addResourceToCollection = (collectionId, resourceIds) => {
   });
 };
 
-export const removeResourceToCollection = (collectionId, resourceIds) => {
+export const removeResourceFromCollection = (collectionId, resourceIds) => {
   const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds];
   return ({
     type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,

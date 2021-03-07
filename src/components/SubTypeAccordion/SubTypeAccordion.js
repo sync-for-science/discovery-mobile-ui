@@ -11,13 +11,13 @@ import {
 } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import { addResourceToCollection, removeResourceToCollection } from '../../redux/epics';
+import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
   collectionDateFilteredCount,
   dateFilteredCount,
-  removeResourceToCollectionAction,
+  removeResourceFromCollectionAction,
   resourceIds,
   selectedCollectionId,
   subType,
@@ -43,7 +43,7 @@ const SubTypeAccordion = ({
       if (collectionDateFilteredCount === dateFilteredCount) {
         subTypeHeaderIcon = (
           <TouchableOpacity
-            onPress={() => removeResourceToCollectionAction(selectedCollectionId, item.content)}
+            onPress={() => removeResourceFromCollectionAction(selectedCollectionId, item.content)}
           >
             <Ionicons name="checkbox" size={24} color="white" />
           </TouchableOpacity>
@@ -73,7 +73,7 @@ const SubTypeAccordion = ({
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
         addResourceToCollection={addResourceToCollectionAction}
-        removeResourceToCollection={removeResourceToCollectionAction}
+        removeResourceFromCollection={removeResourceFromCollectionAction}
       />
     ),
   );
@@ -96,7 +96,7 @@ SubTypeAccordion.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   collectionDateFilteredCount: number.isRequired,
   dateFilteredCount: number.isRequired,
-  removeResourceToCollectionAction: func.isRequired,
+  removeResourceFromCollectionAction: func.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,
@@ -108,7 +108,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
-  removeResourceToCollectionAction: removeResourceToCollection,
+  removeResourceFromCollectionAction: removeResourceFromCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);

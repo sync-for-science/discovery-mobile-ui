@@ -12,7 +12,7 @@ import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsCon
 const ContentPanel = ({ collectionFlattenedSubTypes }) => (
   <ScrollView>
     <View>
-      <Text style={styles.title}>Content Panel</Text>
+      <Text style={styles.title}>Details Panel</Text>
     </View>
     <SubTypeAccordionsContainer fromContentPanel subTypeData={collectionFlattenedSubTypes} />
   </ScrollView>

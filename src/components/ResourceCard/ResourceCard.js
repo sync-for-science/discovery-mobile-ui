@@ -74,7 +74,7 @@ const ResourceCard = ({
   patientAgeAtResources,
   selectedCollectionId,
   addResourceToCollection,
-  removeResourceToCollection,
+  removeResourceFromCollection,
   lastAddedResourceId,
   collectionResourceIds,
 }) => {
@@ -84,21 +84,21 @@ const ResourceCard = ({
 
   let displayButton = (
     <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
-      <BaseText style={{ textAlign: 'center' }} variant="button">Add To Detail Panel</BaseText>
+      <BaseText style={{ textAlign: 'center' }} variant="button">Add To Details Panel</BaseText>
     </Button>
   );
   let selectedIconName = 'square-outline';
   let selectedIconColor = Colors.lightgrey;
   let handleOnPress = () => addResourceToCollection(selectedCollectionId, resourceId);
   if (collectionResourceIds[resourceId]) {
-    handleOnPress = () => removeResourceToCollection(selectedCollectionId, resourceId);
+    handleOnPress = () => removeResourceFromCollection(selectedCollectionId, resourceId);
     selectedIconColor = Colors.lastSelected;
     displayButton = (
       <Button
         transparent
-        onPress={() => removeResourceToCollection(selectedCollectionId, resourceId)}
+        onPress={() => removeResourceFromCollection(selectedCollectionId, resourceId)}
       >
-        <BaseText style={styles.removeButton} variant="button">Remove From Detail Panel</BaseText>
+        <BaseText style={styles.removeButton} variant="button">Remove From Details Panel</BaseText>
       </Button>
     );
     selectedIconName = 'checkbox-outline';
@@ -136,7 +136,7 @@ ResourceCard.propTypes = {
   patientAgeAtResources: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
   addResourceToCollection: func.isRequired,
-  removeResourceToCollection: func.isRequired,
+  removeResourceFromCollection: func.isRequired,
   lastAddedResourceId: string,
   collectionResourceIds: shape({}),
 };
