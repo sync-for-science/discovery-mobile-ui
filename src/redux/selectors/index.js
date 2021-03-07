@@ -133,6 +133,7 @@ export const timelineIntervalsSelector = createSelector(
   (timelineItemsInRange, timelineRange) => {
     let intervals = [];
     let maxCount = 0;
+    let maxCountBounded = 0;
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
     // const minDate = timelineItemsInRange[0]?.timelineDate;
@@ -161,28 +162,31 @@ export const timelineIntervalsSelector = createSelector(
 
     let populationSD = null;
     if (intervalsWithItems.length) {
-      const itemCount = intervalsWithItems.reduce((acc, { items }) => acc + items.length, 0);
-      console.info('itemCount: ', itemCount);
-      meanCountPerInterval = itemCount / intervalsWithItems.length;
+      const itemCounts = intervalsWithItems.map(({ items }) => items.length);
+      const totalItemCount = itemCounts.reduce((acc, count) => acc + count, 0);
+      meanCountPerInterval = totalItemCount / itemCounts.length;
+      const sumOfSquaredDifferences = itemCounts
+        .reduce((acc, count) => acc + ((count - meanCountPerInterval) ** 2), 0);
 
-      const sumOfSquaredDifferences = intervalsWithItems
-        .reduce((acc, { items }) => acc + ((items.length - meanCountPerInterval) ** 2), 0);
-      console.info('sumOfSquaredDifferences: ', sumOfSquaredDifferences);
+      populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
-      populationSD = (sumOfSquaredDifferences / itemCount) ** 0.5;
+      // inject z score:
+      intervalsWithItems.forEach((interval) => {
+        // eslint-disable-next-line no-param-reassign
+        interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
+        // ^ mutates intervalMap
+        if (interval.zScore <= 1 && interval.items.length > maxCountBounded) {
+          maxCountBounded = interval.items.length;
+        }
+      });
     }
-
-    console.info('meanCountPerInterval: ', meanCountPerInterval);
-
-    console.info('populationSD: ', populationSD);
 
     return {
       startDate: minDate,
       endDate: maxDate,
       intervals,
       maxCount,
-      meanCountPerInterval,
-      populationSD,
+      maxCountBounded,
     };
   },
 );
