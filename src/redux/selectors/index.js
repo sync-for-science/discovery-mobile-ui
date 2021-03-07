@@ -126,19 +126,20 @@ const timelineItemsInRangeSelector = createSelector(
   },
 );
 
-const INTERVAL_COUNT = 50;
+const INTERVAL_COUNT = 100;
 
 export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
   (timelineItemsInRange, timelineRange) => {
     let intervals = [];
     let maxCount = 0;
+    let maxCountBounded = 0;
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
     // const minDate = timelineItemsInRange[0]?.timelineDate;
     // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
 
-    if (minDate && maxDate) {
+    if (minDate && maxDate && timelineItemsInRange.length) {
       const intervalMap = createIntervalMap(minDate, maxDate, INTERVAL_COUNT);
       const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, INTERVAL_COUNT);
 
@@ -156,11 +157,34 @@ export const timelineIntervalsSelector = createSelector(
       intervals = intervalMap;
     }
 
+    const intervalsWithItems = intervals.filter(({ items }) => items.length); // has items
+
+    if (intervalsWithItems.length) {
+      const itemCounts = intervalsWithItems.map(({ items }) => items.length);
+      const totalItemCount = itemCounts.reduce((acc, count) => acc + count, 0);
+      const meanCountPerInterval = totalItemCount / itemCounts.length;
+      const sumOfSquaredDifferences = itemCounts
+        .reduce((acc, count) => acc + ((count - meanCountPerInterval) ** 2), 0);
+
+      const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
+
+      // inject z score:
+      intervalsWithItems.forEach((interval) => {
+        // eslint-disable-next-line no-param-reassign
+        interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
+        // ^ mutates intervalMap
+        if (interval.zScore <= 1 && interval.items.length > maxCountBounded) {
+          maxCountBounded = interval.items.length;
+        }
+      });
+    }
+
     return {
       startDate: minDate,
       endDate: maxDate,
       intervals,
       maxCount,
+      maxCountBounded,
     };
   },
 );

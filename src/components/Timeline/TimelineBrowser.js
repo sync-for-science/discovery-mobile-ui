@@ -12,53 +12,65 @@ import Svg, {
 } from 'react-native-svg';
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
-const BAR_COLOR = '#666';
+const BAR_COLOR = '#ccc';
+const BAR_COLOR_1SD = '#999';
+const BAR_COLOR_2SD = '#c33';
 const CHART_MARGIN = 8;
 const CHART_HEIGHT = 100;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
 
 const Bar = ({
-  x, height, width,
-}) => (
-  <Line
-    x1={x}
-    y1={BAR_HEIGHT}
-    x2={x}
-    y2={BAR_HEIGHT - height}
-    stroke={BAR_COLOR}
-    strokeWidth={width}
-    vectorEffect="non-scaling-stroke"
-    shapeRendering="crispEdges"
-  />
-);
+  x, zScore, height, width,
+}) => {
+  let color = BAR_COLOR;
+  if (zScore > 2) {
+    color = BAR_COLOR_1SD;
+  } else if (zScore > 1) {
+    color = BAR_COLOR_2SD;
+  }
+  return (
+    <Line
+      x1={x}
+      y1={BAR_HEIGHT}
+      x2={x}
+      y2={BAR_HEIGHT - height}
+      stroke={color}
+      strokeWidth={width}
+      vectorEffect="non-scaling-stroke"
+      shapeRendering="crispEdges"
+    />
+  );
+};
 
 Bar.propTypes = {
   x: number.isRequired,
+  zScore: number.isRequired,
   width: number.isRequired,
   height: number.isRequired,
 };
 
-const TimelineBars = ({ availableWidth, maxCount, intervals }) => {
-  const tickUnits = BAR_HEIGHT / maxCount;
+const TimelineBars = ({ availableWidth, maxCountBounded, intervals }) => {
+  const tickUnits = BAR_HEIGHT / maxCountBounded;
 
   return intervals
     .filter(({ items }) => !!items.length)
     .map(({
-      key, position, items,
+      key, position, items, zScore,
     }) => (
       <Bar
         key={key}
         x={position * availableWidth}
         width={3}
-        height={Math.max(items.length * tickUnits, 4)}
+        height={Math.max(Math.min(items.length, maxCountBounded) * tickUnits, 4)}
+        zScore={zScore}
       />
     ));
 };
 
 TimelineBars.propTypes = {
   availableWidth: number.isRequired,
-  maxCount: number.isRequired,
+  maxCountBounded: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
 };
 
@@ -107,9 +119,47 @@ XAxis.propTypes = {
   endLabel: string.isRequired,
 };
 
+const YAxisBound = ({ availableWidth, maxCount, maxCountBounded }) => {
+  if (maxCount > maxCountBounded) {
+    const eventCountLabel = `${maxCountBounded} events`;
+    return (
+      <>
+        <Line
+          x1={0}
+          y1={-2}
+          x2={availableWidth}
+          y2={-2}
+          stroke={BAR_COLOR}
+          strokeDasharray="0 1 2"
+          // strokeWidth={scaledStrokeWidth}
+          strokeWidth="0.5"
+          vectorEffect="non-scaling-stroke"
+        />
+        <SvgText
+          fill={LABEL_COLOR}
+          stroke="none"
+          fontSize="8"
+          x={0}
+          y={8}
+          textAnchor="start"
+        >
+          {eventCountLabel}
+        </SvgText>
+      </>
+    );
+  }
+  return null;
+};
+
+YAxisBound.propTypes = {
+  availableWidth: number.isRequired,
+  maxCount: number.isRequired,
+  maxCountBounded: number.isRequired,
+};
+
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    maxCount, intervals, startDate, endDate,
+    maxCount, maxCountBounded, intervals, startDate, endDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (2 * CHART_MARGIN);
@@ -138,8 +188,13 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <TimelineBars
             availableWidth={availableWidth}
-            maxCount={maxCount}
+            maxCountBounded={maxCountBounded}
             intervals={intervals}
+          />
+          <YAxisBound
+            availableWidth={availableWidth}
+            maxCount={maxCount}
+            maxCountBounded={maxCountBounded}
           />
           <Rect
             x="0"
@@ -157,6 +212,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
 TimelineBrowser.propTypes = {
   timelineIntervals: shape({
     maxCount: number.isRequired,
+    maxCountBounded: number.isRequired,
     intervals: arrayOf(shape({})).isRequired,
   }).isRequired,
 };
