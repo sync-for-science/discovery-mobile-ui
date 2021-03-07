@@ -12,9 +12,9 @@ import Svg, {
 } from 'react-native-svg';
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
-const BAR_COLOR = '#666';
-const BAR_COLOR_1SD = '#c33';
-const BAR_COLOR_2SD = '#f00';
+const BAR_COLOR = '#ccc';
+const BAR_COLOR_1SD = '#999';
+const BAR_COLOR_2SD = '#c33';
 const CHART_MARGIN = 8;
 const CHART_HEIGHT = 100;
 const BAR_HEIGHT = 80;
