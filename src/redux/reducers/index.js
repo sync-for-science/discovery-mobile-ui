@@ -110,7 +110,7 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
   }
 };
 
-const preloadCollections = {}
+const preloadCollections = {};
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -128,7 +128,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           lastAddedResourceId: null,
         },
       };
-      return defaultCollections
+      return defaultCollections;
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -172,14 +172,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-const preloadSelectedCollection = null
+const preloadSelectedCollection = null;
 export const selectedCollectionReducer = (state = preloadSelectedCollection, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedCollection;
     }
     case actionTypes.SELECT_DEFAULT_COLLECTION: {
-      return action.payload
+      return action.payload;
     }
     default:
       return state;

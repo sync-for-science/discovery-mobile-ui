@@ -24,7 +24,7 @@ export const actionTypes = {
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
   REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
   CREATE_DEFAULT_COLLECTIONS: 'CREATE_DEFAULT_COLLECTIONS',
-  SELECT_DEFAULT_COLLECTION: 'SELECT_DEFAULT_COLLECTION'
+  SELECT_DEFAULT_COLLECTION: 'SELECT_DEFAULT_COLLECTION',
 };
 
 const flattenResources = (action$) => action$.pipe(
@@ -125,7 +125,7 @@ export const removeResourceToCollection = (collectionId, resourceIds) => {
 // dont care about GROUP_BY_TYPE but not sure how to fire off
 // CREATE_DEFAULT_COLLECTIONS without using ofType
 const createDefaultCollections = (action$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE), 
+  ofType(actionTypes.GROUP_BY_TYPE),
   map(() => ({
     type: actionTypes.CREATE_DEFAULT_COLLECTIONS,
   })),
@@ -134,12 +134,12 @@ const createDefaultCollections = (action$) => action$.pipe(
 const selectDefaultCollection = (action$, state$) => action$.pipe(
   ofType(actionTypes.CREATE_DEFAULT_COLLECTIONS),
   map(() => {
-    const { value: { collections }} = state$
-    const collectionId = Object.keys(collections)[0]
+    const { value: { collections } } = state$;
+    const collectionId = Object.keys(collections)[0];
     return ({
       type: actionTypes.SELECT_DEFAULT_COLLECTION,
-      payload: collectionId
-    })
+      payload: collectionId,
+    });
   }),
 );
 
@@ -149,7 +149,7 @@ export const rootEpic = combineEpics(
   requestNextItems,
   createSelectedResourceType,
   createDefaultCollections,
-  selectDefaultCollection
+  selectDefaultCollection,
 );
 
 export default createEpicMiddleware({
