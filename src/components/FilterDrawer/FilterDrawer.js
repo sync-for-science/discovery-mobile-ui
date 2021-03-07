@@ -40,14 +40,16 @@ const FilterDrawer = ({ resourceTypeFilters, toggleResourceTypeFilterAction, chi
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
-        <ResourceTypeFilter
-          key={resourceType}
-          resourceType={resourceType}
-          filterOpen={value}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-        />
-      ))}
+      {Object.entries(resourceTypeFilters)
+        .sort(([, { resourceType: r1 }], [, { resourceType: r2 }]) => (r1 < r2 ? -1 : 1))
+        .map(([resourceType, value]) => (
+          <ResourceTypeFilter
+            key={resourceType}
+            resourceType={resourceType}
+            filterOpen={value}
+            toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          />
+        ))}
     </View>
   );
 
