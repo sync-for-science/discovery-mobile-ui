@@ -4,10 +4,12 @@ import {
 } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DateRangePicker from './DateRangePicker';
+import TimelineBrowser from './TimelineBrowser';
 
 const Timeline = () => (
   <View style={styles.root}>
     <DateRangePicker />
+    <TimelineBrowser />
   </View>
 );
 
@@ -16,7 +18,7 @@ export default Timeline;
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    flexDirection: 'row',
+    flexDirection: 'column',
     height: hp('20%'),
     backgroundColor: 'lightgray',
     borderColor: 'gray',
