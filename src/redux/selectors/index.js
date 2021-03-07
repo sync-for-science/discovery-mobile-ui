@@ -1,8 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration,
+  compareAsc, format, parse, intervalToDuration, isWithinInterval,
 } from 'date-fns';
+
+import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
 import RESOURCE_TYPES from '../../resources/resourceTypes';
 
@@ -13,6 +15,8 @@ const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByTy
 const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
+
+const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -72,7 +76,7 @@ const timelineResourcesSelector = createSelector(
     .filter((r) => r.timelineDate), // must have timelineDate
 );
 
-const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
@@ -89,6 +93,76 @@ export const timelinePropsSelector = createSelector(
     minimumDate: sortedTimelineItems[0]?.timelineDate,
     maximumDate: sortedTimelineItems[sortedTimelineItems.length - 1]?.timelineDate,
   }),
+);
+
+// either user-selected values (undefined, by default), or: min / max dates of resources
+const timelineRangeSelector = createSelector(
+  [dateRangeFilterFiltersSelector, timelinePropsSelector],
+  (dateRangeFilterFilters, timelineProps) => {
+    const { minimumDate, maximumDate } = timelineProps;
+    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
+    return {
+      dateRangeStart,
+      dateRangeEnd,
+    };
+  },
+);
+
+const timelineItemsInRangeSelector = createSelector(
+  [sortedTimelineItemsSelector, timelineRangeSelector, resourceTypeFiltersSelector],
+  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
+    if (!dateRangeStart || !dateRangeEnd) {
+      return [];
+    }
+    return sortedTimelineItems
+      .filter(({ type }) => resourceTypeFilters[type])
+      .filter(({ timelineDate }) => isWithinInterval(
+        timelineDate,
+        {
+          start: dateRangeStart,
+          end: dateRangeEnd,
+        },
+      ));
+  },
+);
+
+const INTERVAL_COUNT = 50;
+
+export const timelineIntervalsSelector = createSelector(
+  [timelineItemsInRangeSelector, timelineRangeSelector],
+  (timelineItemsInRange, timelineRange) => {
+    let intervals = [];
+    let maxCount = 0;
+    const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
+    // alternatively:
+    // const minDate = timelineItemsInRange[0]?.timelineDate;
+    // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
+
+    if (minDate && maxDate) {
+      const intervalMap = createIntervalMap(minDate, maxDate, INTERVAL_COUNT);
+      const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, INTERVAL_COUNT);
+
+      timelineItemsInRange.forEach(({ id, timelineDate }) => {
+        const currentInterval = getNextIntervalForDate(timelineDate);
+        if (currentInterval) {
+          currentInterval.items.push(id); // < mutates intervalMap
+          if (currentInterval.items.length > maxCount) {
+            maxCount = currentInterval.items.length;
+          }
+        } else {
+          console.warn('no interval for date: ', timelineDate); // eslint-disable-line no-console
+        }
+      });
+      intervals = intervalMap;
+    }
+
+    return {
+      startDate: minDate,
+      endDate: maxDate,
+      intervals,
+      maxCount,
+    };
+  },
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
