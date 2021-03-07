@@ -18,7 +18,7 @@ export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
 const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
-const collectionsSelector = (state) => state.collections
+const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
@@ -178,17 +178,18 @@ export const patientAgeAtResourcesSelector = createSelector(
       return {};
     }
     const birthDate = parse(patient?.birthDate, 'yyyy-MM-dd', new Date());
-    return timelineItems.reduce((acc, { id, timelineDate }) => {
+    const patientAgeAtResources = {};
+    timelineItems.forEach(({ id, timelineDate }) => {
       const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
       const ageAtResourceDate = intervalToDuration({
         start: birthDate,
         end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
       });
-
-      acc[id] = ageAtResourceDate;
-
-      return acc;
+      if (!patientAgeAtResources[id]) {
+        patientAgeAtResources[id] = ageAtResourceDate;
+      }
     });
+    return patientAgeAtResources;
   },
 );
 
