@@ -16,27 +16,26 @@ import { connect } from 'react-redux';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/epics';
-import { orderedResourceTypeFiltersSelector } from '../../redux/selectors'
+import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
   const label = PLURAL_RESOURCE_TYPES[resourceType];
-  const handleThumbColor = filterOpen
-    ? Platform.OS=='ios' 
-      ? 'white' 
-      : Colors.primary 
-    : Platform.OS=='ios' 
-      ? 'white' 
-      : Colors.lightgrey
-      
+  let thumbColor;
+  if (filterOpen) {
+    thumbColor = Platform.OS === 'ios' ? 'white' : Colors.primary;
+  } else {
+    thumbColor = Platform.OS === 'ios' ? 'white' : Colors.lightgrey;
+  }
+
   return (
     <View style={styles.categoryRow}>
       <Text>{label}</Text>
       <Switch
-        trackColor={{ 
-          false: Colors.mediumgrey, 
-          true: Platform.OS=='ios' ? Colors.primary : Colors.primaryLight 
+        trackColor={{
+          false: Colors.mediumgrey,
+          true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
         }}
-        thumbColor={handleThumbColor}
+        thumbColor={thumbColor}
         onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
         value={filterOpen}
       />
@@ -50,10 +49,10 @@ ResourceTypeFilter.propTypes = {
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
-const FilterDrawer = ({ 
-  toggleResourceTypeFilterAction, 
-  orderedResourceTypeFilters, 
-  children 
+const FilterDrawer = ({
+  toggleResourceTypeFilterAction,
+  orderedResourceTypeFilters,
+  children,
 }) => {
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>

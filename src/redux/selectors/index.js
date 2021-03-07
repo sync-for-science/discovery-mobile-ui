@@ -214,7 +214,7 @@ export const orderedResourceTypeFiltersSelector = createSelector(
   [resourceTypeFiltersSelector],
   (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
     .reduce((acc, resourceType) => {
-      acc[resourceType] = resourceTypeFilters[resourceType]
-      return acc
-    }, {})
-)
+      acc[resourceType] = resourceTypeFilters[resourceType];
+      return acc;
+    }, {}),
+);
