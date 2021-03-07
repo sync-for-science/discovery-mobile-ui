@@ -239,7 +239,6 @@ const filteredResourceTypesSelector = createSelector(
     dateRangeFilterFiltersSelector,
     resourcesSelector,
     timelinePropsSelector,
-    selectedCollectionSelector,
   ],
   (
     resourceTypeFilter,
@@ -249,9 +248,8 @@ const filteredResourceTypesSelector = createSelector(
     dateRangeFilterFilters,
     resources,
     timelineProps,
-    selectedCollection,
   ) => {
-    if (!selectedCollection) {
+    if (!selectedCollectionResourceIdsObjects) {
       return {};
     }
     const { minimumDate, maximumDate } = timelineProps;
