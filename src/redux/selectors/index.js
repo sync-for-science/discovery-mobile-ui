@@ -65,28 +65,34 @@ export const selectedSubTypeResourcesSelector = createSelector(
   ),
 );
 
-const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
-const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
-
-export const timelineItemsSelector = createSelector(
+const timelineResourcesSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources)
     .filter(({ type }) => RESOURCE_TYPES[type])
-    .filter((r) => r.timelineDate) // must have timelineDate
+    .filter((r) => r.timelineDate), // must have timelineDate
+);
+
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
+
+const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
+
+export const sortedTimelineItemsSelector = createSelector(
+  [timelineResourcesSelector],
+  (resources) => resources
     .map(pickTimelineFields)
     .sort(sortByDate),
 );
 
 export const timelinePropsSelector = createSelector(
-  [timelineItemsSelector],
-  (timelineItems) => ({
-    minimumDate: timelineItems[0]?.timelineDate,
-    maximumDate: timelineItems[timelineItems.length - 1]?.timelineDate,
+  [sortedTimelineItemsSelector],
+  (sortedTimelineItems) => ({
+    minimumDate: sortedTimelineItems[0]?.timelineDate,
+    maximumDate: sortedTimelineItems[sortedTimelineItems.length - 1]?.timelineDate,
   }),
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, timelineItemsSelector],
+  [patientSelector, sortedTimelineItemsSelector],
   (patient, timelineItems) => {
     if (!patient) {
       return {};
