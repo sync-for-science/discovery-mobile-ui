@@ -1,10 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity,
 } from 'react-native';
-import { string, shape } from 'prop-types';
-import { Card, CardItem, Button } from 'native-base';
+import { string, shape, func } from 'prop-types';
+import { Button } from 'native-base';
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -15,9 +16,15 @@ import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import BaseDivider from '../Generic/BaseDivider';
-import { patientSelector, patientAgeAtResourcesSelector } from '../../redux/selectors';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import {
+  patientSelector,
+  patientAgeAtResourcesSelector,
+  lastAddedResourceIdSelector,
+  collectionResourceIdsSelector,
+} from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
+import Colors from '../../constants/Colors';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -61,28 +68,65 @@ const selectCardBody = (resource, patientAgeAtResource) => {
   }
 };
 
-const ResourceCard = ({ resourceId, resources, patientAgeAtResources }) => {
+const ResourceCard = ({
+  resourceId,
+  resources,
+  patientAgeAtResources,
+  selectedCollectionId,
+  addResourceToCollection,
+  removeResourceFromCollection,
+  lastAddedResourceId,
+  collectionResourceIds,
+}) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
+
+  let displayButton = (
+    <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
+      <BaseText style={{ textAlign: 'center' }} variant="button">Add To Details Panel</BaseText>
+    </Button>
+  );
+  let selectedIconName = 'square-outline';
+  let selectedIconColor = Colors.lightgrey;
+  let handleOnPress = () => addResourceToCollection(selectedCollectionId, resourceId);
+  if (collectionResourceIds[resourceId]) {
+    handleOnPress = () => removeResourceFromCollection(selectedCollectionId, resourceId);
+    selectedIconColor = Colors.lastSelected;
+    displayButton = (
+      <Button
+        transparent
+        onPress={() => removeResourceFromCollection(selectedCollectionId, resourceId)}
+      >
+        <BaseText style={styles.removeButton} variant="button">Remove From Details Panel</BaseText>
+      </Button>
+    );
+    selectedIconName = 'checkbox-outline';
+    if (lastAddedResourceId === resourceId) {
+      selectedIconName = 'checkbox';
+      selectedIconColor = Colors.lastSelected;
+    }
+  }
+
   return (
-    <Card>
-      <CardItem style={styles.header}>
+    <View style={styles.root}>
+      <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
-        <BaseText>{resourceDate}</BaseText>
-      </CardItem>
-      <CardItem>
-        <View style={styles.cardBody}>
-          {selectCardBody(resource, patientAgeAtResources[resourceId])}
+        <View style={styles.dateIconContainer}>
+          <BaseText>{resourceDate}</BaseText>
+          <TouchableOpacity style={styles.iconContainer} onPress={handleOnPress}>
+            <Ionicons name={selectedIconName} size={24} color={selectedIconColor} />
+          </TouchableOpacity>
         </View>
-      </CardItem>
-      <BaseDivider />
-      <View style={styles.button}>
-        <Button transparent>
-          <BaseText variant="button">Add To Collection</BaseText>
-        </Button>
       </View>
-    </Card>
+      <View style={styles.body}>
+        {selectCardBody(resource, patientAgeAtResources[resourceId])}
+      </View>
+      <BaseDivider />
+      <View style={styles.buttonContainer}>
+        {displayButton}
+      </View>
+    </View>
   );
 };
 
@@ -90,30 +134,61 @@ ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
+  selectedCollectionId: string.isRequired,
+  addResourceToCollection: func.isRequired,
+  removeResourceFromCollection: func.isRequired,
+  lastAddedResourceId: string,
+  collectionResourceIds: shape({}),
+};
+
+ResourceCard.defaultProps = {
+  lastAddedResourceId: null,
+  collectionResourceIds: {},
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
+  lastAddedResourceId: lastAddedResourceIdSelector(state),
+  collectionResourceIds: collectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
 
 const styles = StyleSheet.create({
-  cardSelected: {
-    backgroundColor: 'blue',
+  root: {
+    marginVertical: 10,
+    backgroundColor: 'white',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderTopColor: Colors.lightgrey,
+    borderBottomColor: Colors.lightgrey,
   },
   header: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  button: {
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    height: 50,
   },
-  cardBody: {
-    width: '100%',
+  body: {
+    paddingHorizontal: 10,
+    paddingBottom: 15,
+  },
+  buttonContainer: {
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  removeButton: {
+    color: 'red',
+  },
+  iconContainer: {
+    marginLeft: 10,
+  },
+  dateIconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

@@ -3,37 +3,30 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { string, shape, bool } from 'prop-types';
+import { shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
-import { flattenedSubTypeResourcesSelector, selectedSubTypeResourcesSelector } from '../../redux/selectors';
 
-const SubTypeAccordionsContainer = ({
-  selectedResourceType,
-  resourceTypeFilters,
-  showAllResourceTypes,
-  flattenedSubTypeResources,
-  selectedSubTypeResources,
-}) => {
-  let resourceSubTypes = {};
-  if (!showAllResourceTypes) {
-    // show only selectedResourceType
-    if (!selectedResourceType || !resourceTypeFilters[selectedResourceType]) {
-      return null;
-    }
-    resourceSubTypes = selectedSubTypeResources;
-  } else {
-    // show all resourceTypes
-    resourceSubTypes = flattenedSubTypeResources;
+const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
+  if (subTypeData === {}) {
+    return null;
   }
 
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        {Object.keys(resourceSubTypes).map((subType) => {
-          const resourcesIds = Array.from(resourceSubTypes[subType]);
+        {Object.entries(subTypeData).map(([subType, values]) => {
+          const resourceIds = fromContentPanel
+            ? values.collectionDateFilteredResourceIds
+            : values.dateFilteredResourceIds;
           return (
-            <SubTypeAccordion key={subType} subType={subType} resourcesIds={resourcesIds} />
+            <SubTypeAccordion
+              key={subType}
+              subType={subType}
+              resourceIds={resourceIds}
+              dateFilteredCount={values.dateFilteredCount}
+              collectionDateFilteredCount={values.collectionDateFilteredCount}
+            />
           );
         })}
       </View>
@@ -42,24 +35,16 @@ const SubTypeAccordionsContainer = ({
 };
 
 SubTypeAccordionsContainer.propTypes = {
-  selectedResourceType: string,
-  resourceTypeFilters: shape({}).isRequired,
-  showAllResourceTypes: bool,
-  flattenedSubTypeResources: shape({}).isRequired,
-  selectedSubTypeResources: shape({}),
+  subTypeData: shape({}).isRequired,
+  fromContentPanel: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
-  selectedResourceType: null,
-  selectedSubTypeResources: null,
-  showAllResourceTypes: false,
+  fromContentPanel: false,
 };
 
 const mapStateToProps = (state) => ({
-  selectedResourceType: state.selectedResourceType,
   resourceTypeFilters: state.resourceTypeFilters,
-  flattenedSubTypeResources: flattenedSubTypeResourcesSelector(state),
-  selectedSubTypeResources: selectedSubTypeResourcesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);

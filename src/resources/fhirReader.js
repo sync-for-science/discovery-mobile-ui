@@ -76,7 +76,13 @@ export const getPatientAge = (patient) => {
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
 
-export const getPatientAgeAtResource = (duration) => formatDuration(duration, { format: ['years', 'months'], delimiter: ', ' });
+export const getPatientAgeAtResource = (duration) => {
+  if (duration) {
+    return formatDuration(duration, { format: ['years', 'months'], delimiter: ', ' });
+  }
+  console.warn('No age found'); // eslint-disable-line no-console
+  return 'No Age Found';
+};
 
 export const getResourceDate = (resource) => (
   resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'

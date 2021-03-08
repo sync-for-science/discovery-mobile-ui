@@ -20,6 +20,7 @@ const VitalSignCardBody = ({ resource, patientAgeAtResource }) => {
       const label = datum.code === 'Diastolic Blood Pressure' ? CARD_BODY_LABEL.diastolic : CARD_BODY_LABEL.systolic;
       return (
         <CardBodyField
+          key={label}
           label={label}
           value={datum.valueQuantity}
         />

@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration, isWithinInterval,
+  compareAsc, format, parse, intervalToDuration, isWithinInterval, startOfDay, endOfDay,
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
@@ -17,6 +17,10 @@ const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
 const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
+
+const collectionsSelector = (state) => state.collections;
+
+const selectedCollectionSelector = (state) => state.selectedCollection;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -45,28 +49,6 @@ export const supportedResourcesSelector = createSelector(
         subTypes,
       });
     }, []),
-);
-
-export const flattenedSubTypeResourcesSelector = createSelector(
-  [supportedResourcesSelector, resourceIdsGroupedByTypeSelector],
-  (supportedResources, resourceIdsGroupedByType) => {
-    const resourceSubTypes = {};
-    supportedResources.forEach((resourceTypeObject) => {
-      const { resourceType, subTypes } = resourceTypeObject;
-      const subTypesArray = Object.keys(subTypes);
-      subTypesArray.forEach((subType) => {
-        resourceSubTypes[subType] = resourceIdsGroupedByType[resourceType][subType];
-      });
-    });
-    return resourceSubTypes;
-  },
-);
-
-export const selectedSubTypeResourcesSelector = createSelector(
-  [resourceIdsGroupedByTypeSelector, selectedResourceTypeSelector],
-  (resourceIdsGroupedByType, selectedResourceType) => (
-    resourceIdsGroupedByType[selectedResourceType]
-  ),
 );
 
 const timelineResourcesSelector = createSelector(
@@ -196,17 +178,18 @@ export const patientAgeAtResourcesSelector = createSelector(
       return {};
     }
     const birthDate = parse(patient?.birthDate, 'yyyy-MM-dd', new Date());
-    return timelineItems.reduce((acc, { id, timelineDate }) => {
+    const patientAgeAtResources = {};
+    timelineItems.forEach(({ id, timelineDate }) => {
       const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
       const ageAtResourceDate = intervalToDuration({
         start: birthDate,
         end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
       });
-
-      acc[id] = ageAtResourceDate;
-
-      return acc;
+      if (!patientAgeAtResources[id]) {
+        patientAgeAtResources[id] = ageAtResourceDate;
+      }
     });
+    return patientAgeAtResources;
   },
 );
 
@@ -217,4 +200,127 @@ export const orderedResourceTypeFiltersSelector = createSelector(
       acc[resourceType] = resourceTypeFilters[resourceType];
       return acc;
     }, {}),
+);
+
+export const lastAddedResourceIdSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
+);
+
+export const collectionResourceIdsSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds,
+);
+
+const selectedCollectionResourceIdsSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollection) => collections[selectedCollection]?.resourceIds,
+);
+
+const isResourceInDateRange = (resource, dateRangeStart, dateRangeEnd) => {
+  const { timelineDate } = resource;
+  if (!timelineDate) {
+    console.info('record does not have an timelineDate, resourceId: ', resource.id); // eslint-disable-line no-console
+    return false;
+  }
+  if (!dateRangeStart || !dateRangeEnd) { return true; }
+  return (
+    isWithinInterval(
+      timelineDate, { start: startOfDay(dateRangeStart), end: endOfDay(dateRangeEnd) },
+    )
+  );
+};
+
+const filteredResourceTypesSelector = createSelector(
+  [
+    resourceTypeFiltersSelector,
+    resourceIdsGroupedByTypeSelector,
+    selectedResourceTypeSelector,
+    selectedCollectionResourceIdsSelector,
+    dateRangeFilterFiltersSelector,
+    resourcesSelector,
+    timelinePropsSelector,
+  ],
+  (
+    resourceTypeFilter,
+    resourceIdsGroupedByType,
+    selectedResourceType,
+    selectedCollectionResourceIdsObjects,
+    dateRangeFilterFilters,
+    resources,
+    timelineProps,
+  ) => {
+    if (!selectedCollectionResourceIdsObjects) {
+      return {};
+    }
+    const { minimumDate, maximumDate } = timelineProps;
+    const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters;
+    const activeDateStart = dateRangeStart || minimumDate;
+    const activeDateEnd = dateRangeEnd || maximumDate;
+    const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
+    return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
+      if (resourceTypeFilter[resourceType]) {
+        acc[resourceType] = {};
+        acc[resourceType].selected = false;
+        if (selectedResourceType === resourceType) {
+          acc[resourceType].selected = true;
+        }
+        Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
+          if (!acc[resourceType].subTypes) {
+            acc[resourceType].subTypes = {};
+          }
+          if (!acc[resourceType].subTypes[subType]) {
+            acc[resourceType].subTypes[subType] = {};
+          }
+          const subTypeResourceIds = Array.from(resourceIds);
+          acc[resourceType].subTypes[subType].resourceIds = subTypeResourceIds;
+          acc[resourceType].subTypes[subType].count = subTypeResourceIds.length;
+          const dateFilteredResourceIds = subTypeResourceIds
+            .filter((subTypeResourceId) => isResourceInDateRange(
+              resources[subTypeResourceId], activeDateStart, activeDateEnd,
+            ));
+          acc[resourceType].subTypes[subType].dateFilteredResourceIds = dateFilteredResourceIds;
+          acc[resourceType].subTypes[subType].dateFilteredCount = dateFilteredResourceIds.length;
+          const collectionDateFilteredResourceIds = dateFilteredResourceIds
+            .filter((dateFilteredResourceId) => selectedCollectionResourceIds
+              .includes(dateFilteredResourceId));
+          acc[resourceType].subTypes[subType]
+            .collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
+          acc[resourceType].subTypes[subType]
+            .collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
+        });
+      }
+
+      return acc;
+    }, {});
+  },
+);
+
+export const selectedFlattenedSubTypesSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
+    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
+      return {};
+    }
+    return filteredResourceTypes[selectedResourceType].subTypes;
+  },
+);
+
+export const collectionFlattenedSubTypesSelector = createSelector(
+  [filteredResourceTypesSelector],
+  (filteredResourceTypes) => {
+    const collectionFlattenedSubTypes = {};
+    Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
+      const { subTypes } = resourceTypeValues;
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.collectionDateFilteredCount > 0) {
+          if (!collectionFlattenedSubTypes[subType]) {
+            collectionFlattenedSubTypes[subType] = {};
+          }
+          collectionFlattenedSubTypes[subType] = subTypeValues;
+        }
+      });
+    });
+    return collectionFlattenedSubTypes;
+  },
 );

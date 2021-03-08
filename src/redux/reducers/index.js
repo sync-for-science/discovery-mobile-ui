@@ -1,3 +1,5 @@
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 import { actionTypes } from '../epics';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
@@ -101,6 +103,82 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
         ...state,
         ...action.payload,
       };
+    }
+    default:
+      return state;
+  }
+};
+
+const preloadCollections = {};
+export const collectionsReducer = (state = preloadCollections, action) => {
+  switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadCollections;
+    }
+    case actionTypes.CREATE_DEFAULT_COLLECTIONS: {
+      const defaultCollectionId = uuidv4();
+      const timeCreated = new Date();
+      const defaultCollections = {
+        [defaultCollectionId]: {
+          created: timeCreated,
+          lastUpdated: timeCreated,
+          label: 'Untitled Collection',
+          resourceIds: {},
+          lastAddedResourceId: null,
+        },
+      };
+      return defaultCollections;
+    }
+    case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
+      const { collectionId, resourceIds } = action.payload;
+      const collection = state[collectionId];
+      const updatedResourceIds = { ...collection.resourceIds };
+      resourceIds.forEach((resourceId) => {
+        if (!updatedResourceIds[resourceId]) {
+          updatedResourceIds[resourceId] = true;
+        }
+      });
+      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds[0] : null;
+      const newCollection = {
+        ...collection,
+        resourceIds: updatedResourceIds,
+        lastAddedResourceId: updatedLastAddedResourceId,
+      };
+      return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
+      const { collectionId, resourceIds } = action.payload;
+      const collection = state[collectionId];
+      const updatedResourceIds = { ...collection.resourceIds };
+      let updatedLastAddedResourceId = collection.lastAddedResourceId;
+      resourceIds.forEach((resourceId) => {
+        if (updatedResourceIds[resourceId]) {
+          delete updatedResourceIds[resourceId];
+        }
+        if (collection.lastAddedResourceId === resourceId) {
+          updatedLastAddedResourceId = null;
+        }
+      });
+      const newCollection = {
+        ...collection,
+        resourceIds: updatedResourceIds,
+        lastAddedResourceId: updatedLastAddedResourceId,
+      };
+      return { ...state, [collectionId]: newCollection };
+    }
+    default:
+      return state;
+  }
+};
+
+const preloadSelectedCollection = null;
+export const selectedCollectionReducer = (state = preloadSelectedCollection, action) => {
+  switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadSelectedCollection;
+    }
+    case actionTypes.SELECT_DEFAULT_COLLECTION: {
+      return action.payload;
     }
     default:
       return state;
