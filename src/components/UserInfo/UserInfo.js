@@ -1,27 +1,29 @@
 import React from 'react';
-import { shape } from 'prop-types';
+import { instanceOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { format } from 'date-fns';
 
 import {
   getPatientName,
-  getDataRange,
 } from '../../resources/fhirReader';
-import { patientSelector } from '../../redux/selectors';
+import { patientSelector, timelinePropsSelector } from '../../redux/selectors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
 
+const UI_DATE_FORMAT = 'MMM d, Y';
+
 const UserInfo = ({
-  patientResource, resources,
+  patientResource, timelineProps,
 }) => {
   if (!patientResource) {
     return <View />;
   }
 
   const name = getPatientName(patientResource);
-  const [dataStart, dataEnd] = getDataRange(resources);
+  const { minimumDate, maximumDate } = timelineProps;
 
   return (
     <View>
@@ -34,7 +36,7 @@ const UserInfo = ({
       <View style={styles.dataRange}>
         <Text style={styles.dataRangeLabel}>Data range</Text>
         <Text style={styles.dataRangeValue}>
-          {`${dataStart} - ${dataEnd}`}
+          {`${format(minimumDate, UI_DATE_FORMAT)} - ${format(maximumDate, UI_DATE_FORMAT)}`}
         </Text>
       </View>
     </View>
@@ -42,18 +44,20 @@ const UserInfo = ({
 };
 
 UserInfo.propTypes = {
-  resources: shape({}),
   patientResource: shape({}),
+  timelineProps: shape({
+    minimumDate: instanceOf(Date),
+    maximumDate: instanceOf(Date),
+  }).isRequired,
 };
 
 UserInfo.defaultProps = {
-  resources: null,
   patientResource: null,
 };
 
 const mapStateToProps = (state) => ({
-  resources: state.resources,
   patientResource: patientSelector(state),
+  timelineProps: timelinePropsSelector(state),
 });
 
 const mapDispatchToProps = { clearPatientDataAction: clearPatientData };

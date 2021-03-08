@@ -4,7 +4,9 @@ import {
   SafeAreaView, StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { min, max } from 'date-fns';
+import {
+  min, max, startOfDay, endOfDay,
+} from 'date-fns';
 
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
@@ -16,25 +18,23 @@ const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter
     return null;
   }
 
-  const { dateRangeStart, dateRangeEnd } = dateRangeFilter;
-  const activeDateStart = dateRangeStart || minimumDate;
-  const activeDateEnd = dateRangeEnd || maximumDate;
+  const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilter;
 
   return (
     <SafeAreaView style={styles.container}>
       <DatePicker
-        label="start date"
-        activeDate={activeDateStart}
+        label="Start"
+        activeDate={dateRangeStart}
         minimumDate={minimumDate}
-        maximumDate={min([maximumDate, activeDateEnd])}
-        onDateSelect={(d) => updateDateRangeFilter('dateRangeStart', d)}
+        maximumDate={min([maximumDate, dateRangeEnd])}
+        onDateSelect={(d) => updateDateRangeFilter('dateRangeStart', startOfDay(d))}
       />
       <DatePicker
-        label="end date"
-        activeDate={activeDateEnd}
-        minimumDate={max([minimumDate, activeDateStart])}
+        label="End"
+        activeDate={dateRangeEnd}
+        minimumDate={max([minimumDate, dateRangeStart])}
         maximumDate={maximumDate}
-        onDateSelect={(d) => updateDateRangeFilter('dateRangeEnd', d)}
+        onDateSelect={(d) => updateDateRangeFilter('dateRangeEnd', endOfDay(d))}
       />
     </SafeAreaView>
   );

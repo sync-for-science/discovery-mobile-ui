@@ -1,6 +1,6 @@
 import { actionTypes } from '../epics';
 import processResource from './process-resources';
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const preloadedResources = {};
 
@@ -49,7 +49,7 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
   }
 };
 
-const preloadResourceTypeFilters = Object.keys(RESOURCE_TYPES)
+const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
   .reduce((acc, resourceType) => ({
     ...acc,
     [resourceType]: true,
@@ -88,8 +88,8 @@ export const selectedResourceTypeReducer = (state = preloadSelectedResourceType,
 };
 
 const preloadSelectedTimelineRange = {
-  dateRangeStart: null,
-  dateRangeEnd: null,
+  dateRangeStart: undefined,
+  dateRangeEnd: undefined,
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {

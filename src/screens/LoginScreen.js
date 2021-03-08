@@ -48,8 +48,9 @@ const LoginScreen = ({ navigation, setPatientDataAction }) => {
         </View>
         <View style={styles.vermonsterContainer}>
           {showSkipLogin && <Button title="Skip Login" onPress={handleSkipLogin} />}
-          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Powered by</Text>
-          <Text style={styles.vermonsterText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+          <Text style={styles.companyText}>Powered by</Text>
+          <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+          <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  vermonsterText: {
+  companyText: {
     color: Colors.lightgrey,
     paddingBottom: 5,
   },
