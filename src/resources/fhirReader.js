@@ -4,6 +4,7 @@ import {
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
+const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 
 export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
   const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
@@ -82,7 +83,7 @@ export const getResourceDate = (resource) => (
 );
 
 const formatDate = (date, includeTime = false) => {
-  const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : UI_DATE_FORMAT;
+  const dateFormat = includeTime ? UI_DATE_FORMAT_LONG : UI_DATE_FORMAT;
   return date ? format(new Date(date), dateFormat) : null;
 };
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
