@@ -8,40 +8,57 @@ import {
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
 import Svg, {
-  Rect, Line, G, Text as SvgText, // Mask
+  Rect, Line, G, Text as SvgText, Circle, // Mask
 } from 'react-native-svg';
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
 const BAR_COLOR = '#ccc';
-const BAR_COLOR_1SD = '#999';
-const BAR_COLOR_2SD = '#c33';
+const COLOR_1SD = '#999';
+const COLOR_2SD = '#c33';
 const CHART_MARGIN = 8;
-const CHART_HEIGHT = 100;
+const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
 
-const Bar = ({
-  x, zScore, height, width,
-}) => {
-  let color = BAR_COLOR;
-  if (zScore > 2) {
-    color = BAR_COLOR_2SD;
-  } else if (zScore > 1) {
-    color = BAR_COLOR_1SD;
+const Variance = ({ x, zScore }) => {
+  if (zScore <= 1) {
+    return null;
   }
   return (
+    <Circle
+      x={x}
+      y={-6}
+      r="2"
+      fill={(zScore > 2) ? COLOR_2SD : COLOR_1SD}
+    />
+  );
+};
+
+Variance.propTypes = {
+  x: number.isRequired,
+  zScore: number.isRequired,
+};
+
+const Bar = ({
+  x, zScore, height, width,
+}) => (
+  <>
+    <Variance
+      x={x}
+      zScore={zScore}
+    />
     <Line
       x1={x}
       y1={BAR_HEIGHT}
       x2={x}
       y2={BAR_HEIGHT - height}
-      stroke={color}
+      stroke={BAR_COLOR}
       strokeWidth={width}
       vectorEffect="non-scaling-stroke"
       shapeRendering="crispEdges"
     />
-  );
-};
+  </>
+);
 
 Bar.propTypes = {
   x: number.isRequired,
@@ -51,7 +68,7 @@ Bar.propTypes = {
 };
 
 const TimelineBars = ({
-  availableWidth, maxCount1SD, maxCount2SD, intervals,
+  availableWidth, maxCount1SD, intervals,
 }) => {
   const tickUnits = BAR_HEIGHT / maxCount1SD;
 
@@ -73,7 +90,6 @@ const TimelineBars = ({
 TimelineBars.propTypes = {
   availableWidth: number.isRequired,
   maxCount1SD: number.isRequired,
-  maxCount2SD: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
 };
 
@@ -123,7 +139,7 @@ XAxis.propTypes = {
 };
 
 const YAxisBound = ({
-  availableWidth, maxCount, maxCount1SD, maxCount2SD,
+  availableWidth, maxCount, maxCount1SD,
 }) => {
   if (maxCount > maxCount1SD) {
     const eventCountLabel = `${maxCount1SD} events`;
@@ -160,7 +176,6 @@ YAxisBound.propTypes = {
   availableWidth: number.isRequired,
   maxCount: number.isRequired,
   maxCount1SD: number.isRequired,
-  maxCount2SD: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
@@ -179,13 +194,13 @@ const TimelineBrowser = ({ timelineIntervals }) => {
     >
       <Svg
         width={`${screenWidth}`}
-        height="100"
+        height={CHART_HEIGHT}
         viewBox={`0 0 ${screenWidth} 100`}
         style={{ borderWidth: 0 }}
       >
         <G
           x={CHART_MARGIN}
-          y={4}
+          y={20}
         >
           <XAxis
             availableWidth={availableWidth}
