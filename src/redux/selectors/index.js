@@ -209,3 +209,12 @@ export const patientAgeAtResourcesSelector = createSelector(
     });
   },
 );
+
+export const orderedResourceTypeFiltersSelector = createSelector(
+  [resourceTypeFiltersSelector],
+  (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
+    .reduce((acc, resourceType) => {
+      acc[resourceType] = resourceTypeFilters[resourceType];
+      return acc;
+    }, {}),
+);
