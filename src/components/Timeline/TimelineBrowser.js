@@ -13,8 +13,9 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
 const BAR_COLOR = '#ccc';
-const COLOR_1SD = '#999';
-const COLOR_2SD = '#c33';
+const COLOR_1SD = '#ccc'; // also 999 in mocks
+const COLOR_2SD = '#f00'; // also fc0 in mocks
+const BOUNDARY_LINE_COLOR = '#36c';
 const CHART_MARGIN = 8;
 const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
@@ -152,10 +153,9 @@ const YAxisBound = ({
           y1={-2}
           x2={availableWidth}
           y2={-2}
-          stroke={BAR_COLOR}
-          strokeDasharray="0 1 2"
-          // strokeWidth={scaledStrokeWidth}
-          strokeWidth="0.5"
+          stroke={BOUNDARY_LINE_COLOR}
+          strokeDasharray="2 2"
+          strokeWidth="1"
           vectorEffect="non-scaling-stroke"
         />
         <SvgText
