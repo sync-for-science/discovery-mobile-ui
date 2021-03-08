@@ -4,6 +4,7 @@ import {
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
+const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 
 export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
   const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
@@ -38,7 +39,7 @@ export const getPatientBirthDate = (patientResource) => {
     return null;
   }
   const birthDate = parse(patientResource?.birthDate, 'yyyy-MM-dd', new Date());
-  return format(birthDate, 'MMM d, Y');
+  return format(birthDate, UI_DATE_FORMAT);
 };
 
 export const getPatientAddresses = (patientResource) => patientResource?.address;
@@ -82,7 +83,7 @@ export const getResourceDate = (resource) => (
 );
 
 const formatDate = (date, includeTime = false) => {
-  const dateFormat = includeTime ? 'MMM d, y h:mm:ssaaa' : 'MMM d, y';
+  const dateFormat = includeTime ? UI_DATE_FORMAT_LONG : UI_DATE_FORMAT;
   return date ? format(new Date(date), dateFormat) : null;
 };
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
