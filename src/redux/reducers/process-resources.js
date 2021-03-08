@@ -14,7 +14,7 @@ const getType = (resource) => {
       }
     }
   }
-  return resourceType; // could be one of: RESOURCE_TYPES, PATIENT, or something unsupported
+  return resourceType; // could be one of: PLURAL_RESOURCE_TYPES, PATIENT, or something unsupported
 };
 
 const getSubType = (resource) => {

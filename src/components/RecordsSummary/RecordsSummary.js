@@ -15,7 +15,7 @@ import {
 import { supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import { clearPatientData } from '../../features/patient/patientDataSlice';
-import RESOURCE_TYPES from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
   resourceType, total, resources, subTypes,
@@ -29,7 +29,7 @@ const ResourceTypeRow = ({
   const [, latestDate] = getDataRange(inflatedObjects, 'Y');
   return (
     <View style={styles.resourceTypeRow}>
-      <Text style={styles.resourceName}>{RESOURCE_TYPES[resourceType]}</Text>
+      <Text style={styles.resourceName}>{PLURAL_RESOURCE_TYPES[resourceType]}</Text>
       <Text style={styles.resourceCount}>{total}</Text>
       <Text style={styles.resourceLatestDate}>{latestDate}</Text>
     </View>
