@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { actionTypes } from '../epics';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { v4 as uuidv4 } from 'uuid';
 
 const preloadedResources = {};
 
