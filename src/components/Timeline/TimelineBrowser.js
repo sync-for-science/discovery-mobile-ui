@@ -142,7 +142,7 @@ const YAxisBound = ({
   availableWidth, maxCount, maxCount1SD,
 }) => {
   if (maxCount > maxCount1SD) {
-    const eventCountLabel = `${maxCount1SD} events`;
+    const eventCountLabel = `${maxCount1SD} records`;
     return (
       <>
         <Line
@@ -161,7 +161,7 @@ const YAxisBound = ({
           stroke="none"
           fontSize="8"
           x={0}
-          y={8}
+          y={-4}
           textAnchor="start"
         >
           {eventCountLabel}
