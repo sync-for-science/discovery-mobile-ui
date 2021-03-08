@@ -1,8 +1,10 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration,
+  compareAsc, format, parse, intervalToDuration, isWithinInterval,
 } from 'date-fns';
+
+import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
@@ -13,6 +15,8 @@ const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByTy
 const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
+
+const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -65,28 +69,128 @@ export const selectedSubTypeResourcesSelector = createSelector(
   ),
 );
 
-const pickTimelineFields = (resource) => pick(['id', 'timelineDate'], resource);
-const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
-
-const timelineItemSelector = createSelector(
+const timelineResourcesSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources)
     .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
-    .filter((r) => r.timelineDate) // must have timelineDate
+    .filter((r) => r.timelineDate), // must have timelineDate
+);
+
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type'], resource);
+
+const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
+
+export const sortedTimelineItemsSelector = createSelector(
+  [timelineResourcesSelector],
+  (resources) => resources
     .map(pickTimelineFields)
     .sort(sortByDate),
 );
 
 export const timelinePropsSelector = createSelector(
-  [timelineItemSelector],
-  (timelineItems) => ({
-    minimumDate: timelineItems[0]?.timelineDate,
-    maximumDate: timelineItems[timelineItems.length - 1]?.timelineDate,
+  [sortedTimelineItemsSelector],
+  (sortedTimelineItems) => ({
+    minimumDate: sortedTimelineItems[0]?.timelineDate,
+    maximumDate: sortedTimelineItems[sortedTimelineItems.length - 1]?.timelineDate,
   }),
 );
 
+// either user-selected values (undefined, by default), or: min / max dates of resources
+const timelineRangeSelector = createSelector(
+  [dateRangeFilterFiltersSelector, timelinePropsSelector],
+  (dateRangeFilterFilters, timelineProps) => {
+    const { minimumDate, maximumDate } = timelineProps;
+    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
+    return {
+      dateRangeStart,
+      dateRangeEnd,
+    };
+  },
+);
+
+const timelineItemsInRangeSelector = createSelector(
+  [sortedTimelineItemsSelector, timelineRangeSelector, resourceTypeFiltersSelector],
+  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
+    if (!dateRangeStart || !dateRangeEnd) {
+      return [];
+    }
+    return sortedTimelineItems
+      .filter(({ type }) => resourceTypeFilters[type])
+      .filter(({ timelineDate }) => isWithinInterval(
+        timelineDate,
+        {
+          start: dateRangeStart,
+          end: dateRangeEnd,
+        },
+      ));
+  },
+);
+
+const INTERVAL_COUNT = 100;
+
+export const timelineIntervalsSelector = createSelector(
+  [timelineItemsInRangeSelector, timelineRangeSelector],
+  (timelineItemsInRange, timelineRange) => {
+    let intervals = [];
+    let maxCount = 0;
+    let maxCountBounded = 0;
+    const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
+    // alternatively:
+    // const minDate = timelineItemsInRange[0]?.timelineDate;
+    // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
+
+    if (minDate && maxDate && timelineItemsInRange.length) {
+      const intervalMap = createIntervalMap(minDate, maxDate, INTERVAL_COUNT);
+      const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, INTERVAL_COUNT);
+
+      timelineItemsInRange.forEach(({ id, timelineDate }) => {
+        const currentInterval = getNextIntervalForDate(timelineDate);
+        if (currentInterval) {
+          currentInterval.items.push(id); // < mutates intervalMap
+          if (currentInterval.items.length > maxCount) {
+            maxCount = currentInterval.items.length;
+          }
+        } else {
+          console.warn('no interval for date: ', timelineDate); // eslint-disable-line no-console
+        }
+      });
+      intervals = intervalMap;
+    }
+
+    const intervalsWithItems = intervals.filter(({ items }) => items.length); // has items
+
+    if (intervalsWithItems.length) {
+      const itemCounts = intervalsWithItems.map(({ items }) => items.length);
+      const totalItemCount = itemCounts.reduce((acc, count) => acc + count, 0);
+      const meanCountPerInterval = totalItemCount / itemCounts.length;
+      const sumOfSquaredDifferences = itemCounts
+        .reduce((acc, count) => acc + ((count - meanCountPerInterval) ** 2), 0);
+
+      const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
+
+      // inject z score:
+      intervalsWithItems.forEach((interval) => {
+        // eslint-disable-next-line no-param-reassign
+        interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
+        // ^ mutates intervalMap
+        if (interval.zScore <= 1 && interval.items.length > maxCountBounded) {
+          maxCountBounded = interval.items.length;
+        }
+      });
+    }
+
+    return {
+      startDate: minDate,
+      endDate: maxDate,
+      intervals,
+      maxCount,
+      maxCountBounded,
+    };
+  },
+);
+
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, timelineItemSelector],
+  [patientSelector, sortedTimelineItemsSelector],
   (patient, timelineItems) => {
     if (!patient) {
       return {};
