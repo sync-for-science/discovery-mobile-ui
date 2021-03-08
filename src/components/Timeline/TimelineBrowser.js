@@ -22,14 +22,14 @@ const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
 
 const Variance = ({ x, y, zScore }) => {
-  if (zScore <= 1) {
+  if (zScore < 1) {
     return null;
   }
   return (
     <Polygon
       x={x}
       y={y}
-      fill={(zScore > 2) ? COLOR_2SD : COLOR_1SD}
+      fill={(zScore >= 2) ? COLOR_2SD : COLOR_1SD}
       points="-3 0, 0 -4, 3 0"
     />
   );
@@ -104,7 +104,6 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
       x2={availableWidth}
       y2={BAR_HEIGHT + 2}
       stroke={BAR_COLOR}
-      // strokeWidth={scaledStrokeWidth}
       strokeWidth="1"
       vectorEffect="non-scaling-stroke"
     />
@@ -116,7 +115,6 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
       x={0}
       y={BAR_HEIGHT + 10}
       textAnchor="start"
-      // transform="translate(0,0) scale(1, -1)"
     >
       {startLabel}
     </SvgText>
@@ -128,7 +126,6 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
       x={availableWidth}
       y={BAR_HEIGHT + 10}
       textAnchor="end"
-      // transform="translate(0,0) scale(1, -1)"
     >
       {endLabel}
     </SvgText>
@@ -141,13 +138,45 @@ XAxis.propTypes = {
   endLabel: string.isRequired,
 };
 
-const YAxisBound = ({
-  availableWidth, maxCount, maxCount1SD,
+const LegendAndBound = ({
+  availableWidth, maxCount, maxCount1SD, maxCount2SD,
 }) => {
   if (maxCount > maxCount1SD) {
     const eventCountLabel = `${maxCount1SD}`;
+    const zscore2label = `more than ${maxCount2SD}`;
+    const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
     return (
       <>
+        <Variance
+          x={0}
+          y={-24}
+          zScore={2}
+        />
+        <SvgText
+          x={6}
+          y={-24}
+          fill={LABEL_COLOR}
+          stroke="none"
+          fontSize="8"
+          textAnchor="left"
+        >
+          {zscore2label}
+        </SvgText>
+        <Variance
+          x={0}
+          y={-14}
+          zScore={1}
+        />
+        <SvgText
+          x={6}
+          y={-14}
+          fill={LABEL_COLOR}
+          stroke="none"
+          fontSize="8"
+          textAnchor="left"
+        >
+          {zscore1label}
+        </SvgText>
         <Line
           x1={0}
           y1={-2}
@@ -174,10 +203,11 @@ const YAxisBound = ({
   return null;
 };
 
-YAxisBound.propTypes = {
+LegendAndBound.propTypes = {
   availableWidth: number.isRequired,
   maxCount: number.isRequired,
   maxCount1SD: number.isRequired,
+  maxCount2SD: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
@@ -215,7 +245,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount2SD={maxCount2SD}
             intervals={intervals}
           />
-          <YAxisBound
+          <LegendAndBound
             availableWidth={availableWidth}
             maxCount={maxCount}
             maxCount1SD={maxCount1SD}
