@@ -63,7 +63,7 @@ const TimelineBars = ({
       <Bar
         key={key}
         x={position * availableWidth}
-        width={3}
+        width={2}
         height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
         zScore={zScore}
       />
