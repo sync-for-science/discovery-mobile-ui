@@ -50,8 +50,10 @@ Bar.propTypes = {
   height: number.isRequired,
 };
 
-const TimelineBars = ({ availableWidth, maxCountBounded, intervals }) => {
-  const tickUnits = BAR_HEIGHT / maxCountBounded;
+const TimelineBars = ({
+  availableWidth, maxCount1SD, maxCount2SD, intervals,
+}) => {
+  const tickUnits = BAR_HEIGHT / maxCount1SD;
 
   return intervals
     .filter(({ items }) => !!items.length)
@@ -62,7 +64,7 @@ const TimelineBars = ({ availableWidth, maxCountBounded, intervals }) => {
         key={key}
         x={position * availableWidth}
         width={3}
-        height={Math.max(Math.min(items.length, maxCountBounded) * tickUnits, 4)}
+        height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
         zScore={zScore}
       />
     ));
@@ -70,7 +72,8 @@ const TimelineBars = ({ availableWidth, maxCountBounded, intervals }) => {
 
 TimelineBars.propTypes = {
   availableWidth: number.isRequired,
-  maxCountBounded: number.isRequired,
+  maxCount1SD: number.isRequired,
+  maxCount2SD: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
 };
 
@@ -119,9 +122,11 @@ XAxis.propTypes = {
   endLabel: string.isRequired,
 };
 
-const YAxisBound = ({ availableWidth, maxCount, maxCountBounded }) => {
-  if (maxCount > maxCountBounded) {
-    const eventCountLabel = `${maxCountBounded} events`;
+const YAxisBound = ({
+  availableWidth, maxCount, maxCount1SD, maxCount2SD,
+}) => {
+  if (maxCount > maxCount1SD) {
+    const eventCountLabel = `${maxCount1SD} events`;
     return (
       <>
         <Line
@@ -154,12 +159,13 @@ const YAxisBound = ({ availableWidth, maxCount, maxCountBounded }) => {
 YAxisBound.propTypes = {
   availableWidth: number.isRequired,
   maxCount: number.isRequired,
-  maxCountBounded: number.isRequired,
+  maxCount1SD: number.isRequired,
+  maxCount2SD: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    maxCount, maxCountBounded, intervals, startDate, endDate,
+    maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (2 * CHART_MARGIN);
@@ -188,13 +194,15 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <TimelineBars
             availableWidth={availableWidth}
-            maxCountBounded={maxCountBounded}
+            maxCount1SD={maxCount1SD}
+            maxCount2SD={maxCount2SD}
             intervals={intervals}
           />
           <YAxisBound
             availableWidth={availableWidth}
             maxCount={maxCount}
-            maxCountBounded={maxCountBounded}
+            maxCount1SD={maxCount1SD}
+            maxCount2SD={maxCount2SD}
           />
           <Rect
             x="0"
@@ -212,7 +220,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
 TimelineBrowser.propTypes = {
   timelineIntervals: shape({
     maxCount: number.isRequired,
-    maxCountBounded: number.isRequired,
+    maxCount1SD: number.isRequired,
+    maxCount2SD: number.isRequired,
     intervals: arrayOf(shape({})).isRequired,
   }).isRequired,
 };

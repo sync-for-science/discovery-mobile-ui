@@ -114,8 +114,9 @@ export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
   (timelineItemsInRange, timelineRange) => {
     let intervals = [];
-    let maxCount = 0;
-    let maxCountBounded = 0;
+    let maxCount1SD = 0; // up to mean + 1 SD
+    let maxCount2SD = 0; // up to mean + 2 SD
+    let maxCount = 0; // beyond mean + 2 SD
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
     // const minDate = timelineItemsInRange[0]?.timelineDate;
@@ -155,8 +156,10 @@ export const timelineIntervalsSelector = createSelector(
         // eslint-disable-next-line no-param-reassign
         interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
         // ^ mutates intervalMap
-        if (interval.zScore <= 1 && interval.items.length > maxCountBounded) {
-          maxCountBounded = interval.items.length;
+        if (interval.zScore <= 1 && interval.items.length > maxCount1SD) {
+          maxCount1SD = interval.items.length;
+        } else if (interval.zScore <= 2 && interval.items.length > maxCount2SD) {
+          maxCount2SD = interval.items.length;
         }
       });
     }
@@ -165,8 +168,9 @@ export const timelineIntervalsSelector = createSelector(
       startDate: minDate,
       endDate: maxDate,
       intervals,
+      maxCount1SD,
+      maxCount2SD,
       maxCount,
-      maxCountBounded,
     };
   },
 );
