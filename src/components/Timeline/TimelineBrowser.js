@@ -8,7 +8,7 @@ import {
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
 import Svg, {
-  Rect, Line, G, Text as SvgText, Circle, // Mask
+  Rect, Line, G, Text as SvgText, Polygon, // Mask
 } from 'react-native-svg';
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
@@ -20,22 +20,23 @@ const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
 
-const Variance = ({ x, zScore }) => {
+const Variance = ({ x, y, zScore }) => {
   if (zScore <= 1) {
     return null;
   }
   return (
-    <Circle
+    <Polygon
       x={x}
-      y={-6}
-      r="2"
+      y={y}
       fill={(zScore > 2) ? COLOR_2SD : COLOR_1SD}
+      points="-3 0, 0 -4, 3 0"
     />
   );
 };
 
 Variance.propTypes = {
   x: number.isRequired,
+  y: number.isRequired,
   zScore: number.isRequired,
 };
 
@@ -45,6 +46,7 @@ const Bar = ({
   <>
     <Variance
       x={x}
+      y={-4}
       zScore={zScore}
     />
     <Line
