@@ -157,13 +157,14 @@ export const timelineIntervalsSelector = createSelector(
 
       // inject z score:
       intervalsWithItems.forEach((interval) => {
+        const itemsLength = interval.items.length;
         // eslint-disable-next-line no-param-reassign
-        interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
+        interval.zScore = !populationSD ? 0 : (itemsLength - meanCountPerInterval) / populationSD;
         // ^ mutates intervalMap
-        if (interval.zScore <= 1 && interval.items.length > maxCount1SD) {
-          maxCount1SD = interval.items.length;
-        } else if (interval.zScore <= 2 && interval.items.length > maxCount2SD) {
-          maxCount2SD = interval.items.length;
+        if (interval.zScore <= 1 && itemsLength > maxCount1SD) {
+          maxCount1SD = itemsLength;
+        } else if (interval.zScore <= 2 && itemsLength > maxCount2SD) {
+          maxCount2SD = itemsLength;
         }
       });
     }
