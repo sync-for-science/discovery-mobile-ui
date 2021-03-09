@@ -269,16 +269,11 @@ const filteredResourceTypesSelector = createSelector(
         acc[resourceType] = {};
         
         Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
-          if (!acc[resourceType].subTypes) {
-            acc[resourceType].subTypes = {};
-          }
-          if (!acc[resourceType].subTypes[subType]) {
-            acc[resourceType].subTypes[subType] = {};
-          }
+          const subTypeViewModel = {}
 
           const subTypeResourceIds = Array.from(resourceIds);
-          acc[resourceType].subTypes[subType].resourceIds = subTypeResourceIds;
-          acc[resourceType].subTypes[subType].count = subTypeResourceIds.length;
+          subTypeViewModel.resourceIds = subTypeResourceIds;
+          subTypeViewModel.count = subTypeResourceIds.length;
 
           const dateFilteredResourceIds = timelineItemsInRange
           .filter(timelineItem => timelineItem.subType === subType)
@@ -286,17 +281,21 @@ const filteredResourceTypesSelector = createSelector(
             acc.push(item.id)
             return acc
           }, [])
-
-          acc[resourceType].subTypes[subType].dateFilteredResourceIds = dateFilteredResourceIds;
-          acc[resourceType].subTypes[subType].dateFilteredCount = dateFilteredResourceIds.length;
+          subTypeViewModel.dateFilteredResourceIds = dateFilteredResourceIds;
+          subTypeViewModel.dateFilteredCount = dateFilteredResourceIds.length;
 
           const collectionDateFilteredResourceIds = dateFilteredResourceIds
             .filter((dateFilteredResourceId) => selectedCollectionResourceIds
-              .includes(dateFilteredResourceId));
-          acc[resourceType].subTypes[subType]
-            .collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
-          acc[resourceType].subTypes[subType]
-            .collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
+            .includes(dateFilteredResourceId));
+          subTypeViewModel.collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
+          subTypeViewModel.collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
+
+          if (!acc[resourceType].subTypes) {
+            acc[resourceType].subTypes = {};
+          }
+          if (!acc[resourceType].subTypes[subType]) {
+            acc[resourceType].subTypes[subType] = subTypeViewModel;
+          }
         });
       }
 
