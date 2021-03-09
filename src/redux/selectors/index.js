@@ -71,10 +71,14 @@ export const sortedTimelineItemsSelector = createSelector(
 
 export const timelinePropsSelector = createSelector(
   [sortedTimelineItemsSelector],
-  (sortedTimelineItems) => ({
-    minimumDate: sortedTimelineItems[0]?.timelineDate,
-    maximumDate: sortedTimelineItems[sortedTimelineItems.length - 1]?.timelineDate,
-  }),
+  (items) => {
+    const r1 = items[0]; // might be same as r2
+    const r2 = items[items.length - 1];
+    return ({
+      minimumDate: r1 && startOfDay(r1.timelineDate),
+      maximumDate: r2 && endOfDay(r2.timelineDate),
+    });
+  },
 );
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
@@ -153,13 +157,14 @@ export const timelineIntervalsSelector = createSelector(
 
       // inject z score:
       intervalsWithItems.forEach((interval) => {
+        const cardinality = interval.items.length;
         // eslint-disable-next-line no-param-reassign
-        interval.zScore = (interval.items.length - meanCountPerInterval) / populationSD;
+        interval.zScore = !populationSD ? 0 : (cardinality - meanCountPerInterval) / populationSD;
         // ^ mutates intervalMap
-        if (interval.zScore <= 1 && interval.items.length > maxCount1SD) {
-          maxCount1SD = interval.items.length;
-        } else if (interval.zScore <= 2 && interval.items.length > maxCount2SD) {
-          maxCount2SD = interval.items.length;
+        if (interval.zScore <= 1 && cardinality > maxCount1SD) {
+          maxCount1SD = cardinality;
+        } else if (interval.zScore <= 2 && cardinality > maxCount2SD) {
+          maxCount2SD = cardinality;
         }
       });
     }
