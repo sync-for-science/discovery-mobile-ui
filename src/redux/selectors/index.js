@@ -177,7 +177,8 @@ export const timelineIntervalsSelector = createSelector(
     return {
       startDate: minDate,
       endDate: maxDate,
-      intervals,
+      intervalCount: intervals.length,
+      intervals: intervals.filter(({ items }) => items.length),
       maxCount1SD,
       maxCount2SD,
       maxCount,

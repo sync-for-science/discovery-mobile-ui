@@ -214,9 +214,14 @@ LegendAndBound.propTypes = {
   maxCount2SD: number.isRequired,
 };
 
-const RecordAndIntervalCount = ({ availableWidth, recordCount, intervalCount }) => {
+const RecordAndIntervalCount = ({
+  availableWidth,
+  recordCount,
+  intervalCount,
+  intervalsWithRecordsCount,
+}) => {
   const recordCountLabel = `${recordCount} total records`;
-  const intervalCountLabel = intervalCount ? `${intervalCount} intervals` : '';
+  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} have records` : '';
 
   return (
     <>
@@ -247,12 +252,15 @@ const RecordAndIntervalCount = ({ availableWidth, recordCount, intervalCount }) 
 RecordAndIntervalCount.propTypes = {
   availableWidth: number.isRequired,
   intervalCount: number.isRequired,
+  intervalsWithRecordsCount: number.isRequired,
   recordCount: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate, recordCount,
+    startDate, endDate,
+    maxCount1SD, maxCount2SD, maxCount,
+    intervals, intervalCount, recordCount,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
@@ -306,7 +314,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <RecordAndIntervalCount
             availableWidth={availableWidth}
-            intervalCount={intervals.length}
+            intervalCount={intervalCount}
+            intervalsWithRecordsCount={intervals.length}
             recordCount={recordCount}
           />
           <Rect
@@ -326,7 +335,8 @@ TimelineBrowser.propTypes = {
   timelineIntervals: shape({
     startDate: instanceOf(Date),
     maxDate: instanceOf(Date),
-    intervals: arrayOf(shape({})).isRequired,
+    intervalTotalCount: number.isRequired, // total count
+    intervals: arrayOf(shape({})).isRequired, // that have records
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
     maxCount2SD: number.isRequired,
