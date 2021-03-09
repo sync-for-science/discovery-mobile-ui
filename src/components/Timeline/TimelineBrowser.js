@@ -144,7 +144,7 @@ XAxis.propTypes = {
 const LegendAndBound = ({
   availableWidth, maxCount, maxCount1SD, maxCount2SD,
 }) => {
-  if (maxCount >= maxCount1SD) {
+  if (maxCount > maxCount1SD) {
     const eventCountLabel = `${maxCount1SD}`;
     const zscore2label = `more than ${maxCount2SD}`;
     const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
