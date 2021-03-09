@@ -25,9 +25,9 @@ const Bar = ({
 }) => {
   let color = BAR_COLOR;
   if (zScore > 2) {
-    color = BAR_COLOR_1SD;
-  } else if (zScore > 1) {
     color = BAR_COLOR_2SD;
+  } else if (zScore > 1) {
+    color = BAR_COLOR_1SD;
   }
   return (
     <Line
