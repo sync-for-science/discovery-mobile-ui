@@ -73,6 +73,9 @@ Bar.propTypes = {
 const TimelineBars = ({
   availableWidth, maxCount1SD, intervals,
 }) => {
+  if (!maxCount1SD) {
+    return null;
+  }
   const tickUnits = BAR_HEIGHT / maxCount1SD;
 
   return intervals
