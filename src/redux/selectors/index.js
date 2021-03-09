@@ -263,6 +263,7 @@ const filteredResourceTypesSelector = createSelector(
 
           const dateFilteredResourceIds = timelineItemsInRange
             .filter((timelineItem) => timelineItem.subType === subType)
+            .reverse()
             .reduce((array, item) => {
               array.push(item.id);
               return array;
