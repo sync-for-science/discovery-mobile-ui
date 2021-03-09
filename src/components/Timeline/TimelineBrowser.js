@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Dimensions,
 } from 'react-native';
 import {
-  arrayOf, shape, string, number,
+  arrayOf, shape, string, number, instanceOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
@@ -144,10 +144,11 @@ XAxis.propTypes = {
 const LegendAndBound = ({
   availableWidth, maxCount, maxCount1SD, maxCount2SD,
 }) => {
-  if (maxCount > maxCount1SD) {
+  if (maxCount >= maxCount1SD) {
     const eventCountLabel = `${maxCount1SD}`;
     const zscore2label = `more than ${maxCount2SD}`;
     const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
+
     return (
       <>
         <Variance
@@ -213,12 +214,49 @@ LegendAndBound.propTypes = {
   maxCount2SD: number.isRequired,
 };
 
+const RecordAndIntervalCount = ({ availableWidth, recordCount, intervalCount }) => {
+  const recordCountLabel = `${recordCount} total records`;
+  const intervalCountLabel = intervalCount ? `${intervalCount} intervals` : '';
+
+  return (
+    <>
+      <SvgText
+        x={availableWidth / 2}
+        y={-24}
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize="8"
+        textAnchor="center"
+      >
+        {recordCountLabel}
+      </SvgText>
+      <SvgText
+        x={availableWidth / 2}
+        y={-14}
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize="8"
+        textAnchor="center"
+      >
+        {intervalCountLabel}
+      </SvgText>
+    </>
+  );
+};
+
+RecordAndIntervalCount.propTypes = {
+  availableWidth: number.isRequired,
+  intervalCount: number.isRequired,
+  recordCount: number.isRequired,
+};
+
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate,
+    maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate, recordCount,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
+  const noResultsMessage = recordCount ? '' : 'No results found for date and type filters.';
 
   return (
     <View
@@ -237,6 +275,18 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           x={2 * CHART_MARGIN} // accommodate label for boundary line
           y={20}
         >
+          <SvgText
+            fill={LABEL_COLOR}
+            stroke="none"
+            fontSize="12"
+            fontWeight="bold"
+            fontStyle="italic"
+            x={availableWidth / 2}
+            y={BAR_HEIGHT / 2}
+            textAnchor="middle"
+          >
+            {noResultsMessage}
+          </SvgText>
           <XAxis
             availableWidth={availableWidth}
             startLabel={(startDate && format(startDate, 'MM/dd/yyyy')) || ''}
@@ -254,6 +304,11 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
           />
+          <RecordAndIntervalCount
+            availableWidth={availableWidth}
+            intervalCount={intervals.length}
+            recordCount={recordCount}
+          />
           <Rect
             x="0"
             y="0"
@@ -269,10 +324,13 @@ const TimelineBrowser = ({ timelineIntervals }) => {
 
 TimelineBrowser.propTypes = {
   timelineIntervals: shape({
+    startDate: instanceOf(Date),
+    maxDate: instanceOf(Date),
+    intervals: arrayOf(shape({})).isRequired,
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
     maxCount2SD: number.isRequired,
-    intervals: arrayOf(shape({})).isRequired,
+    recordCount: number.isRequired,
   }).isRequired,
 };
 
