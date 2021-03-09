@@ -13,7 +13,7 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
 const BAR_COLOR = '#ccc';
-const COLOR_1SD = '#ccc'; // also 999 in mocks
+const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
 const BOUNDARY_LINE_COLOR = '#36c';
 const CHART_MARGIN = 12;
