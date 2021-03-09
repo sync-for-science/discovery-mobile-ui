@@ -220,8 +220,10 @@ const RecordAndIntervalCount = ({
   intervalCount,
   intervalsWithRecordsCount,
 }) => {
-  const recordCountLabel = `${recordCount} total records`;
-  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} have records` : '';
+  const recordCountLabel = recordCount ? `${recordCount} total records` : '';
+  // TODO: use i18n:
+  const haveHas = (intervalsWithRecordsCount === 1) ? 'has' : 'have';
+  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} ${haveHas} records` : '';
 
   return (
     <>
