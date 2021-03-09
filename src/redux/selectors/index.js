@@ -59,7 +59,7 @@ const timelineResourcesSelector = createSelector(
     .filter((r) => r.timelineDate), // must have timelineDate
 );
 
-const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type'], resource);
+const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
@@ -251,36 +251,23 @@ const filteredResourceTypesSelector = createSelector(
   [
     resourceTypeFiltersSelector,
     resourceIdsGroupedByTypeSelector,
-    selectedResourceTypeSelector,
     selectedCollectionResourceIdsSelector,
-    dateRangeFilterFiltersSelector,
-    resourcesSelector,
-    timelinePropsSelector,
+    timelineItemsInRangeSelector,
   ],
   (
     resourceTypeFilter,
     resourceIdsGroupedByType,
-    selectedResourceType,
     selectedCollectionResourceIdsObjects,
-    dateRangeFilterFilters,
-    resources,
-    timelineProps,
+    timelineItemsInRange,
   ) => {
     if (!selectedCollectionResourceIdsObjects) {
       return {};
     }
-    const { minimumDate, maximumDate } = timelineProps;
-    const { dateRangeStart, dateRangeEnd } = dateRangeFilterFilters;
-    const activeDateStart = dateRangeStart || minimumDate;
-    const activeDateEnd = dateRangeEnd || maximumDate;
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
         acc[resourceType] = {};
-        acc[resourceType].selected = false;
-        if (selectedResourceType === resourceType) {
-          acc[resourceType].selected = true;
-        }
+        
         Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
           if (!acc[resourceType].subTypes) {
             acc[resourceType].subTypes = {};
@@ -288,15 +275,21 @@ const filteredResourceTypesSelector = createSelector(
           if (!acc[resourceType].subTypes[subType]) {
             acc[resourceType].subTypes[subType] = {};
           }
+
           const subTypeResourceIds = Array.from(resourceIds);
           acc[resourceType].subTypes[subType].resourceIds = subTypeResourceIds;
           acc[resourceType].subTypes[subType].count = subTypeResourceIds.length;
-          const dateFilteredResourceIds = subTypeResourceIds
-            .filter((subTypeResourceId) => isResourceInDateRange(
-              resources[subTypeResourceId], activeDateStart, activeDateEnd,
-            ));
+
+          const dateFilteredResourceIds = timelineItemsInRange
+          .filter(timelineItem => timelineItem.subType === subType)
+          .reduce((acc, item) => {
+            acc.push(item.id)
+            return acc
+          }, [])
+
           acc[resourceType].subTypes[subType].dateFilteredResourceIds = dateFilteredResourceIds;
           acc[resourceType].subTypes[subType].dateFilteredCount = dateFilteredResourceIds.length;
+
           const collectionDateFilteredResourceIds = dateFilteredResourceIds
             .filter((dateFilteredResourceId) => selectedCollectionResourceIds
               .includes(dateFilteredResourceId));
