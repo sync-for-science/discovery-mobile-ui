@@ -233,20 +233,6 @@ const selectedCollectionResourceIdsSelector = createSelector(
   (collections, selectedCollection) => collections[selectedCollection]?.resourceIds,
 );
 
-const isResourceInDateRange = (resource, dateRangeStart, dateRangeEnd) => {
-  const { timelineDate } = resource;
-  if (!timelineDate) {
-    console.info('record does not have an timelineDate, resourceId: ', resource.id); // eslint-disable-line no-console
-    return false;
-  }
-  if (!dateRangeStart || !dateRangeEnd) { return true; }
-  return (
-    isWithinInterval(
-      timelineDate, { start: startOfDay(dateRangeStart), end: endOfDay(dateRangeEnd) },
-    )
-  );
-};
-
 const filteredResourceTypesSelector = createSelector(
   [
     resourceTypeFiltersSelector,
@@ -267,26 +253,26 @@ const filteredResourceTypesSelector = createSelector(
     return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
       if (resourceTypeFilter[resourceType]) {
         acc[resourceType] = {};
-        
+
         Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
-          const subTypeViewModel = {}
+          const subTypeViewModel = {};
 
           const subTypeResourceIds = Array.from(resourceIds);
           subTypeViewModel.resourceIds = subTypeResourceIds;
           subTypeViewModel.count = subTypeResourceIds.length;
 
           const dateFilteredResourceIds = timelineItemsInRange
-          .filter(timelineItem => timelineItem.subType === subType)
-          .reduce((acc, item) => {
-            acc.push(item.id)
-            return acc
-          }, [])
+            .filter((timelineItem) => timelineItem.subType === subType)
+            .reduce((array, item) => {
+              array.push(item.id);
+              return array;
+            }, []);
           subTypeViewModel.dateFilteredResourceIds = dateFilteredResourceIds;
           subTypeViewModel.dateFilteredCount = dateFilteredResourceIds.length;
 
           const collectionDateFilteredResourceIds = dateFilteredResourceIds
             .filter((dateFilteredResourceId) => selectedCollectionResourceIds
-            .includes(dateFilteredResourceId));
+              .includes(dateFilteredResourceId));
           subTypeViewModel.collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
           subTypeViewModel.collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
 
