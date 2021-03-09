@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Dimensions,
 } from 'react-native';
 import {
-  arrayOf, shape, string, number,
+  arrayOf, shape, string, number, instanceOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { format } from 'date-fns';
@@ -13,7 +13,7 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 
 const BAR_COLOR = '#ccc';
-const COLOR_1SD = '#ccc'; // also 999 in mocks
+const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
 const BOUNDARY_LINE_COLOR = '#36c';
 const CHART_MARGIN = 12;
@@ -148,6 +148,7 @@ const LegendAndBound = ({
     const eventCountLabel = `${maxCount1SD}`;
     const zscore2label = `more than ${maxCount2SD}`;
     const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
+
     return (
       <>
         <Variance
@@ -213,12 +214,59 @@ LegendAndBound.propTypes = {
   maxCount2SD: number.isRequired,
 };
 
+const RecordAndIntervalCount = ({
+  availableWidth,
+  recordCount,
+  intervalCount,
+  intervalsWithRecordsCount,
+}) => {
+  const recordCountLabel = recordCount ? `${recordCount} total records` : '';
+  // TODO: use i18n:
+  const haveHas = (intervalsWithRecordsCount === 1) ? 'has' : 'have';
+  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} ${haveHas} records` : '';
+
+  return (
+    <>
+      <SvgText
+        x={availableWidth / 2}
+        y={-24}
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize="8"
+        textAnchor="center"
+      >
+        {recordCountLabel}
+      </SvgText>
+      <SvgText
+        x={availableWidth / 2}
+        y={-14}
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize="8"
+        textAnchor="center"
+      >
+        {intervalCountLabel}
+      </SvgText>
+    </>
+  );
+};
+
+RecordAndIntervalCount.propTypes = {
+  availableWidth: number.isRequired,
+  intervalCount: number.isRequired,
+  intervalsWithRecordsCount: number.isRequired,
+  recordCount: number.isRequired,
+};
+
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate,
+    startDate, endDate,
+    maxCount1SD, maxCount2SD, maxCount,
+    intervals, intervalCount, recordCount,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
+  const noResultsMessage = recordCount ? '' : 'No results found for date and type filters.';
 
   return (
     <View
@@ -237,6 +285,18 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           x={2 * CHART_MARGIN} // accommodate label for boundary line
           y={20}
         >
+          <SvgText
+            fill={LABEL_COLOR}
+            stroke="none"
+            fontSize="12"
+            fontWeight="bold"
+            fontStyle="italic"
+            x={availableWidth / 2}
+            y={BAR_HEIGHT / 2}
+            textAnchor="middle"
+          >
+            {noResultsMessage}
+          </SvgText>
           <XAxis
             availableWidth={availableWidth}
             startLabel={(startDate && format(startDate, 'MM/dd/yyyy')) || ''}
@@ -254,6 +314,12 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
           />
+          <RecordAndIntervalCount
+            availableWidth={availableWidth}
+            intervalCount={intervalCount}
+            intervalsWithRecordsCount={intervals.length}
+            recordCount={recordCount}
+          />
           <Rect
             x="0"
             y="0"
@@ -269,10 +335,14 @@ const TimelineBrowser = ({ timelineIntervals }) => {
 
 TimelineBrowser.propTypes = {
   timelineIntervals: shape({
+    startDate: instanceOf(Date),
+    maxDate: instanceOf(Date),
+    intervalTotalCount: number.isRequired, // total count
+    intervals: arrayOf(shape({})).isRequired, // that have records
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
     maxCount2SD: number.isRequired,
-    intervals: arrayOf(shape({})).isRequired,
+    recordCount: number.isRequired,
   }).isRequired,
 };
 

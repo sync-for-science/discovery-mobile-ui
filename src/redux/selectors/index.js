@@ -1,7 +1,8 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { pick, values } from 'ramda';
 import {
-  compareAsc, format, parse, intervalToDuration, isWithinInterval, startOfDay, endOfDay,
+  startOfDay, endOfDay, differenceInDays,
+  compareAsc, format, parse, intervalToDuration, isWithinInterval,
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
@@ -112,7 +113,7 @@ const timelineItemsInRangeSelector = createSelector(
   },
 );
 
-const INTERVAL_COUNT = 100;
+const MAX_INTERVAL_COUNT = 100;
 
 export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
@@ -121,14 +122,18 @@ export const timelineIntervalsSelector = createSelector(
     let maxCount1SD = 0; // up to mean + 1 SD
     let maxCount2SD = 0; // up to mean + 2 SD
     let maxCount = 0; // beyond mean + 2 SD
+
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
     // const minDate = timelineItemsInRange[0]?.timelineDate;
     // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
 
     if (minDate && maxDate && timelineItemsInRange.length) {
-      const intervalMap = createIntervalMap(minDate, maxDate, INTERVAL_COUNT);
-      const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, INTERVAL_COUNT);
+      const numDays = differenceInDays(maxDate, minDate);
+      const intervalCount = Math.min(numDays, MAX_INTERVAL_COUNT) || 1; // cannot be 0
+
+      const intervalMap = createIntervalMap(minDate, maxDate, intervalCount);
+      const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, intervalCount);
 
       timelineItemsInRange.forEach(({ id, timelineDate }) => {
         const currentInterval = getNextIntervalForDate(timelineDate);
@@ -172,10 +177,12 @@ export const timelineIntervalsSelector = createSelector(
     return {
       startDate: minDate,
       endDate: maxDate,
-      intervals,
+      intervalCount: intervals.length,
+      intervals: intervals.filter(({ items }) => items.length),
       maxCount1SD,
       maxCount2SD,
       maxCount,
+      recordCount: timelineItemsInRange.length,
     };
   },
 );
