@@ -16,7 +16,7 @@ const BAR_COLOR = '#ccc';
 const COLOR_1SD = '#ccc'; // also 999 in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
 const BOUNDARY_LINE_COLOR = '#36c';
-const CHART_MARGIN = 8;
+const CHART_MARGIN = 12;
 const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
@@ -145,7 +145,7 @@ const YAxisBound = ({
   availableWidth, maxCount, maxCount1SD,
 }) => {
   if (maxCount > maxCount1SD) {
-    const eventCountLabel = `${maxCount1SD} records`;
+    const eventCountLabel = `${maxCount1SD}`;
     return (
       <>
         <Line
@@ -162,9 +162,9 @@ const YAxisBound = ({
           fill={LABEL_COLOR}
           stroke="none"
           fontSize="8"
-          x={0}
-          y={-4}
-          textAnchor="start"
+          x={-4}
+          y={0}
+          textAnchor="end"
         >
           {eventCountLabel}
         </SvgText>
@@ -185,7 +185,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
     maxCount, maxCount1SD, maxCount2SD, intervals, startDate, endDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
-  const availableWidth = screenWidth - (2 * CHART_MARGIN);
+  const availableWidth = screenWidth - (3 * CHART_MARGIN);
 
   return (
     <View
@@ -201,7 +201,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
         style={{ borderWidth: 0 }}
       >
         <G
-          x={CHART_MARGIN}
+          x={2 * CHART_MARGIN} // accommodate label for boundary line
           y={20}
         >
           <XAxis
