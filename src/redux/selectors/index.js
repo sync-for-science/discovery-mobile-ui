@@ -259,7 +259,7 @@ const filteredResourceTypesSelector = createSelector(
       return {};
     }
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
-    return timelineItemsInRange.reduce((acc, { id, type, subType }) => {
+    return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};
       }
