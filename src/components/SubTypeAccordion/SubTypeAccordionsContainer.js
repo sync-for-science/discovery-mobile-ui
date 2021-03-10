@@ -19,6 +19,10 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
           const resourceIds = fromContentPanel
             ? values.collectionDateFilteredResourceIds
             : values.dateFilteredResourceIds;
+
+          if (resourceIds.length === 0) {
+            return null;
+          }
           return (
             <SubTypeAccordion
               key={subType}
