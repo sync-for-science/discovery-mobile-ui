@@ -233,57 +233,58 @@ const selectedCollectionResourceIdsSelector = createSelector(
   (collections, selectedCollection) => collections[selectedCollection]?.resourceIds,
 );
 
+const subTypeResourceIdsSelector = createSelector(
+  [resourcesSelector],
+  (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
+    if (!acc[resourceValues.subType]) {
+      acc[resourceValues.subType] = new Set();
+    }
+    acc[resourceValues.subType].add(resourceId);
+    return acc;
+  }, {}),
+);
+
 const filteredResourceTypesSelector = createSelector(
   [
-    resourceTypeFiltersSelector,
-    resourceIdsGroupedByTypeSelector,
     selectedCollectionResourceIdsSelector,
     timelineItemsInRangeSelector,
+    subTypeResourceIdsSelector,
   ],
   (
-    resourceTypeFilter,
-    resourceIdsGroupedByType,
     selectedCollectionResourceIdsObjects,
     timelineItemsInRange,
+    subTypeResourceIds,
   ) => {
     if (!selectedCollectionResourceIdsObjects) {
       return {};
     }
     const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
-    return Object.keys(resourceTypeFilter).reduce((acc, resourceType) => {
-      if (resourceTypeFilter[resourceType]) {
-        acc[resourceType] = {};
+    return timelineItemsInRange.reduce((acc, { id, type, subType }) => {
+      if (!acc[type]) {
+        acc[type] = {};
+      }
+      if (!acc[type].subTypes) {
+        acc[type].subTypes = {};
+      }
+      if (!acc[type].subTypes[subType]) {
+        acc[type].subTypes[subType] = {};
+        acc[type].subTypes[subType].resourceIds = Array.from(subTypeResourceIds[subType]);
+        acc[type].subTypes[subType].count = Array.from(subTypeResourceIds[subType]).length;
+        acc[type].subTypes[subType].dateFilteredResourceIds = [];
+        acc[type].subTypes[subType].dateFilteredCount = 0;
+        acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
+        acc[type].subTypes[subType].collectionDateFilteredCount = 0;
+      }
+      acc[type].subTypes[subType].dateFilteredResourceIds.push(id);
+      acc[type].subTypes[subType].dateFilteredCount = (
+        acc[type].subTypes[subType].dateFilteredResourceIds.length
+      );
 
-        Object.entries(resourceIdsGroupedByType[resourceType]).forEach(([subType, resourceIds]) => {
-          const subTypeViewModel = {};
-
-          const subTypeResourceIds = Array.from(resourceIds);
-          subTypeViewModel.resourceIds = subTypeResourceIds;
-          subTypeViewModel.count = subTypeResourceIds.length;
-
-          const dateFilteredResourceIds = timelineItemsInRange
-            .filter((timelineItem) => timelineItem.subType === subType)
-            .reverse()
-            .reduce((array, item) => {
-              array.push(item.id);
-              return array;
-            }, []);
-          subTypeViewModel.dateFilteredResourceIds = dateFilteredResourceIds;
-          subTypeViewModel.dateFilteredCount = dateFilteredResourceIds.length;
-
-          const collectionDateFilteredResourceIds = dateFilteredResourceIds
-            .filter((dateFilteredResourceId) => selectedCollectionResourceIds
-              .includes(dateFilteredResourceId));
-          subTypeViewModel.collectionDateFilteredResourceIds = collectionDateFilteredResourceIds;
-          subTypeViewModel.collectionDateFilteredCount = collectionDateFilteredResourceIds.length;
-
-          if (!acc[resourceType].subTypes) {
-            acc[resourceType].subTypes = {};
-          }
-          if (!acc[resourceType].subTypes[subType]) {
-            acc[resourceType].subTypes[subType] = subTypeViewModel;
-          }
-        });
+      if (selectedCollectionResourceIds.includes(id)) {
+        acc[type].subTypes[subType].collectionDateFilteredResourceIds.push(id);
+        acc[type].subTypes[subType].collectionDateFilteredCount = (
+          acc[type].subTypes[subType].collectionDateFilteredResourceIds.length
+        );
       }
 
       return acc;
