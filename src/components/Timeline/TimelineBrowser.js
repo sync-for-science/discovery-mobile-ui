@@ -324,10 +324,19 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             x="0"
             y="0"
             width={availableWidth}
-            height={BAR_HEIGHT + 14}
+            height={BAR_HEIGHT}
+            strokeDasharray="2 2"
             // stroke="#f008" // debug position
           />
         </G>
+        <Rect
+          x="0"
+          y="0"
+          width={screenWidth}
+          height={CHART_HEIGHT}
+          strokeDasharray="2 2"
+          // stroke="#00f8" // debug position
+        />
       </Svg>
     </View>
   );
