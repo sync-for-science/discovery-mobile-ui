@@ -337,7 +337,6 @@ TimelineBrowser.propTypes = {
   timelineIntervals: shape({
     startDate: instanceOf(Date),
     maxDate: instanceOf(Date),
-    intervalTotalCount: number.isRequired, // total count
     intervals: arrayOf(shape({})).isRequired, // that have records
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
