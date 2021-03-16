@@ -19,12 +19,11 @@ import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import {
   patientSelector,
   patientAgeAtResourcesSelector,
-  lastAddedResourceIdSelector,
   collectionResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
-import CountIcon from '../Icons/CountIcon'
+import CountIcon from '../Icons/CountIcon';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -139,12 +138,10 @@ ResourceCard.propTypes = {
   selectedCollectionId: string.isRequired,
   addResourceToCollection: func.isRequired,
   removeResourceFromCollection: func.isRequired,
-  lastAddedResourceId: string,
   collectionResourceIds: shape({}),
 };
 
 ResourceCard.defaultProps = {
-  lastAddedResourceId: null,
   collectionResourceIds: {},
 };
 
@@ -152,7 +149,6 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  lastAddedResourceId: lastAddedResourceIdSelector(state),
   collectionResourceIds: collectionResourceIdsSelector(state),
 });
 
