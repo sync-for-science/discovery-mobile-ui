@@ -1,64 +1,65 @@
-import { bool, func, number, shape, string } from 'prop-types'
-import React from 'react'
-import { StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+  bool, func, number, shape, string,
+} from 'prop-types';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import BaseText from '../Generic/BaseText'
+import BaseText from '../Generic/BaseText';
 
 const CountIcon = ({
   style,
-  shape, 
-  color, 
-  count, 
-  action1, 
-  action2, 
+  shape: iconShape,
+  color,
+  count,
+  action1,
+  action2,
   actionDep,
   marginRight,
   marginLeft,
   textColor,
   readOnly,
 }) => {
-
-  const iconStyle = count > 0 ? {backgroundColor: color} : {borderWidth: 2, borderColor: color}
-  const iconCount = count > 0 ? count : null
-  const iconAction = actionDep ? action2 : action1
-  const iconMarginRight = marginRight ? styles.marginRight : {}
-  const iconMarginLeft = marginLeft ? styles.marginLeft : {}
-  const textColorStyle = textColor ? {color: textColor} : {}
+  const iconStyle = count > 0 ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
+  const iconCount = count > 0 ? count : null;
+  const iconAction = actionDep ? action2 : action1;
+  const iconMarginRight = marginRight ? styles.marginRight : {};
+  const iconMarginLeft = marginLeft ? styles.marginLeft : {};
+  const textColorStyle = textColor ? { color: textColor } : {};
 
   if (readOnly) {
     return (
-      <View 
+      <View
         style={{
           ...styles.base,
-          ...iconMarginRight, 
+          ...iconMarginRight,
           ...iconMarginLeft,
-          ...styles[shape], 
+          ...styles[iconShape],
           ...iconStyle,
-          ...style
+          ...style,
         }}
         onPress={iconAction}
       >
-        <BaseText style={{...styles.text, ...textColorStyle}}>{iconCount}</BaseText>
+        <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
       </View>
-    )
+    );
   }
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       style={{
         ...styles.base,
-        ...iconMarginRight, 
+        ...iconMarginRight,
         ...iconMarginLeft,
-        ...styles[shape], 
+        ...styles[iconShape],
         ...iconStyle,
-        ...style
+        ...style,
       }}
       onPress={iconAction}
     >
-      <BaseText style={{...styles.text, ...textColorStyle}}>{iconCount}</BaseText>
+      <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 CountIcon.propTypes = {
   style: shape({}),
@@ -70,9 +71,9 @@ CountIcon.propTypes = {
   actionDep: bool,
   marginRight: bool,
   marginLeft: bool,
-  textColorStyle: string,
+  textColor: string,
   readOnly: bool,
-}
+};
 
 CountIcon.defaultProps = {
   style: {},
@@ -82,11 +83,11 @@ CountIcon.defaultProps = {
   actionDep: null,
   marginRight: false,
   marginLeft: false,
-  textColorStyle: null,
+  textColor: null,
   readOnly: false,
-}
+};
 
-export default CountIcon
+export default CountIcon;
 
 const styles = StyleSheet.create({
   text: {
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     height: 30,
     width: 30,
     justifyContent: 'center',
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   square: {
     borderRadius: 5,
@@ -109,5 +110,5 @@ const styles = StyleSheet.create({
   },
   marginLeft: {
     marginLeft: 10,
-  }
-})
+  },
+});
