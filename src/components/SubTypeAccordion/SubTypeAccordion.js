@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   headerText: {
-    marginLeft: 10,
+    marginLeft: 5,
     color: 'black',
   },
 });
