@@ -1,6 +1,6 @@
 import { bool, func, number, shape, string } from 'prop-types'
 import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import BaseText from '../Generic/BaseText'
 
@@ -14,6 +14,8 @@ const CountIcon = ({
   actionDep,
   marginRight,
   marginLeft,
+  textColor,
+  readOnly,
 }) => {
 
   const iconStyle = count > 0 ? {backgroundColor: color} : {borderWidth: 2, borderColor: color}
@@ -21,6 +23,25 @@ const CountIcon = ({
   const iconAction = actionDep ? action2 : action1
   const iconMarginRight = marginRight ? styles.marginRight : {}
   const iconMarginLeft = marginLeft ? styles.marginLeft : {}
+  const textColorStyle = textColor ? {color: textColor} : {}
+
+  if (readOnly) {
+    return (
+      <View 
+        style={{
+          ...styles.base,
+          ...iconMarginRight, 
+          ...iconMarginLeft,
+          ...styles[shape], 
+          ...iconStyle,
+          ...style
+        }}
+        onPress={iconAction}
+      >
+        <BaseText style={{...styles.text, ...textColorStyle}}>{iconCount}</BaseText>
+      </View>
+    )
+  }
 
   return (
     <TouchableOpacity 
@@ -34,7 +55,7 @@ const CountIcon = ({
       }}
       onPress={iconAction}
     >
-      <BaseText style={styles.text}>{iconCount}</BaseText>
+      <BaseText style={{...styles.text, ...textColorStyle}}>{iconCount}</BaseText>
     </TouchableOpacity>
   )
 }
@@ -49,6 +70,8 @@ CountIcon.propTypes = {
   actionDep: bool,
   marginRight: bool,
   marginLeft: bool,
+  textColorStyle: string,
+  readOnly: bool,
 }
 
 CountIcon.defaultProps = {
@@ -59,6 +82,8 @@ CountIcon.defaultProps = {
   actionDep: null,
   marginRight: false,
   marginLeft: false,
+  textColorStyle: null,
+  readOnly: false,
 }
 
 export default CountIcon

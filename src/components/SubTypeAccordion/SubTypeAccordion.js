@@ -25,15 +25,20 @@ const SubTypeAccordion = ({
   subType,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const renderHeader = (item, expanded) => {
+  const renderHeader = (item) => {
     return (
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
-          { expanded
-            ? <Ionicons name="caret-down" size={20} color={Colors.darkgrey} />
-            : <Ionicons name="caret-up" size={20} color={Colors.darkgrey} />}
+          <CountIcon 
+            shape="square" 
+            color={Colors.lightgrey}
+            count={dateFilteredCount}
+            marginRight
+            textColor="black"
+            readOnly
+          />
           <BaseText style={styles.headerText}>
-            {`${item.title} [${item.content.length}]`}
+            {item.title}
           </BaseText>
         </View>
         <View style={{flexDirection: 'row'}}>
