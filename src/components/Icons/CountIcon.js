@@ -19,8 +19,8 @@ const CountIcon = ({
   textColor,
   readOnly,
 }) => {
-  const iconStyle = count > 0 ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
   const iconCount = count > 0 ? count : null;
+  const iconStyle = actionDep ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
   const iconAction = actionDep ? action2 : action1;
   const iconMarginRight = marginRight ? styles.marginRight : {};
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
@@ -34,7 +34,7 @@ const CountIcon = ({
           ...iconMarginRight,
           ...iconMarginLeft,
           ...styles[iconShape],
-          ...iconStyle,
+          backgroundColor: color,
           ...style,
         }}
         onPress={iconAction}
