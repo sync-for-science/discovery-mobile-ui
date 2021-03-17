@@ -1,5 +1,5 @@
 import {
-  bool, func, number, shape, string,
+  bool, func, number, shape,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -14,7 +14,6 @@ const MarkedIcon = ({
   count,
   onClick,
   actionDep,
-  textColor,
 }) => {
   const iconCount = count > 0 ? count : null;
   const iconStyle = actionDep ? {
@@ -23,7 +22,6 @@ const MarkedIcon = ({
     borderWidth: 2,
     borderColor: Colors.primary,
   };
-  const textColorStyle = textColor ? { color: textColor } : {};
 
   return (
     <TouchableOpacity
@@ -37,7 +35,7 @@ const MarkedIcon = ({
       ]}
       onPress={onClick}
     >
-      <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
+      <BaseText style={{ ...styles.text }}>{iconCount}</BaseText>
     </TouchableOpacity>
   );
 };
@@ -47,14 +45,12 @@ MarkedIcon.propTypes = {
   count: number,
   onClick: func.isRequired,
   actionDep: bool,
-  textColor: string,
 };
 
 MarkedIcon.defaultProps = {
   style: {},
   count: null,
   actionDep: null,
-  textColor: null,
 };
 
 export default React.memo(MarkedIcon);
