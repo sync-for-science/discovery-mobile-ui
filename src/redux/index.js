@@ -9,6 +9,7 @@ import {
   dateRangeFilterReducer,
   collectionsReducer,
   selectedCollectionReducer,
+  markedResourcesReducer,
 } from './reducers';
 import epicMiddleware, { rootEpic } from './epics';
 
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   dateRangeFilter: dateRangeFilterReducer,
   collections: collectionsReducer,
   selectedCollection: selectedCollectionReducer,
+  markedResources: markedResourcesReducer,
 });
 
 const store = configureStore({

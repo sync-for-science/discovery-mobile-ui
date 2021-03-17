@@ -184,3 +184,15 @@ export const selectedCollectionReducer = (state = preloadSelectedCollection, act
       return state;
   }
 };
+
+const preloadedMarkedResources = {};
+
+export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
+  switch (action.type) {
+    case actionTypes.UPDATE_MARKED_RESOURCES: {
+      return state;
+    }
+    default:
+      return state;
+  }
+};
