@@ -113,7 +113,7 @@ const timelineItemsInRangeSelector = createSelector(
   },
 );
 
-const MAX_INTERVAL_COUNT = 100;
+const MAX_INTERVAL_COUNT = 50;
 
 export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
