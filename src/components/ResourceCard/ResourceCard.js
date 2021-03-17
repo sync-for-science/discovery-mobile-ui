@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View,
 } from 'react-native';
 import { string, shape, func } from 'prop-types';
 import { Button } from 'native-base';
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -20,11 +19,11 @@ import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import {
   patientSelector,
   patientAgeAtResourcesSelector,
-  lastAddedResourceIdSelector,
   collectionResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
+import CountIcon from '../Icons/CountIcon';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -75,7 +74,6 @@ const ResourceCard = ({
   selectedCollectionId,
   addResourceToCollection,
   removeResourceFromCollection,
-  lastAddedResourceId,
   collectionResourceIds,
 }) => {
   const resource = resources[resourceId];
@@ -87,12 +85,7 @@ const ResourceCard = ({
       <BaseText style={{ textAlign: 'center' }} variant="button">Add To Details Panel</BaseText>
     </Button>
   );
-  let selectedIconName = 'square-outline';
-  let selectedIconColor = Colors.lightgrey;
-  let handleOnPress = () => addResourceToCollection(selectedCollectionId, resourceId);
   if (collectionResourceIds[resourceId]) {
-    handleOnPress = () => removeResourceFromCollection(selectedCollectionId, resourceId);
-    selectedIconColor = Colors.lastSelected;
     displayButton = (
       <Button
         transparent
@@ -101,11 +94,6 @@ const ResourceCard = ({
         <BaseText style={styles.removeButton} variant="button">Remove From Details Panel</BaseText>
       </Button>
     );
-    selectedIconName = 'checkbox-outline';
-    if (lastAddedResourceId === resourceId) {
-      selectedIconName = 'checkbox';
-      selectedIconColor = Colors.lastSelected;
-    }
   }
 
   return (
@@ -114,9 +102,22 @@ const ResourceCard = ({
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
-          <TouchableOpacity style={styles.iconContainer} onPress={handleOnPress}>
-            <Ionicons name={selectedIconName} size={24} color={selectedIconColor} />
-          </TouchableOpacity>
+          <CountIcon
+            shape="circle"
+            color={Colors.primary}
+            action1={() => {}}
+            action2={() => {}}
+            actionDep={false}
+            marginRight
+            marginLeft
+          />
+          <CountIcon
+            shape="square"
+            color={Colors.lastSelected}
+            action1={() => addResourceToCollection(selectedCollectionId, resourceId)}
+            action2={() => removeResourceFromCollection(selectedCollectionId, resourceId)}
+            actionDep={collectionResourceIds[resourceId]}
+          />
         </View>
       </View>
       <View style={styles.body}>
@@ -137,12 +138,10 @@ ResourceCard.propTypes = {
   selectedCollectionId: string.isRequired,
   addResourceToCollection: func.isRequired,
   removeResourceFromCollection: func.isRequired,
-  lastAddedResourceId: string,
   collectionResourceIds: shape({}),
 };
 
 ResourceCard.defaultProps = {
-  lastAddedResourceId: null,
   collectionResourceIds: {},
 };
 
@@ -150,7 +149,6 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  lastAddedResourceId: lastAddedResourceIdSelector(state),
   collectionResourceIds: collectionResourceIdsSelector(state),
 });
 

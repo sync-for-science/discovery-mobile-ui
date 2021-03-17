@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, Text, TouchableOpacity, View,
+  StyleSheet, View,
 } from 'react-native';
 import { Accordion } from 'native-base';
-import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
 import {
@@ -12,6 +11,8 @@ import {
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
+import BaseText from '../Generic/BaseText';
+import CountIcon from '../Icons/CountIcon';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
@@ -23,48 +24,42 @@ const SubTypeAccordion = ({
   subType,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const renderHeader = (item, expanded) => {
-    let subTypeHeaderIcon = (
-      <TouchableOpacity
-        onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
-      >
-        <Ionicons name="square-outline" size={24} color="white" />
-      </TouchableOpacity>
-    );
-
-    if (collectionDateFilteredCount > 0) {
-      subTypeHeaderIcon = (
-        <TouchableOpacity
-          onPress={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
-        >
-          <Ionicons name="checkbox-outline" size={24} color="white" />
-        </TouchableOpacity>
-      );
-      if (collectionDateFilteredCount === dateFilteredCount) {
-        subTypeHeaderIcon = (
-          <TouchableOpacity
-            onPress={() => removeResourceFromCollectionAction(selectedCollectionId, item.content)}
-          >
-            <Ionicons name="checkbox" size={24} color="white" />
-          </TouchableOpacity>
-        );
-      }
-    }
-
-    return (
-      <View style={styles.header}>
-        <View style={styles.headerTextContainer}>
-          { expanded
-            ? <Ionicons name="caret-down" size={20} color="white" />
-            : <Ionicons name="caret-up" size={20} color="white" />}
-          <Text style={styles.headerText}>
-            {`${item.title} [${item.content.length}]`}
-          </Text>
-        </View>
-        {subTypeHeaderIcon}
+  const renderHeader = (item) => (
+    <View style={styles.header}>
+      <View style={styles.headerTextContainer}>
+        <CountIcon
+          shape="square"
+          color={Colors.lightgrey}
+          count={dateFilteredCount}
+          marginRight
+          textColor="black"
+          readOnly
+        />
+        <BaseText style={styles.headerText}>
+          {item.title}
+        </BaseText>
       </View>
-    );
-  };
+      <View style={{ flexDirection: 'row' }}>
+        <CountIcon
+          shape="circle"
+          color={Colors.primary}
+          count={0}
+          action1={() => {}}
+          action2={() => {}}
+          actionDep={false}
+          marginRight
+        />
+        <CountIcon
+          shape="square"
+          color={Colors.lastSelected}
+          count={collectionDateFilteredCount}
+          action1={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
+          action2={() => removeResourceFromCollectionAction(selectedCollectionId, item.content)}
+          actionDep={collectionDateFilteredCount > 0}
+        />
+      </View>
+    </View>
+  );
 
   const renderContent = (item) => item.content.map(
     (resourceId) => (
@@ -119,15 +114,19 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: Colors.primary,
+    backgroundColor: 'white',
+    borderTopColor: Colors.lightgrey,
+    borderTopWidth: 1,
+    borderBottomColor: Colors.lightgrey,
+    borderBottomWidth: 1,
   },
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '80%',
+    width: '70%',
   },
   headerText: {
-    marginLeft: 10,
-    color: 'white',
+    marginLeft: 5,
+    color: 'black',
   },
 });
