@@ -6,7 +6,7 @@ import {
   arrayOf, shape, string, number, instanceOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { format } from 'date-fns';
+import { format, formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
   Rect, Line, G, Text as SvgText, Polygon, // Mask
 } from 'react-native-svg';
@@ -20,6 +20,7 @@ const CHART_MARGIN = 12;
 const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
+const LABEL_FONT_SIZE = 10;
 
 const Variance = ({ x, y, zScore }) => {
   if (zScore < 1) {
@@ -30,7 +31,7 @@ const Variance = ({ x, y, zScore }) => {
       x={x}
       y={y}
       fill={(zScore >= 2) ? COLOR_2SD : COLOR_1SD}
-      points="-3 0, 0 -4, 3 0"
+      points="-3 0, 0 -5, 3 0"
     />
   );
 };
@@ -86,7 +87,7 @@ const TimelineBars = ({
       <Bar
         key={key}
         x={position * availableWidth}
-        width={2}
+        width={4}
         height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
         zScore={zScore}
       />
@@ -113,10 +114,10 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
     <SvgText
       fill={LABEL_COLOR}
       stroke="none"
-      fontSize="8"
+      fontSize={LABEL_FONT_SIZE}
       fontWeight="normal"
       x={0}
-      y={BAR_HEIGHT + 10}
+      y={BAR_HEIGHT + 12}
       textAnchor="start"
     >
       {startLabel}
@@ -124,10 +125,10 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
     <SvgText
       fill={LABEL_COLOR}
       stroke="none"
-      fontSize="8"
+      fontSize={LABEL_FONT_SIZE}
       fontWeight="normal"
       x={availableWidth}
-      y={BAR_HEIGHT + 10}
+      y={BAR_HEIGHT + 12}
       textAnchor="end"
     >
       {endLabel}
@@ -142,30 +143,38 @@ XAxis.propTypes = {
 };
 
 const LegendAndBound = ({
-  availableWidth, maxCount, maxCount1SD, maxCount2SD,
+  availableWidth, maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
 }) => {
   if (maxCount > maxCount1SD) {
-    const eventCountLabel = `${maxCount1SD}`;
-    const zscore2label = `more than ${maxCount2SD}`;
-    const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
+    const within1SDLineLabel = `${maxCount1SD}`;
+    const between1and2SDlabel = `between ${maxCount1SD} and ${maxCount2SD}`;
+    let above2SD = null;
+
+    if (recordCount2SDplus) {
+      const above2label = `above ${maxCount2SD}`;
+      above2SD = (
+        <>
+          <Variance
+            x={120}
+            y={-14}
+            zScore={2}
+          />
+          <SvgText
+            x={126}
+            y={-14}
+            fill={LABEL_COLOR}
+            stroke="none"
+            fontSize={LABEL_FONT_SIZE}
+            textAnchor="left"
+          >
+            {above2label}
+          </SvgText>
+        </>
+      );
+    }
 
     return (
       <>
-        <Variance
-          x={0}
-          y={-24}
-          zScore={2}
-        />
-        <SvgText
-          x={6}
-          y={-24}
-          fill={LABEL_COLOR}
-          stroke="none"
-          fontSize="8"
-          textAnchor="left"
-        >
-          {zscore2label}
-        </SvgText>
         <Variance
           x={0}
           y={-14}
@@ -176,10 +185,10 @@ const LegendAndBound = ({
           y={-14}
           fill={LABEL_COLOR}
           stroke="none"
-          fontSize="8"
+          fontSize={LABEL_FONT_SIZE}
           textAnchor="left"
         >
-          {zscore1label}
+          {between1and2SDlabel}
         </SvgText>
         <Line
           x1={0}
@@ -191,15 +200,16 @@ const LegendAndBound = ({
           strokeWidth="1"
           vectorEffect="non-scaling-stroke"
         />
+        {above2SD}
         <SvgText
           fill={LABEL_COLOR}
           stroke="none"
-          fontSize="8"
+          fontSize={LABEL_FONT_SIZE}
           x={-4}
           y={0}
           textAnchor="end"
         >
-          {eventCountLabel}
+          {within1SDLineLabel}
         </SvgText>
       </>
     );
@@ -212,57 +222,46 @@ LegendAndBound.propTypes = {
   maxCount: number.isRequired,
   maxCount1SD: number.isRequired,
   maxCount2SD: number.isRequired,
+  recordCount2SDplus: number.isRequired,
 };
 
-const RecordAndIntervalCount = ({
-  availableWidth,
-  recordCount,
-  intervalCount,
-  intervalsWithRecordsCount,
-}) => {
-  const recordCountLabel = recordCount ? `${recordCount} total records` : '';
-  // TODO: use i18n:
-  const haveHas = (intervalsWithRecordsCount === 1) ? 'has' : 'have';
-  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} ${haveHas} records` : '';
+const formatDays = (numDays) => {
+  const d = new Date();
+  return formatDistanceStrict(d, addDays(d, numDays), { unit: 'day' });
+};
 
-  return (
-    <>
+const Metrics = ({
+  availableWidth,
+  intervalLength,
+}) => {
+  if (intervalLength) {
+    const intervalLengthLabel = formatDays(Math.round(intervalLength));
+    return (
       <SvgText
-        x={availableWidth / 2}
-        y={-24}
-        fill={LABEL_COLOR}
-        stroke="none"
-        fontSize="8"
-        textAnchor="center"
-      >
-        {recordCountLabel}
-      </SvgText>
-      <SvgText
-        x={availableWidth / 2}
+        x={availableWidth - 100}
         y={-14}
         fill={LABEL_COLOR}
         stroke="none"
-        fontSize="8"
-        textAnchor="center"
+        fontSize={LABEL_FONT_SIZE}
+        textAnchor="right"
       >
-        {intervalCountLabel}
+        {intervalLengthLabel}
       </SvgText>
-    </>
-  );
+    );
+  }
+  return null;
 };
 
-RecordAndIntervalCount.propTypes = {
+Metrics.propTypes = {
   availableWidth: number.isRequired,
-  intervalCount: number.isRequired,
-  intervalsWithRecordsCount: number.isRequired,
-  recordCount: number.isRequired,
+  intervalLength: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
     startDate, endDate,
-    maxCount1SD, maxCount2SD, maxCount,
-    intervals, intervalCount, recordCount,
+    maxCount, maxCount1SD, maxCount2SD, recordCount, recordCount2SDplus,
+    intervals, intervalLength,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
@@ -313,21 +312,29 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount={maxCount}
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
+            recordCount2SDplus={recordCount2SDplus}
           />
-          <RecordAndIntervalCount
+          <Metrics
             availableWidth={availableWidth}
-            intervalCount={intervalCount}
-            intervalsWithRecordsCount={intervals.length}
-            recordCount={recordCount}
+            intervalLength={intervalLength}
           />
           <Rect
             x="0"
             y="0"
             width={availableWidth}
-            height={BAR_HEIGHT + 14}
+            height={BAR_HEIGHT}
+            strokeDasharray="2 2"
             // stroke="#f008" // debug position
           />
         </G>
+        <Rect
+          x="0"
+          y="0"
+          width={screenWidth}
+          height={CHART_HEIGHT}
+          strokeDasharray="2 2"
+          // stroke="#00f8" // debug position
+        />
       </Svg>
     </View>
   );
@@ -337,12 +344,14 @@ TimelineBrowser.propTypes = {
   timelineIntervals: shape({
     startDate: instanceOf(Date),
     maxDate: instanceOf(Date),
-    intervalTotalCount: number.isRequired, // total count
     intervals: arrayOf(shape({})).isRequired, // that have records
+    intervalLength: number.isRequired,
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
     maxCount2SD: number.isRequired,
     recordCount: number.isRequired,
+    recordCount1SD: number.isRequired,
+    recordCount2SD: number.isRequired,
   }).isRequired,
 };
 
