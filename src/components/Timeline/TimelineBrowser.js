@@ -30,7 +30,7 @@ const Variance = ({ x, y, zScore }) => {
       x={x}
       y={y}
       fill={(zScore >= 2) ? COLOR_2SD : COLOR_1SD}
-      points="-3 0, 0 -4, 3 0"
+      points="-3 0, 0 -5, 3 0"
     />
   );
 };
