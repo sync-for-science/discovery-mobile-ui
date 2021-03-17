@@ -4,30 +4,40 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import { shape } from 'prop-types';
+import { connect } from 'react-redux'
 
 import Colors from '../constants/Colors';
 
-const CollectionsDetailsScreen = ({ navigation }) => (
-  <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View style={styles.screen}>
-      <Text>CollectionsDetails Screen</Text>
-      <View>
-        <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionsIndex')}>
-          <Text style={{ color: 'white' }}>
-            Back to Collection Index
-          </Text>
-        </Button>
+const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
+  const {params: {collectionId}} = route
+  const collection = collections[collectionId]
+
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      <View style={styles.screen}>
+        <Text>CollectionsDetails Screen</Text>
+        <View>
+          <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionsIndex')}>
+            <Text style={{ color: 'white' }}>
+              Back to Collection Index
+            </Text>
+          </Button>
+        </View>
       </View>
-    </View>
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  )
+};
 
 CollectionsDetailsScreen.propTypes = {
   navigation: shape({}).isRequired,
 };
 
-export default CollectionsDetailsScreen;
+const mapStateToProps = (state) => ({
+  collections: state.collections
+})
+
+export default connect(mapStateToProps, null)(CollectionsDetailsScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
