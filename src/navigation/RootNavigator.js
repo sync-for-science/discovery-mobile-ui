@@ -1,20 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import { shape } from 'prop-types';
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import CollectionsIndexScreen from '../screens/CollectionsIndexScreen'
-import CollectionDetailsScreen from '../screens/CollectionDetailsScreen'
+import CollectionsIndexScreen from '../screens/CollectionsIndexScreen';
+import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
 import Colors from '../constants/Colors';
 
 const HomeTab = createBottomTabNavigator();
 const CollectionsStack = createStackNavigator();
-const AuthStack = createStackNavigator()
+const AuthStack = createStackNavigator();
 
 function selectIconName(name, focused) {
   switch (name) {
@@ -54,7 +55,7 @@ const CollectionStackScreen = () => (
       component={CollectionDetailsScreen}
     />
   </CollectionsStack.Navigator>
-)
+);
 
 const HomeTabScreen = () => (
   <HomeTab.Navigator
@@ -83,18 +84,24 @@ const AuthStackScreen = () => (
       }}
     />
   </AuthStack.Navigator>
-)
+);
 
-const RootNavigator = ({patientData}) => {
-  return (
-    <NavigationContainer>
-      {patientData ? <HomeTabScreen /> : <AuthStackScreen />}
-    </NavigationContainer>
-  );
-}
+const RootNavigator = ({ patientData }) => (
+  <NavigationContainer>
+    {patientData ? <HomeTabScreen /> : <AuthStackScreen />}
+  </NavigationContainer>
+);
+
+RootNavigator.propTypes = {
+  patientData: shape({}),
+};
+
+RootNavigator.defaultProps = {
+  patientData: null,
+};
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData
-})
+  patientData: state.patient.patientData,
+});
 
-export default connect(mapStateToProps, null)(RootNavigator)
+export default connect(mapStateToProps, null)(RootNavigator);

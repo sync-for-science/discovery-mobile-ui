@@ -2,19 +2,20 @@ import React from 'react';
 import {
   StyleSheet, Text, View, SafeAreaView, StatusBar,
 } from 'react-native';
-import { Button } from 'native-base'
+import { Button } from 'native-base';
+import { shape } from 'prop-types';
 
 import Colors from '../constants/Colors';
 
-const CollectionsIndexScreen = ({navigation}) => (
+const CollectionsIndexScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
       <Text>Collections Index Screen</Text>
-      
+
       <View>
-        <Button style={{paddingHorizontal: 10, marginVertical: 20}} onPress={() => navigation.navigate('CollectionDetails')}>
-          <Text style={{color: 'white'}}>
+        <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionDetails')}>
+          <Text style={{ color: 'white' }}>
             Navigate to Collection Details
           </Text>
         </Button>
@@ -22,6 +23,10 @@ const CollectionsIndexScreen = ({navigation}) => (
     </View>
   </SafeAreaView>
 );
+
+CollectionsIndexScreen.propTypes = {
+  navigation: shape({}).isRequired,
+};
 
 export default CollectionsIndexScreen;
 
