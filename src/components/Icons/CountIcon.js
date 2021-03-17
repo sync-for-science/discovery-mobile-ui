@@ -26,6 +26,9 @@ const CountIcon = ({
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
 
+  // console.info('actionDep: ', actionDep);
+  // console.info('iconAction: ', iconAction);
+
   if (readOnly) {
     return (
       <View
@@ -66,8 +69,8 @@ CountIcon.propTypes = {
   shape: string.isRequired,
   color: string.isRequired,
   count: number,
-  action1: func,
-  action2: func,
+  action1: func.isRequired,
+  action2: func.isRequired,
   actionDep: bool,
   marginRight: bool,
   marginLeft: bool,
@@ -78,8 +81,6 @@ CountIcon.propTypes = {
 CountIcon.defaultProps = {
   style: {},
   count: null,
-  action1: () => {},
-  action2: () => {},
   actionDep: null,
   marginRight: false,
   marginLeft: false,

@@ -20,10 +20,12 @@ import {
   patientSelector,
   patientAgeAtResourcesSelector,
   collectionResourceIdsSelector,
+  markedResourcesSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import CountIcon from '../Icons/CountIcon';
+import { actionTypes } from '../../redux/epics';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -75,6 +77,8 @@ const ResourceCard = ({
   addResourceToCollection,
   removeResourceFromCollection,
   collectionResourceIds,
+  updateMarkedResources,
+  markedResources,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
@@ -96,6 +100,12 @@ const ResourceCard = ({
     );
   }
 
+  const handleMarkedClick = () => {
+    updateMarkedResources({
+      [resourceId]: !markedResources.marked[resourceId],
+    });
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -105,9 +115,9 @@ const ResourceCard = ({
           <CountIcon
             shape="circle"
             color={Colors.primary}
-            action1={() => {}}
-            action2={() => {}}
-            actionDep={false}
+            action1={handleMarkedClick}
+            action2={handleMarkedClick}
+            actionDep={!!markedResources.marked[resourceId]}
             marginRight
             marginLeft
           />
@@ -139,6 +149,11 @@ ResourceCard.propTypes = {
   addResourceToCollection: func.isRequired,
   removeResourceFromCollection: func.isRequired,
   collectionResourceIds: shape({}),
+  updateMarkedResources: func.isRequired,
+  markedResources: shape({
+    marked: shape({}).isRequired,
+    lastMarked: shape({}).isRequired,
+  }).isRequired,
 };
 
 ResourceCard.defaultProps = {
@@ -150,9 +165,17 @@ const mapStateToProps = (state) => ({
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
   collectionResourceIds: collectionResourceIdsSelector(state),
+  markedResources: markedResourcesSelector(state),
 });
 
-export default connect(mapStateToProps, null)(ResourceCard);
+const mapDispatchToProps = {
+  updateMarkedResources: (resourceIdsMap) => ({
+    type: actionTypes.UPDATE_MARKED_RESOURCES,
+    payload: resourceIdsMap,
+  }),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(ResourceCard));
 
 const styles = StyleSheet.create({
   root: {
