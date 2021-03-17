@@ -6,7 +6,7 @@ import {
   arrayOf, shape, string, number, instanceOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { format } from 'date-fns';
+import { format, formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
   Rect, Line, G, Text as SvgText, Polygon, // Mask
 } from 'react-native-svg';
@@ -215,13 +215,17 @@ LegendAndBound.propTypes = {
   maxCount2SD: number.isRequired,
 };
 
+const formatDays = (numDays) => {
+  const d = new Date();
+  return formatDistanceStrict(d, addDays(d, numDays), { unit: 'day' });
+};
+
 const Metrics = ({
   availableWidth,
   intervalLength,
 }) => {
   if (intervalLength) {
-    const dayDays = (intervalLength === 1) ? 'day' : 'days';
-    const intervalLengthLabel = `${Math.round(intervalLength)} ${dayDays}`;
+    const intervalLengthLabel = formatDays(Math.round(intervalLength));
     return (
       <SvgText
         x={availableWidth - 100}
