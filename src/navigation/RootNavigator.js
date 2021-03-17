@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
+import CollectionsScreen from '../screens/CollectionsScreen'
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
@@ -18,8 +19,8 @@ function selectIconName(name, focused) {
       return focused ? 'md-person-sharp' : 'md-person-outline';
     case 'Catalog':
       return focused ? 'file-tray-full' : 'file-tray-outline';
-    // case 'Collections':
-    //   return focused ? 'albums' : 'albums-outline';
+    case 'Collections':
+      return focused ? 'albums' : 'albums-outline';
     default:
       return '';
   }
@@ -49,6 +50,7 @@ const PostAuthScreens = () => (
   >
     <Tab.Screen name="Summary" component={SummaryScreen} />
     <Tab.Screen name="Catalog" component={CatalogScreen} />
+    <Tab.Screen name="Collections" component={CollectionsScreen} />
   </Tab.Navigator>
 );
 
