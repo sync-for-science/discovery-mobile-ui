@@ -6,13 +6,18 @@ import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
 
 import {
-  arrayOf, func, number, string,
+  arrayOf, func, number, shape, string,
 } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
+import {
+  actionTypes,
+  addResourceToCollection,
+  removeResourceFromCollection,
+} from '../../redux/epics';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
+import { markedResourcesSelector } from '../../redux/selectors';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
@@ -22,8 +27,23 @@ const SubTypeAccordion = ({
   resourceIds,
   selectedCollectionId,
   subType,
+  updateMarkedResources,
+  markedResources,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
+
+  const markedResourceCount = resourceIds.reduce((acc, id) => {
+    const isMarked = markedResources.marked[id];
+    return isMarked ? acc + 1 : acc;
+  }, 0);
+
+  const handleMarkedClick = () => {
+    updateMarkedResources(resourceIds.reduce((acc, id) => ({
+      ...acc,
+      [id]: !markedResourceCount,
+    }), {}));
+  };
+
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
@@ -43,10 +63,10 @@ const SubTypeAccordion = ({
         <CountIcon
           shape="circle"
           color={Colors.primary}
-          count={0}
-          action1={() => {}}
-          action2={() => {}}
-          actionDep={false}
+          count={markedResourceCount}
+          action1={handleMarkedClick}
+          action2={handleMarkedClick}
+          actionDep={markedResourceCount > 0}
           marginRight
         />
         <CountIcon
@@ -95,18 +115,28 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,
+  updateMarkedResources: func.isRequired,
+  markedResources: shape({
+    marked: shape({}).isRequired,
+    lastMarked: shape({}).isRequired,
+  }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
+  markedResources: markedResourcesSelector(state),
 });
 
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
   removeResourceFromCollectionAction: removeResourceFromCollection,
+  updateMarkedResources: (resourceIdsMap) => ({
+    type: actionTypes.UPDATE_MARKED_RESOURCES,
+    payload: resourceIdsMap,
+  }),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(SubTypeAccordion));
 
 const styles = StyleSheet.create({
   header: {

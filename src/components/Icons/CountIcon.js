@@ -26,9 +26,6 @@ const CountIcon = ({
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
 
-  // console.info('actionDep: ', actionDep);
-  // console.info('iconAction: ', iconAction);
-
   if (readOnly) {
     return (
       <View
