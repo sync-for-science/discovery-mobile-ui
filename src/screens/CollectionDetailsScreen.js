@@ -7,6 +7,7 @@ import { shape } from 'prop-types';
 import { connect } from 'react-redux'
 
 import Colors from '../constants/Colors';
+import BaseText from '../components/Generic/BaseText'
 
 const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
   const {params: {collectionId}} = route
@@ -16,7 +17,10 @@ const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <View style={styles.screen}>
-        <Text>CollectionsDetails Screen</Text>
+        <BaseText variant="title">Collection Details</BaseText>
+        <View style={styles.collectionContainer}>
+          <Text>{JSON.stringify(collection, null, 2)}</Text>
+        </View>
         <View>
           <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionsIndex')}>
             <Text style={{ color: 'white' }}>
@@ -45,7 +49,10 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
   },
+  collectionContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+  }
 });
