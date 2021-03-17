@@ -146,19 +146,19 @@ const LegendAndBound = ({
 }) => {
   if (maxCount > maxCount1SD) {
     const eventCountLabel = `${maxCount1SD}`;
-    const zscore2label = `more than ${maxCount2SD}`;
+    const zscore2label = `above ${maxCount2SD}`;
     const zscore1label = `between ${maxCount1SD} and ${maxCount2SD}`;
 
     return (
       <>
         <Variance
-          x={0}
-          y={-24}
+          x={120}
+          y={-14}
           zScore={2}
         />
         <SvgText
-          x={6}
-          y={-24}
+          x={126}
+          y={-14}
           fill={LABEL_COLOR}
           stroke="none"
           fontSize="8"
