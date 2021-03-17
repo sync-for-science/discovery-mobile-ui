@@ -114,8 +114,6 @@ const ResourceCard = ({
         <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
           <MarkedIcon
-            shape="circle"
-            color={Colors.primary}
             onClick={handleMarkedClick}
             actionDep={!!markedResources.marked[resourceId]}
             marginRight

@@ -5,11 +5,12 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import BaseText from '../Generic/BaseText';
+import Colors from '../../constants/Colors';
+
+const ICON_SHAPE = 'circle';
 
 const MarkedIcon = ({
   style,
-  shape: iconShape,
-  color,
   count,
   onClick,
   actionDep,
@@ -18,21 +19,26 @@ const MarkedIcon = ({
   textColor,
 }) => {
   const iconCount = count > 0 ? count : null;
-  const iconStyle = actionDep ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
+  const iconStyle = actionDep ? {
+    backgroundColor: Colors.primary,
+  } : {
+    borderWidth: 2,
+    borderColor: Colors.primary,
+  };
   const iconMarginRight = marginRight ? styles.marginRight : {};
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
 
   return (
     <TouchableOpacity
-      style={{
-        ...styles.base,
-        ...iconMarginRight,
-        ...iconMarginLeft,
-        ...styles[iconShape],
-        ...iconStyle,
-        ...style,
-      }}
+      style={[
+        styles.base,
+        iconMarginRight,
+        iconMarginLeft,
+        styles[ICON_SHAPE],
+        iconStyle,
+        style,
+      ]}
       onPress={onClick}
     >
       <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
@@ -42,8 +48,6 @@ const MarkedIcon = ({
 
 MarkedIcon.propTypes = {
   style: shape({}),
-  shape: string.isRequired,
-  color: string.isRequired,
   count: number,
   onClick: func.isRequired,
   actionDep: bool,

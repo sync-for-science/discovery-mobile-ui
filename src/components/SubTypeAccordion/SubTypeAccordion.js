@@ -62,8 +62,6 @@ const SubTypeAccordion = ({
       </View>
       <View style={{ flexDirection: 'row' }}>
         <MarkedIcon
-          shape="circle"
-          color={Colors.primary}
           count={markedResourceCount}
           onClick={handleMarkedClick}
           actionDep={markedResourceCount > 0}
