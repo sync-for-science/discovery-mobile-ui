@@ -11,8 +11,7 @@ const MarkedIcon = ({
   shape: iconShape,
   color,
   count,
-  action1,
-  action2,
+  onClick,
   actionDep,
   marginRight,
   marginLeft,
@@ -21,7 +20,6 @@ const MarkedIcon = ({
 }) => {
   const iconCount = count > 0 ? count : null;
   const iconStyle = actionDep ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
-  const iconAction = actionDep ? action2 : action1;
   const iconMarginRight = marginRight ? styles.marginRight : {};
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
@@ -37,7 +35,7 @@ const MarkedIcon = ({
           backgroundColor: color,
           ...style,
         }}
-        onPress={iconAction}
+        onPress={onClick}
       >
         <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
       </View>
@@ -54,7 +52,7 @@ const MarkedIcon = ({
         ...iconStyle,
         ...style,
       }}
-      onPress={iconAction}
+      onPress={onClick}
     >
       <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
     </TouchableOpacity>
@@ -66,8 +64,7 @@ MarkedIcon.propTypes = {
   shape: string.isRequired,
   color: string.isRequired,
   count: number,
-  action1: func,
-  action2: func,
+  onClick: func.isRequired,
   actionDep: bool,
   marginRight: bool,
   marginLeft: bool,
@@ -78,8 +75,6 @@ MarkedIcon.propTypes = {
 MarkedIcon.defaultProps = {
   style: {},
   count: null,
-  action1: () => {},
-  action2: () => {},
   actionDep: null,
   marginRight: false,
   marginLeft: false,

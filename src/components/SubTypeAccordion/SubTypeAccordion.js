@@ -65,8 +65,7 @@ const SubTypeAccordion = ({
           shape="circle"
           color={Colors.primary}
           count={markedResourceCount}
-          action1={handleMarkedClick}
-          action2={handleMarkedClick}
+          onClick={handleMarkedClick}
           actionDep={markedResourceCount > 0}
           marginRight
         />

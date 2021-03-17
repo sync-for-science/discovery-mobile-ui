@@ -116,8 +116,7 @@ const ResourceCard = ({
           <MarkedIcon
             shape="circle"
             color={Colors.primary}
-            action1={handleMarkedClick}
-            action2={handleMarkedClick}
+            onClick={handleMarkedClick}
             actionDep={!!markedResources.marked[resourceId]}
             marginRight
             marginLeft
