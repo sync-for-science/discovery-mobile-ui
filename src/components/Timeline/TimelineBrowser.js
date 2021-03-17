@@ -214,55 +214,39 @@ LegendAndBound.propTypes = {
   maxCount2SD: number.isRequired,
 };
 
-const RecordAndIntervalCount = ({
+const Metrics = ({
   availableWidth,
-  recordCount,
-  intervalCount,
-  intervalsWithRecordsCount,
+  intervalLength,
 }) => {
-  const recordCountLabel = recordCount ? `${recordCount} total records` : '';
-  // TODO: use i18n:
-  const haveHas = (intervalsWithRecordsCount === 1) ? 'has' : 'have';
-  const intervalCountLabel = intervalCount ? `${intervalCount} intervals, ${intervalsWithRecordsCount} ${haveHas} records` : '';
-
-  return (
-    <>
+  if (intervalLength) {
+    const dayDays = (intervalLength === 1) ? 'day' : 'days';
+    const intervalLengthLabel = `${Math.round(intervalLength)} ${dayDays}`;
+    return (
       <SvgText
-        x={availableWidth / 2}
-        y={-24}
-        fill={LABEL_COLOR}
-        stroke="none"
-        fontSize="8"
-        textAnchor="center"
-      >
-        {recordCountLabel}
-      </SvgText>
-      <SvgText
-        x={availableWidth / 2}
+        x={availableWidth - 100}
         y={-14}
         fill={LABEL_COLOR}
         stroke="none"
         fontSize="8"
-        textAnchor="center"
+        textAnchor="right"
       >
-        {intervalCountLabel}
+        {intervalLengthLabel}
       </SvgText>
-    </>
-  );
+    );
+  }
+  return null;
 };
 
-RecordAndIntervalCount.propTypes = {
+Metrics.propTypes = {
   availableWidth: number.isRequired,
-  intervalCount: number.isRequired,
-  intervalsWithRecordsCount: number.isRequired,
-  recordCount: number.isRequired,
+  intervalLength: number.isRequired,
 };
 
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
     startDate, endDate,
     maxCount1SD, maxCount2SD, maxCount,
-    intervals, intervalCount, recordCount,
+    intervals, intervalLength, recordCount,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
@@ -314,11 +298,9 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
           />
-          <RecordAndIntervalCount
+          <Metrics
             availableWidth={availableWidth}
-            intervalCount={intervalCount}
-            intervalsWithRecordsCount={intervals.length}
-            recordCount={recordCount}
+            intervalLength={intervalLength}
           />
           <Rect
             x="0"
@@ -347,6 +329,7 @@ TimelineBrowser.propTypes = {
     startDate: instanceOf(Date),
     maxDate: instanceOf(Date),
     intervals: arrayOf(shape({})).isRequired, // that have records
+    intervalLength: number.isRequired,
     maxCount: number.isRequired,
     maxCount1SD: number.isRequired,
     maxCount2SD: number.isRequired,

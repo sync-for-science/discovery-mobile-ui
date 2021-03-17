@@ -119,6 +119,7 @@ export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector],
   (timelineItemsInRange, timelineRange) => {
     let intervals = [];
+    let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
     let maxCount2SD = 0; // up to mean + 2 SD
     let maxCount = 0; // beyond mean + 2 SD
@@ -147,6 +148,8 @@ export const timelineIntervalsSelector = createSelector(
         }
       });
       intervals = intervalMap;
+
+      intervalLength = numDays / intervalCount;
     }
 
     const intervalsWithItems = intervals.filter(({ items }) => items.length); // has items
@@ -179,6 +182,7 @@ export const timelineIntervalsSelector = createSelector(
       endDate: maxDate,
       intervalCount: intervals.length,
       intervals: intervals.filter(({ items }) => items.length),
+      intervalLength,
       maxCount1SD,
       maxCount2SD,
       maxCount,
