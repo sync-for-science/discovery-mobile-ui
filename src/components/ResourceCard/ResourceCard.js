@@ -116,8 +116,6 @@ const ResourceCard = ({
           <MarkedIcon
             onClick={handleMarkedClick}
             actionDep={!!markedResources.marked[resourceId]}
-            marginRight
-            marginLeft
           />
           <CountIcon
             shape="square"

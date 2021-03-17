@@ -14,8 +14,6 @@ const MarkedIcon = ({
   count,
   onClick,
   actionDep,
-  marginRight,
-  marginLeft,
   textColor,
 }) => {
   const iconCount = count > 0 ? count : null;
@@ -25,16 +23,14 @@ const MarkedIcon = ({
     borderWidth: 2,
     borderColor: Colors.primary,
   };
-  const iconMarginRight = marginRight ? styles.marginRight : {};
-  const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
 
   return (
     <TouchableOpacity
       style={[
         styles.base,
-        iconMarginRight,
-        iconMarginLeft,
+        styles.marginLeft,
+        styles.marginRight,
         styles[ICON_SHAPE],
         iconStyle,
         style,
@@ -51,8 +47,6 @@ MarkedIcon.propTypes = {
   count: number,
   onClick: func.isRequired,
   actionDep: bool,
-  marginRight: bool,
-  marginLeft: bool,
   textColor: string,
 };
 
@@ -60,8 +54,6 @@ MarkedIcon.defaultProps = {
   style: {},
   count: null,
   actionDep: null,
-  marginRight: false,
-  marginLeft: false,
   textColor: null,
 };
 
