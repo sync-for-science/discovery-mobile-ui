@@ -185,12 +185,32 @@ export const selectedCollectionReducer = (state = preloadSelectedCollection, act
   }
 };
 
-const preloadedMarkedResources = {};
+const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
+  // prune items whose values are null, undefined, or empty string:
+  if (v) {
+    acc[k] = v;
+  }
+  return acc;
+}, {}));
+
+const preloadedMarkedResources = {
+  // dictionaries of resource ids with Boolean values:
+  marked: {},
+  lastMarked: {},
+};
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      return state;
+      const previousMarked = state.marked;
+
+      return {
+        marked: pruneEmpty({
+          ...previousMarked,
+          ...action.payload,
+        }),
+        lastMarked: pruneEmpty(action.payload),
+      };
     }
     default:
       return state;
