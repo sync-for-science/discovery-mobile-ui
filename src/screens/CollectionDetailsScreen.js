@@ -4,14 +4,14 @@ import {
 } from 'react-native';
 import { Button } from 'native-base';
 import { shape } from 'prop-types';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 import Colors from '../constants/Colors';
-import BaseText from '../components/Generic/BaseText'
+import BaseText from '../components/Generic/BaseText';
 
 const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
-  const {params: {collectionId}} = route
-  const collection = collections[collectionId]
+  const { params: { collectionId } } = route;
+  const collection = collections[collectionId];
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -30,16 +30,18 @@ const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
         </View>
       </View>
     </SafeAreaView>
-  )
+  );
 };
 
 CollectionsDetailsScreen.propTypes = {
   navigation: shape({}).isRequired,
+  collections: shape({}).isRequired,
+  route: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  collections: state.collections
-})
+  collections: state.collections,
+});
 
 export default connect(mapStateToProps, null)(CollectionsDetailsScreen);
 
@@ -54,5 +56,5 @@ const styles = StyleSheet.create({
   collectionContainer: {
     backgroundColor: 'white',
     padding: 20,
-  }
+  },
 });
