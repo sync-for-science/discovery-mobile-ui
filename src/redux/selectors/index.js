@@ -123,6 +123,9 @@ export const timelineIntervalsSelector = createSelector(
     let maxCount1SD = 0; // up to mean + 1 SD
     let maxCount2SD = 0; // up to mean + 2 SD
     let maxCount = 0; // beyond mean + 2 SD
+    let recordCount1SD = 0;
+    let recordCount2SD = 0;
+    let recordCount2SDplus = 0;
 
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
@@ -171,8 +174,12 @@ export const timelineIntervalsSelector = createSelector(
         // ^ mutates intervalMap
         if (interval.zScore <= 1 && cardinality > maxCount1SD) {
           maxCount1SD = cardinality;
+          recordCount1SD += cardinality;
         } else if (interval.zScore <= 2 && cardinality > maxCount2SD) {
           maxCount2SD = cardinality;
+          recordCount2SD += cardinality;
+        } else if (interval.zScore > 2) {
+          recordCount2SDplus += cardinality;
         }
       });
     }
@@ -183,10 +190,13 @@ export const timelineIntervalsSelector = createSelector(
       intervalCount: intervals.length,
       intervals: intervals.filter(({ items }) => items.length),
       intervalLength,
+      maxCount,
       maxCount1SD,
       maxCount2SD,
-      maxCount,
       recordCount: timelineItemsInRange.length,
+      recordCount1SD,
+      recordCount2SD,
+      recordCount2SDplus,
     };
   },
 );
