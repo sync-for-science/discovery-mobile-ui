@@ -17,6 +17,7 @@ import {
 } from '../../redux/epics';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
+import MarkedIcon from '../Icons/MarkedIcon';
 import { markedResourcesSelector } from '../../redux/selectors';
 
 const SubTypeAccordion = ({
@@ -60,7 +61,7 @@ const SubTypeAccordion = ({
         </BaseText>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <CountIcon
+        <MarkedIcon
           shape="circle"
           color={Colors.primary}
           count={markedResourceCount}

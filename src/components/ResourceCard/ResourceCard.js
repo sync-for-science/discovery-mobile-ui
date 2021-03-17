@@ -25,6 +25,7 @@ import {
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import CountIcon from '../Icons/CountIcon';
+import MarkedIcon from '../Icons/MarkedIcon';
 import { actionTypes } from '../../redux/epics';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
@@ -112,7 +113,7 @@ const ResourceCard = ({
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
-          <CountIcon
+          <MarkedIcon
             shape="circle"
             color={Colors.primary}
             action1={handleMarkedClick}
