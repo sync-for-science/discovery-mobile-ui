@@ -20,6 +20,7 @@ const CHART_MARGIN = 12;
 const CHART_HEIGHT = 124;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
+const LABEL_FONT_SIZE = 10;
 
 const Variance = ({ x, y, zScore }) => {
   if (zScore < 1) {
@@ -113,10 +114,10 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
     <SvgText
       fill={LABEL_COLOR}
       stroke="none"
-      fontSize="8"
+      fontSize={LABEL_FONT_SIZE}
       fontWeight="normal"
       x={0}
-      y={BAR_HEIGHT + 10}
+      y={BAR_HEIGHT + 12}
       textAnchor="start"
     >
       {startLabel}
@@ -124,10 +125,10 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
     <SvgText
       fill={LABEL_COLOR}
       stroke="none"
-      fontSize="8"
+      fontSize={LABEL_FONT_SIZE}
       fontWeight="normal"
       x={availableWidth}
-      y={BAR_HEIGHT + 10}
+      y={BAR_HEIGHT + 12}
       textAnchor="end"
     >
       {endLabel}
@@ -161,7 +162,7 @@ const LegendAndBound = ({
           y={-14}
           fill={LABEL_COLOR}
           stroke="none"
-          fontSize="8"
+          fontSize={LABEL_FONT_SIZE}
           textAnchor="left"
         >
           {zscore2label}
@@ -176,7 +177,7 @@ const LegendAndBound = ({
           y={-14}
           fill={LABEL_COLOR}
           stroke="none"
-          fontSize="8"
+          fontSize={LABEL_FONT_SIZE}
           textAnchor="left"
         >
           {zscore1label}
@@ -194,7 +195,7 @@ const LegendAndBound = ({
         <SvgText
           fill={LABEL_COLOR}
           stroke="none"
-          fontSize="8"
+          fontSize={LABEL_FONT_SIZE}
           x={-4}
           y={0}
           textAnchor="end"
@@ -227,7 +228,7 @@ const Metrics = ({
         y={-14}
         fill={LABEL_COLOR}
         stroke="none"
-        fontSize="8"
+        fontSize={LABEL_FONT_SIZE}
         textAnchor="right"
       >
         {intervalLengthLabel}
