@@ -2,7 +2,7 @@ import {
   bool, func, number, shape, string,
 } from 'prop-types';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import BaseText from '../Generic/BaseText';
 
@@ -16,31 +16,12 @@ const MarkedIcon = ({
   marginRight,
   marginLeft,
   textColor,
-  readOnly,
 }) => {
   const iconCount = count > 0 ? count : null;
   const iconStyle = actionDep ? { backgroundColor: color } : { borderWidth: 2, borderColor: color };
   const iconMarginRight = marginRight ? styles.marginRight : {};
   const iconMarginLeft = marginLeft ? styles.marginLeft : {};
   const textColorStyle = textColor ? { color: textColor } : {};
-
-  if (readOnly) {
-    return (
-      <View
-        style={{
-          ...styles.base,
-          ...iconMarginRight,
-          ...iconMarginLeft,
-          ...styles[iconShape],
-          backgroundColor: color,
-          ...style,
-        }}
-        onPress={onClick}
-      >
-        <BaseText style={{ ...styles.text, ...textColorStyle }}>{iconCount}</BaseText>
-      </View>
-    );
-  }
 
   return (
     <TouchableOpacity
@@ -69,7 +50,6 @@ MarkedIcon.propTypes = {
   marginRight: bool,
   marginLeft: bool,
   textColor: string,
-  readOnly: bool,
 };
 
 MarkedIcon.defaultProps = {
@@ -79,7 +59,6 @@ MarkedIcon.defaultProps = {
   marginRight: false,
   marginLeft: false,
   textColor: null,
-  readOnly: false,
 };
 
 export default React.memo(MarkedIcon);
