@@ -13,7 +13,7 @@ const CollectionsIndexScreen = ({navigation}) => (
       <Text>Collections Index Screen</Text>
       
       <View>
-        <Button style={{paddingHorizontal: 10, marginVertical: 20}}>
+        <Button style={{paddingHorizontal: 10, marginVertical: 20}} onPress={() => navigation.navigate('CollectionDetails')}>
           <Text style={{color: 'white'}}>
             Navigate to Collection Details
           </Text>

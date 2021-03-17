@@ -12,26 +12,9 @@ import CollectionsIndexScreen from '../screens/CollectionsIndexScreen'
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen'
 import Colors from '../constants/Colors';
 
-const Stack = createStackNavigator();
-const Tab = createBottomTabNavigator();
+const HomeTab = createBottomTabNavigator();
 const CollectionsStack = createStackNavigator();
-const HomeStack = createStackNavigator()
-
-const CollectionStackScreen = () => (
-  <CollectionsStack.Navigator
-    initialRouteName="CollectionsIndex"
-    headerMode="none"
-  >
-    <CollectionsStack.Screen
-      name="CollectionsIndex"
-      component={CollectionsIndexScreen}
-    />
-    <CollectionsStack.Screen
-      name="CollectionDetails"
-      component={CollectionDetailsScreen}
-    />
-  </CollectionsStack.Navigator>
-)
+const AuthStack = createStackNavigator()
 
 function selectIconName(name, focused) {
   switch (name) {
@@ -57,8 +40,24 @@ const selectScreenOptions = ({ route: { name } }) => ({
   ),
 });
 
+const CollectionStackScreen = () => (
+  <CollectionsStack.Navigator
+    initialRouteName="CollectionsIndex"
+    headerMode="none"
+  >
+    <CollectionsStack.Screen
+      name="CollectionsIndex"
+      component={CollectionsIndexScreen}
+    />
+    <CollectionsStack.Screen
+      name="CollectionDetails"
+      component={CollectionDetailsScreen}
+    />
+  </CollectionsStack.Navigator>
+)
+
 const HomeTabScreen = () => (
-  <Tab.Navigator
+  <HomeTab.Navigator
     screenOptions={selectScreenOptions}
     tabBarOptions={{
       activeTintColor: Colors.primary,
@@ -68,23 +67,22 @@ const HomeTabScreen = () => (
       },
     }}
   >
-    <Tab.Screen name="Summary" component={SummaryScreen} />
-    <Tab.Screen name="Catalog" component={CatalogScreen} />
-    <Tab.Screen name="Collections" component={CollectionStackScreen} />
-  </Tab.Navigator>
+    <HomeTab.Screen name="Summary" component={SummaryScreen} />
+    <HomeTab.Screen name="Catalog" component={CatalogScreen} />
+    <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
+  </HomeTab.Navigator>
 );
 
 const AuthStackScreen = () => (
-  <HomeStack.Navigator headerMode="none">
-    <HomeStack.Screen
+  <AuthStack.Navigator headerMode="none">
+    <AuthStack.Screen
       name="PreAuth"
       component={LoginScreen}
       options={{
         title: 'Discovery Mobile App',
-        // gestureEnabled: false,
       }}
     />
-  </HomeStack.Navigator>
+  </AuthStack.Navigator>
 )
 
 const RootNavigator = ({patientData}) => {
