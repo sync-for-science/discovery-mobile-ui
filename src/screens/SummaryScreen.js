@@ -18,7 +18,7 @@ import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 
 const SummaryScreen = ({
-  navigation, clearAuthAction, clearPatientDataAction,
+  clearAuthAction, clearPatientDataAction,
 }) => {
   const clearData = () => {
     clearAuthAction();
@@ -27,7 +27,6 @@ const SummaryScreen = ({
 
   const handleLogout = () => {
     clearData();
-    navigation.navigate('PreAuth');
   };
 
   useFocusEffect(

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,11 +8,30 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import CollectionsScreen from '../screens/CollectionsScreen'
+import CollectionsIndexScreen from '../screens/CollectionsIndexScreen'
+import CollectionDetailsScreen from '../screens/CollectionDetailsScreen'
 import Colors from '../constants/Colors';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const CollectionsStack = createStackNavigator();
+const HomeStack = createStackNavigator()
+
+const CollectionStackScreen = () => (
+  <CollectionsStack.Navigator
+    initialRouteName="CollectionsIndex"
+    headerMode="none"
+  >
+    <CollectionsStack.Screen
+      name="CollectionsIndex"
+      component={CollectionsIndexScreen}
+    />
+    <CollectionsStack.Screen
+      name="CollectionDetails"
+      component={CollectionDetailsScreen}
+    />
+  </CollectionsStack.Navigator>
+)
 
 function selectIconName(name, focused) {
   switch (name) {
@@ -37,7 +57,7 @@ const selectScreenOptions = ({ route: { name } }) => ({
   ),
 });
 
-const PostAuthScreens = () => (
+const HomeTabScreen = () => (
   <Tab.Navigator
     screenOptions={selectScreenOptions}
     tabBarOptions={{
@@ -50,34 +70,33 @@ const PostAuthScreens = () => (
   >
     <Tab.Screen name="Summary" component={SummaryScreen} />
     <Tab.Screen name="Catalog" component={CatalogScreen} />
-    <Tab.Screen name="Collections" component={CollectionsScreen} />
+    <Tab.Screen name="Collections" component={CollectionStackScreen} />
   </Tab.Navigator>
 );
 
-export default function RootNavigator() {
+const AuthStackScreen = () => (
+  <HomeStack.Navigator headerMode="none">
+    <HomeStack.Screen
+      name="PreAuth"
+      component={LoginScreen}
+      options={{
+        title: 'Discovery Mobile App',
+        // gestureEnabled: false,
+      }}
+    />
+  </HomeStack.Navigator>
+)
+
+const RootNavigator = ({patientData}) => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="PreAuth"
-        headerMode="none"
-      >
-        <Stack.Screen
-          name="PreAuth"
-          component={LoginScreen}
-          options={{
-            title: 'Discovery Mobile App',
-            gestureEnabled: false,
-          }}
-        />
-        <Stack.Screen
-          name="PostAuth"
-          component={PostAuthScreens}
-          options={{
-            title: 'Discovery Mobile App',
-            gestureEnabled: false,
-          }}
-        />
-      </Stack.Navigator>
+      {patientData ? <HomeTabScreen /> : <AuthStackScreen />}
     </NavigationContainer>
   );
 }
+
+const mapStateToProps = (state) => ({
+  patientData: state.patient.patientData
+})
+
+export default connect(mapStateToProps, null)(RootNavigator)
