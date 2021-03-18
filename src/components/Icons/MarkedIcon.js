@@ -1,19 +1,37 @@
 import {
-  bool, func, number,
+  arrayOf, shape, func, string, bool,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
 import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
+import { actionTypes } from '../../redux/epics';
+import {
+  markedResourcesSelector,
+} from '../../redux/selectors';
 
 const MarkedIcon = ({
-  count,
-  onClick,
-  hasMarked,
+  resourceIds,
+  showCount,
+  updateMarkedResources,
+  markedResources,
 }) => {
-  const iconCount = count > 0 ? count : null;
-  const iconStyle = hasMarked ? styles.hasMarked : null;
+  const markedResourceCount = resourceIds.reduce((acc, id) => {
+    const isMarked = markedResources.marked[id];
+    return isMarked ? acc + 1 : acc;
+  }, 0);
+
+  const handlePress = () => {
+    updateMarkedResources(resourceIds.reduce((acc, id) => ({
+      ...acc,
+      [id]: !markedResourceCount,
+    }), {}));
+  };
+
+  const iconCount = (showCount) ? String(markedResourceCount) : '';
+  const iconStyle = (markedResourceCount > 0) ? styles.hasMarked : null;
 
   return (
     <TouchableOpacity
@@ -21,7 +39,7 @@ const MarkedIcon = ({
         styles.base,
         iconStyle,
       ]}
-      onPress={onClick}
+      onPress={handlePress}
     >
       <BaseText style={{ ...styles.text }}>{iconCount}</BaseText>
     </TouchableOpacity>
@@ -29,16 +47,30 @@ const MarkedIcon = ({
 };
 
 MarkedIcon.propTypes = {
-  count: number,
-  onClick: func.isRequired,
-  hasMarked: bool.isRequired,
+  resourceIds: arrayOf(string.isRequired).isRequired,
+  showCount: bool.isRequired,
+  updateMarkedResources: func.isRequired,
+  markedResources: shape({
+    marked: shape({}).isRequired,
+    lastMarked: shape({}).isRequired,
+  }).isRequired,
 };
 
 MarkedIcon.defaultProps = {
-  count: null,
 };
 
-export default React.memo(MarkedIcon);
+const mapStateToProps = (state) => ({
+  markedResources: markedResourcesSelector(state),
+});
+
+const mapDispatchToProps = {
+  updateMarkedResources: (resourceIdsMap) => ({
+    type: actionTypes.UPDATE_MARKED_RESOURCES,
+    payload: resourceIdsMap,
+  }),
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(MarkedIcon));
 
 const styles = StyleSheet.create({
   text: {
