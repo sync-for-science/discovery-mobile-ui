@@ -1,26 +1,22 @@
 import {
-  number
+  number,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
 const CountIcon = ({
   count,
-}) => {
-
-  return (
-    <View style={styles.base} >
-      <Text style={styles.text}>{count}</Text>
-    </View>
-  );
-};
+}) => (
+  <View style={styles.base}>
+    <Text style={styles.text}>{count}</Text>
+  </View>
+);
 
 CountIcon.propTypes = {
   count: number.isRequired,
 };
-
 
 export default CountIcon;
 
@@ -35,6 +31,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: Colors.lightgrey
+    backgroundColor: Colors.lightgrey,
   },
 });

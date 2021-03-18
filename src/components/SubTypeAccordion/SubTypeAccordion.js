@@ -25,8 +25,7 @@ const SubTypeAccordion = ({
   subType,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const renderHeader = (item) => {
-    return (
+  const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
         <CountIcon count={dateFilteredCount} />
@@ -46,7 +45,7 @@ const SubTypeAccordion = ({
         />
       </View>
     </View>
-  )};
+  );
 
   const renderContent = (item) => item.content.map(
     (resourceId) => (
@@ -116,6 +115,6 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   rightIconsContainer: {
-    flexDirection: 'row'
-  }
+    flexDirection: 'row',
+  },
 });

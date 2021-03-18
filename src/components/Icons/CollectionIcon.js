@@ -1,12 +1,12 @@
 import {
-  arrayOf, bool, func, number, string, oneOfType
+  arrayOf, bool, func, string, shape,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 
-import { collectionResourceIdsSelector } from '../../redux/selectors'
+import { collectionResourceIdsSelector } from '../../redux/selectors';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
 
 const CollectionIcon = ({
@@ -15,25 +15,25 @@ const CollectionIcon = ({
   showCount,
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
-  collectionResourceIds
+  collectionResourceIds,
 }) => {
   const resourceCount = resourceIds.reduce((acc, id) => {
-    const inCollection = collectionResourceIds[id]
-    return inCollection ? acc + 1 : acc
-  }, 0)
+    const inCollection = collectionResourceIds[id];
+    return inCollection ? acc + 1 : acc;
+  }, 0);
   const iconCount = (showCount && resourceCount) ? resourceCount : null;
 
-  const handlePress = () => resourceCount 
+  const handlePress = () => (resourceCount
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
-    : addResourceToCollectionAction(collectionId, resourceIds)
+    : addResourceToCollectionAction(collectionId, resourceIds));
 
-  const iconStyle = resourceCount ? styles.hasResource : null
+  const iconStyle = resourceCount ? styles.hasResource : null;
 
   return (
     <TouchableOpacity
       style={[
         styles.base,
-        iconStyle
+        iconStyle,
       ]}
       onPress={handlePress}
     >
@@ -48,15 +48,12 @@ CollectionIcon.propTypes = {
   showCount: bool.isRequired,
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
-};
-
-CollectionIcon.defaultProps = {
-  count: null,
+  collectionResourceIds: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  collectionResourceIds: collectionResourceIdsSelector(state)
-})
+  collectionResourceIds: collectionResourceIdsSelector(state),
+});
 
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
@@ -79,6 +76,6 @@ const styles = StyleSheet.create({
     borderColor: Colors.collectionIcon,
   },
   hasResource: {
-    backgroundColor: Colors.collectionIcon
-  }
+    backgroundColor: Colors.collectionIcon,
+  },
 });

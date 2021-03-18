@@ -107,19 +107,15 @@ export const selectResourceType = (resourceType) => ({
   payload: resourceType,
 });
 
-export const addResourceToCollection = (collectionId, resourceIds) => {
-  return ({
-    type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
-    payload: { collectionId, resourceIds },
-  });
-};
+export const addResourceToCollection = (collectionId, resourceIds) => ({
+  type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
+  payload: { collectionId, resourceIds },
+});
 
-export const removeResourceFromCollection = (collectionId, resourceIds) => {
-  return ({
-    type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
-    payload: { collectionId, resourceIds },
-  });
-};
+export const removeResourceFromCollection = (collectionId, resourceIds) => ({
+  type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+  payload: { collectionId, resourceIds },
+});
 
 // dont care about GROUP_BY_TYPE but not sure how to fire off
 // CREATE_DEFAULT_COLLECTIONS without using ofType
