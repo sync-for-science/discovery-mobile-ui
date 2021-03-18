@@ -43,8 +43,6 @@ const Login = ({
         try {
           const bundle = await getBundle(patientIdProp, fhirClientProp);
           setPatientDataAction(bundle);
-          navigation.navigate('PostAuth');
-          setLoading(false);
         } catch (error) {
           clearAuthAction();
           setLoading(false);

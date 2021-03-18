@@ -21,7 +21,6 @@ import { setPatientData } from '../features/patient/patientDataSlice';
 const LoginScreen = ({ navigation, setPatientDataAction }) => {
   const handleSkipLogin = () => {
     setPatientDataAction(mockBundle);
-    navigation.navigate('PostAuth');
   };
 
   const showSkipLogin = process.env.NODE_ENV === 'development';

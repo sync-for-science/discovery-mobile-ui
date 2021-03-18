@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  func, shape,
-} from 'prop-types';
+import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, View, SafeAreaView, StatusBar, Button, BackHandler,
@@ -18,7 +16,7 @@ import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 
 const SummaryScreen = ({
-  navigation, clearAuthAction, clearPatientDataAction,
+  clearAuthAction, clearPatientDataAction,
 }) => {
   const clearData = () => {
     clearAuthAction();
@@ -27,7 +25,6 @@ const SummaryScreen = ({
 
   const handleLogout = () => {
     clearData();
-    navigation.navigate('PreAuth');
   };
 
   useFocusEffect(
@@ -55,23 +52,16 @@ const SummaryScreen = ({
 };
 
 SummaryScreen.propTypes = {
-  navigation: shape({}).isRequired,
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
 };
-
-SummaryScreen.defaultProps = {
-};
-
-const mapStateToProps = () => ({
-});
 
 const mapDispatchToProps = {
   clearAuthAction: clearAuth,
   clearPatientDataAction: clearPatientData,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SummaryScreen);
+export default connect(null, mapDispatchToProps)(SummaryScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
