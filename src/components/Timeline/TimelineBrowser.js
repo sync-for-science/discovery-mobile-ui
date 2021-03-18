@@ -63,7 +63,7 @@ Bar.propTypes = {
   height: number.isRequired,
 };
 
-const TimelineBars = ({
+const TimelineItems = ({
   availableWidth, maxCount1SD, intervals,
 }) => {
   if (!maxCount1SD) {
@@ -95,7 +95,7 @@ const TimelineBars = ({
     ));
 };
 
-TimelineBars.propTypes = {
+TimelineItems.propTypes = {
   availableWidth: number.isRequired,
   maxCount1SD: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
@@ -301,7 +301,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             startLabel=""
             endLabel=""
           />
-          <TimelineBars
+          <TimelineItems
             availableWidth={availableWidth}
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
