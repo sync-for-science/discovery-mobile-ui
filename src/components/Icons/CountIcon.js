@@ -31,6 +31,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 5,
     marginRight: 10,
-    backgroundColor: Colors.lightgrey,
+    backgroundColor: Colors.countIcon,
   },
 });

@@ -27,4 +27,5 @@ export default {
   lastSelected: yellow2,
   collectionIcon: yellow2,
   hasMarked: blue7,
+  countIcon: gray1,
 };
