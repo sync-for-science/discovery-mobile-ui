@@ -1,30 +1,40 @@
 import {
-  arrayOf, bool, func, number, string,
+  arrayOf, bool, func, number, string, oneOfType
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux'
 import Colors from '../../constants/Colors';
 
+import { collectionResourceIdsSelector } from '../../redux/selectors'
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
 
 const CollectionIcon = ({
-  count,
   collectionId,
   resourceIds,
   showCount,
   addResourceToCollectionAction,
-  removeResourceFromCollectionAction
+  removeResourceFromCollectionAction,
+  collectionResourceIds
 }) => {
-  const iconCount = showCount > 0 ? count : null;
+  const resourceCount = resourceIds.reduce((acc, id) => {
+    const inCollection = collectionResourceIds[id]
+    return inCollection ? acc + 1 : acc
+  }, 0)
+  const iconCount = (showCount && resourceCount) ? resourceCount : null;
 
-  const handlePress = () => count > 0 
+  const handlePress = () => resourceCount 
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds)
 
+  const iconStyle = resourceCount ? styles.hasResource : null
+
   return (
     <TouchableOpacity
-      style={styles.base}
+      style={[
+        styles.base,
+        iconStyle
+      ]}
       onPress={handlePress}
     >
       <Text style={styles.text}>{iconCount}</Text>
@@ -33,7 +43,6 @@ const CollectionIcon = ({
 };
 
 CollectionIcon.propTypes = {
-  count: number,
   collectionId: string.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   showCount: bool.isRequired,
@@ -45,12 +54,16 @@ CollectionIcon.defaultProps = {
   count: null,
 };
 
+const mapStateToProps = (state) => ({
+  collectionResourceIds: collectionResourceIdsSelector(state)
+})
+
 const mapDispatchToProps = {
   addResourceToCollectionAction: addResourceToCollection,
   removeResourceFromCollectionAction: removeResourceFromCollection,
 };
 
-export default connect(null, mapDispatchToProps)(CollectionIcon);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionIcon);
 
 const styles = StyleSheet.create({
   text: {
@@ -62,6 +75,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    backgroundColor: Colors.collectionIcon
+    borderWidth: 2,
+    borderColor: Colors.collectionIcon,
   },
+  hasResource: {
+    backgroundColor: Colors.collectionIcon
+  }
 });

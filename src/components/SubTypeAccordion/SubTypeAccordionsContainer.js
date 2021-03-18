@@ -29,7 +29,6 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
               subType={subType}
               resourceIds={resourceIds}
               dateFilteredCount={values.dateFilteredCount}
-              collectionDateFilteredCount={values.collectionDateFilteredCount}
             />
           );
         })}

@@ -18,7 +18,6 @@ import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
-  collectionDateFilteredCount,
   dateFilteredCount,
   removeResourceFromCollectionAction,
   resourceIds,
@@ -35,13 +34,12 @@ const SubTypeAccordion = ({
           {item.title}
         </BaseText>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.rightIconsContainer}>
         <MarkedIcon
           resourceIds={resourceIds}
           showCount
         />
         <CollectionIcon
-          count={collectionDateFilteredCount}
           collectionId={selectedCollectionId}
           resourceIds={resourceIds}
           showCount
@@ -78,7 +76,6 @@ const SubTypeAccordion = ({
 
 SubTypeAccordion.propTypes = {
   addResourceToCollectionAction: func.isRequired,
-  collectionDateFilteredCount: number.isRequired,
   dateFilteredCount: number.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
@@ -118,4 +115,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     color: 'black',
   },
+  rightIconsContainer: {
+    flexDirection: 'row'
+  }
 });

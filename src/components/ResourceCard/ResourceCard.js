@@ -108,11 +108,9 @@ const ResourceCard = ({
             showCount={false}
           />
           <CollectionIcon
-            shape="square"
-            color={Colors.lastSelected}
-            action1={() => addResourceToCollection(selectedCollectionId, resourceId)}
-            action2={() => removeResourceFromCollection(selectedCollectionId, resourceId)}
-            actionDep={collectionResourceIds[resourceId]}
+            showCount={false}
+            collectionId={selectedCollectionId}
+            resourceIds={[resourceId]}
           />
         </View>
       </View>
