@@ -203,13 +203,15 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
   switch (action.type) {
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       const previousMarked = state.marked;
+      const testLastMarked = pruneEmpty(action.payload);
 
       return {
         marked: pruneEmpty({
           ...previousMarked,
           ...action.payload,
         }),
-        lastMarked: pruneEmpty(action.payload),
+        // preserve previous "lastMarked" state if no new items are marked:
+        lastMarked: (Object.keys(testLastMarked).length === 0) ? state.lastMarked : testLastMarked,
       };
     }
     default:
