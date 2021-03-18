@@ -64,7 +64,7 @@ const SubTypeAccordion = ({
         <MarkedIcon
           count={markedResourceCount}
           onClick={handleMarkedClick}
-          actionDep={markedResourceCount > 0}
+          hasMarked={markedResourceCount > 0}
         />
         <CountIcon
           shape="square"

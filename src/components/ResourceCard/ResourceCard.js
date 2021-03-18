@@ -115,7 +115,7 @@ const ResourceCard = ({
           <BaseText>{resourceDate}</BaseText>
           <MarkedIcon
             onClick={handleMarkedClick}
-            actionDep={!!markedResources.marked[resourceId]}
+            hasMarked={!!markedResources.marked[resourceId]}
           />
           <CountIcon
             shape="square"

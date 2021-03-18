@@ -12,10 +12,10 @@ const ICON_SHAPE = 'circle';
 const MarkedIcon = ({
   count,
   onClick,
-  actionDep,
+  hasMarked,
 }) => {
   const iconCount = count > 0 ? count : null;
-  const iconStyle = actionDep ? {
+  const iconStyle = hasMarked ? {
     backgroundColor: Colors.primary,
   } : {
     borderWidth: 2,
@@ -41,12 +41,11 @@ const MarkedIcon = ({
 MarkedIcon.propTypes = {
   count: number,
   onClick: func.isRequired,
-  actionDep: bool,
+  hasMarked: bool.isRequired,
 };
 
 MarkedIcon.defaultProps = {
   count: null,
-  actionDep: null,
 };
 
 export default React.memo(MarkedIcon);
