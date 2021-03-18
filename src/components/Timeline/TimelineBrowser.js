@@ -6,7 +6,7 @@ import {
   arrayOf, shape, string, number, instanceOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { format, formatDistanceStrict, addDays } from 'date-fns';
+import { formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
   Rect, Line, G, Text as SvgText, Polygon, // Mask
 } from 'react-native-svg';
@@ -259,7 +259,6 @@ Metrics.propTypes = {
 
 const TimelineBrowser = ({ timelineIntervals }) => {
   const {
-    startDate, endDate,
     maxCount, maxCount1SD, maxCount2SD, recordCount, recordCount2SDplus,
     intervals, intervalLength,
   } = timelineIntervals;
@@ -298,8 +297,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           </SvgText>
           <XAxis
             availableWidth={availableWidth}
-            startLabel={(startDate && format(startDate, 'MM/dd/yyyy')) || ''}
-            endLabel={(endDate && format(endDate, 'MM/dd/yyyy')) || ''}
+            startLabel=""
+            endLabel=""
           />
           <TimelineBars
             availableWidth={availableWidth}
