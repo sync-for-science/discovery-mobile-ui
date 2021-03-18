@@ -1,5 +1,5 @@
 import {
-  bool, func, number, shape,
+  bool, func, number,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -10,7 +10,6 @@ import Colors from '../../constants/Colors';
 const ICON_SHAPE = 'circle';
 
 const MarkedIcon = ({
-  style,
   count,
   onClick,
   actionDep,
@@ -31,7 +30,6 @@ const MarkedIcon = ({
         styles.marginRight,
         styles[ICON_SHAPE],
         iconStyle,
-        style,
       ]}
       onPress={onClick}
     >
@@ -41,14 +39,12 @@ const MarkedIcon = ({
 };
 
 MarkedIcon.propTypes = {
-  style: shape({}),
   count: number,
   onClick: func.isRequired,
   actionDep: bool,
 };
 
 MarkedIcon.defaultProps = {
-  style: {},
   count: null,
   actionDep: null,
 };
