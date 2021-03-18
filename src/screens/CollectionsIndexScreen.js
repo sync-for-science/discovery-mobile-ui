@@ -1,42 +1,60 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar,
+  StyleSheet, View, SafeAreaView, StatusBar, Button,
 } from 'react-native';
-import { Button } from 'native-base';
-import { shape } from 'prop-types';
+import { connect } from 'react-redux';
+import { func, shape, string } from 'prop-types';
 
 import Colors from '../constants/Colors';
+import BaseText from '../components/Generic/BaseText';
 
-const CollectionsIndexScreen = ({ navigation }) => (
+const CollectionRow = ({ label, handlePress }) => (
+  <View style={styles.collectionRow}>
+    <Button title={label} onPress={handlePress} />
+  </View>
+);
+
+CollectionRow.propTypes = {
+  label: string.isRequired,
+  handlePress: func.isRequired,
+};
+
+const CollectionsIndexScreen = ({ navigation, collections }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
-      <Text>Collections Index Screen</Text>
-
-      <View>
-        <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionDetails')}>
-          <Text style={{ color: 'white' }}>
-            Navigate to Collection Details
-          </Text>
-        </Button>
-      </View>
+      <BaseText variant="title">Collections</BaseText>
+      {Object.entries(collections).map(([id, { label }]) => (
+        <CollectionRow
+          key={id}
+          label={label}
+          handlePress={() => navigation.navigate('CollectionDetails', { collectionId: id })}
+        />
+      ))}
     </View>
   </SafeAreaView>
 );
 
 CollectionsIndexScreen.propTypes = {
   navigation: shape({}).isRequired,
+  collections: shape({}).isRequired,
 };
 
-export default CollectionsIndexScreen;
+const mapStateToProps = (state) => ({
+  collections: state.collections,
+});
+
+export default connect(mapStateToProps, null)(CollectionsIndexScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
   },
   screen: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+  },
+  collectionRow: {
+    alignItems: 'flex-start',
+    width: '90%',
   },
 });
