@@ -4,8 +4,8 @@ import {
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
+import { Text } from 'native-base';
 
-import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/epics';
 import {
@@ -30,7 +30,7 @@ const MarkedIcon = ({
     }), {}));
   };
 
-  const iconCount = (showCount) ? String(markedResourceCount) : '';
+  const iconCount = (showCount) ? markedResourceCount : null;
   const iconStyle = (markedResourceCount > 0) ? styles.hasMarked : null;
 
   return (
@@ -41,7 +41,7 @@ const MarkedIcon = ({
       ]}
       onPress={handlePress}
     >
-      <BaseText style={{ ...styles.text }}>{iconCount}</BaseText>
+      <Text style={styles.text}>{iconCount}</Text>
     </TouchableOpacity>
   );
 };
