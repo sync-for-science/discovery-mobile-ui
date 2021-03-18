@@ -108,18 +108,16 @@ export const selectResourceType = (resourceType) => ({
 });
 
 export const addResourceToCollection = (collectionId, resourceIds) => {
-  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds];
   return ({
     type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
-    payload: { collectionId, resourceIds: packageResourceIds },
+    payload: { collectionId, resourceIds },
   });
 };
 
 export const removeResourceFromCollection = (collectionId, resourceIds) => {
-  const packageResourceIds = typeof resourceIds !== 'string' ? resourceIds : [resourceIds];
   return ({
     type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
-    payload: { collectionId, resourceIds: packageResourceIds },
+    payload: { collectionId, resourceIds },
   });
 };
 
