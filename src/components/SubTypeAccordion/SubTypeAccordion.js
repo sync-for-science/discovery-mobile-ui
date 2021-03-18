@@ -26,17 +26,11 @@ const SubTypeAccordion = ({
   subType,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const renderHeader = (item) => (
+  const renderHeader = (item) => {
+    return (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
-        <CountIcon
-          shape="square"
-          color={Colors.lightgrey}
-          count={dateFilteredCount}
-          marginRight
-          textColor="black"
-          readOnly
-        />
+        <CountIcon count={dateFilteredCount} />
         <BaseText style={styles.headerText}>
           {item.title}
         </BaseText>
@@ -47,16 +41,14 @@ const SubTypeAccordion = ({
           showCount
         />
         <CollectionIcon
-          shape="square"
-          color={Colors.lastSelected}
           count={collectionDateFilteredCount}
-          action1={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
-          action2={() => removeResourceFromCollectionAction(selectedCollectionId, item.content)}
-          actionDep={collectionDateFilteredCount > 0}
+          collectionId={selectedCollectionId}
+          resourceIds={resourceIds}
+          showCount
         />
       </View>
     </View>
-  );
+  )};
 
   const renderContent = (item) => item.content.map(
     (resourceId) => (
