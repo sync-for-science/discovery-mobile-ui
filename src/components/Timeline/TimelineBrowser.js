@@ -43,30 +43,22 @@ Variance.propTypes = {
 };
 
 const Bar = ({
-  x, zScore, height, width,
+  x, height, width,
 }) => (
-  <>
-    <Variance
-      x={x}
-      y={-4}
-      zScore={zScore}
-    />
-    <Line
-      x1={x}
-      y1={BAR_HEIGHT}
-      x2={x}
-      y2={BAR_HEIGHT - height}
-      stroke={BAR_COLOR}
-      strokeWidth={width}
-      vectorEffect="non-scaling-stroke"
-      shapeRendering="crispEdges"
-    />
-  </>
+  <Line
+    x1={x}
+    y1={BAR_HEIGHT}
+    x2={x}
+    y2={BAR_HEIGHT - height}
+    stroke={BAR_COLOR}
+    strokeWidth={width}
+    vectorEffect="non-scaling-stroke"
+    shapeRendering="crispEdges"
+  />
 );
 
 Bar.propTypes = {
   x: number.isRequired,
-  zScore: number.isRequired,
   width: number.isRequired,
   height: number.isRequired,
 };
@@ -84,13 +76,22 @@ const TimelineBars = ({
     .map(({
       key, position, items, zScore,
     }) => (
-      <Bar
+      <G
         key={key}
         x={position * availableWidth}
-        width={4}
-        height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
-        zScore={zScore}
-      />
+      >
+        <Variance
+          x={0}
+          y={-4}
+          zScore={zScore}
+        />
+        <Bar
+          x={0}
+          width={4}
+          height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
+          zScore={zScore}
+        />
+      </G>
     ));
 };
 
