@@ -7,8 +7,6 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
 
-const ICON_SHAPE = 'circle';
-
 const MarkedIcon = ({
   count,
   onClick,
@@ -26,9 +24,6 @@ const MarkedIcon = ({
     <TouchableOpacity
       style={[
         styles.base,
-        styles.marginLeft,
-        styles.marginRight,
-        styles[ICON_SHAPE],
         iconStyle,
       ]}
       onPress={onClick}
@@ -59,17 +54,8 @@ const styles = StyleSheet.create({
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  square: {
-    borderRadius: 5,
-  },
-  circle: {
-    borderRadius: 30,
-  },
-  marginRight: {
     marginRight: 10,
-  },
-  marginLeft: {
     marginLeft: 10,
+    borderRadius: 30,
   },
 });
