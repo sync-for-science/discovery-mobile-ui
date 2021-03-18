@@ -18,11 +18,6 @@ const MarkedIcon = ({
   updateMarkedResources,
   markedResources,
 }) => {
-  const lastMarkedCount = resourceIds.reduce((acc, id) => {
-    const isMarked = markedResources.lastMarked[id];
-    return isMarked ? acc + 1 : acc;
-  }, 0);
-
   const markedCount = resourceIds.reduce((acc, id) => {
     const isMarked = markedResources.marked[id];
     return isMarked ? acc + 1 : acc;
@@ -37,7 +32,7 @@ const MarkedIcon = ({
 
   const iconCount = (showCount && markedCount) ? markedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = (markedCount && lastMarkedCount) ? styles.hasLastMarked : ((markedCount) ? styles.hasMarked : null);
+  const iconStyle = markedCount ? styles.hasMarked : null;
 
   return (
     <TouchableOpacity
@@ -58,7 +53,6 @@ MarkedIcon.propTypes = {
   updateMarkedResources: func.isRequired,
   markedResources: shape({
     marked: shape({}).isRequired,
-    lastMarked: shape({}).isRequired,
   }).isRequired,
 };
 
@@ -92,10 +86,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 2,
     borderColor: Colors.hasMarked,
-  },
-  hasLastMarked: {
-    borderColor: Colors.primary,
-    backgroundColor: Colors.primary,
   },
   hasMarked: {
     borderColor: Colors.hasMarked,

@@ -118,8 +118,8 @@ const timelineItemsInRangeSelector = createSelector(
 const MAX_INTERVAL_COUNT = 50;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector],
-  (timelineItemsInRange, timelineRange) => {
+  [timelineItemsInRangeSelector, timelineRangeSelector, markedResourcesSelector],
+  (timelineItemsInRange, timelineRange, markedResources) => {
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -168,7 +168,11 @@ export const timelineIntervalsSelector = createSelector(
 
       const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
-      // inject z score:
+      // TODO: perhaps the following should be sets in Redux state, in the 1st place:
+      const { marked } = markedResources;
+      const markedSet = new Set(Object.keys(marked));
+
+      // inject z score, and markedCount -- mutates intervalMap:
       intervalsWithItems.forEach((interval) => {
         const cardinality = interval.items.length;
         // eslint-disable-next-line no-param-reassign
@@ -183,6 +187,10 @@ export const timelineIntervalsSelector = createSelector(
         } else if (interval.zScore > 2) {
           recordCount2SDplus += cardinality;
         }
+
+        // inject markedItems --  -- mutates intervalMap:
+        interval.markedItems = interval.items // eslint-disable-line no-param-reassign
+          .filter((id) => markedSet.has(id));
       });
     }
 

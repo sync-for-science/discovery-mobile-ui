@@ -13,6 +13,7 @@ export const createIntervalMap = (minDate, maxDate, intervalCount) => {
       key: `interval-${i}`,
       index: i,
       items: [],
+      markedItems: [],
       position: (i * intervalWidth + intervalWidth / 2), // a number from 0..1
       interval: {
         start: startOfDay(new Date(intervalStart)),
