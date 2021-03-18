@@ -13,12 +13,7 @@ const MarkedIcon = ({
   hasMarked,
 }) => {
   const iconCount = count > 0 ? count : null;
-  const iconStyle = hasMarked ? {
-    backgroundColor: Colors.primary,
-  } : {
-    borderWidth: 2,
-    borderColor: Colors.primary,
-  };
+  const iconStyle = hasMarked ? styles.hasMarked : null;
 
   return (
     <TouchableOpacity
@@ -57,5 +52,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 10,
     borderRadius: 30,
+    borderWidth: 2,
+    borderColor: Colors.primary,
+  },
+  hasMarked: {
+    backgroundColor: Colors.primary,
   },
 });
