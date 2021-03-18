@@ -238,14 +238,14 @@ const Metrics = ({
     const intervalLengthLabel = formatDays(Math.round(intervalLength));
     return (
       <SvgText
-        x={availableWidth - 100}
+        x={availableWidth}
         y={-14}
         fill={LABEL_COLOR}
         stroke="none"
         fontSize={LABEL_FONT_SIZE}
-        textAnchor="right"
+        textAnchor="end"
       >
-        {intervalLengthLabel}
+        {`grouped by ${intervalLengthLabel}`}
       </SvgText>
     );
   }
