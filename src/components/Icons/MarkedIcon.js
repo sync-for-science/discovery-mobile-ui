@@ -35,9 +35,9 @@ const MarkedIcon = ({
     }), {}));
   };
 
-  const iconCount = (showCount) ? markedCount : null;
+  const iconCount = (showCount && markedCount) ? markedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = (lastMarkedCount > 0) ? styles.hasLastMarked : ((markedCount > 0) ? styles.hasMarked : null);
+  const iconStyle = (lastMarkedCount) ? styles.hasLastMarked : ((markedCount) ? styles.hasMarked : null);
 
   return (
     <TouchableOpacity
