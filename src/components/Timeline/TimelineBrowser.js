@@ -17,7 +17,7 @@ const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
 const BOUNDARY_LINE_COLOR = '#36c';
 const CHART_MARGIN = 12;
-const CHART_HEIGHT = 124;
+export const CHART_HEIGHT = 160;
 const BAR_HEIGHT = 80;
 const LABEL_COLOR = '#333';
 const LABEL_FONT_SIZE = 10;
@@ -156,12 +156,12 @@ const LegendAndBound = ({
         <>
           <Variance
             x={120}
-            y={-14}
+            y={-16}
             zScore={2}
           />
           <SvgText
             x={126}
-            y={-14}
+            y={-16}
             fill={LABEL_COLOR}
             stroke="none"
             fontSize={LABEL_FONT_SIZE}
@@ -177,12 +177,12 @@ const LegendAndBound = ({
       <>
         <Variance
           x={0}
-          y={-14}
+          y={-16}
           zScore={1}
         />
         <SvgText
           x={6}
-          y={-14}
+          y={-16}
           fill={LABEL_COLOR}
           stroke="none"
           fontSize={LABEL_FONT_SIZE}
@@ -239,7 +239,7 @@ const Metrics = ({
     return (
       <SvgText
         x={availableWidth}
-        y={-14}
+        y={-16}
         fill={LABEL_COLOR}
         stroke="none"
         fontSize={LABEL_FONT_SIZE}
@@ -277,12 +277,12 @@ const TimelineBrowser = ({ timelineIntervals }) => {
       <Svg
         width={`${screenWidth}`}
         height={CHART_HEIGHT}
-        viewBox={`0 0 ${screenWidth} 100`}
+        viewBox={`0 0 ${screenWidth} ${CHART_HEIGHT}`}
         style={{ borderWidth: 0 }}
       >
         <G
           x={2 * CHART_MARGIN} // accommodate label for boundary line
-          y={20}
+          y={32}
         >
           <SvgText
             fill={LABEL_COLOR}
