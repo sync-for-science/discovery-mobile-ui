@@ -184,3 +184,37 @@ export const selectedCollectionReducer = (state = preloadSelectedCollection, act
       return state;
   }
 };
+
+const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
+  // prune items whose values are null, undefined, or empty string:
+  if (v) {
+    acc[k] = v;
+  }
+  return acc;
+}, {}));
+
+const preloadedMarkedResources = {
+  // dictionaries of resource ids with Boolean values:
+  marked: {},
+  lastMarked: {},
+};
+
+export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
+  switch (action.type) {
+    case actionTypes.UPDATE_MARKED_RESOURCES: {
+      const previousMarked = state.marked;
+      const testLastMarked = pruneEmpty(action.payload);
+
+      return {
+        marked: pruneEmpty({
+          ...previousMarked,
+          ...action.payload,
+        }),
+        // preserve previous "lastMarked" state if no new items are marked:
+        lastMarked: (Object.keys(testLastMarked).length === 0) ? state.lastMarked : testLastMarked,
+      };
+    }
+    default:
+      return state;
+  }
+};

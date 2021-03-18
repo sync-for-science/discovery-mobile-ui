@@ -24,6 +24,7 @@ import {
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import CountIcon from '../Icons/CountIcon';
+import MarkedIcon from '../Icons/MarkedIcon';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -102,14 +103,9 @@ const ResourceCard = ({
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.dateIconContainer}>
           <BaseText>{resourceDate}</BaseText>
-          <CountIcon
-            shape="circle"
-            color={Colors.primary}
-            action1={() => {}}
-            action2={() => {}}
-            actionDep={false}
-            marginRight
-            marginLeft
+          <MarkedIcon
+            resourceIds={[resourceId]}
+            showCount={false}
           />
           <CountIcon
             shape="square"

@@ -13,6 +13,7 @@ import ResourceCard from '../ResourceCard/ResourceCard';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
+import MarkedIcon from '../Icons/MarkedIcon';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
@@ -40,14 +41,9 @@ const SubTypeAccordion = ({
         </BaseText>
       </View>
       <View style={{ flexDirection: 'row' }}>
-        <CountIcon
-          shape="circle"
-          color={Colors.primary}
-          count={0}
-          action1={() => {}}
-          action2={() => {}}
-          actionDep={false}
-          marginRight
+        <MarkedIcon
+          resourceIds={resourceIds}
+          showCount
         />
         <CountIcon
           shape="square"
