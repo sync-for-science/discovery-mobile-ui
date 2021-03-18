@@ -18,7 +18,12 @@ const MarkedIcon = ({
   updateMarkedResources,
   markedResources,
 }) => {
-  const markedResourceCount = resourceIds.reduce((acc, id) => {
+  const lastMarkedCount = resourceIds.reduce((acc, id) => {
+    const isMarked = markedResources.lastMarked[id];
+    return isMarked ? acc + 1 : acc;
+  }, 0);
+
+  const markedCount = resourceIds.reduce((acc, id) => {
     const isMarked = markedResources.marked[id];
     return isMarked ? acc + 1 : acc;
   }, 0);
@@ -26,12 +31,13 @@ const MarkedIcon = ({
   const handlePress = () => {
     updateMarkedResources(resourceIds.reduce((acc, id) => ({
       ...acc,
-      [id]: !markedResourceCount,
+      [id]: !markedCount,
     }), {}));
   };
 
-  const iconCount = (showCount) ? markedResourceCount : null;
-  const iconStyle = (markedResourceCount > 0) ? styles.hasMarked : null;
+  const iconCount = (showCount) ? markedCount : null;
+  // eslint-disable-next-line no-nested-ternary, max-len
+  const iconStyle = (lastMarkedCount > 0) ? styles.hasLastMarked : ((markedCount > 0) ? styles.hasMarked : null);
 
   return (
     <TouchableOpacity
@@ -85,9 +91,14 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 30,
     borderWidth: 2,
+    borderColor: Colors.hasMarked,
+  },
+  hasLastMarked: {
     borderColor: Colors.primary,
+    backgroundColor: Colors.primary,
   },
   hasMarked: {
-    backgroundColor: Colors.primary,
+    borderColor: Colors.hasMarked,
+    backgroundColor: Colors.hasMarked,
   },
 });
