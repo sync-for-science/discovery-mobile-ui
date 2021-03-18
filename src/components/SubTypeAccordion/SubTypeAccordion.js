@@ -14,6 +14,7 @@ import { addResourceToCollection, removeResourceFromCollection } from '../../red
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
+import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
@@ -45,7 +46,7 @@ const SubTypeAccordion = ({
           resourceIds={resourceIds}
           showCount
         />
-        <CountIcon
+        <CollectionIcon
           shape="square"
           color={Colors.lastSelected}
           count={collectionDateFilteredCount}

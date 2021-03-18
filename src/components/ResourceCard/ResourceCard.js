@@ -23,8 +23,8 @@ import {
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
-import CountIcon from '../Icons/CountIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
+import CollectionIcon from '../Icons/CollectionIcon';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -107,7 +107,7 @@ const ResourceCard = ({
             resourceIds={[resourceId]}
             showCount={false}
           />
-          <CountIcon
+          <CollectionIcon
             shape="square"
             color={Colors.lastSelected}
             action1={() => addResourceToCollection(selectedCollectionId, resourceId)}
