@@ -8,22 +8,9 @@ import {
 } from 'rxjs/operators';
 import { pathEq, flatten } from 'ramda';
 
-export const actionTypes = {
-  // SET_PATIENT_DATA string is implicitly derived from:
-  //     patientDataSlice.name (value) + patientDataSlice.reducers.setPatientData (key)
-  SET_PATIENT_DATA: 'patientData/setPatientData',
-  CLEAR_PATIENT_DATA: 'patientData/clearPatientData',
-  FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
-  REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
-  GROUP_BY_TYPE: 'GROUP_BY_TYPE',
-  ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
-  TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
-  SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
-  UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
-  ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
-  REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
-  UPDATE_MARKED_RESOURCES: 'UPDATE_MARKED_RESOURCES',
-};
+import { actionTypes } from '../action-types';
+
+export { actionTypes } from '../action-types';
 
 const flattenResources = (action$) => action$.pipe(
   ofType(actionTypes.SET_PATIENT_DATA),
