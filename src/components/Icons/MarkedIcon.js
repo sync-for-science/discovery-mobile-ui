@@ -19,7 +19,7 @@ const MarkedIcon = ({
   markedResources,
 }) => {
   const markedCount = resourceIds.reduce((acc, id) => {
-    const isMarked = markedResources.marked[id];
+    const isMarked = markedResources[id];
     return isMarked ? acc + 1 : acc;
   }, 0);
 
@@ -51,9 +51,7 @@ MarkedIcon.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   showCount: bool.isRequired,
   updateMarkedResources: func.isRequired,
-  markedResources: shape({
-    marked: shape({}).isRequired,
-  }).isRequired,
+  markedResources: shape({}).isRequired,
 };
 
 MarkedIcon.defaultProps = {

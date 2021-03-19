@@ -194,21 +194,16 @@ const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
 }, {}));
 
 const preloadedMarkedResources = {
-  // dictionaries of resource ids with Boolean values:
-  marked: {},
+  // dictionary of resource ids with Boolean values:
 };
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const previousMarked = state.marked;
-
-      return {
-        marked: pruneEmpty({
-          ...previousMarked,
-          ...action.payload,
-        }),
-      };
+      return pruneEmpty({
+        ...state, // previously marked
+        ...action.payload,
+      });
     }
     default:
       return state;

@@ -169,8 +169,7 @@ export const timelineIntervalsSelector = createSelector(
       const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
       // TODO: perhaps the following should be sets in Redux state, in the 1st place:
-      const { marked } = markedResources;
-      const markedSet = new Set(Object.keys(marked));
+      const markedSet = new Set(Object.keys(markedResources));
 
       // inject z score, and markedCount -- mutates intervalMap:
       intervalsWithItems.forEach((interval) => {
