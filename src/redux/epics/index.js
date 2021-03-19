@@ -19,7 +19,6 @@ export const actionTypes = {
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
   TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
   SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
-  CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
   UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
   REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
@@ -93,15 +92,6 @@ export const toggleResourceTypeFilter = (resourceType) => ({
   payload: resourceType,
 });
 
-// dont care about GROUP_BY_TYPE but not sure how to fire off
-// CREATE_RESOURCE_TYPE_SELECTION without using ofType
-const createSelectedResourceType = (action$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => ({
-    type: actionTypes.CREATE_RESOURCE_TYPE_SELECTION,
-  })),
-);
-
 export const selectResourceType = (resourceType) => ({
   type: actionTypes.SELECT_RESOURCE_TYPE,
   payload: resourceType,
@@ -142,7 +132,6 @@ export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  createSelectedResourceType,
   createDefaultCollections,
   selectDefaultCollection,
 );

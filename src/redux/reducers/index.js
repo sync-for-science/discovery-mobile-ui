@@ -78,9 +78,6 @@ export const selectedResourceTypeReducer = (state = preloadSelectedResourceType,
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedResourceType;
     }
-    case actionTypes.CREATE_RESOURCE_TYPE_SELECTION: {
-      return state;
-    }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       return action.payload;
     }
