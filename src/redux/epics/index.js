@@ -107,15 +107,6 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => ({
   payload: { collectionId, resourceIds },
 });
 
-// dont care about GROUP_BY_TYPE but not sure how to fire off
-// CREATE_DEFAULT_COLLECTIONS without using ofType
-const createDefaultCollections = (action$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => ({
-    type: actionTypes.CREATE_DEFAULT_COLLECTIONS,
-  })),
-);
-
 const selectDefaultCollection = (action$, state$) => action$.pipe(
   ofType(actionTypes.CREATE_DEFAULT_COLLECTIONS),
   map(() => {
@@ -132,7 +123,6 @@ export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  createDefaultCollections,
   selectDefaultCollection,
 );
 

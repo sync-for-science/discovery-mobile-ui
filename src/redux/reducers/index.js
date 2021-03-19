@@ -106,25 +106,26 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
   }
 };
 
-const preloadCollections = {};
+const createDefaultCollections = () => {
+  const defaultCollectionId = uuidv4();
+  const timeCreated = new Date();
+  return {
+    [defaultCollectionId]: {
+      created: timeCreated,
+      lastUpdated: timeCreated,
+      label: 'Untitled Collection',
+      resourceIds: {},
+      lastAddedResourceId: null,
+    },
+  };
+};
+
+const preloadCollections = createDefaultCollections();
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadCollections;
-    }
-    case actionTypes.CREATE_DEFAULT_COLLECTIONS: {
-      const defaultCollectionId = uuidv4();
-      const timeCreated = new Date();
-      const defaultCollections = {
-        [defaultCollectionId]: {
-          created: timeCreated,
-          lastUpdated: timeCreated,
-          label: 'Untitled Collection',
-          resourceIds: {},
-          lastAddedResourceId: null,
-        },
-      };
-      return defaultCollections;
+      return createDefaultCollections();
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
