@@ -23,7 +23,6 @@ import SkipLoginButton from './SkipLoginButton';
 const Login = ({
   authResult,
   clearAuthAction,
-  patientData,
   setAuthAction,
   setPatientDataAction,
 }) => {
@@ -32,7 +31,7 @@ const Login = ({
   const fhirIss = buildFhirIssUrl(mockPatientId);
 
   useEffect(() => {
-    if (authResult && !patientData) {
+    if (authResult) {
       const {
         accessToken,
         additionalParameters: { patient: patientId },
@@ -53,7 +52,7 @@ const Login = ({
 
       queryPatient(patientId, fhirClient);
     }
-  }, [authResult, patientData]);
+  }, [authResult]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -99,17 +98,14 @@ Login.propTypes = {
   setPatientDataAction: func.isRequired,
   authResult: shape({}),
   clearAuthAction: func.isRequired,
-  patientData: shape({}),
 };
 
 Login.defaultProps = {
   authResult: null,
-  patientData: null,
 };
 
 const mapStateToProps = (state) => ({
   authResult: state.auth.authResult,
-  patientData: state.patient.patientData,
 });
 
 const mapDispatchToProps = {
