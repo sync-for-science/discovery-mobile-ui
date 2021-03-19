@@ -10,7 +10,7 @@ import {
 } from 'prop-types';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
+import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 import MarkedIcon from '../Icons/MarkedIcon';

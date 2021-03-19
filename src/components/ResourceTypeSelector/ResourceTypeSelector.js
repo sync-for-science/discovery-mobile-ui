@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { selectResourceType } from '../../redux/epics';
+import { selectResourceType } from '../../redux/action-creators';
 
 const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
