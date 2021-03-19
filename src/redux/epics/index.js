@@ -22,8 +22,6 @@ export const actionTypes = {
   UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
   REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
-  CREATE_DEFAULT_COLLECTIONS: 'CREATE_DEFAULT_COLLECTIONS',
-  SELECT_DEFAULT_COLLECTION: 'SELECT_DEFAULT_COLLECTION',
   UPDATE_MARKED_RESOURCES: 'UPDATE_MARKED_RESOURCES',
 };
 
@@ -107,23 +105,10 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => ({
   payload: { collectionId, resourceIds },
 });
 
-const selectDefaultCollection = (action$, state$) => action$.pipe(
-  ofType(actionTypes.CREATE_DEFAULT_COLLECTIONS),
-  map(() => {
-    const { value: { collections } } = state$;
-    const collectionId = Object.keys(collections)[0];
-    return ({
-      type: actionTypes.SELECT_DEFAULT_COLLECTION,
-      payload: collectionId,
-    });
-  }),
-);
-
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  selectDefaultCollection,
 );
 
 export default createEpicMiddleware({
