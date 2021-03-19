@@ -37,13 +37,15 @@ export const patientSelector = createSelector(
   },
 );
 
+// eslint-disable-next-line max-len
+const sortEntriesByResourceType = () => ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
+
 export const supportedResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector],
   (resourceIdsGroupedByType) => Object.entries(resourceIdsGroupedByType)
     // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([resourceType]) => !!PLURAL_RESOURCE_TYPES[resourceType])
-    // sort by label:
-    .sort(([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1)) // eslint-disable-line max-len
+    .filter(([type]) => !!PLURAL_RESOURCE_TYPES[type]) // derived "type" includes: lab/vitals
+    .sort(sortEntriesByResourceType)
     .reduce((acc, [resourceType, subTypes]) => {
       const totalCount = values(subTypes).reduce((count, idSet) => count + idSet.size, 0);
       return acc.concat({
@@ -118,8 +120,8 @@ const timelineItemsInRangeSelector = createSelector(
 const MAX_INTERVAL_COUNT = 50;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, markedResourcesSelector],
-  (timelineItemsInRange, timelineRange, markedResources) => {
+  [timelineItemsInRangeSelector, timelineRangeSelector, markedResourcesSelector, resourcesSelector],
+  (timelineItemsInRange, timelineRange, markedResources, resources) => {
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -171,7 +173,7 @@ export const timelineIntervalsSelector = createSelector(
       // TODO: perhaps the following should be sets in Redux state, in the 1st place:
       const markedSet = new Set(Object.keys(markedResources));
 
-      // inject z score, and markedCount -- mutates intervalMap:
+      // inject z score, and markedItems -- mutates intervalMap:
       intervalsWithItems.forEach((interval) => {
         const cardinality = interval.items.length;
         // eslint-disable-next-line no-param-reassign
@@ -187,9 +189,22 @@ export const timelineIntervalsSelector = createSelector(
           recordCount2SDplus += cardinality;
         }
 
-        // inject markedItems --  -- mutates intervalMap:
-        interval.markedItems = interval.items // eslint-disable-line no-param-reassign
-          .filter((id) => markedSet.has(id));
+        // temporary dictionary to group items by type:
+        const markedItemsDictionaryByType = interval.items
+          .filter((id) => markedSet.has(id))
+          .reduce((acc, id) => {
+            const { type } = resources[id];
+            const idsByType = acc[type] ?? [];
+            return {
+              ...acc,
+              [type]: idsByType.concat(id),
+            };
+          }, {});
+
+        // eslint-disable-next-line no-param-reassign
+        interval.markedItems = Object.entries(markedItemsDictionaryByType)
+          .sort(sortEntriesByResourceType) // keep cartouches in same order, by resource type label
+          .map(([type, items]) => ({ type, items }));
       });
     }
 

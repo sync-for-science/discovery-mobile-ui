@@ -66,7 +66,7 @@ Bar.propTypes = {
   height: number.isRequired,
 };
 
-const getMarkedHeight = (cardinality) => {
+const getCartoucheHeight = (cardinality) => {
   if (cardinality === 0) {
     return 0;
   }
@@ -82,37 +82,38 @@ const getMarkedHeight = (cardinality) => {
   return MARKED_RADIUS * 5;
 };
 
+const MarkedCartouche = ({ markedHeight, y }) => (
+  <Rect
+    rx={MARKED_RADIUS}
+    x={MARKED_RADIUS * -1}
+    y={y}
+    width={MARKED_RADIUS * 2}
+    height={markedHeight}
+    fill={Colors.hasMarked}
+  />
+);
+
+MarkedCartouche.propTypes = {
+  markedHeight: number.isRequired,
+  y: number.isRequired,
+};
+
 const MarkedIndicators = ({
   markedItems,
 }) => {
-  const markedHeight = getMarkedHeight(markedItems.length);
-  return (
-    <G
-      y={BAR_HEIGHT + 4}
-    >
-      {markedItems.length ? (
-        <Rect
-          rx={MARKED_RADIUS}
-          x={MARKED_RADIUS * -1}
-          y={0}
-          width={MARKED_RADIUS * 2}
-          height={markedHeight}
-          fill={Colors.hasMarked}
-        />
-      ) : null}
-      <SvgText
-        // fill={LABEL_COLOR}
-        stroke="none"
-        fontSize={LABEL_FONT_SIZE}
-        fontWeight="normal"
-        x={0}
-        y={24}
-        textAnchor="middle"
-      >
-        {markedItems.length}
-      </SvgText>
-    </G>
-  );
+  let nextY = BAR_HEIGHT + 4;
+  return markedItems.map(({ type, items }) => {
+    const markedHeight = getCartoucheHeight(items.length);
+    const thisY = nextY;
+    nextY += (markedHeight + 1);
+    return (
+      <MarkedCartouche
+        key={type}
+        markedHeight={markedHeight}
+        y={thisY}
+      />
+    );
+  });
 };
 
 MarkedIndicators.propTypes = {
@@ -406,7 +407,10 @@ TimelineBrowser.propTypes = {
     intervals: arrayOf(shape({
       zScore: number.isRequired,
       items: arrayOf(string).isRequired,
-      markedItems: arrayOf(string).isRequired,
+      markedItems: arrayOf(shape({
+        type: string.isRequired,
+        items: arrayOf(string).isRequired,
+      }).isRequired).isRequired,
     })).isRequired, // that have records
     intervalLength: number.isRequired,
     maxCount: number.isRequired,
