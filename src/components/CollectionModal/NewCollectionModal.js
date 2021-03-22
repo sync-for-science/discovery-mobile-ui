@@ -1,30 +1,31 @@
-import React, {useState} from 'react'
-import { StyleSheet, TextInput, View } from 'react-native'
-import Dialog from 'react-native-dialog'
-import { connect } from 'react-redux'
+import React, { useState } from 'react';
+import { StyleSheet, TextInput, View } from 'react-native';
+import Dialog from 'react-native-dialog';
+import { connect } from 'react-redux';
 
-import { createCollection } from '../../redux/action-creators'
+import { bool, func } from 'prop-types';
+import { createCollection } from '../../redux/action-creators';
 
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
-const NewCollectionModal = ({modalVisible, setModalVisible, createCollectionAction}) => {
-  const [name, setName] = useState("")
+const NewCollectionModal = ({ modalVisible, setModalVisible, createCollectionAction }) => {
+  const [name, setName] = useState('');
 
   const handleSubmit = () => {
-    createCollectionAction(name)
-    setName("")
-    setModalVisible(false)
-  }
+    createCollectionAction(name);
+    setName('');
+    setModalVisible(false);
+  };
 
   const handleCancel = () => {
-    setName("")
-    setModalVisible(false)
-  }
+    setName('');
+    setModalVisible(false);
+  };
 
   return (
     <View style={styles.base}>
-      <Dialog.Container 
-        visible={modalVisible} 
+      <Dialog.Container
+        visible={modalVisible}
         keyboardVerticalOffset={250}
         onBackdropPress={handleCancel}
       >
@@ -32,35 +33,41 @@ const NewCollectionModal = ({modalVisible, setModalVisible, createCollectionActi
         <Dialog.Description>
           Enter name for this new collection.
         </Dialog.Description>
-        <TextInput 
+        <TextInput
           style={styles.textInput}
           placeholder="Name"
-          autoFocus={true}
+          autoFocus
           autoCorrect={false}
           value={name}
           onChangeText={(text) => setName(text)}
-          
+
         />
-        <Dialog.Button 
-          label="Cancel" 
-          color={Colors.darkgrey} 
+        <Dialog.Button
+          label="Cancel"
+          color={Colors.darkgrey}
           onPress={handleCancel}
         />
-        <Dialog.Button 
-          label="Create" 
-          bold 
+        <Dialog.Button
+          label="Create"
+          bold
           onPress={handleSubmit}
         />
       </Dialog.Container>
     </View>
-  )
-}
+  );
+};
+
+NewCollectionModal.propTypes = {
+  modalVisible: bool.isRequired,
+  setModalVisible: func.isRequired,
+  createCollectionAction: func.isRequired,
+};
 
 const mapDispatchToProps = {
-  createCollectionAction: createCollection
-}
+  createCollectionAction: createCollection,
+};
 
-export default connect(null, mapDispatchToProps)(NewCollectionModal)
+export default connect(null, mapDispatchToProps)(NewCollectionModal);
 
 const styles = StyleSheet.create({
   base: {
@@ -72,6 +79,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginHorizontal: 20,
     marginBottom: 20,
-    padding: 5
-  }
-})
+    padding: 5,
+  },
+});

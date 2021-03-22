@@ -29,5 +29,5 @@ export default {
   collectionIcon: yellow2,
   hasMarked: blue7,
   countIcon: gray1,
-  screenBackground: gray4
+  screenBackground: gray4,
 };
