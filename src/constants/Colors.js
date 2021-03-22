@@ -1,6 +1,7 @@
 const gray1 = '#c2c2c2';
 const gray2 = '#d9d9d9';
 const gray3 = '#5e5e5e';
+const gray4 = '#f2f2f2'; // default screen background
 const blue1 = '#3477e3';
 const blue2 = '#c7d7f0';
 const blue3 = '#143263';
@@ -28,4 +29,5 @@ export default {
   collectionIcon: yellow2,
   hasMarked: blue7,
   countIcon: gray1,
+  screenBackground: gray4
 };
