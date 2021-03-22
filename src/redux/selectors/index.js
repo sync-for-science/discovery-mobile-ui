@@ -241,12 +241,7 @@ export const lastAddedResourceIdSelector = createSelector(
 
 export const collectionResourceIdsSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId].resourceIds,
-);
-
-const selectedCollectionResourceIdsSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollection) => collections[selectedCollection]?.resourceIds,
+  (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
 );
 
 const subTypeResourceIdsSelector = createSelector(
@@ -262,19 +257,19 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
-    selectedCollectionResourceIdsSelector,
+    collectionResourceIdsSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
-    selectedCollectionResourceIdsObjects,
+    collectionResourceIdsObjects,
     timelineItemsInRange,
     subTypeResourceIds,
   ) => {
-    if (!selectedCollectionResourceIdsObjects) {
+    if (!collectionResourceIdsObjects) {
       return {};
     }
-    const selectedCollectionResourceIds = Object.keys(selectedCollectionResourceIdsObjects);
+    const selectedCollectionResourceIds = Object.keys(collectionResourceIdsObjects);
     return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};

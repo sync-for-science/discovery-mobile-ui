@@ -10,7 +10,6 @@ const blue6 = '#4a648f';
 const blue7 = '#9dc3e6';
 const yellow1 = '#e4c66a'; // desktop selected
 const yellow2 = '#d78c14'; // desktop last selected
-const yellow3 = '#eec15c';
 
 export default {
   primary: blue1,
@@ -26,6 +25,7 @@ export default {
   divider: gray1,
   selected: yellow1,
   lastSelected: yellow2,
-  collectionIcon: yellow3,
+  collectionIcon: yellow2,
   hasMarked: blue7,
+  countIcon: gray1,
 };

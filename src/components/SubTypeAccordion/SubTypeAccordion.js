@@ -14,10 +14,10 @@ import { addResourceToCollection, removeResourceFromCollection } from '../../red
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
+import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
   addResourceToCollectionAction,
-  collectionDateFilteredCount,
   dateFilteredCount,
   removeResourceFromCollectionAction,
   resourceIds,
@@ -28,30 +28,20 @@ const SubTypeAccordion = ({
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
-        <CountIcon
-          shape="square"
-          color={Colors.lightgrey}
-          count={dateFilteredCount}
-          marginRight
-          textColor="black"
-          readOnly
-        />
+        <CountIcon count={dateFilteredCount} />
         <BaseText style={styles.headerText}>
           {item.title}
         </BaseText>
       </View>
-      <View style={{ flexDirection: 'row' }}>
+      <View style={styles.rightIconsContainer}>
         <MarkedIcon
           resourceIds={resourceIds}
           showCount
         />
-        <CountIcon
-          shape="square"
-          color={Colors.lastSelected}
-          count={collectionDateFilteredCount}
-          action1={() => addResourceToCollectionAction(selectedCollectionId, item.content)}
-          action2={() => removeResourceFromCollectionAction(selectedCollectionId, item.content)}
-          actionDep={collectionDateFilteredCount > 0}
+        <CollectionIcon
+          collectionId={selectedCollectionId}
+          resourceIds={resourceIds}
+          showCount
         />
       </View>
     </View>
@@ -85,7 +75,6 @@ const SubTypeAccordion = ({
 
 SubTypeAccordion.propTypes = {
   addResourceToCollectionAction: func.isRequired,
-  collectionDateFilteredCount: number.isRequired,
   dateFilteredCount: number.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
@@ -124,5 +113,8 @@ const styles = StyleSheet.create({
   headerText: {
     marginLeft: 5,
     color: 'black',
+  },
+  rightIconsContainer: {
+    flexDirection: 'row',
   },
 });
