@@ -23,7 +23,11 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
-export const markedResourcesSelector = (state) => state.markedResources;
+export const focusedSubtypeSelector = (state) => state.markedResources.focusedSubtype;
+
+export const markedResourcesSelector = (state) => state.markedResources.marked;
+
+export const focusedResourcesSelector = (state) => state.markedResources.focused;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
