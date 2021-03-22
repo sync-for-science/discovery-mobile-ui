@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flexDirection: 'column',
-    minHeight: CHART_HEIGHT,
+    minHeight: CHART_HEIGHT + 60, // + height of date selectors
     borderColor: 'gray',
     marginTop: 16,
   },
