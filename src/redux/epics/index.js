@@ -10,8 +10,6 @@ import { pathEq, flatten } from 'ramda';
 
 import { actionTypes } from '../action-types';
 
-export { actionTypes } from '../action-types';
-
 const flattenResources = (action$) => action$.pipe(
   ofType(actionTypes.SET_PATIENT_DATA),
   map(({ payload }) => ({

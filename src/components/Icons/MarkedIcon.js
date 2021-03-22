@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { Text } from 'native-base';
 
 import Colors from '../../constants/Colors';
-import { actionTypes } from '../../redux/epics';
+import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
 } from '../../redux/selectors';

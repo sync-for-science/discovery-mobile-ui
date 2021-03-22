@@ -10,7 +10,7 @@ import {
 
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
-import { actionTypes } from '../../redux/epics';
+import { actionTypes } from '../../redux/action-types';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
   const { minimumDate, maximumDate } = timelineProps;
