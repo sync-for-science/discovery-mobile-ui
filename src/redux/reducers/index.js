@@ -78,9 +78,6 @@ export const selectedResourceTypeReducer = (state = preloadSelectedResourceType,
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedResourceType;
     }
-    case actionTypes.CREATE_RESOURCE_TYPE_SELECTION: {
-      return state;
-    }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       return action.payload;
     }
@@ -109,25 +106,28 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
   }
 };
 
-const preloadCollections = {};
+// this same uuid recycled across logins -- which is only development?
+const defaultCollectionId = uuidv4();
+
+const createDefaultCollections = () => {
+  const timeCreated = new Date();
+  return {
+    [defaultCollectionId]: {
+      created: timeCreated,
+      lastUpdated: timeCreated,
+      label: 'Untitled Collection',
+      resourceIds: {},
+      lastAddedResourceId: null,
+    },
+  };
+};
+
+const preloadCollections = createDefaultCollections();
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadCollections;
-    }
-    case actionTypes.CREATE_DEFAULT_COLLECTIONS: {
-      const defaultCollectionId = uuidv4();
-      const timeCreated = new Date();
-      const defaultCollections = {
-        [defaultCollectionId]: {
-          created: timeCreated,
-          lastUpdated: timeCreated,
-          label: 'Untitled Collection',
-          resourceIds: {},
-          lastAddedResourceId: null,
-        },
-      };
-      return defaultCollections;
+      return createDefaultCollections();
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -171,14 +171,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-const preloadSelectedCollection = null;
-export const selectedCollectionReducer = (state = preloadSelectedCollection, action) => {
+export const selectedCollectionReducer = (state = defaultCollectionId, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadSelectedCollection;
-    }
-    case actionTypes.SELECT_DEFAULT_COLLECTION: {
-      return action.payload;
+      return defaultCollectionId;
     }
     default:
       return state;

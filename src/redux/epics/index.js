@@ -19,12 +19,9 @@ export const actionTypes = {
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
   TOGGLE_RESOURCE_TYPE_FILTERS: 'TOGGLE_RESOURCE_TYPE_FILTERS',
   SELECT_RESOURCE_TYPE: 'SELECT_RESOURCE_TYPE',
-  CREATE_RESOURCE_TYPE_SELECTION: 'CREATE_RESOURCE_TYPE_SELECTION',
   UPDATE_DATE_RANGE_FILTER: 'UPDATE_DATE_RANGE_FILTER',
   ADD_RESOURCE_TO_COLLECTION: 'ADD_RESOURCE_TO_COLLECTION',
   REMOVE_RESOURCE_FROM_COLLECTION: 'REMOVE_RESOURCE_FROM_COLLECTION',
-  CREATE_DEFAULT_COLLECTIONS: 'CREATE_DEFAULT_COLLECTIONS',
-  SELECT_DEFAULT_COLLECTION: 'SELECT_DEFAULT_COLLECTION',
   UPDATE_MARKED_RESOURCES: 'UPDATE_MARKED_RESOURCES',
 };
 
@@ -93,15 +90,6 @@ export const toggleResourceTypeFilter = (resourceType) => ({
   payload: resourceType,
 });
 
-// dont care about GROUP_BY_TYPE but not sure how to fire off
-// CREATE_RESOURCE_TYPE_SELECTION without using ofType
-const createSelectedResourceType = (action$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => ({
-    type: actionTypes.CREATE_RESOURCE_TYPE_SELECTION,
-  })),
-);
-
 export const selectResourceType = (resourceType) => ({
   type: actionTypes.SELECT_RESOURCE_TYPE,
   payload: resourceType,
@@ -117,34 +105,10 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => ({
   payload: { collectionId, resourceIds },
 });
 
-// dont care about GROUP_BY_TYPE but not sure how to fire off
-// CREATE_DEFAULT_COLLECTIONS without using ofType
-const createDefaultCollections = (action$) => action$.pipe(
-  ofType(actionTypes.GROUP_BY_TYPE),
-  map(() => ({
-    type: actionTypes.CREATE_DEFAULT_COLLECTIONS,
-  })),
-);
-
-const selectDefaultCollection = (action$, state$) => action$.pipe(
-  ofType(actionTypes.CREATE_DEFAULT_COLLECTIONS),
-  map(() => {
-    const { value: { collections } } = state$;
-    const collectionId = Object.keys(collections)[0];
-    return ({
-      type: actionTypes.SELECT_DEFAULT_COLLECTION,
-      payload: collectionId,
-    });
-  }),
-);
-
 export const rootEpic = combineEpics(
   flattenResources,
   groupByType,
   requestNextItems,
-  createSelectedResourceType,
-  createDefaultCollections,
-  selectDefaultCollection,
 );
 
 export default createEpicMiddleware({
