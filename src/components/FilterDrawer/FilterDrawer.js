@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
-import { toggleResourceTypeFilter } from '../../redux/epics';
+import { toggleResourceTypeFilter } from '../../redux/action-creators';
 import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {

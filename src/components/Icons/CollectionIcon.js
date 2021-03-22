@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 
 import { collectionResourceIdsSelector } from '../../redux/selectors';
-import { addResourceToCollection, removeResourceFromCollection } from '../../redux/epics';
+import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 
 const CollectionIcon = ({
   collectionId,
