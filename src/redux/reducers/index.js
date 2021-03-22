@@ -111,8 +111,8 @@ const defaultCollectionId = uuidv4();
 
 const createCollection = (name = null) => {
   const timeCreated = new Date();
-  const label = name ? name : "Untitled Collection"
-  const collectionId = name ? defaultCollectionId : uuidv4()
+  const label = name || 'Untitled Collection';
+  const collectionId = name ? defaultCollectionId : uuidv4();
   return {
     [collectionId]: {
       created: timeCreated,
@@ -169,8 +169,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
-      const newCollection = createCollection(action.payload)
-      return {...state, ...newCollection}
+      const newCollection = createCollection(action.payload);
+      return { ...state, ...newCollection };
     }
     default:
       return state;
