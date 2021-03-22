@@ -47,5 +47,5 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     marginBottom: 20,
-  }
+  },
 });
