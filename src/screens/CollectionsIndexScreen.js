@@ -4,9 +4,11 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { func, shape, string } from 'prop-types';
+import { Header } from 'native-base'
 
 import Colors from '../constants/Colors';
 import BaseText from '../components/Generic/BaseText';
+import NewCollectionModal from '../components/CollectionModal/NewCollectionModal';
 
 const CollectionRow = ({ label, handlePress }) => (
   <View style={styles.collectionRow}>
@@ -22,6 +24,7 @@ CollectionRow.propTypes = {
 const CollectionsIndexScreen = ({ navigation, collections }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+    <Header style={{backgroundColor: 'red'}} />
     <View style={styles.screen}>
       <BaseText variant="screenTitle">Collections</BaseText>
       {Object.entries(collections).map(([id, { label }]) => (
@@ -32,6 +35,7 @@ const CollectionsIndexScreen = ({ navigation, collections }) => (
         />
       ))}
     </View>
+    <NewCollectionModal />
   </SafeAreaView>
 );
 
