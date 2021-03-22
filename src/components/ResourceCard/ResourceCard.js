@@ -22,6 +22,7 @@ import {
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
+import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import AddRemoveButton from './AddRemoveButton';
@@ -83,11 +84,17 @@ const ResourceCard = ({
     <View style={styles.root}>
       <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
-        <View style={styles.dateIconContainer}>
+        <View style={styles.rightIconsContainer}>
           <BaseText>{resourceDate}</BaseText>
-          <MarkedIcon
+          <FocusedIcon
+            subType={resource.subType}
             resourceIds={[resourceId]}
-            showCount={false}
+            isAccordion={false}
+          />
+          <MarkedIcon
+            subType={resource.subType}
+            resourceIds={[resourceId]}
+            isAccordion={false}
           />
           <CollectionIcon
             showCount={false}
@@ -163,7 +170,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     marginLeft: 10,
   },
-  dateIconContainer: {
+  rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
