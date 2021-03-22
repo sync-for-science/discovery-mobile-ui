@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 // import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import DateRangePicker from './DateRangePicker';
-import TimelineBrowser from './TimelineBrowser';
+import TimelineBrowser, { CHART_HEIGHT } from './TimelineBrowser';
 
 const Timeline = () => (
   <View style={styles.root}>
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flexDirection: 'column',
-    minHeight: 160,
+    minHeight: CHART_HEIGHT,
     borderColor: 'gray',
     marginTop: 16,
   },
