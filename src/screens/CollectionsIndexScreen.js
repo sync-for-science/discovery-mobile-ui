@@ -9,7 +9,6 @@ import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line impor
 
 
 import Colors from '../constants/Colors';
-import BaseText from '../components/Generic/BaseText';
 import NewCollectionModal from '../components/CollectionModal/NewCollectionModal';
 
 const CollectionRow = ({ label, handlePress }) => (
