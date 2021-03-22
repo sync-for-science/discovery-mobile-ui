@@ -117,6 +117,9 @@ const timelineItemsInRangeSelector = createSelector(
   },
 );
 
+// eslint-disable-next-line max-len
+const sortEntriesBySubType = () => ([, s1], [, s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
+
 const MAX_INTERVAL_COUNT = 50;
 
 export const timelineIntervalsSelector = createSelector(
@@ -193,18 +196,18 @@ export const timelineIntervalsSelector = createSelector(
         const markedItemsDictionaryByType = interval.items
           .filter((id) => markedSet.has(id))
           .reduce((acc, id) => {
-            const { type } = resources[id];
-            const idsByType = acc[type] ?? [];
+            const { subType } = resources[id];
+            const idsByType = acc[subType] ?? [];
             return {
               ...acc,
-              [type]: idsByType.concat(id),
+              [subType]: idsByType.concat(id),
             };
           }, {});
 
         // eslint-disable-next-line no-param-reassign
         interval.markedItems = Object.entries(markedItemsDictionaryByType)
-          .sort(sortEntriesByResourceType) // keep cartouches in same order, by resource type label
-          .map(([type, items]) => ({ type, items }));
+          .sort(sortEntriesBySubType) // keep cartouches in same order, by resource subType label
+          .map(([subType, items]) => ({ subType, items }));
       });
     }
 

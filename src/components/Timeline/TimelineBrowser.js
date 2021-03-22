@@ -102,13 +102,13 @@ const MarkedIndicators = ({
   markedItems,
 }) => {
   let nextY = BAR_HEIGHT + 4;
-  return markedItems.map(({ type, items }) => {
+  return markedItems.map(({ subType, items }) => {
     const markedHeight = getCartoucheHeight(items.length);
     const thisY = nextY;
     nextY += (markedHeight + 1);
     return (
       <MarkedCartouche
-        key={type}
+        key={subType}
         markedHeight={markedHeight}
         y={thisY}
       />
@@ -117,7 +117,10 @@ const MarkedIndicators = ({
 };
 
 MarkedIndicators.propTypes = {
-  markedItems: arrayOf(string).isRequired,
+  markedItems: arrayOf(shape({
+    subType: string.isRequired,
+    items: arrayOf(string).isRequired,
+  }).isRequired).isRequired,
 };
 
 const TimelineItems = ({
@@ -408,7 +411,7 @@ TimelineBrowser.propTypes = {
       zScore: number.isRequired,
       items: arrayOf(string).isRequired,
       markedItems: arrayOf(shape({
-        type: string.isRequired,
+        subType: string.isRequired,
         items: arrayOf(string).isRequired,
       }).isRequired).isRequired,
     })).isRequired, // that have records
