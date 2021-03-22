@@ -23,7 +23,7 @@ const CollectionsIndexScreen = ({ navigation, collections }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
-      <BaseText variant="title">Collections</BaseText>
+      <BaseText variant="screenTitle">Collections</BaseText>
       {Object.entries(collections).map(([id, { label }]) => (
         <CollectionRow
           key={id}
