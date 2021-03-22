@@ -17,7 +17,7 @@ const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <View style={styles.screen}>
-        <BaseText variant="title">Collection Details</BaseText>
+        <BaseText variant="screenTitle">Collection Details</BaseText>
         <View style={styles.collectionContainer}>
           <Text>{JSON.stringify(collection, null, 2)}</Text>
         </View>

@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: '700',
     color: 'black',
+  },
+  screenTitle: {
+    fontWeight: '700',
+    color: 'black',
     fontSize: 20,
     marginBottom: 20,
   },
