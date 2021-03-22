@@ -199,6 +199,9 @@ const preloadedMarkedResources = {
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return preloadedMarkedResources;
+    }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       return pruneEmpty({
         ...state, // previously marked
