@@ -1,10 +1,12 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button,
+  StyleSheet, View, SafeAreaView, StatusBar, Button, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import { func, shape, string } from 'prop-types';
-import { Header } from 'native-base'
+import { Header, Right, Button as NBButton, Body, Title, Left } from 'native-base'
+import { Ionicons,  } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+
 
 import Colors from '../constants/Colors';
 import BaseText from '../components/Generic/BaseText';
@@ -24,9 +26,18 @@ CollectionRow.propTypes = {
 const CollectionsIndexScreen = ({ navigation, collections }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <Header style={{backgroundColor: 'red'}} />
+    <Header style={styles.header}>
+      <Left />
+      <Body>
+        <Title>Collections</Title>
+      </Body>
+      <Right>
+        <NBButton transparent>
+          <Ionicons name="md-add-circle" size={30} color={Colors.primary}/>
+        </NBButton>
+      </Right>
+    </Header>
     <View style={styles.screen}>
-      <BaseText variant="screenTitle">Collections</BaseText>
       {Object.entries(collections).map(([id, { label }]) => (
         <CollectionRow
           key={id}
@@ -61,4 +72,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     width: '90%',
   },
+  header: {
+    backgroundColor: Colors.screenBackground
+  }
 });
