@@ -109,25 +109,27 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
 
-const createDefaultCollections = () => {
+const createCollection = (name = null) => {
   const timeCreated = new Date();
+  const label = name ? name : "Untitled Collection"
+  const collectionId = name ? defaultCollectionId : uuidv4()
   return {
-    [defaultCollectionId]: {
+    [collectionId]: {
       created: timeCreated,
       lastUpdated: timeCreated,
-      label: 'Untitled Collection',
+      label,
       resourceIds: {},
       lastAddedResourceId: null,
     },
   };
 };
 
-const preloadCollections = createDefaultCollections();
+const preloadCollections = createCollection();
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return createDefaultCollections();
+      return createCollection();
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -165,6 +167,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.CREATE_COLLECTION: {
+      const newCollection = createCollection(action.payload)
+      return {...state, ...newCollection}
     }
     default:
       return state;

@@ -1,13 +1,17 @@
 import React, {useState} from 'react'
 import { StyleSheet, TextInput, View } from 'react-native'
 import Dialog from 'react-native-dialog'
+import { connect } from 'react-redux'
+
+import { createCollection } from '../../redux/action-creators'
 
 import Colors from '../../constants/Colors'
 
-const NewCollectionModal = ({modalVisible, setModalVisible}) => {
+const NewCollectionModal = ({modalVisible, setModalVisible, createCollectionAction}) => {
   const [name, setName] = useState("")
 
   const handleSubmit = () => {
+    createCollectionAction(name)
     setName("")
     setModalVisible(false)
   }
@@ -52,7 +56,11 @@ const NewCollectionModal = ({modalVisible, setModalVisible}) => {
   )
 }
 
-export default NewCollectionModal
+const mapDispatchToProps = {
+  createCollectionAction: createCollection
+}
+
+export default connect(null, mapDispatchToProps)(NewCollectionModal)
 
 const styles = StyleSheet.create({
   base: {
