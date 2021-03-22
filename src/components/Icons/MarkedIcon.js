@@ -23,10 +23,12 @@ const MarkedIcon = ({
     return isMarked ? acc + 1 : acc;
   }, 0);
 
+  const allAreMarked = markedCount === resourceIds.length;
+
   const handlePress = () => {
     updateMarkedResources(resourceIds.reduce((acc, id) => ({
       ...acc,
-      [id]: !markedCount,
+      [id]: !allAreMarked,
     }), {}));
   };
 
