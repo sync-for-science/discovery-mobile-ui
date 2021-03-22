@@ -112,7 +112,7 @@ const defaultCollectionId = uuidv4();
 const createCollection = (name = null) => {
   const timeCreated = new Date();
   const label = name || 'Untitled Collection';
-  const collectionId = name ? defaultCollectionId : uuidv4();
+  const collectionId = name ? uuidv4() : defaultCollectionId;
   return {
     [collectionId]: {
       created: timeCreated,
