@@ -229,7 +229,7 @@ const LegendAndBound = ({
             fill={LABEL_COLOR}
             stroke="none"
             fontSize={LABEL_FONT_SIZE}
-            textAnchor="left"
+            textAnchor="start"
           >
             {above2label}
           </SvgText>
@@ -250,7 +250,7 @@ const LegendAndBound = ({
           fill={LABEL_COLOR}
           stroke="none"
           fontSize={LABEL_FONT_SIZE}
-          textAnchor="left"
+          textAnchor="start"
         >
           {between1and2SDlabel}
         </SvgText>
