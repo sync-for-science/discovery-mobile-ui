@@ -34,7 +34,7 @@ const CollectionsIndexScreen = ({ navigation, collections }) => {
         <Title>Collections</Title>
       </Body>
       <Right>
-        <NBButton transparent onPress={() => setModalVisible(!modalVisible)}>
+        <NBButton transparent onPress={() => setModalVisible(true)}>
           <MaterialIcons name="add-box" size={30} color={Colors.primary} />
         </NBButton>
       </Right>
