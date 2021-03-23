@@ -22,7 +22,7 @@ const CollectionRow = ({
         <SelectedCollectionIcon collectionId={collectionId} selected={selected} />
         <BaseText variant={textStyle}>{label}</BaseText>
       </View>
-      <CollectionRowActionIcon collectionId={collectionId} />
+      <CollectionRowActionIcon selected={selected} collectionId={collectionId} />
     </TouchableOpacity>
   );
 };

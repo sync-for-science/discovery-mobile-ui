@@ -11,11 +11,19 @@ import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const CollectionRowActionIcon = ({
+  collections,
   collectionId,
   collectionsCount,
   deleteCollectionAction,
   renameCollectionAction,
+  selected,
 }) => {
+  const handleDeleteCollection = () => {
+    const nextCollectionId = selected
+      ? Object.keys(collections).filter(id => id !== collectionId)[0]
+      : null
+      deleteCollectionAction(collectionId, nextCollectionId)
+  }
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -58,7 +66,7 @@ const CollectionRowActionIcon = ({
                 },
                 {
                   text: 'Delete',
-                  onPress: () => deleteCollectionAction(collectionId),
+                  onPress: handleDeleteCollection,
                   style: 'destructive',
                 },
               ],
@@ -87,6 +95,7 @@ CollectionRowActionIcon.propTypes = {
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
+  collections: state.collections
 });
 
 const mapDispatchToProps = {
