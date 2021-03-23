@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { func, string } from 'prop-types';
-import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux'
 
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText'
 import SelectedCollectionIcon from '../Icons/SelectedCollectionIcon'
+import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 
 const CollectionRow = ({ collectionId, label, handlePress, selectedCollectionId }) => {
   const selected = collectionId === selectedCollectionId
@@ -17,9 +17,7 @@ const CollectionRow = ({ collectionId, label, handlePress, selectedCollectionId 
       <SelectedCollectionIcon collectionId={collectionId} selected={selected}/>
       <BaseText variant={textStyle}>{label}</BaseText>
     </View>
-    <TouchableOpacity>
-      <Entypo name="dots-three-horizontal" size={24} color={Colors.darkgrey} />
-    </TouchableOpacity>
+    <CollectionRowActionIcon collectionId={collectionId}/>
   </TouchableOpacity>
 )};
 
