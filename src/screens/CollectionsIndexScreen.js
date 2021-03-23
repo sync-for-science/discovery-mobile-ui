@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, View, SafeAreaView, StatusBar, Button, TouchableOpacity, Alert,
 } from 'react-native';
@@ -11,7 +11,6 @@ import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line impor
 
 import Colors from '../constants/Colors';
 import { createCollection } from '../redux/action-creators';
-// import NewCollectionModal from '../components/CollectionModal/NewCollectionModal';
 
 const CollectionRow = ({ label, handlePress }) => (
   <View style={styles.collectionRow}>
@@ -25,7 +24,6 @@ CollectionRow.propTypes = {
 };
 
 const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
-  const [modalVisible, setModalVisible] = useState(false);
   const handleNewCollectionPress = () => {
     Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text))
   }
@@ -52,7 +50,6 @@ const CollectionsIndexScreen = ({ navigation, collections, createCollectionActio
           />
         ))}
       </View>
-      {/* <NewCollectionModal modalVisible={modalVisible} setModalVisible={setModalVisible} /> */}
     </SafeAreaView>
   );
 };
