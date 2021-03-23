@@ -169,7 +169,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
-      const newCollection = createCollection(action.payload);
+      const collectionName = action.payload === "" ? "Untitled Collection" : action.payload
+      const newCollection = createCollection(collectionName);
       return { ...state, ...newCollection };
     }
     default:

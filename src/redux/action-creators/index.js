@@ -25,3 +25,8 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => {
     payload: { collectionId, resourceIds: payloadIds },
   });
 };
+
+export const createCollection = (collectionName) => ({
+  type: actionTypes.CREATE_COLLECTION,
+  payload: collectionName,
+})
