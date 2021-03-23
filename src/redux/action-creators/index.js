@@ -10,12 +10,18 @@ export const selectResourceType = (resourceType) => ({
   payload: resourceType,
 });
 
-export const addResourceToCollection = (collectionId, resourceIds) => ({
-  type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
-  payload: { collectionId, resourceIds },
-});
+export const addResourceToCollection = (collectionId, resourceIds) => {
+  const payloadIds = Array.isArray(resourceIds) ? resourceIds : [resourceIds];
+  return ({
+    type: actionTypes.ADD_RESOURCE_TO_COLLECTION,
+    payload: { collectionId, resourceIds: payloadIds },
+  });
+};
 
-export const removeResourceFromCollection = (collectionId, resourceIds) => ({
-  type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
-  payload: { collectionId, resourceIds },
-});
+export const removeResourceFromCollection = (collectionId, resourceIds) => {
+  const payloadIds = Array.isArray(resourceIds) ? resourceIds : [resourceIds];
+  return ({
+    type: actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+    payload: { collectionId, resourceIds: payloadIds },
+  });
+};
