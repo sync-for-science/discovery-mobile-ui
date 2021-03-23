@@ -359,5 +359,5 @@ export const collectionFlattenedSubTypesSelector = createSelector(
 
 export const collectionsCountSelector = createSelector(
   [collectionsSelector],
-  (collections) => (Object.entries(collections).length)
-)
+  (collections) => (Object.entries(collections).length),
+);

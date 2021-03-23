@@ -33,15 +33,15 @@ export const createCollection = (collectionName) => ({
 
 export const selectCollection = (collectionId) => ({
   type: actionTypes.SELECT_COLLECTION,
-  payload: collectionId
-})
+  payload: collectionId,
+});
 
 export const deleteCollection = (collectionId) => ({
   type: actionTypes.DELETE_COLLECTION,
-  payload: collectionId
-})
+  payload: collectionId,
+});
 
 export const renameCollection = (collectionId, collectionName) => ({
   type: actionTypes.RENAME_COLLECTION,
-  payload: {collectionId, collectionName}
-})
+  payload: { collectionId, collectionName },
+});

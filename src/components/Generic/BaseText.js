@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   bold: {
-    fontWeight: '700'
-  }
+    fontWeight: '700',
+  },
 });
