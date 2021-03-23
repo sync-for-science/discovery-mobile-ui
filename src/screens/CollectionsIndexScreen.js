@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button, TouchableOpacity, Alert,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shape } from 'prop-types';
+import { shape, func } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
@@ -11,17 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line impor
 
 import Colors from '../constants/Colors';
 import { createCollection } from '../redux/action-creators';
-
-const CollectionRow = ({ label, handlePress }) => (
-  <View style={styles.collectionRow}>
-    <Button title={label} onPress={handlePress} />
-  </View>
-);
-
-CollectionRow.propTypes = {
-  label: string.isRequired,
-  handlePress: func.isRequired,
-};
+import CollectionRow from '../components/CollectionRow/CollectionRow'
 
 const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
   const handleNewCollectionPress = () => {
