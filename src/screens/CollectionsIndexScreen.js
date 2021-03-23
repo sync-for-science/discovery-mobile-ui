@@ -11,7 +11,7 @@ import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line impor
 
 import Colors from '../constants/Colors';
 import { createCollection } from '../redux/action-creators';
-import CollectionRow from '../components/CollectionRow/CollectionRow'
+import CollectionRow from '../components/CollectionRow/CollectionRow';
 
 const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
   const handleNewCollectionPress = () => {

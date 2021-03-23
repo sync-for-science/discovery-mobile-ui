@@ -198,10 +198,9 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
     }
     case actionTypes.DELETE_COLLECTION: {
       if (action.payload.nextCollectionId) {
-        return action.payload.nextCollectionId
-      } else {
-        return state
+        return action.payload.nextCollectionId;
       }
+      return state;
     }
     default:
       return state;
