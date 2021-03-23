@@ -35,3 +35,8 @@ export const selectCollection = (collectionId) => ({
   type: actionTypes.SELECT_COLLECTION,
   payload: collectionId
 })
+
+export const deleteCollection = (collectionId) => ({
+  type: actionTypes.DELETE_COLLECTION,
+  payload: collectionId
+})

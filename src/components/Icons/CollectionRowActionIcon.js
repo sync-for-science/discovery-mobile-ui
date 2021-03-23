@@ -1,10 +1,12 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, ActionSheetIOS, View } from 'react-native'
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { connect } from 'react-redux'
 
+import {deleteCollection} from '../../redux/action-creators'
 import Colors from '../../constants/Colors';
 
-const CollectionRowActionIcon = () => {
+const CollectionRowActionIcon = ({collectionId, deleteCollectionAction}) => {
 
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -18,9 +20,9 @@ const CollectionRowActionIcon = () => {
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          setResult(Math.floor(Math.random() * 100) + 1);
+          // setResult(Math.floor(Math.random() * 100) + 1);
         } else if (buttonIndex === 2) {
-          setResult("🔮");
+          deleteCollectionAction(collectionId)
         }
       }
     );
@@ -35,6 +37,10 @@ const CollectionRowActionIcon = () => {
   )
 }
 
-export default CollectionRowActionIcon
+const mapDispatchToProps = {
+  deleteCollectionAction: deleteCollection
+}
+
+export default connect(null, mapDispatchToProps)(CollectionRowActionIcon)
 
 const styles = StyleSheet.create({})

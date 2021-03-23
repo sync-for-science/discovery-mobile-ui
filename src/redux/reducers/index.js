@@ -173,6 +173,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const newCollection = createCollection(collectionName);
       return { ...state, ...newCollection };
     }
+    case actionTypes.DELETE_COLLECTION: {
+      const newState = {...state}
+      delete newState[action.payload]
+      return newState
+    }
     default:
       return state;
   }
