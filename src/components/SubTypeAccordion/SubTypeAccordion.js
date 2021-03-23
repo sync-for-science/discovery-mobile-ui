@@ -4,22 +4,19 @@ import {
 } from 'react-native';
 import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
-
 import {
-  arrayOf, func, number, string,
+  arrayOf, number, string,
 } from 'prop-types';
+
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
-  addResourceToCollectionAction,
   dateFilteredCount,
-  removeResourceFromCollectionAction,
   resourceIds,
   selectedCollectionId,
   subType,
@@ -53,8 +50,6 @@ const SubTypeAccordion = ({
         key={resourceId}
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
-        addResourceToCollection={addResourceToCollectionAction}
-        removeResourceFromCollection={removeResourceFromCollectionAction}
       />
     ),
   );
@@ -74,9 +69,7 @@ const SubTypeAccordion = ({
 };
 
 SubTypeAccordion.propTypes = {
-  addResourceToCollectionAction: func.isRequired,
   dateFilteredCount: number.isRequired,
-  removeResourceFromCollectionAction: func.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,
@@ -86,12 +79,7 @@ const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
 });
 
-const mapDispatchToProps = {
-  addResourceToCollectionAction: addResourceToCollection,
-  removeResourceFromCollectionAction: removeResourceFromCollection,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SubTypeAccordion);
+export default connect(mapStateToProps, null)(SubTypeAccordion);
 
 const styles = StyleSheet.create({
   header: {

@@ -2,8 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape, func } from 'prop-types';
-import { Button } from 'native-base';
+import { string, shape } from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -25,6 +24,7 @@ import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
+import AddRemoveButton from './AddRemoveButton';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -73,29 +73,11 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   selectedCollectionId,
-  addResourceToCollection,
-  removeResourceFromCollection,
   collectionResourceIds,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-
-  let displayButton = (
-    <Button transparent onPress={() => addResourceToCollection(selectedCollectionId, resourceId)}>
-      <BaseText style={{ textAlign: 'center' }} variant="button">Add To Details Panel</BaseText>
-    </Button>
-  );
-  if (collectionResourceIds[resourceId]) {
-    displayButton = (
-      <Button
-        transparent
-        onPress={() => removeResourceFromCollection(selectedCollectionId, resourceId)}
-      >
-        <BaseText style={styles.removeButton} variant="button">Remove From Details Panel</BaseText>
-      </Button>
-    );
-  }
 
   return (
     <View style={styles.root}>
@@ -119,7 +101,11 @@ const ResourceCard = ({
       </View>
       <BaseDivider />
       <View style={styles.buttonContainer}>
-        {displayButton}
+        <AddRemoveButton
+          inCollection={!!collectionResourceIds[resourceId]}
+          collectionId={selectedCollectionId}
+          resourceId={resourceId}
+        />
       </View>
     </View>
   );
@@ -130,8 +116,6 @@ ResourceCard.propTypes = {
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
-  addResourceToCollection: func.isRequired,
-  removeResourceFromCollection: func.isRequired,
   collectionResourceIds: shape({}),
 };
 
