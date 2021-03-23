@@ -41,10 +41,11 @@ const CollectionsIndexScreen = ({ navigation, collections, createCollectionActio
           </TouchableOpacity>
         </Right>
       </Header>
-      <View style={styles.screen}>
+      <View style={styles.collectionRowContainer}>
         {Object.entries(collections).map(([id, { label }]) => (
           <CollectionRow
             key={id}
+            collectionId={id}
             label={label}
             handlePress={() => navigation.navigate('CollectionDetails', { collectionId: id })}
           />
@@ -74,12 +75,8 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
   },
-  screen: {
+  collectionRowContainer: {
     alignItems: 'center',
-  },
-  collectionRow: {
-    alignItems: 'flex-start',
-    width: '90%',
   },
   header: {
     backgroundColor: Colors.screenBackground,
