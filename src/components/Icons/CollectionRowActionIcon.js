@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
-import { func, number, string } from 'prop-types';
+import {
+  bool, func, number, shape, string,
+} from 'prop-types';
 
 import { deleteCollection, renameCollection } from '../../redux/action-creators';
 import { collectionsCountSelector } from '../../redux/selectors';
@@ -20,10 +22,10 @@ const CollectionRowActionIcon = ({
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
-      ? Object.keys(collections).filter(id => id !== collectionId)[0]
-      : null
-      deleteCollectionAction(collectionId, nextCollectionId)
-  }
+      ? Object.keys(collections).filter((id) => id !== collectionId)[0]
+      : null;
+    deleteCollectionAction(collectionId, nextCollectionId);
+  };
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -87,15 +89,17 @@ const CollectionRowActionIcon = ({
 };
 
 CollectionRowActionIcon.propTypes = {
+  collections: shape({}).isRequired,
   collectionId: string.isRequired,
   collectionsCount: number.isRequired,
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
+  selected: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
-  collections: state.collections
+  collections: state.collections,
 });
 
 const mapDispatchToProps = {

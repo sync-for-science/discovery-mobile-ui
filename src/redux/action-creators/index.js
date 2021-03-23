@@ -38,7 +38,7 @@ export const selectCollection = (collectionId) => ({
 
 export const deleteCollection = (collectionId, nextCollectionId) => ({
   type: actionTypes.DELETE_COLLECTION,
-  payload: {collectionId, nextCollectionId},
+  payload: { collectionId, nextCollectionId },
 });
 
 export const renameCollection = (collectionId, collectionName) => ({
