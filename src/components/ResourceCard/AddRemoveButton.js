@@ -1,5 +1,5 @@
-import { bool, func, string } from 'prop-types';
 import React from 'react';
+import { bool, func, string } from 'prop-types';
 import { StyleSheet } from 'react-native';
 import { Button } from 'native-base';
 import { connect } from 'react-redux';
