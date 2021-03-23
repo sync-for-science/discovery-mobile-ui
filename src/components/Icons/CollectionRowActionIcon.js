@@ -1,13 +1,14 @@
 import React from 'react'
-import { StyleSheet, TouchableOpacity, ActionSheetIOS, View } from 'react-native'
+import { StyleSheet, TouchableOpacity, ActionSheetIOS, View, Alert } from 'react-native'
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux'
 
 import {deleteCollection} from '../../redux/action-creators'
+import { collectionsCountSelector} from '../../redux/selectors'
 import Colors from '../../constants/Colors';
 
-const CollectionRowActionIcon = ({collectionId, deleteCollectionAction}) => {
-
+const CollectionRowActionIcon = ({collectionId, deleteCollectionAction, collectionsCount}) => {
+  console.log('collectionsCount', collectionsCount)
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -22,7 +23,11 @@ const CollectionRowActionIcon = ({collectionId, deleteCollectionAction}) => {
         } else if (buttonIndex === 1) {
           // setResult(Math.floor(Math.random() * 100) + 1);
         } else if (buttonIndex === 2) {
-          deleteCollectionAction(collectionId)
+          if (collectionsCount <= 1) {
+            Alert.prompt('Delete Error', 'Cannot delete last collection.', (text) => console.log(text))
+          } else {
+            deleteCollectionAction(collectionId)
+          }
         }
       }
     );
@@ -37,10 +42,14 @@ const CollectionRowActionIcon = ({collectionId, deleteCollectionAction}) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  collectionsCount: collectionsCountSelector(state)
+})
+
 const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection
 }
 
-export default connect(null, mapDispatchToProps)(CollectionRowActionIcon)
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionRowActionIcon)
 
 const styles = StyleSheet.create({})
