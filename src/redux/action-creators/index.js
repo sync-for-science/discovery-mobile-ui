@@ -40,3 +40,8 @@ export const deleteCollection = (collectionId) => ({
   type: actionTypes.DELETE_COLLECTION,
   payload: collectionId
 })
+
+export const renameCollection = (collectionId, collectionName) => ({
+  type: actionTypes.RENAME_COLLECTION,
+  payload: {collectionId, collectionName}
+})

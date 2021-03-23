@@ -178,6 +178,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       delete newState[action.payload]
       return newState
     }
+    case actionTypes.RENAME_COLLECTION: {
+      const updatedCollection = {...state[action.payload.collectionId]}
+      updatedCollection.label = action.payload.collectionName
+      return {...state, [action.payload.collectionId]: updatedCollection}
+    }
     default:
       return state;
   }

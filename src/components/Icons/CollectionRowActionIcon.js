@@ -3,16 +3,20 @@ import { StyleSheet, TouchableOpacity, ActionSheetIOS, View, Alert } from 'react
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux'
 
-import {deleteCollection} from '../../redux/action-creators'
+import {deleteCollection, renameCollection} from '../../redux/action-creators'
 import { collectionsCountSelector} from '../../redux/selectors'
 import Colors from '../../constants/Colors';
 
-const CollectionRowActionIcon = ({collectionId, deleteCollectionAction, collectionsCount}) => {
-  console.log('collectionsCount', collectionsCount)
+const CollectionRowActionIcon = ({
+  collectionId, 
+  deleteCollectionAction, 
+  collectionsCount,
+  renameCollectionAction
+}) => {
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ["Cancel", "Edit Collection", "Delete Collection"],
+        options: ["Cancel", "Rename Collection", "Delete Collection"],
         destructiveButtonIndex: 2,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark'
@@ -21,7 +25,21 @@ const CollectionRowActionIcon = ({collectionId, deleteCollectionAction, collecti
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          // setResult(Math.floor(Math.random() * 100) + 1);
+          Alert.prompt( 
+            'Rename Collection', 
+            'Enter name for this new collection.', 
+            [
+              {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel"
+              },
+              {
+                text: "Rename",
+                onPress: (text) => renameCollectionAction(collectionId, text),
+              }
+            ]
+          )
         } else if (buttonIndex === 2) {
           if (collectionsCount <= 1) {
             Alert.alert( 'Delete Error', 'Cannot delete last collection.')
@@ -62,7 +80,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  deleteCollectionAction: deleteCollection
+  deleteCollectionAction: deleteCollection,
+  renameCollectionAction: renameCollection
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionRowActionIcon)
