@@ -1,26 +1,29 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { selectCollection } from '../../redux/action-creators'
+import { bool, func, string } from 'prop-types'
 
+import { selectCollection } from '../../redux/action-creators'
 import Colors from '../../constants/Colors'
 
-const SelectedCollectionIcon = ({collectionId, selectedCollectionId, selectCollectionAction}) => {
-  const inCollectionStyle = selectedCollectionId === collectionId ? styles.inCollection : {}
+const SelectedCollectionIcon = ({collectionId, selected, selectCollectionAction}) => {
+  const inCollectionStyle = selected ? styles.inCollection : {}
   return (
     <TouchableOpacity style={[styles.base, inCollectionStyle]} onPress={() => selectCollectionAction(collectionId)} />
   )
 }
 
-const mapStateToProps = (state) => ({
-  selectedCollectionId: state.selectedCollection
-})
+SelectedCollectionIcon.propTypes = {
+  collectionId: string.isRequired,
+  selected: bool.isRequired,
+  selectCollection: func.isRequired
+}
 
 const mapDispatchToProps = {
   selectCollectionAction: selectCollection
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectedCollectionIcon)
+export default connect(null, mapDispatchToProps)(SelectedCollectionIcon)
 
 const styles = StyleSheet.create({
   base: {
@@ -32,10 +35,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     borderRadius: 30,
     borderWidth: 2,
-    borderColor: Colors.hasMarked,
+    borderColor: Colors.lightgrey,
   },
   inCollection: {
-    borderColor: Colors.hasMarked,
-    backgroundColor: Colors.hasMarked,
+    borderColor: Colors.primary,
+    backgroundColor: Colors.primary,
   },
 })
