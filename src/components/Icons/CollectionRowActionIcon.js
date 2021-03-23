@@ -24,9 +24,24 @@ const CollectionRowActionIcon = ({collectionId, deleteCollectionAction, collecti
           // setResult(Math.floor(Math.random() * 100) + 1);
         } else if (buttonIndex === 2) {
           if (collectionsCount <= 1) {
-            Alert.prompt('Delete Error', 'Cannot delete last collection.', (text) => console.log(text))
+            Alert.alert( 'Delete Error', 'Cannot delete last collection.')
           } else {
-            deleteCollectionAction(collectionId)
+            Alert.alert( 
+              'Delete Collection', 
+              'Are you sure you want to delete this collection?',
+              [
+                {
+                  text: "Cancel",
+                  onPress: () => {},
+                  style: "cancel"
+                },
+                {
+                  text: "Delete",
+                  onPress: () => deleteCollectionAction(collectionId),
+                  style: 'destructive'
+                }
+              ]
+            )
           }
         }
       }
