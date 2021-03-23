@@ -183,6 +183,9 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;
     }
+    case actionTypes.SELECT_COLLECTION: {
+      return action.payload
+    }
     default:
       return state;
   }

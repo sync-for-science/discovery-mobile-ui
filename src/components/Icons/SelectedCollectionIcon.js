@@ -1,13 +1,14 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import { selectCollection } from '../../redux/action-creators'
 
 import Colors from '../../constants/Colors'
 
-const SelectedCollectionIcon = ({collectionId, selectedCollectionId}) => {
+const SelectedCollectionIcon = ({collectionId, selectedCollectionId, selectCollectionAction}) => {
   const inCollectionStyle = selectedCollectionId === collectionId ? styles.inCollection : {}
   return (
-    <TouchableOpacity style={[styles.base, inCollectionStyle]} />
+    <TouchableOpacity style={[styles.base, inCollectionStyle]} onPress={() => selectCollectionAction(collectionId)} />
   )
 }
 
@@ -15,7 +16,11 @@ const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection
 })
 
-export default connect(mapStateToProps, null)(SelectedCollectionIcon)
+const mapDispatchToProps = {
+  selectCollectionAction: selectCollection
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedCollectionIcon)
 
 const styles = StyleSheet.create({
   base: {

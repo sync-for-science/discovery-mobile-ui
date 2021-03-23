@@ -30,3 +30,8 @@ export const createCollection = (collectionName) => ({
   type: actionTypes.CREATE_COLLECTION,
   payload: collectionName,
 });
+
+export const selectCollection = (collectionId) => ({
+  type: actionTypes.SELECT_COLLECTION,
+  payload: collectionId
+})
