@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button,
+  StyleSheet, View, SafeAreaView, StatusBar, Button, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { func, shape, string } from 'prop-types';
 import {
-  Header, Right, Button as NBButton, Body, Title, Left,
+  Header, Right, Body, Title, Left,
 } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
-import NewCollectionModal from '../components/CollectionModal/NewCollectionModal';
+import { createCollection } from '../redux/action-creators';
+// import NewCollectionModal from '../components/CollectionModal/NewCollectionModal';
 
 const CollectionRow = ({ label, handlePress }) => (
   <View style={styles.collectionRow}>
@@ -23,8 +24,11 @@ CollectionRow.propTypes = {
   handlePress: func.isRequired,
 };
 
-const CollectionsIndexScreen = ({ navigation, collections }) => {
+const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const handleNewCollectionPress = () => {
+    Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text))
+  }
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -34,9 +38,9 @@ const CollectionsIndexScreen = ({ navigation, collections }) => {
           <Title>Collections</Title>
         </Body>
         <Right>
-          <NBButton transparent onPress={() => setModalVisible(true)}>
+          <TouchableOpacity onPress={handleNewCollectionPress}>
             <MaterialIcons name="add-box" size={30} color={Colors.primary} />
-          </NBButton>
+          </TouchableOpacity>
         </Right>
       </Header>
       <View style={styles.screen}>
@@ -48,7 +52,7 @@ const CollectionsIndexScreen = ({ navigation, collections }) => {
           />
         ))}
       </View>
-      <NewCollectionModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
+      {/* <NewCollectionModal modalVisible={modalVisible} setModalVisible={setModalVisible} /> */}
     </SafeAreaView>
   );
 };
@@ -62,7 +66,11 @@ const mapStateToProps = (state) => ({
   collections: state.collections,
 });
 
-export default connect(mapStateToProps, null)(CollectionsIndexScreen);
+const mapDispatchToProps = {
+  createCollectionAction: createCollection
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionsIndexScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
