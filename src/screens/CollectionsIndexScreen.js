@@ -25,8 +25,8 @@ CollectionRow.propTypes = {
 
 const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
   const handleNewCollectionPress = () => {
-    Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text))
-  }
+    Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text));
+  };
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -57,6 +57,7 @@ const CollectionsIndexScreen = ({ navigation, collections, createCollectionActio
 CollectionsIndexScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
+  createCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -64,8 +65,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  createCollectionAction: createCollection
-}
+  createCollectionAction: createCollection,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsIndexScreen);
 

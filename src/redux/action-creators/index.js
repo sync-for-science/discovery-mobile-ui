@@ -29,4 +29,4 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => {
 export const createCollection = (collectionName) => ({
   type: actionTypes.CREATE_COLLECTION,
   payload: collectionName,
-})
+});
