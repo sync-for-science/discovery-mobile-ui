@@ -1,29 +1,32 @@
-import React from 'react'
-import { StyleSheet, TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { bool, func, string } from 'prop-types'
+import React from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
+import { bool, func, string } from 'prop-types';
 
-import { selectCollection } from '../../redux/action-creators'
-import Colors from '../../constants/Colors'
+import { selectCollection } from '../../redux/action-creators';
+import Colors from '../../constants/Colors';
 
-const SelectedCollectionIcon = ({collectionId, selected, selectCollectionAction}) => {
-  const inCollectionStyle = selected ? styles.inCollection : {}
+const SelectedCollectionIcon = ({ collectionId, selected, selectCollectionAction }) => {
+  const inCollectionStyle = selected ? styles.inCollection : {};
   return (
-    <TouchableOpacity style={[styles.base, inCollectionStyle]} onPress={() => selectCollectionAction(collectionId)} />
-  )
-}
+    <TouchableOpacity
+      style={[styles.base, inCollectionStyle]}
+      onPress={() => selectCollectionAction(collectionId)}
+    />
+  );
+};
 
 SelectedCollectionIcon.propTypes = {
   collectionId: string.isRequired,
   selected: bool.isRequired,
-  selectCollection: func.isRequired
-}
+  selectCollectionAction: func.isRequired,
+};
 
 const mapDispatchToProps = {
-  selectCollectionAction: selectCollection
-}
+  selectCollectionAction: selectCollection,
+};
 
-export default connect(null, mapDispatchToProps)(SelectedCollectionIcon)
+export default connect(null, mapDispatchToProps)(SelectedCollectionIcon);
 
 const styles = StyleSheet.create({
   base: {
@@ -41,4 +44,4 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
     backgroundColor: Colors.primary,
   },
-})
+});

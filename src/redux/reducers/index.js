@@ -174,14 +174,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, ...newCollection };
     }
     case actionTypes.DELETE_COLLECTION: {
-      const newState = {...state}
-      delete newState[action.payload]
-      return newState
+      const newState = { ...state };
+      delete newState[action.payload];
+      return newState;
     }
     case actionTypes.RENAME_COLLECTION: {
-      const updatedCollection = {...state[action.payload.collectionId]}
-      updatedCollection.label = action.payload.collectionName
-      return {...state, [action.payload.collectionId]: updatedCollection}
+      const updatedCollection = { ...state[action.payload.collectionId] };
+      updatedCollection.label = action.payload.collectionName;
+      return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     default:
       return state;
@@ -194,7 +194,7 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
       return defaultCollectionId;
     }
     case actionTypes.SELECT_COLLECTION: {
-      return action.payload
+      return action.payload;
     }
     default:
       return state;

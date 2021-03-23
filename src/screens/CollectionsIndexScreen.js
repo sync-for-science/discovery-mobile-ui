@@ -3,7 +3,7 @@ import {
   StyleSheet, View, SafeAreaView, StatusBar, Button, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { func, shape, string } from 'prop-types';
+import { shape } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
