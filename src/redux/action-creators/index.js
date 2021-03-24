@@ -45,3 +45,8 @@ export const renameCollection = (collectionId, collectionName) => ({
   type: actionTypes.RENAME_COLLECTION,
   payload: { collectionId, collectionName },
 });
+
+export const clearCollection = (collectionId) => ({
+  type: actionTypes.CLEAR_COLLECTION,
+  payload: collectionId
+})
