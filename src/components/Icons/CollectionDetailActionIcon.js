@@ -20,7 +20,7 @@ const CoolectionDetailActionIcon = ({
   renameCollectionAction,
   selected,
   clearCollectionAction,
-  collectionResourceIdsCount
+  collectionResourceIdsCount,
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -62,7 +62,7 @@ const CoolectionDetailActionIcon = ({
     ],
   );
 
-  const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.')
+  const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
 
   const deleteCollectionAlert = () => Alert.alert(
     'Delete Collection',
@@ -94,14 +94,14 @@ const CoolectionDetailActionIcon = ({
           if (buttonIndex === 0) {
             // cancel action
           } else if (buttonIndex === 1) {
-            renameAlert()
+            renameAlert();
           } else if (buttonIndex === 2) {
-            clearRecordsAlert()
+            clearRecordsAlert();
           } else if (buttonIndex === 3) {
             if (collectionsCount <= 1) {
-              deleteErrorAlert()
+              deleteErrorAlert();
             } else {
-              deleteCollectionAlert()
+              deleteCollectionAlert();
             }
           }
         },
@@ -118,14 +118,14 @@ const CoolectionDetailActionIcon = ({
           if (buttonIndex === 0) {
             // cancel action
           } else if (buttonIndex === 1) {
-            renameAlert()
+            renameAlert();
           } else if (buttonIndex === 2) {
             if (collectionsCount <= 1) {
               deleteErrorAlert();
             } else {
-              deleteCollectionAlert()
+              deleteCollectionAlert();
             }
-          } 
+          }
         },
       );
     }
@@ -147,18 +147,20 @@ CoolectionDetailActionIcon.propTypes = {
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
   selected: bool.isRequired,
+  clearCollectionAction: func.isRequired,
+  collectionResourceIdsCount: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
   collections: state.collections,
-  collectionResourceIdsCount: collectionResourceIdsCountSelector(state)
+  collectionResourceIdsCount: collectionResourceIdsCountSelector(state),
 });
 
 const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection,
   renameCollectionAction: renameCollection,
-  clearCollectionAction: clearCollection
+  clearCollectionAction: clearCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoolectionDetailActionIcon);

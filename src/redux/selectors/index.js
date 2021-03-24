@@ -271,8 +271,8 @@ export const collectionResourceIdsSelector = createSelector(
 
 export const collectionResourceIdsCountSelector = createSelector(
   [collectionResourceIdsSelector],
-  (collectionResourceIds) => (Object.keys(collectionResourceIds).length)
-)
+  (collectionResourceIds) => (Object.keys(collectionResourceIds).length),
+);
 
 const subTypeResourceIdsSelector = createSelector(
   [resourcesSelector],
