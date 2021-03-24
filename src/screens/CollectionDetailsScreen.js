@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, Alert
+  StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity
 } from 'react-native';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Header, Right, Body, Title, Left, Button
+  Header, Right, Body, Title, Left
 } from 'native-base';
-import { MaterialIcons, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 
 import Colors from '../constants/Colors';
@@ -30,20 +30,13 @@ const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
         </Body>
         <Right>
           <TouchableOpacity onPress={() => {}}>
-            <MaterialIcons name="add-box" size={30} color={Colors.primary} />
+            <Entypo name="dots-three-horizontal" size={24} color={Colors.primary} />
           </TouchableOpacity>
         </Right>
       </Header>
       <View style={styles.screen}>
         <View style={styles.collectionContainer}>
           <Text>{JSON.stringify(collection, null, 2)}</Text>
-        </View>
-        <View>
-          <Button style={{ paddingHorizontal: 10, marginVertical: 20 }} onPress={() => navigation.navigate('CollectionsIndex')}>
-            <Text style={{ color: 'white' }}>
-              Back to Collection Index
-            </Text>
-          </Button>
         </View>
       </View>
     </SafeAreaView>
