@@ -101,6 +101,9 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
         ...action.payload,
       };
     }
+    case actionTypes.CREATE_COLLECTION: {
+      return preloadSelectedTimelineRange;
+    }
     default:
       return state;
   }
