@@ -7,10 +7,11 @@ import { connect } from 'react-redux';
 import {
   Header, Right, Body, Title, Left
 } from 'native-base';
-import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 
 import Colors from '../constants/Colors';
+import CollectionDetailActionIcon from '../components/Icons/CollectionDetailActionIcon'
 
 const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
   const { params: { collectionId } } = route;
@@ -29,9 +30,7 @@ const CollectionsDetailsScreen = ({ route, navigation, collections }) => {
           <Title>{collection.label}</Title>
         </Body>
         <Right>
-          <TouchableOpacity onPress={() => {}}>
-            <Entypo name="dots-three-horizontal" size={24} color={Colors.primary} />
-          </TouchableOpacity>
+          <CollectionDetailActionIcon />
         </Right>
       </Header>
       <View style={styles.screen}>
