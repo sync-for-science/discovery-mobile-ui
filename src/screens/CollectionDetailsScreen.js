@@ -1,18 +1,20 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity
+  StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity,
 } from 'react-native';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  Header, Right, Body, Title, Left
+  Header, Right, Title, Left,
 } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
-import CollectionDetailActionIcon from '../components/Icons/CollectionDetailActionIcon'
+import CollectionDetailActionIcon from '../components/Icons/CollectionDetailActionIcon';
 
-const CollectionsDetailsScreen = ({ route, navigation, collections, selectedCollectionId }) => {
+const CollectionsDetailsScreen = ({
+  route, navigation, collections, selectedCollectionId,
+}) => {
   const { params: { collectionId } } = route;
   const collection = collections[collectionId];
   const selected = collectionId === selectedCollectionId;
@@ -21,7 +23,7 @@ const CollectionsDetailsScreen = ({ route, navigation, collections, selectedColl
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
-        <Left >
+        <Left>
           <TouchableOpacity onPress={() => navigation.navigate('CollectionsIndex')}>
             <Ionicons name="chevron-back" size={30} color={Colors.primary} />
           </TouchableOpacity>
@@ -46,6 +48,7 @@ CollectionsDetailsScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
   route: shape({}).isRequired,
+  selectedCollectionId: string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -67,13 +70,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 20,
     marginTop: 50,
-    width: '80%'
+    width: '80%',
   },
   header: {
     backgroundColor: Colors.screenBackground,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerTitle: {
-    width: '70%'
-  }
+    width: '70%',
+  },
 });
