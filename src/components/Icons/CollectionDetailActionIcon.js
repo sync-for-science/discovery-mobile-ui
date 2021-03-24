@@ -9,7 +9,7 @@ import {
 } from 'prop-types';
 
 import { deleteCollection, renameCollection, clearCollection } from '../../redux/action-creators';
-import { collectionsCountSelector } from '../../redux/selectors';
+import { collectionsCountSelector, collectionResourceIdsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const CoolectionDetailActionIcon = ({
@@ -20,6 +20,7 @@ const CoolectionDetailActionIcon = ({
   renameCollectionAction,
   selected,
   clearCollectionAction,
+  collectionResourceIdsCount
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -28,75 +29,106 @@ const CoolectionDetailActionIcon = ({
     deleteCollectionAction(collectionId, nextCollectionId);
   };
 
-  const handlePress = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
+  const renameAlert = () => Alert.prompt(
+    'Rename Collection',
+    'Enter name for this new collection.',
+    [
       {
-        options: ['Cancel', 'Rename Collection', 'Clear Records', 'Delete Collection'],
-        destructiveButtonIndex: 3,
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
       },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          // cancel action
-        } else if (buttonIndex === 1) {
-          Alert.prompt(
-            'Rename Collection',
-            'Enter name for this new collection.',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Rename',
-                onPress: (text) => renameCollectionAction(collectionId, text),
-              },
-            ],
-          );
-        } else if (buttonIndex === 2) {
-          Alert.alert(
-            'Clear Records',
-            'Are you sure you want to clear all records this collection?',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Clear',
-                onPress: () => clearCollectionAction(collectionId),
-                style: 'destructive',
-              },
-            ],
-          );
+      {
+        text: 'Rename',
+        onPress: (text) => renameCollectionAction(collectionId, text),
+      },
+    ],
+  );
 
-        } else if (buttonIndex === 3) {
-          if (collectionsCount <= 1) {
-            Alert.alert('Delete Error', 'Cannot delete last collection.');
-          } else {
-            Alert.alert(
-              'Delete Collection',
-              'Are you sure you want to delete this collection?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                  style: 'cancel',
-                },
-                {
-                  text: 'Delete',
-                  onPress: handleDeleteCollection,
-                  style: 'destructive',
-                },
-              ],
-            );
-          }
-        }
+  const clearRecordsAlert = () => Alert.alert(
+    'Clear Records',
+    'Are you sure you want to clear all records this collection?',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
       },
-    );
+      {
+        text: 'Clear',
+        onPress: () => clearCollectionAction(collectionId),
+        style: 'destructive',
+      },
+    ],
+  );
+
+  const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.')
+
+  const deleteCollectionAlert = () => Alert.alert(
+    'Delete Collection',
+    'Are you sure you want to delete this collection?',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: handleDeleteCollection,
+        style: 'destructive',
+      },
+    ],
+  );
+
+  const handlePress = () => {
+    if (collectionResourceIdsCount > 0) {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Rename Collection', 'Clear Records', 'Delete Collection'],
+          destructiveButtonIndex: 3,
+          cancelButtonIndex: 0,
+          userInterfaceStyle: 'dark',
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // cancel action
+          } else if (buttonIndex === 1) {
+            renameAlert()
+          } else if (buttonIndex === 2) {
+            clearRecordsAlert()
+          } else if (buttonIndex === 3) {
+            if (collectionsCount <= 1) {
+              deleteErrorAlert()
+            } else {
+              deleteCollectionAlert()
+            }
+          }
+        },
+      );
+    } else {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Rename Collection', 'Delete Collection'],
+          destructiveButtonIndex: 2,
+          cancelButtonIndex: 0,
+          userInterfaceStyle: 'dark',
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+            // cancel action
+          } else if (buttonIndex === 1) {
+            renameAlert()
+          } else if (buttonIndex === 2) {
+            if (collectionsCount <= 1) {
+              deleteErrorAlert();
+            } else {
+              deleteCollectionAlert()
+            }
+          } 
+        },
+      );
+    }
   };
 
   return (
@@ -120,6 +152,7 @@ CoolectionDetailActionIcon.propTypes = {
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
   collections: state.collections,
+  collectionResourceIdsCount: collectionResourceIdsCountSelector(state)
 });
 
 const mapDispatchToProps = {
