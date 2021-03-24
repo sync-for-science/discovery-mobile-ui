@@ -17,4 +17,5 @@ export const actionTypes = { // eslint-disable-line import/prefer-default-export
   SELECT_COLLECTION: 'SELECT_COLLECTION',
   DELETE_COLLECTION: 'DELETE_COLLECTION',
   RENAME_COLLECTION: 'RENAME_COLLECTION',
+  CLEAR_COLLECTION: "CLEAR_COLLECTION"
 };

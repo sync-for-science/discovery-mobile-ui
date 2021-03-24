@@ -8,7 +8,7 @@ import {
   bool, func, number, shape, string,
 } from 'prop-types';
 
-import { deleteCollection, renameCollection } from '../../redux/action-creators';
+import { deleteCollection, renameCollection, clearCollection } from '../../redux/action-creators';
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
@@ -19,6 +19,7 @@ const CoolectionDetailActionIcon = ({
   deleteCollectionAction,
   renameCollectionAction,
   selected,
+  clearCollectionAction,
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -26,11 +27,12 @@ const CoolectionDetailActionIcon = ({
       : null;
     deleteCollectionAction(collectionId, nextCollectionId);
   };
+
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Rename Collection', 'Delete Collection'],
-        destructiveButtonIndex: 2,
+        options: ['Cancel', 'Rename Collection', 'Clear Records', 'Delete Collection'],
+        destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -54,6 +56,24 @@ const CoolectionDetailActionIcon = ({
             ],
           );
         } else if (buttonIndex === 2) {
+          Alert.alert(
+            'Clear Records',
+            'Are you sure you want to clear all records this collection?',
+            [
+              {
+                text: 'Cancel',
+                onPress: () => {},
+                style: 'cancel',
+              },
+              {
+                text: 'Clear',
+                onPress: () => clearCollectionAction(collectionId),
+                style: 'destructive',
+              },
+            ],
+          );
+
+        } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
             Alert.alert('Delete Error', 'Cannot delete last collection.');
           } else {
@@ -105,6 +125,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection,
   renameCollectionAction: renameCollection,
+  clearCollectionAction: clearCollection
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoolectionDetailActionIcon);

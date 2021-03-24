@@ -183,6 +183,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       updatedCollection.label = action.payload.collectionName;
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
+    case actionTypes.CLEAR_COLLECTION: {
+      const updatedCollection = { ...state[action.payload] }
+      updatedCollection.resourceIds = {}
+      updatedCollection.lastAddedResourceId = null
+      return {...state, [action.payload]: updatedCollection}
+    }
     default:
       return state;
   }
