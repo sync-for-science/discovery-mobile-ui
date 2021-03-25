@@ -25,7 +25,7 @@ const CollectionDetailsActionIcon = ({
   duplicateCollectionAction,
   navigation,
 }) => {
-  const resourceIds = collections[collectionId]?.resourceIds;
+  const resourceIds = Object.keys(collections[collectionId]?.resourceIds);
 
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -104,7 +104,7 @@ const CollectionDetailsActionIcon = ({
   );
 
   const handlePress = () => {
-    if (resourceIds > 0) {
+    if (resourceIds.length > 0) {
       ActionSheetIOS.showActionSheetWithOptions(
         {
           options: ['Cancel', 'Rename Collection', 'Clear Records', 'Duplicate Collection', 'Delete Collection'],
