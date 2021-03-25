@@ -29,10 +29,14 @@ const CollectionsDetailsScreen = ({
           </TouchableOpacity>
         </Left>
         <View style={styles.headerTitle}>
-          <Title>{collection.label}</Title>
+          <Title>{collection?.label}</Title>
         </View>
         <Right>
-          <CollectionDetailsActionIcon selected={selected} collectionId={collectionId} />
+          <CollectionDetailsActionIcon 
+            selected={selected} 
+            collectionId={collectionId} 
+            navigation={navigation}
+          />
         </Right>
       </Header>
       <View style={styles.screen}>
