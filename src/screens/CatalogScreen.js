@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar,
+  StyleSheet, SafeAreaView, StatusBar, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
@@ -24,9 +24,11 @@ const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes }) => (
       index={0}
     >
       <FilterDrawer>
-        <ScrollView>
+        <View>
           <Timeline />
           <ResourceTypeSelector />
+        </View>
+        <ScrollView>
           { selectedResourceType && (
             <SubTypeAccordionsContainer subTypeData={selectedFlattenedSubTypes} />
           )}
