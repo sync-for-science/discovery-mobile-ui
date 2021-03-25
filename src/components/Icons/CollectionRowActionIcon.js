@@ -19,7 +19,7 @@ const CollectionRowActionIcon = ({
   deleteCollectionAction,
   renameCollectionAction,
   selected,
-  duplicateCollectionAction
+  duplicateCollectionAction,
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -64,7 +64,7 @@ const CollectionRowActionIcon = ({
   );
 
   const duplicateAlert = () => Alert.prompt(
-    'Duplicate Collection', 
+    'Duplicate Collection',
     'Enter name for this new collection.',
     [
       {
@@ -76,13 +76,13 @@ const CollectionRowActionIcon = ({
         text: 'Duplicate',
         onPress: (text) => duplicateCollectionAction(collectionId, text),
       },
-    ]
-  )
+    ],
+  );
 
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Rename Collection', 'Duplicate Collection' ,'Delete Collection'],
+        options: ['Cancel', 'Rename Collection', 'Duplicate Collection', 'Delete Collection'],
         destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
@@ -91,14 +91,14 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          renameAlert()
+          renameAlert();
         } else if (buttonIndex === 2) {
-          duplicateAlert()
+          duplicateAlert();
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
             deleteErrorAlert();
           } else {
-            deleteCollectionAlert()
+            deleteCollectionAlert();
           }
         }
       },
@@ -121,6 +121,7 @@ CollectionRowActionIcon.propTypes = {
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
   selected: bool.isRequired,
+  duplicateCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -131,7 +132,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection,
   renameCollectionAction: renameCollection,
-  duplicateCollectionAction: duplicateCollection
+  duplicateCollectionAction: duplicateCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionRowActionIcon);

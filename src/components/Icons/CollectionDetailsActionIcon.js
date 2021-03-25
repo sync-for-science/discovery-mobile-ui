@@ -8,7 +8,9 @@ import {
   bool, func, number, shape, string,
 } from 'prop-types';
 
-import { deleteCollection, renameCollection, clearCollection, duplicateCollection } from '../../redux/action-creators';
+import {
+  deleteCollection, renameCollection, clearCollection, duplicateCollection,
+} from '../../redux/action-creators';
 import { collectionsCountSelector, collectionResourceIdsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
@@ -21,7 +23,7 @@ const CollectionDetailsActionIcon = ({
   selected,
   clearCollectionAction,
   collectionResourceIdsCount,
-  duplicateCollectionAction
+  duplicateCollectionAction,
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -83,7 +85,7 @@ const CollectionDetailsActionIcon = ({
   );
 
   const duplicateAlert = () => Alert.prompt(
-    'Duplicate Collection', 
+    'Duplicate Collection',
     'Enter name for this new collection.',
     [
       {
@@ -95,8 +97,8 @@ const CollectionDetailsActionIcon = ({
         text: 'Duplicate',
         onPress: (text) => duplicateCollectionAction(collectionId, text),
       },
-    ]
-  )
+    ],
+  );
 
   const handlePress = () => {
     if (collectionResourceIdsCount > 0) {
@@ -170,7 +172,7 @@ CollectionDetailsActionIcon.propTypes = {
   selected: bool.isRequired,
   clearCollectionAction: func.isRequired,
   collectionResourceIdsCount: number.isRequired,
-  duplicateCollectionAction: func.isRequired
+  duplicateCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

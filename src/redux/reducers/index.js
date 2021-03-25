@@ -112,15 +112,15 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 const defaultCollectionId = uuidv4();
 
 const createCollection = (
-    name = null, 
-    duplicateResourceIds = null, 
-    duplicateLastAddedResourceId = null
-  ) => {
+  name = null,
+  duplicateResourceIds = null,
+  duplicateLastAddedResourceId = null,
+) => {
   const timeCreated = new Date();
-  const label = name || 'Untitled Collection'
-  const collectionId = (name || name === "") ? uuidv4(): defaultCollectionId
-  const resourceIds = duplicateResourceIds || {}
-  const lastAddedResourceId = duplicateLastAddedResourceId || null
+  const label = name || 'Untitled Collection';
+  const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
+  const resourceIds = duplicateResourceIds || {};
+  const lastAddedResourceId = duplicateLastAddedResourceId || null;
   return {
     [collectionId]: {
       created: timeCreated,
@@ -197,9 +197,13 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const dupCollection = {...state[action.payload.collectionId]}
-      const newCollection = createCollection(action.payload.collectionName, dupCollection.resourceIds, dupCollection.lastAddedResourceId)
-      return {...state, ...newCollection}
+      const dupCollection = { ...state[action.payload.collectionId] };
+      const newCollection = createCollection(
+        action.payload.collectionName,
+        dupCollection.resourceIds,
+        dupCollection.lastAddedResourceId,
+      );
+      return { ...state, ...newCollection };
     }
     default:
       return state;
