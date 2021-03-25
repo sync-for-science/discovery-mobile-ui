@@ -32,9 +32,9 @@ const CollectionsDetailsScreen = ({
           <Title>{collection?.label}</Title>
         </View>
         <Right>
-          <CollectionDetailsActionIcon 
-            selected={selected} 
-            collectionId={collectionId} 
+          <CollectionDetailsActionIcon
+            selected={selected}
+            collectionId={collectionId}
             navigation={navigation}
           />
         </Right>

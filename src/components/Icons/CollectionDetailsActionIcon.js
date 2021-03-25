@@ -23,16 +23,16 @@ const CollectionDetailsActionIcon = ({
   selected,
   clearCollectionAction,
   duplicateCollectionAction,
-  navigation
+  navigation,
 }) => {
-  const resourceIds = collections[collectionId]?.resourceIds
+  const resourceIds = collections[collectionId]?.resourceIds;
 
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
       ? Object.keys(collections).filter((id) => id !== collectionId)[0]
       : null;
     deleteCollectionAction(collectionId, nextCollectionId);
-    navigation.navigate('CollectionsIndex')
+    navigation.navigate('CollectionsIndex');
   };
 
   const renameAlert = () => Alert.prompt(
@@ -175,7 +175,7 @@ CollectionDetailsActionIcon.propTypes = {
   selected: bool.isRequired,
   clearCollectionAction: func.isRequired,
   duplicateCollectionAction: func.isRequired,
-  navigation: shape({ navigate: func.isRequired }).isRequired
+  navigation: shape({ navigate: func.isRequired }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
