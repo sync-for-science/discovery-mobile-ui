@@ -11,7 +11,7 @@ import {
 import {
   deleteCollection, renameCollection, clearCollection, duplicateCollection,
 } from '../../redux/action-creators';
-import { collectionsCountSelector, collectionResourceIdsCountSelector } from '../../redux/selectors';
+import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const CollectionDetailsActionIcon = ({
@@ -22,9 +22,10 @@ const CollectionDetailsActionIcon = ({
   renameCollectionAction,
   selected,
   clearCollectionAction,
-  collectionResourceIdsCount,
   duplicateCollectionAction,
 }) => {
+  const resourceIds = collections[collectionId]?.resourceIds
+
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
       ? Object.keys(collections).filter((id) => id !== collectionId)[0]
@@ -101,7 +102,7 @@ const CollectionDetailsActionIcon = ({
   );
 
   const handlePress = () => {
-    if (collectionResourceIdsCount > 0) {
+    if (resourceIds > 0) {
       ActionSheetIOS.showActionSheetWithOptions(
         {
           options: ['Cancel', 'Rename Collection', 'Clear Records', 'Duplicate Collection', 'Delete Collection'],
@@ -171,14 +172,12 @@ CollectionDetailsActionIcon.propTypes = {
   renameCollectionAction: func.isRequired,
   selected: bool.isRequired,
   clearCollectionAction: func.isRequired,
-  collectionResourceIdsCount: number.isRequired,
   duplicateCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
   collections: state.collections,
-  collectionResourceIdsCount: collectionResourceIdsCountSelector(state),
 });
 
 const mapDispatchToProps = {

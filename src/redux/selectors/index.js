@@ -269,11 +269,6 @@ export const collectionResourceIdsSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
 );
 
-export const collectionResourceIdsCountSelector = createSelector(
-  [collectionResourceIdsSelector],
-  (collectionResourceIds) => (Object.keys(collectionResourceIds).length),
-);
-
 const subTypeResourceIdsSelector = createSelector(
   [resourcesSelector],
   (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
