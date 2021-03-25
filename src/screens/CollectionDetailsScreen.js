@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
-import CollectionDetailActionIcon from '../components/Icons/CollectionDetailActionIcon';
+import CollectionDetailsActionIcon from '../components/Icons/CollectionDetailsActionIcon';
 
 const CollectionsDetailsScreen = ({
   route, navigation, collections, selectedCollectionId,
@@ -32,7 +32,7 @@ const CollectionsDetailsScreen = ({
           <Title>{collection.label}</Title>
         </View>
         <Right>
-          <CollectionDetailActionIcon selected={selected} collectionId={collectionId} />
+          <CollectionDetailsActionIcon selected={selected} collectionId={collectionId} />
         </Right>
       </Header>
       <View style={styles.screen}>

@@ -50,3 +50,8 @@ export const clearCollection = (collectionId) => ({
   type: actionTypes.CLEAR_COLLECTION,
   payload: collectionId,
 });
+
+export const duplicateCollection = (collectionId, collectionName) => ({
+  type: actionTypes.DUPLICATE_COLLECTION,
+  payload: { collectionId, collectionName },
+});
