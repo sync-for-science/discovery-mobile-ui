@@ -37,7 +37,7 @@ const CollectionDetailsActionIcon = ({
 
   const renameAlert = () => Alert.prompt(
     'Rename Collection',
-    'Enter name for this new collection.',
+    'Enter new name for this collection.',
     [
       {
         text: 'Cancel',
