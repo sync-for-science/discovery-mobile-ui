@@ -92,6 +92,8 @@ const preloadSelectedTimelineRange = {
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
+    case actionTypes.CREATE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedTimelineRange;
     }
@@ -100,9 +102,6 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
         ...state,
         ...action.payload,
       };
-    }
-    case actionTypes.CLEAR_COLLECTION: {
-      return preloadSelectedTimelineRange;
     }
     default:
       return state;
