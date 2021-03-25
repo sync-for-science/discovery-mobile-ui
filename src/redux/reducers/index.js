@@ -117,8 +117,8 @@ const createCollection = (
     duplicateLastAddedResourceId = null
   ) => {
   const timeCreated = new Date();
-  const label = name || 'Untitled Collection';
-  const collectionId = name ? uuidv4() : defaultCollectionId;
+  const label = name || 'Untitled Collection'
+  const collectionId = (name || name === "") ? uuidv4(): defaultCollectionId
   const resourceIds = duplicateResourceIds || {}
   const lastAddedResourceId = duplicateLastAddedResourceId || null
   return {
@@ -177,8 +177,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
-      const collectionName = action.payload === '' ? 'Untitled Collection' : action.payload;
-      const newCollection = createCollection(collectionName);
+      const newCollection = createCollection(action.payload);
       return { ...state, ...newCollection };
     }
     case actionTypes.DELETE_COLLECTION: {
@@ -198,9 +197,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const collectionName = action.payload.collectionName === '' ? 'Untitled Collection' : action.payload.collectionName;
       const dupCollection = {...state[action.payload.collectionId]}
-      const newCollection = createCollection(collectionName, dupCollection.resourceIds, dupCollection.lastAddedResourceId)
+      const newCollection = createCollection(action.payload.collectionName, dupCollection.resourceIds, dupCollection.lastAddedResourceId)
       return {...state, ...newCollection}
     }
     default:

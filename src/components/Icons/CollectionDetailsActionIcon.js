@@ -139,7 +139,7 @@ const CollectionDetailsActionIcon = ({
           } else if (buttonIndex === 1) {
             renameAlert();
           } else if (buttonIndex === 2) {
-            duplicateCollectionAlert();
+            duplicateAlert();
           } else if (buttonIndex === 3) {
             if (collectionsCount <= 1) {
               deleteErrorAlert();
