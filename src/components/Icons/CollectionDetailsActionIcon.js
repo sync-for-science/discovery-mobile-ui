@@ -82,7 +82,7 @@ const CollectionDetailsActionIcon = ({
     ],
   );
 
-  const duplicateCollection = () => Alert.prompt(
+  const duplicateAlert = () => Alert.prompt(
     'Duplicate Collection', 
     'Enter name for this new collection.',
     [
@@ -115,7 +115,7 @@ const CollectionDetailsActionIcon = ({
           } else if (buttonIndex === 2) {
             clearRecordsAlert();
           } else if (buttonIndex === 3) {
-            duplicateCollection();
+            duplicateAlert();
           } else if (buttonIndex === 4) {
             if (collectionsCount <= 1) {
               deleteErrorAlert();
@@ -139,7 +139,7 @@ const CollectionDetailsActionIcon = ({
           } else if (buttonIndex === 1) {
             renameAlert();
           } else if (buttonIndex === 2) {
-            duplicateCollection();
+            duplicateCollectionAlert();
           } else if (buttonIndex === 3) {
             if (collectionsCount <= 1) {
               deleteErrorAlert();

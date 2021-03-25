@@ -8,7 +8,7 @@ import {
   bool, func, number, shape, string,
 } from 'prop-types';
 
-import { deleteCollection, renameCollection } from '../../redux/action-creators';
+import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
@@ -19,6 +19,7 @@ const CollectionRowActionIcon = ({
   deleteCollectionAction,
   renameCollectionAction,
   selected,
+  duplicateCollectionAction
 }) => {
   const handleDeleteCollection = () => {
     const nextCollectionId = selected
@@ -26,11 +27,63 @@ const CollectionRowActionIcon = ({
       : null;
     deleteCollectionAction(collectionId, nextCollectionId);
   };
+
+  const renameAlert = () => Alert.prompt(
+    'Rename Collection',
+    'Enter name for this new collection.',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Rename',
+        onPress: (text) => renameCollectionAction(collectionId, text),
+      },
+    ],
+  );
+
+  const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
+
+  const deleteCollectionAlert = () => Alert.alert(
+    'Delete Collection',
+    'Are you sure you want to delete this collection?',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: handleDeleteCollection,
+        style: 'destructive',
+      },
+    ],
+  );
+
+  const duplicateAlert = () => Alert.prompt(
+    'Duplicate Collection', 
+    'Enter name for this new collection.',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Duplicate',
+        onPress: (text) => duplicateCollectionAction(collectionId, text),
+      },
+    ]
+  )
+
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Rename Collection', 'Delete Collection'],
-        destructiveButtonIndex: 2,
+        options: ['Cancel', 'Rename Collection', 'Duplicate Collection' ,'Delete Collection'],
+        destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -38,41 +91,14 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          Alert.prompt(
-            'Rename Collection',
-            'Enter name for this new collection.',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => {},
-                style: 'cancel',
-              },
-              {
-                text: 'Rename',
-                onPress: (text) => renameCollectionAction(collectionId, text),
-              },
-            ],
-          );
+          renameAlert()
         } else if (buttonIndex === 2) {
+          duplicateAlert()
+        } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
-            Alert.alert('Delete Error', 'Cannot delete last collection.');
+            deleteErrorAlert();
           } else {
-            Alert.alert(
-              'Delete Collection',
-              'Are you sure you want to delete this collection?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                  style: 'cancel',
-                },
-                {
-                  text: 'Delete',
-                  onPress: handleDeleteCollection,
-                  style: 'destructive',
-                },
-              ],
-            );
+            deleteCollectionAlert()
           }
         }
       },
@@ -105,6 +131,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection,
   renameCollectionAction: renameCollection,
+  duplicateCollectionAction: duplicateCollection
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionRowActionIcon);
