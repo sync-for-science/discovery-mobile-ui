@@ -26,6 +26,9 @@ const CollectionPreviewScreen = ({
   }
   const selected = collectionId === selectedCollectionId;
 
+  console.log('collection', collection)
+  console.log('collectionFlattenedSubTypes', collectionFlattenedSubTypes)
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />

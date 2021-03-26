@@ -246,6 +246,19 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
   }
 };
 
+export const previewedCollectionReducer = (state = defaultCollectionId, action ) => {
+  switch (action.type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return defaultCollectionId;
+    }
+    case actionTypes.PREVIEW_COLLECTION: {
+      return action.payload;
+    }
+    default:
+      return state;
+  }
+}
+
 // prune items whose values are 0, null, undefined, or empty string:
 const pruneEmpty = ((o) => Object.entries(o)
   .filter(([, v]) => v)
