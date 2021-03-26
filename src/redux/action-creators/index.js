@@ -46,9 +46,9 @@ export const renameCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearCollection = (collectionId) => ({
+export const clearCollection = (collectionId, isSelectedCollection) => ({
   type: actionTypes.CLEAR_COLLECTION,
-  payload: collectionId,
+  payload: {collectionId, isSelectedCollection},
 });
 
 export const duplicateCollection = (collectionId, collectionName) => ({

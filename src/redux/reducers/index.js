@@ -208,10 +208,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const updatedCollection = { ...state[action.payload] };
+      const updatedCollection = { ...state[action.payload.collectionId] };
       updatedCollection.resourceIds = {};
       updatedCollection.lastAddedResourceId = null;
-      return { ...state, [action.payload]: updatedCollection };
+      return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
       const dupCollection = { ...state[action.payload.collectionId] };

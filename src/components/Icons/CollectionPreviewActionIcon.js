@@ -79,7 +79,7 @@ const CollectionPreviewActionIcon = ({
       },
       {
         text: 'Clear',
-        onPress: () => clearCollectionAction(collectionId),
+        onPress: () => clearCollectionAction(collectionId, selected),
         style: 'destructive',
       },
     ],
