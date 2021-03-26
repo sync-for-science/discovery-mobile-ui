@@ -93,9 +93,16 @@ const preloadSelectedTimelineRange = {
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
     case actionTypes.CREATE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION:
+    case actionTypes.SELECT_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedTimelineRange;
+    }
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION:{
+      if (action.payload.isSelectedCollection) {
+        return preloadSelectedTimelineRange
+      }
+      return state
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
       return {

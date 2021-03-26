@@ -17,6 +17,9 @@ const CollectionsDetailsScreen = ({
 }) => {
   const { params: { collectionId } } = route;
   const collection = collections[collectionId];
+  if (!collection) {
+    return null
+  }
   const selected = collectionId === selectedCollectionId;
 
   return (

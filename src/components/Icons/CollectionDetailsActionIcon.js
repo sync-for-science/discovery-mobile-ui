@@ -31,7 +31,7 @@ const CollectionDetailsActionIcon = ({
     const nextCollectionId = selected
       ? Object.keys(collections).filter((id) => id !== collectionId)[0]
       : null;
-    deleteCollectionAction(collectionId, nextCollectionId);
+    deleteCollectionAction(collectionId, nextCollectionId, selected);
     navigation.navigate('CollectionsIndex');
   };
 
