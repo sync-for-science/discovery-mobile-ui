@@ -140,8 +140,8 @@ export const timelineIntervalsSelector = createSelector(
     // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
 
     if (minDate && maxDate && timelineItemsInRange.length) {
-      const numDays = differenceInDays(maxDate, minDate);
-      const intervalCount = Math.min(numDays, MAX_INTERVAL_COUNT) || 1; // cannot be 0
+      const numDays = Math.max(differenceInDays(maxDate, minDate), 1);
+      const intervalCount = Math.min(numDays, MAX_INTERVAL_COUNT); // cannot be 0
 
       const intervalMap = createIntervalMap(minDate, maxDate, intervalCount);
       const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, intervalCount);
