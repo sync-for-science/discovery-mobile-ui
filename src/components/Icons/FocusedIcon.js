@@ -9,9 +9,7 @@ import { Text } from 'native-base';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
-  focusedSubtypeSelector,
   markedResourcesSelector,
-  focusedResourcesSelector,
 } from '../../redux/selectors';
 
 const FocusedIcon = ({
@@ -19,14 +17,14 @@ const FocusedIcon = ({
   resourceIds,
   isAccordion,
   updateFocusedResources,
-  focusedSubtype, // eslint-disable-line no-unused-vars
   markedResources,
-  focusedResources,
 }) => {
-  const markedCount = resourceIds.reduce((acc, id) => (markedResources[id] ? acc + 1 : acc), 0);
+  const { marked, focused } = markedResources;
+
+  const markedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
   // const allAreMarked = markedCount === resourceIds.length;
 
-  const focusedCount = resourceIds.reduce((acc, id) => (focusedResources[id] ? acc + 1 : acc), 0);
+  const focusedCount = resourceIds.reduce((acc, id) => (focused[id] ? acc + 1 : acc), 0);
   const allAreFocused = resourceIds.length === focusedCount;
 
   const handlePress = () => {
@@ -64,18 +62,18 @@ FocusedIcon.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   isAccordion: bool.isRequired,
   updateFocusedResources: func.isRequired,
-  focusedSubtype: string.isRequired,
-  markedResources: shape({}).isRequired,
-  focusedResources: shape({}).isRequired,
+  markedResources: shape({
+    focusedSubtype: string.isRequired,
+    marked: shape({}).isRequired,
+    focused: shape({}).isRequired,
+  }).isRequired,
 };
 
 FocusedIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  focusedSubtype: focusedSubtypeSelector(state),
   markedResources: markedResourcesSelector(state),
-  focusedResources: focusedResourcesSelector(state),
 });
 
 const mapDispatchToProps = {
