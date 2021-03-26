@@ -10,7 +10,7 @@ import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
-  focusedResourcesSelector, focusedSubtypeSelector,
+  focusedSubtypeSelector,
 } from '../../redux/selectors';
 
 const MarkedIcon = ({
@@ -22,13 +22,9 @@ const MarkedIcon = ({
   updateFocusedResources,
   focusedSubtype,
   markedResources,
-  focusedResources,
 }) => {
   const markedCount = resourceIds.reduce((acc, id) => (markedResources[id] ? acc + 1 : acc), 0);
   const allAreMarked = markedCount === resourceIds.length;
-
-  const focusedCount = resourceIds.reduce((acc, id) => (focusedResources[id] ? acc + 1 : acc), 0);
-  // const allAreFocused = resourceIds.length === focusedCount;
 
   const handlePress = () => {
     if (isAccordion) { // could be one or more resourceId:
@@ -38,11 +34,7 @@ const MarkedIcon = ({
     } else { // only one resourceId:
       // console.info('markedCount: ', markedCount);
       if (markedCount) {
-        if (focusedCount) { // one resourceId, that is focused:
-          updateFocusedResources(subType, { [resourceIds[0]]: false });
-        } else {
-          updateMarkedResources(subType, { [resourceIds[0]]: false });
-        }
+        updateMarkedResources(subType, { [resourceIds[0]]: false });
       }
       if (!markedCount) { // one resourceId, that neither marked nor focused:
         const isNewSubtype = (subType !== focusedSubtype);
@@ -79,7 +71,6 @@ MarkedIcon.propTypes = {
   updateMarkedResources: func.isRequired,
   updateFocusedResources: func.isRequired,
   markedResources: shape({}).isRequired,
-  focusedResources: shape({}).isRequired,
 };
 
 MarkedIcon.defaultProps = {
@@ -88,7 +79,6 @@ MarkedIcon.defaultProps = {
 const mapStateToProps = (state) => ({
   focusedSubtype: focusedSubtypeSelector(state),
   markedResources: markedResourcesSelector(state),
-  focusedResources: focusedResourcesSelector(state),
 });
 
 const mapDispatchToProps = {
