@@ -65,11 +65,11 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
       return preloadResourceTypeFilters;
     }
     case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION:{
+    case actionTypes.CLEAR_COLLECTION: {
       if (action.payload.isSelectedCollection) {
-        return preloadResourceTypeFilters
+        return preloadResourceTypeFilters;
       }
-      return state
+      return state;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
@@ -107,11 +107,11 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
       return preloadSelectedTimelineRange;
     }
     case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION:{
+    case actionTypes.CLEAR_COLLECTION: {
       if (action.payload.isSelectedCollection) {
-        return preloadSelectedTimelineRange
+        return preloadSelectedTimelineRange;
       }
-      return state
+      return state;
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
       return {
