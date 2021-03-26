@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity, ActionSheetIOS, View, Alert,
 } from 'react-native';
@@ -25,7 +25,7 @@ const CollectionDetailsActionIcon = ({
   duplicateCollectionAction,
   navigation,
 }) => {
-  const [duplicateCollectionName, setDuplicateCollectionName] = useState(null)
+  const [duplicateCollectionName, setDuplicateCollectionName] = useState(null);
   const resourceIds = Object.keys(collections[collectionId]?.resourceIds);
 
   const handleDeleteCollection = () => {
@@ -37,18 +37,19 @@ const CollectionDetailsActionIcon = ({
   };
 
   const handleDuplicateCollection = (text) => {
-    setDuplicateCollectionName(text)
-    duplicateCollectionAction(collectionId, text)
-  } 
+    setDuplicateCollectionName(text);
+    duplicateCollectionAction(collectionId, text);
+  };
 
-  // if collections state changes in the details screen, it means a duplicateCollection 
+  // if collections state changes in the details screen, it means a duplicateCollection
   // action occurred, now navigate to a new details screen with the new collectionId
   useEffect(() => {
     if (duplicateCollectionName) {
-      const duplicateCollectionId = Object.entries(collections).filter(([, values]) => values.label === duplicateCollectionName)[0][0]
-      navigation.navigate('CollectionDetails', {collectionId: duplicateCollectionId})
+      const duplicateCollectionId = Object.entries(collections)
+        .filter(([, values]) => values.label === duplicateCollectionName)[0][0];
+      navigation.navigate('CollectionDetails', { collectionId: duplicateCollectionId });
     }
-  }, [collections])
+  }, [collections]);
 
   const renameAlert = () => Alert.prompt(
     'Rename Collection',
