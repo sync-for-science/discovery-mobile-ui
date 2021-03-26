@@ -59,8 +59,17 @@ const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
 
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
+    case actionTypes.CREATE_COLLECTION:
+    case actionTypes.SELECT_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadResourceTypeFilters;
+    }
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION:{
+      if (action.payload.isSelectedCollection) {
+        return preloadResourceTypeFilters
+      }
+      return state
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
