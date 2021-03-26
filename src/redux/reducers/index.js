@@ -290,9 +290,9 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
         }), {});
       const previousFocus = (state.focusedSubtype !== subType) ? {} : state.focused;
       const focused = Object.entries(previousFocus)
-        .reduce((acc, [uuid, previouslyFocused]) => ({
+        .reduce((acc, [uuid]) => ({
           ...acc,
-          [uuid]: ((resourceIdsMap[uuid]) ? true : previouslyFocused), // eslint-disable-line max-len
+          [uuid]: (!!resourceIdsMap[uuid]), // de-focus items being un-marked
         }), {});
       return {
         focusedSubtype: subType,
