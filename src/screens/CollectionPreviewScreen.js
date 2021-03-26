@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
 } from 'react-native';
 import { shape, string } from 'prop-types';
 import { connect } from 'react-redux';
@@ -64,7 +64,7 @@ CollectionPreviewScreen.propTypes = {
 const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollectionId: state.selectedCollection,
-  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state)
+  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CollectionPreviewScreen);
