@@ -11,9 +11,12 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 
 import Colors from '../constants/Colors';
 import CollectionPreviewActionIcon from '../components/Icons/CollectionPreviewActionIcon';
+import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer'
+import { collectionFlattenedSubTypesSelector } from '../redux/selectors';
 
 const CollectionPreviewScreen = ({
   route, navigation, collections, selectedCollectionId,
+  collectionFlattenedSubTypes
 }) => {
   const { params: { collectionId } } = route;
   const collection = collections[collectionId];
@@ -44,9 +47,7 @@ const CollectionPreviewScreen = ({
         </Right>
       </Header>
       <View style={styles.screen}>
-        <View style={styles.collectionContainer}>
-          <Text>{JSON.stringify(collection, null, 2)}</Text>
-        </View>
+        <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
       </View>
     </SafeAreaView>
   );
@@ -57,11 +58,13 @@ CollectionPreviewScreen.propTypes = {
   collections: shape({}).isRequired,
   route: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
+  collectionFlattenedSubTypes: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollectionId: state.selectedCollection,
+  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state)
 });
 
 export default connect(mapStateToProps, null)(CollectionPreviewScreen);

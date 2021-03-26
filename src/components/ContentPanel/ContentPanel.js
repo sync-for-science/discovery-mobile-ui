@@ -14,7 +14,7 @@ const ContentPanel = ({ collectionFlattenedSubTypes }) => (
     <View>
       <Text style={styles.title}>Details Panel</Text>
     </View>
-    <SubTypeAccordionsContainer fromContentPanel subTypeData={collectionFlattenedSubTypes} />
+    <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
   </ScrollView>
 );
 
