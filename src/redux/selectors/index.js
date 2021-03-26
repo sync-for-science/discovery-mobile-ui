@@ -23,11 +23,7 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
-export const focusedSubtypeSelector = (state) => state.markedResources.focusedSubtype;
-
-export const markedResourcesSelector = (state) => state.markedResources.marked;
-
-export const focusedResourcesSelector = (state) => state.markedResources.focused;
+export const markedResourcesSelector = (state) => state.markedResources;
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -178,7 +174,7 @@ export const timelineIntervalsSelector = createSelector(
       const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
       // TODO: perhaps the following should be sets in Redux state, in the 1st place:
-      const markedSet = new Set(Object.keys(markedResources));
+      const markedSet = new Set(Object.keys(markedResources.marked));
 
       // inject z score, and markedItems -- mutates intervalMap:
       intervalsWithItems.forEach((interval) => {

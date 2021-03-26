@@ -10,7 +10,6 @@ import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
-  focusedSubtypeSelector,
 } from '../../redux/selectors';
 
 const MarkedIcon = ({
@@ -20,10 +19,11 @@ const MarkedIcon = ({
   updateFocusedSubtype,
   updateMarkedResources,
   updateFocusedResources,
-  focusedSubtype,
   markedResources,
 }) => {
-  const markedCount = resourceIds.reduce((acc, id) => (markedResources[id] ? acc + 1 : acc), 0);
+  const { focusedSubtype, marked } = markedResources;
+
+  const markedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
   const allAreMarked = markedCount === resourceIds.length;
 
   const handlePress = () => {
@@ -66,18 +66,20 @@ MarkedIcon.propTypes = {
   subType: string.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   isAccordion: bool.isRequired,
-  focusedSubtype: string.isRequired,
   updateFocusedSubtype: func.isRequired,
   updateMarkedResources: func.isRequired,
   updateFocusedResources: func.isRequired,
-  markedResources: shape({}).isRequired,
+  markedResources: shape({
+    focusedSubtype: string.isRequired,
+    marked: shape({}).isRequired,
+    focused: shape({}).isRequired,
+  }).isRequired,
 };
 
 MarkedIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  focusedSubtype: focusedSubtypeSelector(state),
   markedResources: markedResourcesSelector(state),
 });
 
