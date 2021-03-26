@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Dimensions,
 } from 'react-native';
 import {
-  arrayOf, shape, string, number, instanceOf,
+  arrayOf, instanceOf, shape, string, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { formatDistanceStrict, addDays } from 'date-fns';
@@ -82,18 +82,19 @@ const getCartoucheHeight = (cardinality) => {
   return MARKED_RADIUS * 5;
 };
 
-const MarkedCartouche = ({ markedHeight, y }) => (
+const MarkedCartouche = ({ hasFocused, markedHeight, y }) => (
   <Rect
     rx={MARKED_RADIUS}
     x={MARKED_RADIUS * -1}
     y={y}
     width={MARKED_RADIUS * 2}
     height={markedHeight}
-    fill={Colors.hasMarked}
+    fill={hasFocused ? Colors.hasFocused : Colors.hasMarked}
   />
 );
 
 MarkedCartouche.propTypes = {
+  hasFocused: bool.isRequired,
   markedHeight: number.isRequired,
   y: number.isRequired,
 };
@@ -102,13 +103,14 @@ const MarkedIndicators = ({
   markedItems,
 }) => {
   let nextY = BAR_HEIGHT + 4;
-  return markedItems.map(({ subType, items }) => {
-    const markedHeight = getCartoucheHeight(items.length);
+  return markedItems.map(({ subType, marked, focused }) => {
+    const markedHeight = getCartoucheHeight(marked.length);
     const thisY = nextY;
     nextY += (markedHeight + 1);
     return (
       <MarkedCartouche
         key={subType}
+        hasFocused={!!focused.length}
         markedHeight={markedHeight}
         y={thisY}
       />
@@ -119,7 +121,8 @@ const MarkedIndicators = ({
 MarkedIndicators.propTypes = {
   markedItems: arrayOf(shape({
     subType: string.isRequired,
-    items: arrayOf(string).isRequired,
+    marked: arrayOf(string).isRequired,
+    focused: arrayOf(string).isRequired,
   }).isRequired).isRequired,
 };
 
@@ -412,7 +415,8 @@ TimelineBrowser.propTypes = {
       items: arrayOf(string).isRequired,
       markedItems: arrayOf(shape({
         subType: string.isRequired,
-        items: arrayOf(string).isRequired,
+        marked: arrayOf(string).isRequired,
+        focused: arrayOf(string).isRequired,
       }).isRequired).isRequired,
     })).isRequired, // that have records
     intervalLength: number.isRequired,

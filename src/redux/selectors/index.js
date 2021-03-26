@@ -173,9 +173,6 @@ export const timelineIntervalsSelector = createSelector(
 
       const populationSD = (sumOfSquaredDifferences / itemCounts.length) ** 0.5;
 
-      // TODO: perhaps the following should be sets in Redux state, in the 1st place:
-      const markedSet = new Set(Object.keys(markedResources.marked));
-
       // inject z score, and markedItems -- mutates intervalMap:
       intervalsWithItems.forEach((interval) => {
         const cardinality = interval.items.length;
@@ -194,7 +191,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => markedSet.has(id))
+          .filter((id) => markedResources.marked[id])
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -207,7 +204,11 @@ export const timelineIntervalsSelector = createSelector(
         // eslint-disable-next-line no-param-reassign
         interval.markedItems = Object.entries(markedItemsDictionaryByType)
           .sort(sortEntriesBySubType) // keep cartouches in same order, by resource subType label
-          .map(([subType, items]) => ({ subType, items }));
+          .map(([subType, items]) => ({
+            subType,
+            marked: items,
+            focused: items.filter((id) => markedResources.focused[id]),
+          }));
       });
     }
 
