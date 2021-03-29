@@ -55,3 +55,8 @@ export const duplicateCollection = (collectionId, collectionName) => ({
   type: actionTypes.DUPLICATE_COLLECTION,
   payload: { collectionId, collectionName },
 });
+
+export const setPreviewCollection = (collectionId) => ({
+  type: actionTypes.SET_PREVIEW_COLLECTION,
+  payload: collectionId
+})

@@ -251,8 +251,8 @@ export const previewedCollectionReducer = (state = defaultCollectionId, action )
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;
     }
-    case actionTypes.PREVIEW_COLLECTION: {
-      return action.payload;
+    case actionTypes.SET_PREVIEW_COLLECTION: {
+      return action.payload
     }
     default:
       return state;

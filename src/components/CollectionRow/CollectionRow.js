@@ -1,21 +1,27 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { func, string } from 'prop-types';
+import { func, string, shape } from 'prop-types';
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import SelectedCollectionIcon from '../Icons/SelectedCollectionIcon';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
+import { setPreviewCollection } from '../../redux/action-creators'
 
 const CollectionRow = ({
   collectionId,
-  handlePress,
   label,
   selectedCollectionId,
+  navigation,
+  setPreviewCollectionAction
 }) => {
   const selected = collectionId === selectedCollectionId;
   const textStyle = selected ? 'bold' : '';
+  const handlePress = () => {
+    setPreviewCollectionAction(collectionId)
+    navigation.navigate('CollectionPreview', { collectionId })
+  }
   return (
     <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
       <View style={styles.selectedAndTitleContainer}>
@@ -29,16 +35,20 @@ const CollectionRow = ({
 
 CollectionRow.propTypes = {
   collectionId: string.isRequired,
-  handlePress: func.isRequired,
   label: string.isRequired,
   selectedCollectionId: string.isRequired,
+  navigation: shape({ navigate: func.isRequired }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
 });
 
-export default connect(mapStateToProps, null)(CollectionRow);
+const mapDispatchToProps = {
+  setPreviewCollectionAction: setPreviewCollection
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionRow);
 
 const styles = StyleSheet.create({
   collectionRow: {
