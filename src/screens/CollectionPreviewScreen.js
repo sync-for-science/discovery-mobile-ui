@@ -25,7 +25,7 @@ const CollectionPreviewScreen = ({
     return null;
   }
   const selected = collectionId === selectedCollectionId;
-  
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
