@@ -10,9 +10,9 @@ import {
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
-import CollectionDetailsActionIcon from '../components/Icons/CollectionDetailsActionIcon';
+import CollectionPreviewActionIcon from '../components/Icons/CollectionPreviewActionIcon';
 
-const CollectionsDetailsScreen = ({
+const CollectionPreviewScreen = ({
   route, navigation, collections, selectedCollectionId,
 }) => {
   const { params: { collectionId } } = route;
@@ -36,7 +36,7 @@ const CollectionsDetailsScreen = ({
           <Title>{collection?.label}</Title>
         </View>
         <Right>
-          <CollectionDetailsActionIcon
+          <CollectionPreviewActionIcon
             selected={selected}
             collectionId={collectionId}
             navigation={navigation}
@@ -52,7 +52,7 @@ const CollectionsDetailsScreen = ({
   );
 };
 
-CollectionsDetailsScreen.propTypes = {
+CollectionPreviewScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
   route: shape({}).isRequired,
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
 });
 
-export default connect(mapStateToProps, null)(CollectionsDetailsScreen);
+export default connect(mapStateToProps, null)(CollectionPreviewScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {

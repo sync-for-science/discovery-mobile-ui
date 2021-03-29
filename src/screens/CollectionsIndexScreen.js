@@ -37,7 +37,7 @@ const CollectionsIndexScreen = ({ navigation, collections, createCollectionActio
             key={id}
             collectionId={id}
             label={label}
-            handlePress={() => navigation.navigate('CollectionDetails', { collectionId: id })}
+            handlePress={() => navigation.navigate('CollectionPreview', { collectionId: id })}
           />
         ))}
       </View>

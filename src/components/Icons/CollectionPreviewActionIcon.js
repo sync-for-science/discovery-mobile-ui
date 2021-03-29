@@ -14,7 +14,7 @@ import {
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
-const CollectionDetailsActionIcon = ({
+const CollectionPreviewActionIcon = ({
   collections,
   collectionId,
   collectionsCount,
@@ -47,7 +47,7 @@ const CollectionDetailsActionIcon = ({
     if (duplicateCollectionName) {
       const duplicateCollectionId = Object.entries(collections)
         .filter(([, values]) => values.label === duplicateCollectionName)[0][0];
-      navigation.navigate('CollectionDetails', { collectionId: duplicateCollectionId });
+      navigation.navigate('CollectionPreview', { collectionId: duplicateCollectionId });
     }
   }, [collections]);
 
@@ -182,7 +182,7 @@ const CollectionDetailsActionIcon = ({
   );
 };
 
-CollectionDetailsActionIcon.propTypes = {
+CollectionPreviewActionIcon.propTypes = {
   collections: shape({}).isRequired,
   collectionId: string.isRequired,
   collectionsCount: number.isRequired,
@@ -206,4 +206,4 @@ const mapDispatchToProps = {
   duplicateCollectionAction: duplicateCollection,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CollectionDetailsActionIcon);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionPreviewActionIcon);
