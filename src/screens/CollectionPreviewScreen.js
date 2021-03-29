@@ -28,7 +28,7 @@ const CollectionPreviewScreen = ({
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
         <Left>
-          <TouchableOpacity onPress={() => navigation.navigate('CollectionsIndex')}>
+          <TouchableOpacity onPress={() => navigation.navigate('CollectionsList')}>
             <Ionicons name="chevron-back" size={30} color={Colors.primary} />
           </TouchableOpacity>
         </Left>

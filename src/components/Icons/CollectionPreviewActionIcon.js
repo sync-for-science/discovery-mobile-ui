@@ -33,7 +33,7 @@ const CollectionPreviewActionIcon = ({
       ? Object.keys(collections).filter((id) => id !== collectionId)[0]
       : null;
     deleteCollectionAction(collectionId, nextCollectionId, selected);
-    navigation.navigate('CollectionsIndex');
+    navigation.navigate('CollectionsList');
   };
 
   const handleDuplicateCollection = (text) => {
