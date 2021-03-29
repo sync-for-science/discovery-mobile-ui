@@ -5,7 +5,7 @@ import {
 import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
 import {
-  arrayOf, number, string,
+  arrayOf, number, string, bool,
 } from 'prop-types';
 
 import Colors from '../../constants/Colors';
@@ -22,11 +22,10 @@ const SubTypeAccordion = ({
   selectedCollectionId,
   subType,
   previewCollection,
-  previewCollectionId
+  previewCollectionId,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const collectionId = previewCollection ? previewCollectionId : selectedCollectionId
-  console.log('collectionId', collectionId)
+  const collectionId = previewCollection ? previewCollectionId : selectedCollectionId;
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
@@ -85,11 +84,17 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,
+  previewCollection: bool,
+  previewCollectionId: string.isRequired,
+};
+
+SubTypeAccordion.defaultProps = {
+  previewCollection: false,
 };
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
-  previewCollectionId: state.previewCollectionId
+  previewCollectionId: state.previewCollectionId,
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordion);

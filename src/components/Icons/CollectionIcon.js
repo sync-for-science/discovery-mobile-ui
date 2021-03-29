@@ -17,9 +17,11 @@ const CollectionIcon = ({
   removeResourceFromCollectionAction,
   collectionResourceIds,
   previewCollection,
-  previewCollectionResourceIds
+  previewCollectionResourceIds,
 }) => {
-  const selectedOrPreviewResourceIds = previewCollection ? previewCollectionResourceIds : collectionResourceIds
+  const selectedOrPreviewResourceIds = previewCollection
+    ? previewCollectionResourceIds
+    : collectionResourceIds;
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = selectedOrPreviewResourceIds[id];
     return inCollection ? acc + 1 : acc;
@@ -52,11 +54,17 @@ CollectionIcon.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   collectionResourceIds: shape({}).isRequired,
+  previewCollection: bool,
+  previewCollectionResourceIds: shape({}).isRequired,
+};
+
+CollectionIcon.defaultProps = {
+  previewCollection: false,
 };
 
 const mapStateToProps = (state) => ({
   collectionResourceIds: collectionResourceIdsSelector(state),
-  previewCollectionResourceIds: previewCollectionResourceIdsSelector(state)
+  previewCollectionResourceIds: previewCollectionResourceIdsSelector(state),
 });
 
 const mapDispatchToProps = {

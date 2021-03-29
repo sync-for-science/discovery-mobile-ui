@@ -39,10 +39,12 @@ const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, previewColle
 SubTypeAccordionsContainer.propTypes = {
   subTypeData: shape({}).isRequired,
   showAllSubTypes: bool,
+  previewCollection: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   showAllSubTypes: false,
+  previewCollection: false,
 };
 
 const mapStateToProps = (state) => ({
