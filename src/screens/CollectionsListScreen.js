@@ -13,7 +13,7 @@ import Colors from '../constants/Colors';
 import { createCollection } from '../redux/action-creators';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
 
-const CollectionsIndexScreen = ({ navigation, collections, createCollectionAction }) => {
+const CollectionsListScreen = ({ navigation, collections, createCollectionAction }) => {
   const handleNewCollectionPress = () => {
     Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text));
   };
@@ -45,7 +45,7 @@ const CollectionsIndexScreen = ({ navigation, collections, createCollectionActio
   );
 };
 
-CollectionsIndexScreen.propTypes = {
+CollectionsListScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
   createCollectionAction: func.isRequired,
@@ -59,7 +59,7 @@ const mapDispatchToProps = {
   createCollectionAction: createCollection,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CollectionsIndexScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
