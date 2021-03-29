@@ -41,8 +41,9 @@ const CollectionPreviewActionIcon = ({
     duplicateCollectionAction(collectionId, text);
   };
 
-  // if collections state changes in the details screen, it means a duplicateCollection
-  // action occurred, now navigate to a new details screen with the new collectionId
+  // If collections state changes in the details screen, it means a duplicateCollection
+  // action occurred, now navigate to a new details screen with the new collectionId.
+  // IMPORTANT: This assumes unique names, but now collection naming validation exists yet.
   useEffect(() => {
     if (duplicateCollectionName) {
       const duplicateCollectionId = Object.entries(collections)
