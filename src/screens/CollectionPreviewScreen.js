@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Text,
 } from 'react-native';
 import { shape, string } from 'prop-types';
 import { connect } from 'react-redux';
@@ -25,7 +25,7 @@ const CollectionPreviewScreen = ({
     return null;
   }
   const selected = collectionId === selectedCollectionId;
-
+  
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -46,12 +46,18 @@ const CollectionPreviewScreen = ({
           />
         </Right>
       </Header>
-      <View style={styles.screen}>
-        <SubTypeAccordionsContainer
-          showAllSubTypes
-          subTypeData={previewCollectionFlattenedSubTypes}
-        />
-      </View>
+      {Object.keys(previewCollectionFlattenedSubTypes).length > 0
+        ? (
+          <SubTypeAccordionsContainer
+            showAllSubTypes
+            subTypeData={previewCollectionFlattenedSubTypes}
+          />
+        )
+        : (
+          <View style={styles.noRecordsContainer}>
+            <Text style={styles.noRecordsText}>No Records Selected</Text>
+          </View>
+        )}
     </SafeAreaView>
   );
 };
@@ -92,5 +98,15 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     width: '70%',
+  },
+  noRecordsContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  noRecordsText: {
+    fontSize: 30,
+    fontWeight: '500',
+    color: Colors.lightgrey,
+    fontStyle: 'italic',
   },
 });

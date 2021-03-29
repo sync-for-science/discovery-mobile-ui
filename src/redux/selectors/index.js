@@ -24,7 +24,7 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
-const previewCollectionSelector = (state) => state.previewedCollection;
+const previewCollectionIdSelector = (state) => state.previewCollectionId;
 
 export const markedResourcesSelector = (state) => state.markedResources;
 
@@ -362,7 +362,7 @@ export const collectionFlattenedSubTypesSelector = createSelector(
 );
 
 const previewCollectionResourceIdsSelector = createSelector(
-  [collectionsSelector, previewCollectionSelector],
+  [collectionsSelector, previewCollectionIdSelector],
   (collections, previewCollectionId) => collections[previewCollectionId]?.resourceIds,
 );
 

@@ -8,13 +8,20 @@ import { shape } from 'prop-types';
 
 import { collectionFlattenedSubTypesSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import Colors from '../../constants/Colors';
 
 const ContentPanel = ({ collectionFlattenedSubTypes }) => (
   <ScrollView>
     <View>
       <Text style={styles.title}>Details Panel</Text>
     </View>
-    <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
+    { Object.keys(collectionFlattenedSubTypes).length > 0 ? (
+      <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
+    ) : (
+      <View style={styles.noRecordsContainer}>
+        <Text style={styles.noRecordsText}>No Records Selected</Text>
+      </View>
+    )}
   </ScrollView>
 );
 
@@ -33,5 +40,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 20,
     textAlign: 'center',
+  },
+  noRecordsContainer: {
+    alignItems: 'center',
+    marginVertical: 20,
+  },
+  noRecordsText: {
+    fontSize: 30,
+    fontWeight: '500',
+    color: Colors.lightgrey,
+    fontStyle: 'italic',
   },
 });

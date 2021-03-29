@@ -246,7 +246,7 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
   }
 };
 
-export const previewedCollectionReducer = (state = defaultCollectionId, action) => {
+export const previewCollectionIdReducer = (state = defaultCollectionId, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;
