@@ -50,6 +50,7 @@ const CollectionPreviewScreen = ({
         ? (
           <SubTypeAccordionsContainer
             showAllSubTypes
+            previewCollection
             subTypeData={previewCollectionFlattenedSubTypes}
           />
         )

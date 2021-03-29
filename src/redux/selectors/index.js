@@ -361,7 +361,7 @@ export const collectionFlattenedSubTypesSelector = createSelector(
   },
 );
 
-const previewCollectionResourceIdsSelector = createSelector(
+export const previewCollectionResourceIdsSelector = createSelector(
   [collectionsSelector, previewCollectionIdSelector],
   (collections, previewCollectionId) => collections[previewCollectionId]?.resourceIds,
 );

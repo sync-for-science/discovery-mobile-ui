@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 
-import { collectionResourceIdsSelector } from '../../redux/selectors';
+import { collectionResourceIdsSelector, previewCollectionResourceIdsSelector } from '../../redux/selectors';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 
 const CollectionIcon = ({
@@ -16,9 +16,12 @@ const CollectionIcon = ({
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
   collectionResourceIds,
+  previewCollection,
+  previewCollectionResourceIds
 }) => {
+  const selectedOrPreviewResourceIds = previewCollection ? previewCollectionResourceIds : collectionResourceIds
   const resourceCount = resourceIds.reduce((acc, id) => {
-    const inCollection = collectionResourceIds[id];
+    const inCollection = selectedOrPreviewResourceIds[id];
     return inCollection ? acc + 1 : acc;
   }, 0);
   const iconCount = (showCount && resourceCount) ? resourceCount : null;
@@ -53,6 +56,7 @@ CollectionIcon.propTypes = {
 
 const mapStateToProps = (state) => ({
   collectionResourceIds: collectionResourceIdsSelector(state),
+  previewCollectionResourceIds: previewCollectionResourceIdsSelector(state)
 });
 
 const mapDispatchToProps = {

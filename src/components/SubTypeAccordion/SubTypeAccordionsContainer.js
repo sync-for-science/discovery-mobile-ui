@@ -9,7 +9,7 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes }) => (
+const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, previewCollection }) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(subTypeData)
@@ -28,6 +28,7 @@ const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes }) => (
               subType={subType}
               resourceIds={resourceIds}
               dateFilteredCount={values.dateFilteredCount}
+              previewCollection={previewCollection}
             />
           );
         })}

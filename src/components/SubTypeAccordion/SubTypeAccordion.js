@@ -21,8 +21,12 @@ const SubTypeAccordion = ({
   resourceIds,
   selectedCollectionId,
   subType,
+  previewCollection,
+  previewCollectionId
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
+  const collectionId = previewCollection ? previewCollectionId : selectedCollectionId
+  console.log('collectionId', collectionId)
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
@@ -43,9 +47,10 @@ const SubTypeAccordion = ({
           isAccordion
         />
         <CollectionIcon
-          collectionId={selectedCollectionId}
+          collectionId={collectionId}
           resourceIds={resourceIds}
           showCount
+          previewCollection
         />
       </View>
     </View>
@@ -84,6 +89,7 @@ SubTypeAccordion.propTypes = {
 
 const mapStateToProps = (state) => ({
   selectedCollectionId: state.selectedCollection,
+  previewCollectionId: state.previewCollectionId
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordion);
