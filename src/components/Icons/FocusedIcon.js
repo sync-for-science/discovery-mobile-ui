@@ -23,19 +23,19 @@ const FocusedIcon = ({
   const { marked } = markedResources;
 
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
-  // const allAreMarked = markedCount === resourceIds.length;
 
   const focusedCount = resourceIds.reduce((acc, id) => (marked[id] === FOCUSED ? acc + 1 : acc), 0);
+  const markedCount = resourceIds.reduce((acc, id) => (marked[id] === MARKED ? acc + 1 : acc), 0);
   const allAreFocused = resourceIds.length === focusedCount;
+  const fullyFocused = focusedCount && (markedCount === 0);
 
   const handlePress = () => {
     if (isAccordion) { // could be one or more resourceId:
       const newSubType = allAreFocused ? '' : subType; // no subType if turning all off
       const resourceIdsMap = resourceIds.reduce((acc, id) => ({
         ...acc,
-        // icon not shown if all are unmarked; do not change value of any single unmarked:
-        // eslint-disable-next-line no-nested-ternary
-        [id]: (allAreFocused ? MARKED : ((marked[id] === MARKED) ? FOCUSED : marked[id])),
+        // eslint-disable-next-line max-len, no-nested-ternary
+        [id]: (marked[id] && fullyFocused) ? MARKED : (marked[id] === MARKED ? FOCUSED : marked[id]),
       }), {});
       updateFocusedResources(newSubType, resourceIdsMap);
     } else {
@@ -46,7 +46,7 @@ const FocusedIcon = ({
 
   const iconCount = null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = (allAreFocused ? styles.fullyFocused : (focusedCount ? styles.hasFocused : (markedOrFocusedCount) ? styles.hasMarked : styles.unmarked));
+  const iconStyle = (fullyFocused ? styles.fullyFocused : (focusedCount ? styles.partialFocused : (markedOrFocusedCount) ? styles.hasMarked : styles.unmarked));
 
   return (
     <TouchableOpacity
@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.fullyFocused,
     backgroundColor: Colors.fullyFocused,
   },
-  hasFocused: {
+  partialFocused: {
     borderColor: Colors.hasFocused,
     backgroundColor: Colors.hasMarked,
   },
