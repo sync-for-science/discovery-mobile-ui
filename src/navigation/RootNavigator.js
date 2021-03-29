@@ -45,6 +45,7 @@ const CollectionStackScreen = () => (
   <CollectionsStack.Navigator
     initialRouteName="CollectionsList"
     headerMode="none"
+    screenOptions={{ gestureEnabled: false }}
   >
     <CollectionsStack.Screen
       name="CollectionsList"
