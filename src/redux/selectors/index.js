@@ -24,6 +24,8 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
+const previewCollectionSelector = (state) => state.previewedCollection
+
 export const markedResourcesSelector = (state) => state.markedResources;
 
 export const patientSelector = createSelector(
@@ -345,6 +347,78 @@ export const collectionFlattenedSubTypesSelector = createSelector(
   (filteredResourceTypes) => {
     const collectionFlattenedSubTypes = {};
     Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
+      const { subTypes } = resourceTypeValues;
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.collectionDateFilteredCount > 0) {
+          if (!collectionFlattenedSubTypes[subType]) {
+            collectionFlattenedSubTypes[subType] = {};
+          }
+          collectionFlattenedSubTypes[subType] = subTypeValues;
+        }
+      });
+    });
+    return collectionFlattenedSubTypes;
+  },
+);
+
+const previewCollectionResourceIdsSelector = createSelector(
+  [collectionsSelector, previewCollectionSelector],
+  (collections, previewCollectionId) => collections[previewCollectionId]?.resourceIds,
+);
+
+const previewFilteredResourceTypesSelector = createSelector(
+  [
+    previewCollectionResourceIdsSelector,
+    timelineItemsInRangeSelector,
+    subTypeResourceIdsSelector,
+  ],
+  (
+    previewCollectionResourceIdsObjects,
+    timelineItemsInRange,
+    subTypeResourceIds,
+  ) => {
+    if (!previewCollectionResourceIdsObjects) {
+      return {};
+    }
+    const selectedCollectionResourceIds = Object.keys(previewCollectionResourceIdsObjects);
+    return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
+      if (!acc[type]) {
+        acc[type] = {};
+      }
+      if (!acc[type].subTypes) {
+        acc[type].subTypes = {};
+      }
+      if (!acc[type].subTypes[subType]) {
+        acc[type].subTypes[subType] = {};
+        acc[type].subTypes[subType].resourceIds = Array.from(subTypeResourceIds[subType]);
+        acc[type].subTypes[subType].count = Array.from(subTypeResourceIds[subType]).length;
+        acc[type].subTypes[subType].dateFilteredResourceIds = [];
+        acc[type].subTypes[subType].dateFilteredCount = 0;
+        acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
+        acc[type].subTypes[subType].collectionDateFilteredCount = 0;
+      }
+      acc[type].subTypes[subType].dateFilteredResourceIds.push(id);
+      acc[type].subTypes[subType].dateFilteredCount = (
+        acc[type].subTypes[subType].dateFilteredResourceIds.length
+      );
+
+      if (selectedCollectionResourceIds.includes(id)) {
+        acc[type].subTypes[subType].collectionDateFilteredResourceIds.push(id);
+        acc[type].subTypes[subType].collectionDateFilteredCount = (
+          acc[type].subTypes[subType].collectionDateFilteredResourceIds.length
+        );
+      }
+
+      return acc;
+    }, {});
+  },
+);
+
+export const previewCollectionFlattenedSubTypesSelector = createSelector(
+  [previewFilteredResourceTypesSelector],
+  (previewFilteredResourceTypes) => {
+    const collectionFlattenedSubTypes = {};
+    Object.entries(previewFilteredResourceTypes).forEach(([, resourceTypeValues]) => {
       const { subTypes } = resourceTypeValues;
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         if (subTypeValues.collectionDateFilteredCount > 0) {

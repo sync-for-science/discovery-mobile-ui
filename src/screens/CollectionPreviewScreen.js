@@ -12,11 +12,11 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../constants/Colors';
 import CollectionPreviewActionIcon from '../components/Icons/CollectionPreviewActionIcon';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer'
-import { collectionFlattenedSubTypesSelector } from '../redux/selectors';
+import { previewCollectionFlattenedSubTypesSelector } from '../redux/selectors';
 
 const CollectionPreviewScreen = ({
   route, navigation, collections, selectedCollectionId,
-  collectionFlattenedSubTypes
+  previewCollectionFlattenedSubTypes
 }) => {
   const { params: { collectionId } } = route;
   const collection = collections[collectionId];
@@ -25,9 +25,6 @@ const CollectionPreviewScreen = ({
     return null;
   }
   const selected = collectionId === selectedCollectionId;
-
-  console.log('collection', collection)
-  console.log('collectionFlattenedSubTypes', collectionFlattenedSubTypes)
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -50,7 +47,7 @@ const CollectionPreviewScreen = ({
         </Right>
       </Header>
       <View style={styles.screen}>
-        <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
+        <SubTypeAccordionsContainer showAllSubTypes subTypeData={previewCollectionFlattenedSubTypes} />
       </View>
     </SafeAreaView>
   );
@@ -61,13 +58,13 @@ CollectionPreviewScreen.propTypes = {
   collections: shape({}).isRequired,
   route: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
-  collectionFlattenedSubTypes: shape({}).isRequired,
+  previewCollectionFlattenedSubTypes: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollectionId: state.selectedCollection,
-  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state),
+  previewCollectionFlattenedSubTypes: previewCollectionFlattenedSubTypesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CollectionPreviewScreen);
