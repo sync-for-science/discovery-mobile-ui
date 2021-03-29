@@ -59,8 +59,17 @@ const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
 
 export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
   switch (action.type) {
+    case actionTypes.CREATE_COLLECTION:
+    case actionTypes.SELECT_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadResourceTypeFilters;
+    }
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION: {
+      if (action.payload.isSelectedCollection) {
+        return preloadResourceTypeFilters;
+      }
+      return state;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
@@ -92,8 +101,17 @@ const preloadSelectedTimelineRange = {
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
+    case actionTypes.CREATE_COLLECTION:
+    case actionTypes.SELECT_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedTimelineRange;
+    }
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION: {
+      if (action.payload.isSelectedCollection) {
+        return preloadSelectedTimelineRange;
+      }
+      return state;
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
       return {
@@ -109,25 +127,33 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
 
-const createDefaultCollections = () => {
+const createCollection = (
+  name = null,
+  duplicateResourceIds = null,
+  duplicateLastAddedResourceId = null,
+) => {
   const timeCreated = new Date();
+  const label = name || 'Untitled Collection';
+  const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
+  const resourceIds = duplicateResourceIds || {};
+  const lastAddedResourceId = duplicateLastAddedResourceId || null;
   return {
-    [defaultCollectionId]: {
+    [collectionId]: {
       created: timeCreated,
       lastUpdated: timeCreated,
-      label: 'Untitled Collection',
-      resourceIds: {},
-      lastAddedResourceId: null,
+      label,
+      resourceIds,
+      lastAddedResourceId,
     },
   };
 };
 
-const preloadCollections = createDefaultCollections();
+const preloadCollections = createCollection();
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return createDefaultCollections();
+      return createCollection();
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -166,6 +192,35 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       };
       return { ...state, [collectionId]: newCollection };
     }
+    case actionTypes.CREATE_COLLECTION: {
+      const newCollection = createCollection(action.payload);
+      return { ...state, ...newCollection };
+    }
+    case actionTypes.DELETE_COLLECTION: {
+      const newState = { ...state };
+      delete newState[action.payload.collectionId];
+      return newState;
+    }
+    case actionTypes.RENAME_COLLECTION: {
+      const updatedCollection = { ...state[action.payload.collectionId] };
+      updatedCollection.label = action.payload.collectionName;
+      return { ...state, [action.payload.collectionId]: updatedCollection };
+    }
+    case actionTypes.CLEAR_COLLECTION: {
+      const updatedCollection = { ...state[action.payload] };
+      updatedCollection.resourceIds = {};
+      updatedCollection.lastAddedResourceId = null;
+      return { ...state, [action.payload]: updatedCollection };
+    }
+    case actionTypes.DUPLICATE_COLLECTION: {
+      const dupCollection = { ...state[action.payload.collectionId] };
+      const newCollection = createCollection(
+        action.payload.collectionName,
+        dupCollection.resourceIds,
+        dupCollection.lastAddedResourceId,
+      );
+      return { ...state, ...newCollection };
+    }
     default:
       return state;
   }
@@ -175,6 +230,15 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;
+    }
+    case actionTypes.SELECT_COLLECTION: {
+      return action.payload;
+    }
+    case actionTypes.DELETE_COLLECTION: {
+      if (action.payload.nextCollectionId) {
+        return action.payload.nextCollectionId;
+      }
+      return state;
     }
     default:
       return state;

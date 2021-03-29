@@ -9,8 +9,8 @@ import { shape } from 'prop-types';
 import LoginScreen from '../screens/LoginScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import CollectionsIndexScreen from '../screens/CollectionsIndexScreen';
-import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
+import CollectionsListScreen from '../screens/CollectionsListScreen';
+import CollectionPreviewScreen from '../screens/CollectionPreviewScreen';
 import Colors from '../constants/Colors';
 
 const HomeTab = createBottomTabNavigator();
@@ -43,16 +43,16 @@ const selectScreenOptions = ({ route: { name } }) => ({
 
 const CollectionStackScreen = () => (
   <CollectionsStack.Navigator
-    initialRouteName="CollectionsIndex"
+    initialRouteName="CollectionsList"
     headerMode="none"
   >
     <CollectionsStack.Screen
-      name="CollectionsIndex"
-      component={CollectionsIndexScreen}
+      name="CollectionsList"
+      component={CollectionsListScreen}
     />
     <CollectionsStack.Screen
-      name="CollectionDetails"
-      component={CollectionDetailsScreen}
+      name="CollectionPreview"
+      component={CollectionPreviewScreen}
     />
   </CollectionsStack.Navigator>
 );

@@ -356,3 +356,8 @@ export const collectionFlattenedSubTypesSelector = createSelector(
     return collectionFlattenedSubTypes;
   },
 );
+
+export const collectionsCountSelector = createSelector(
+  [collectionsSelector],
+  (collections) => (Object.entries(collections).length),
+);

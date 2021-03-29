@@ -25,3 +25,33 @@ export const removeResourceFromCollection = (collectionId, resourceIds) => {
     payload: { collectionId, resourceIds: payloadIds },
   });
 };
+
+export const createCollection = (collectionName) => ({
+  type: actionTypes.CREATE_COLLECTION,
+  payload: collectionName,
+});
+
+export const selectCollection = (collectionId) => ({
+  type: actionTypes.SELECT_COLLECTION,
+  payload: collectionId,
+});
+
+export const deleteCollection = (collectionId, nextCollectionId, isSelectedCollection) => ({
+  type: actionTypes.DELETE_COLLECTION,
+  payload: { collectionId, nextCollectionId, isSelectedCollection },
+});
+
+export const renameCollection = (collectionId, collectionName) => ({
+  type: actionTypes.RENAME_COLLECTION,
+  payload: { collectionId, collectionName },
+});
+
+export const clearCollection = (collectionId) => ({
+  type: actionTypes.CLEAR_COLLECTION,
+  payload: collectionId,
+});
+
+export const duplicateCollection = (collectionId, collectionName) => ({
+  type: actionTypes.DUPLICATE_COLLECTION,
+  payload: { collectionId, collectionName },
+});
