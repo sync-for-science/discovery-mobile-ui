@@ -1,9 +1,9 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import { equals } from 'ramda';
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
 
@@ -247,7 +247,7 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
 };
 
 const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
-  // prune items whose values are null, undefined, or empty string:
+  // prune items whose values are 0, null, undefined, or empty string:
   if (v) {
     acc[k] = v;
   }
@@ -255,10 +255,12 @@ const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
 }, {}));
 
 const preloadedMarkedResources = {
-  // dictionaries of resource ids with Boolean values:
   focusedSubtype: '', // only a single sub-type can be focused
+  // "marked" -- dictionary whose keys are resource ids and values are enum:
+  // 0 -- unmarked
+  // 1 -- marked
+  // 2 -- focused
   marked: {},
-  focused: {},
 };
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
@@ -266,64 +268,28 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedMarkedResources;
     }
-    case actionTypes.UPDATE_FOCUSED_SUBTYPE: {
-      const { subType, resourceIdsMap } = action.payload;
-      const deFocus = equals(state.focused, resourceIdsMap);
-      return {
-        focusedSubtype: subType,
-        marked: {
-          ...state.marked,
-          ...resourceIdsMap,
-        },
-        focused: deFocus ? {} : {
-          ...resourceIdsMap,
-        },
-      };
-    }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      // console.info(actionTypes.UPDATE_MARKED_RESOURCES, action);
-      const { subType, resourceIdsMap } = action.payload;
-      const marked = Object.entries(resourceIdsMap)
-        .reduce((acc, [uuid, isMarked]) => ({
+      const { subType, resourceIdsMap, force = false } = action.payload;
+      const deFocus = subType !== state.focusedSubtype;
+
+      const previousMarked = !deFocus ? state.marked : Object.entries(state.marked)
+        .reduce((acc, [id, prevValue]) => ({
           ...acc,
-          [uuid]: isMarked,
+          [id]: (prevValue === FOCUSED ? MARKED : prevValue),
         }), {});
-      const previousFocus = (state.focusedSubtype !== subType) ? {} : state.focused;
-      const focused = Object.entries(previousFocus)
-        .reduce((acc, [uuid]) => ({
+
+      const newlyMarked = Object.entries(resourceIdsMap)
+        .reduce((acc, [id, newValue]) => ({
           ...acc,
-          [uuid]: (!!resourceIdsMap[uuid]), // de-focus items being un-marked
+          // eslint-disable-next-line max-len
+          [id]: ((newValue === FOCUSED && (force || previousMarked[id] === MARKED)) ? FOCUSED : newValue),
         }), {});
-      return {
-        focusedSubtype: subType,
-        focused: pruneEmpty(focused),
-        marked: pruneEmpty({
-          ...state.marked, // previously marked
-          ...marked,
-        }),
-      };
-    }
-    case actionTypes.UPDATE_FOCUSED_RESOURCES: {
-      // console.info(actionTypes.UPDATE_FOCUSED_RESOURCES, action);
-      // "force" -- set regardless of marked state
-      const { subType, resourceIdsMap, force } = action.payload;
-      const conservedPreviousFocus = (state.focusedSubtype === subType) ? state.focused : {};
-      const focused = Object.entries(resourceIdsMap)
-        .reduce((acc, [uuid, isFocused]) => ({
-          ...acc,
-          // cannot focus unless already marked -- unless forced:
-          [uuid]: (force || (state.marked[uuid]) ? isFocused : conservedPreviousFocus[uuid]),
-        }), {});
-      const newMarked = (force) ? focused : {};
+
       return {
         focusedSubtype: subType,
         marked: pruneEmpty({
-          ...state.marked,
-          ...newMarked,
-        }),
-        focused: pruneEmpty({
-          ...conservedPreviousFocus,
-          ...focused,
+          ...previousMarked,
+          ...newlyMarked,
         }),
       };
     }

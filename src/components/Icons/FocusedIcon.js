@@ -11,6 +11,7 @@ import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
 } from '../../redux/selectors';
+import { MARKED, FOCUSED } from '../../constants/marked-status';
 
 const FocusedIcon = ({
   subType,
@@ -19,12 +20,12 @@ const FocusedIcon = ({
   updateFocusedResources,
   markedResources,
 }) => {
-  const { marked, focused } = markedResources;
+  const { marked } = markedResources;
 
-  const markedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
+  const markedOrFocusedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
   // const allAreMarked = markedCount === resourceIds.length;
 
-  const focusedCount = resourceIds.reduce((acc, id) => (focused[id] ? acc + 1 : acc), 0);
+  const focusedCount = resourceIds.reduce((acc, id) => (marked[id] === FOCUSED ? acc + 1 : acc), 0);
   const allAreFocused = resourceIds.length === focusedCount;
 
   const handlePress = () => {
@@ -32,17 +33,20 @@ const FocusedIcon = ({
       const newSubType = allAreFocused ? '' : subType; // no subType if turning all off
       const resourceIdsMap = resourceIds.reduce((acc, id) => ({
         ...acc,
-        [id]: !allAreFocused,
+        // icon not shown if all are unmarked; do not change value of any single unmarked:
+        // eslint-disable-next-line no-nested-ternary
+        [id]: (allAreFocused ? MARKED : ((marked[id] === MARKED) ? FOCUSED : marked[id])),
       }), {});
-      updateFocusedResources(newSubType, resourceIdsMap, allAreFocused);
+      updateFocusedResources(newSubType, resourceIdsMap);
     } else {
-      updateFocusedResources(subType, { [resourceIds[0]]: !focusedCount });
+      // (unmarked or marked) > focused > marked
+      updateFocusedResources(subType, { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) });
     }
   };
 
   const iconCount = null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = (allAreFocused ? styles.fullyFocused : (focusedCount ? styles.hasFocused : (markedCount) ? styles.hasMarked : styles.unmarked));
+  const iconStyle = (allAreFocused ? styles.fullyFocused : (focusedCount ? styles.hasFocused : (markedOrFocusedCount) ? styles.hasMarked : styles.unmarked));
 
   return (
     <TouchableOpacity
@@ -65,7 +69,6 @@ FocusedIcon.propTypes = {
   markedResources: shape({
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
-    focused: shape({}).isRequired,
   }).isRequired,
 };
 
@@ -78,7 +81,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateFocusedResources: (subType, resourceIdsMap) => ({
-    type: actionTypes.UPDATE_FOCUSED_RESOURCES,
+    type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,

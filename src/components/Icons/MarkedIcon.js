@@ -11,43 +11,44 @@ import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
 } from '../../redux/selectors';
+import { UNMARKED, FOCUSED } from '../../constants/marked-status';
 
 const MarkedIcon = ({
   subType,
   resourceIds,
   isAccordion,
-  updateFocusedSubtype,
   updateMarkedResources,
-  updateFocusedResources,
   markedResources,
 }) => {
   const { focusedSubtype, marked } = markedResources;
 
-  const markedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
-  const allAreMarked = markedCount === resourceIds.length;
+  const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
+  const allAreMarked = markedOrFocusedCount === resourceIds.length;
 
   const handlePress = () => {
     if (isAccordion) { // could be one or more resourceId:
-      const resourceIdsMap = resourceIds.reduce((acc, id) => ({ ...acc, [id]: !allAreMarked }), {});
+      const resourceIdsMap = resourceIds.reduce((acc, id) => ({
+        ...acc,
+        [id]: (allAreMarked ? UNMARKED : FOCUSED),
+      }), {});
       const newSubType = allAreMarked ? '' : subType; // no subType if turning all off
-      updateFocusedSubtype(newSubType, resourceIdsMap);
+      updateMarkedResources(newSubType, resourceIdsMap);
     } else { // only one resourceId:
-      // console.info('markedCount: ', markedCount);
-      if (markedCount) {
-        updateMarkedResources(subType, { [resourceIds[0]]: false });
+      if (markedOrFocusedCount) {
+        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED });
       }
-      if (!markedCount) { // one resourceId, that neither marked nor focused:
+      if (!markedOrFocusedCount) { // one resourceId, that neither marked nor focused:
         const isNewSubtype = (subType !== focusedSubtype);
-        updateFocusedResources(isNewSubtype ? '' : subType, { [resourceIds[0]]: true }, true);
+        updateMarkedResources(isNewSubtype ? '' : subType, { [resourceIds[0]]: FOCUSED }, true);
       }
     }
   };
 
-  const iconCount = (isAccordion && markedCount) ? markedCount : null;
+  const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = allAreMarked ? styles.fullyMarked : (markedCount ? styles.hasMarked : styles.unmarked);
+  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
   // eslint-disable-next-line no-nested-ternary, max-len
-  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedCount ? textStyles.hasMarked : textStyles.unmarked);
+  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
 
   return (
     <TouchableOpacity
@@ -66,13 +67,11 @@ MarkedIcon.propTypes = {
   subType: string.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   isAccordion: bool.isRequired,
-  updateFocusedSubtype: func.isRequired,
   updateMarkedResources: func.isRequired,
-  updateFocusedResources: func.isRequired,
+  // updateFocusedResources: func.isRequired,
   markedResources: shape({
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
-    focused: shape({}).isRequired,
   }).isRequired,
 };
 
@@ -84,26 +83,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateFocusedSubtype: (subType, resourceIdsMap) => ({
-    type: actionTypes.UPDATE_FOCUSED_SUBTYPE,
-    payload: {
-      subType,
-      resourceIdsMap,
-    },
-  }),
   updateMarkedResources: (subType, resourceIdsMap) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,
-    },
-  }),
-  updateFocusedResources: (subType, resourceIdsMap, force) => ({
-    type: actionTypes.UPDATE_FOCUSED_RESOURCES,
-    payload: {
-      subType,
-      resourceIdsMap,
-      force,
     },
   }),
 };
