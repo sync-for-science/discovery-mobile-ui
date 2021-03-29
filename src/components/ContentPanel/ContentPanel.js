@@ -4,32 +4,39 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
-import { shape } from 'prop-types';
+import { shape, string } from 'prop-types';
 
 import { collectionFlattenedSubTypesSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../../constants/Colors';
 
-const ContentPanel = ({ collectionFlattenedSubTypes }) => (
-  <ScrollView>
-    <View>
-      <Text style={styles.title}>Details Panel</Text>
-    </View>
-    { Object.keys(collectionFlattenedSubTypes).length > 0 ? (
-      <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
-    ) : (
-      <View style={styles.noRecordsContainer}>
-        <Text style={styles.noRecordsText}>No Records Selected</Text>
+const ContentPanel = ({ collections, selectedCollection, collectionFlattenedSubTypes }) => {
+  const collection = collections[selectedCollection];
+  return (
+    <ScrollView>
+      <View>
+        <Text style={styles.title}>{collection?.label}</Text>
       </View>
-    )}
-  </ScrollView>
-);
+      { Object.keys(collectionFlattenedSubTypes).length > 0 ? (
+        <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
+      ) : (
+        <View style={styles.noRecordsContainer}>
+          <Text style={styles.noRecordsText}>No Records Selected</Text>
+        </View>
+      )}
+    </ScrollView>
+  );
+};
 
 ContentPanel.propTypes = {
+  collections: shape({}).isRequired,
+  selectedCollection: string.isRequired,
   collectionFlattenedSubTypes: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  collections: state.collections,
+  selectedCollection: state.selectedCollection,
   collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state),
 });
 
