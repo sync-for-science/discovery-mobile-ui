@@ -36,9 +36,9 @@ export const selectCollection = (collectionId) => ({
   payload: collectionId,
 });
 
-export const deleteCollection = (collectionId, nextCollectionId) => ({
+export const deleteCollection = (collectionId, nextCollectionId, isSelectedCollection) => ({
   type: actionTypes.DELETE_COLLECTION,
-  payload: { collectionId, nextCollectionId },
+  payload: { collectionId, nextCollectionId, isSelectedCollection },
 });
 
 export const renameCollection = (collectionId, collectionName) => ({
