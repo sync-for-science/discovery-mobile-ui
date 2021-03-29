@@ -48,7 +48,7 @@ export const renameCollection = (collectionId, collectionName) => ({
 
 export const clearCollection = (collectionId, isSelectedCollection) => ({
   type: actionTypes.CLEAR_COLLECTION,
-  payload: {collectionId, isSelectedCollection},
+  payload: { collectionId, isSelectedCollection },
 });
 
 export const duplicateCollection = (collectionId, collectionName) => ({
@@ -58,5 +58,5 @@ export const duplicateCollection = (collectionId, collectionName) => ({
 
 export const setPreviewCollection = (collectionId) => ({
   type: actionTypes.SET_PREVIEW_COLLECTION,
-  payload: collectionId
-})
+  payload: collectionId,
+});

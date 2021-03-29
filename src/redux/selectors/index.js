@@ -24,7 +24,7 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
-const previewCollectionSelector = (state) => state.previewedCollection
+const previewCollectionSelector = (state) => state.previewedCollection;
 
 export const markedResourcesSelector = (state) => state.markedResources;
 
