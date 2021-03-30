@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Text,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Text, ScrollView,
 } from 'react-native';
 import { shape, string } from 'prop-types';
 import { connect } from 'react-redux';
@@ -46,19 +46,21 @@ const CollectionPreviewScreen = ({
           />
         </Right>
       </Header>
-      {Object.keys(previewCollectionSubTypeData).length > 0
-        ? (
-          <SubTypeAccordionsContainer
-            showAllSubTypes
-            isCollectionPreview
-            subTypeData={previewCollectionSubTypeData}
-          />
-        )
-        : (
-          <View style={styles.noRecordsContainer}>
-            <Text style={styles.noRecordsText}>No Records Selected</Text>
-          </View>
-        )}
+      <ScrollView>
+        {Object.keys(previewCollectionSubTypeData).length > 0
+          ? (
+            <SubTypeAccordionsContainer
+              showAllSubTypes
+              isCollectionPreview
+              subTypeData={previewCollectionSubTypeData}
+            />
+          )
+          : (
+            <View style={styles.noRecordsContainer}>
+              <Text style={styles.noRecordsText}>No Records Selected</Text>
+            </View>
+          )}
+      </ScrollView>
     </SafeAreaView>
   );
 };

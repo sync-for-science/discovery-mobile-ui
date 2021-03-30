@@ -77,7 +77,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionIcon);
 
 const styles = StyleSheet.create({
   text: {
-    color: 'white',
+    color: 'black',
   },
   base: {
     height: 30,
