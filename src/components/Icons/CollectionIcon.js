@@ -1,7 +1,7 @@
+import React from 'react';
 import {
   arrayOf, bool, func, string,
 } from 'prop-types';
-import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
@@ -22,6 +22,7 @@ const CollectionIcon = ({
   const selectedOrPreviewResourceIds = previewCollection
     ? collectionResourceIds[previewCollectionId]
     : collectionResourceIds[collectionId];
+
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = selectedOrPreviewResourceIds[id];
     return inCollection ? acc + 1 : acc;

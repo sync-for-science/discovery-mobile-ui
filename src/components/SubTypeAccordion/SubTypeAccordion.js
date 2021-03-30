@@ -49,7 +49,7 @@ const SubTypeAccordion = ({
           collectionId={collectionId}
           resourceIds={resourceIds}
           showCount
-          previewCollection
+          previewCollection={previewCollection}
         />
       </View>
     </View>

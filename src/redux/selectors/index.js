@@ -268,7 +268,6 @@ export const lastAddedResourceIdSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
 );
 
-// new
 export const collectionsResourceIdsSelector = createSelector(
   [collectionsSelector],
   (collections) => (
