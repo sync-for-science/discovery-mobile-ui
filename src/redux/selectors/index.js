@@ -346,7 +346,7 @@ export const allCollectionsFilteredResourceTypesSelector = createSelector(
   },
 );
 
-export const selectedFlattenedSubTypesSelector = createSelector(
+export const selectedResourceTypeDataSelector = createSelector(
   [selectedResourceTypeSelector, allCollectionsFilteredResourceTypesSelector, selectedCollectionSelector],
   (selectedResourceType, allCollectionsFilteredResourceTypes, selectedCollection) => {
     if (!selectedResourceType || !allCollectionsFilteredResourceTypes[selectedCollection][selectedResourceType]) {

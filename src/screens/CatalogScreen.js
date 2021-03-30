@@ -13,9 +13,9 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
-import { selectedFlattenedSubTypesSelector } from '../redux/selectors';
+import { selectedResourceTypeDataSelector } from '../redux/selectors';
 
-const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes }) => (
+const CatalogScreen = ({ selectedResourceType, selectedResourceTypeData }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -30,7 +30,7 @@ const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes }) => (
         </View>
         <ScrollView>
           { selectedResourceType && (
-            <SubTypeAccordionsContainer subTypeData={selectedFlattenedSubTypes} />
+            <SubTypeAccordionsContainer subTypeData={selectedResourceTypeData} />
           )}
         </ScrollView>
       </FilterDrawer>
@@ -41,7 +41,7 @@ const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes }) => (
 
 CatalogScreen.propTypes = {
   selectedResourceType: string,
-  selectedFlattenedSubTypes: shape({}).isRequired,
+  selectedResourceTypeData: shape({}).isRequired,
 };
 
 CatalogScreen.defaultProps = {
@@ -50,7 +50,7 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
-  selectedFlattenedSubTypes: selectedFlattenedSubTypesSelector(state),
+  selectedResourceTypeData: selectedResourceTypeDataSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
