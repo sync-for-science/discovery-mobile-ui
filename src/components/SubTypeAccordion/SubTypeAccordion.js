@@ -103,11 +103,12 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '70%',
+    flex: 1,
   },
   headerText: {
     marginLeft: 5,
     color: 'black',
+    flex: 1,
   },
   rightIconsContainer: {
     flexDirection: 'row',
