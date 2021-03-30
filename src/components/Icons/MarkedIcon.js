@@ -20,7 +20,7 @@ const MarkedIcon = ({
   updateMarkedResources,
   markedResources,
 }) => {
-  const { focusedSubtype, marked } = markedResources;
+  const { marked } = markedResources;
 
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
   const allAreMarked = markedOrFocusedCount === resourceIds.length;
@@ -38,8 +38,7 @@ const MarkedIcon = ({
         updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED });
       }
       if (!markedOrFocusedCount) { // one resourceId, that neither marked nor focused:
-        const isNewSubtype = (subType !== focusedSubtype);
-        updateMarkedResources(isNewSubtype ? '' : subType, { [resourceIds[0]]: FOCUSED }, true);
+        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, true);
       }
     }
   };

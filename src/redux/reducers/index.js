@@ -270,7 +270,7 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       const { subType, resourceIdsMap, force = false } = action.payload;
-      const deFocus = subType !== state.focusedSubtype;
+      const deFocus = (!subType || subType !== state.focusedSubtype);
 
       const previousMarked = !deFocus ? state.marked : Object.entries(state.marked)
         .reduce((acc, [id, prevValue]) => ({
