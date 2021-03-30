@@ -75,13 +75,13 @@ const ResourceCard = ({
   patientAgeAtResources,
   selectedCollectionId,
   collectionsResourceIds,
-  previewCollection,
+  isCollectionPreview,
   previewCollectionId,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-  const inCollection = previewCollection
+  const inCollection = isCollectionPreview
     ? !!collectionsResourceIds[previewCollectionId][resourceId]
     : !!collectionsResourceIds[selectedCollectionId][resourceId];
   return (
@@ -104,7 +104,7 @@ const ResourceCard = ({
             showCount={false}
             collectionId={selectedCollectionId}
             resourceIds={[resourceId]}
-            previewCollection={previewCollection}
+            isCollectionPreview={isCollectionPreview}
           />
         </View>
       </View>
@@ -130,11 +130,11 @@ ResourceCard.propTypes = {
   selectedCollectionId: string.isRequired,
   collectionsResourceIds: shape({}).isRequired,
   previewCollectionId: string.isRequired,
-  previewCollection: bool,
+  isCollectionPreview: bool,
 };
 
 ResourceCard.defaultProps = {
-  previewCollection: false,
+  isCollectionPreview: false,
 };
 
 const mapStateToProps = (state) => ({

@@ -15,11 +15,11 @@ const CollectionIcon = ({
   showCount,
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
-  previewCollection,
+  isCollectionPreview,
   collectionsResourceIds,
   previewCollectionId,
 }) => {
-  const selectedOrPreviewResourceIds = previewCollection
+  const selectedOrPreviewResourceIds = isCollectionPreview
     ? collectionsResourceIds[previewCollectionId]
     : collectionsResourceIds[collectionId];
 
@@ -54,13 +54,13 @@ CollectionIcon.propTypes = {
   showCount: bool.isRequired,
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
-  previewCollection: bool,
+  isCollectionPreview: bool,
   collectionsResourceIds: shape({}).isRequired,
   previewCollectionId: string.isRequired,
 };
 
 CollectionIcon.defaultProps = {
-  previewCollection: false,
+  isCollectionPreview: false,
 };
 
 const mapStateToProps = (state) => ({

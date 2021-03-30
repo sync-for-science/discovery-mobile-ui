@@ -21,11 +21,11 @@ const SubTypeAccordion = ({
   resourceIds,
   selectedCollectionId,
   subType,
-  previewCollection,
+  isCollectionPreview,
   previewCollectionId,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const collectionId = previewCollection ? previewCollectionId : selectedCollectionId;
+  const collectionId = isCollectionPreview ? previewCollectionId : selectedCollectionId;
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
@@ -49,7 +49,7 @@ const SubTypeAccordion = ({
           collectionId={collectionId}
           resourceIds={resourceIds}
           showCount
-          previewCollection={previewCollection}
+          isCollectionPreview={isCollectionPreview}
         />
       </View>
     </View>
@@ -61,7 +61,7 @@ const SubTypeAccordion = ({
         key={resourceId}
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
-        previewCollection={previewCollection}
+        isCollectionPreview={isCollectionPreview}
       />
     ),
   );
@@ -85,12 +85,12 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,
-  previewCollection: bool,
+  isCollectionPreview: bool,
   previewCollectionId: string.isRequired,
 };
 
 SubTypeAccordion.defaultProps = {
-  previewCollection: false,
+  isCollectionPreview: false,
 };
 
 const mapStateToProps = (state) => ({

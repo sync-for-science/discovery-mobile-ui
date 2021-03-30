@@ -50,7 +50,7 @@ const CollectionPreviewScreen = ({
         ? (
           <SubTypeAccordionsContainer
             showAllSubTypes
-            previewCollection
+            isCollectionPreview
             subTypeData={previewCollectionSubTypeData}
           />
         )

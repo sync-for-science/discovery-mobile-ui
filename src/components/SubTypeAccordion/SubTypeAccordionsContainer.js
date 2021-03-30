@@ -9,7 +9,7 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, previewCollection }) => (
+const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, isCollectionPreview }) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(subTypeData)
@@ -28,7 +28,7 @@ const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, previewColle
               subType={subType}
               resourceIds={resourceIds}
               dateFilteredCount={values.dateFilteredCount}
-              previewCollection={previewCollection}
+              isCollectionPreview={isCollectionPreview}
             />
           );
         })}
@@ -39,12 +39,12 @@ const SubTypeAccordionsContainer = ({ subTypeData, showAllSubTypes, previewColle
 SubTypeAccordionsContainer.propTypes = {
   subTypeData: shape({}).isRequired,
   showAllSubTypes: bool,
-  previewCollection: bool,
+  isCollectionPreview: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   showAllSubTypes: false,
-  previewCollection: false,
+  isCollectionPreview: false,
 };
 
 const mapStateToProps = (state) => ({
