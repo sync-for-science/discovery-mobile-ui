@@ -7,31 +7,34 @@ import { shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
+const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
+
 const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
   if (subTypeData === {}) {
     return null;
   }
-
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        {Object.entries(subTypeData).map(([subType, values]) => {
-          const resourceIds = fromContentPanel
-            ? values.collectionDateFilteredResourceIds
-            : values.dateFilteredResourceIds;
+        {Object.entries(subTypeData)
+          .sort(sortEntriesBySubType)
+          .map(([subType, values]) => {
+            const resourceIds = fromContentPanel
+              ? values.collectionDateFilteredResourceIds
+              : values.dateFilteredResourceIds;
 
-          if (resourceIds.length === 0) {
-            return null;
-          }
-          return (
-            <SubTypeAccordion
-              key={subType}
-              subType={subType}
-              resourceIds={resourceIds}
-              dateFilteredCount={values.dateFilteredCount}
-            />
-          );
-        })}
+            if (resourceIds.length === 0) {
+              return null;
+            }
+            return (
+              <SubTypeAccordion
+                key={subType}
+                subType={subType}
+                resourceIds={resourceIds}
+                dateFilteredCount={values.dateFilteredCount}
+              />
+            );
+          })}
       </View>
     </View>
   );
