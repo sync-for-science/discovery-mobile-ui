@@ -27,7 +27,11 @@ export default {
   selected: yellow1,
   lastSelected: yellow2,
   collectionIcon: yellow2,
+  fullyFocused: blue4,
+  fullyMarked: blue4,
+  hasFocused: blue4,
   hasMarked: blue7,
+  unmarked: gray1,
   countIcon: gray1,
   screenBackground: gray4,
 };

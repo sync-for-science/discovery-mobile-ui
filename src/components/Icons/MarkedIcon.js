@@ -11,30 +11,43 @@ import { actionTypes } from '../../redux/action-types';
 import {
   markedResourcesSelector,
 } from '../../redux/selectors';
+import { UNMARKED, FOCUSED } from '../../constants/marked-status';
 
 const MarkedIcon = ({
+  subType,
   resourceIds,
-  showCount,
+  isAccordion,
   updateMarkedResources,
   markedResources,
 }) => {
-  const markedCount = resourceIds.reduce((acc, id) => {
-    const isMarked = markedResources[id];
-    return isMarked ? acc + 1 : acc;
-  }, 0);
+  const { marked } = markedResources;
 
-  const allAreMarked = markedCount === resourceIds.length;
+  const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
+  const allAreMarked = markedOrFocusedCount === resourceIds.length;
 
   const handlePress = () => {
-    updateMarkedResources(resourceIds.reduce((acc, id) => ({
-      ...acc,
-      [id]: !allAreMarked,
-    }), {}));
+    if (isAccordion) { // could be one or more resourceId:
+      const resourceIdsMap = resourceIds.reduce((acc, id) => ({
+        ...acc,
+        [id]: (allAreMarked ? UNMARKED : FOCUSED),
+      }), {});
+      const newSubType = allAreMarked ? '' : subType; // no subType if turning all off
+      updateMarkedResources(newSubType, resourceIdsMap);
+    } else { // only one resourceId:
+      if (markedOrFocusedCount) {
+        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED });
+      }
+      if (!markedOrFocusedCount) { // one resourceId, that neither marked nor focused:
+        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, true);
+      }
+    }
   };
 
-  const iconCount = (showCount && markedCount) ? markedCount : null;
+  const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = markedCount ? styles.hasMarked : null;
+  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
+  // eslint-disable-next-line no-nested-ternary, max-len
+  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
 
   return (
     <TouchableOpacity
@@ -44,16 +57,21 @@ const MarkedIcon = ({
       ]}
       onPress={handlePress}
     >
-      <Text style={styles.text}>{iconCount}</Text>
+      <Text style={[textStyle.base, textStyle]}>{iconCount}</Text>
     </TouchableOpacity>
   );
 };
 
 MarkedIcon.propTypes = {
+  subType: string.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
-  showCount: bool.isRequired,
+  isAccordion: bool.isRequired,
   updateMarkedResources: func.isRequired,
-  markedResources: shape({}).isRequired,
+  // updateFocusedResources: func.isRequired,
+  markedResources: shape({
+    focusedSubtype: string.isRequired,
+    marked: shape({}).isRequired,
+  }).isRequired,
 };
 
 MarkedIcon.defaultProps = {
@@ -64,31 +82,52 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateMarkedResources: (resourceIdsMap) => ({
+  updateMarkedResources: (subType, resourceIdsMap) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
-    payload: resourceIdsMap,
+    payload: {
+      subType,
+      resourceIdsMap,
+    },
   }),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(MarkedIcon));
 
 const styles = StyleSheet.create({
-  text: {
-    color: 'white',
-  },
   base: {
+    borderColor: 'transparent',
+    borderWidth: 0.5,
+    borderRadius: 30,
     height: 30,
     width: 30,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
-    marginLeft: 10,
-    borderRadius: 30,
+    marginLeft: 5,
+  },
+  fullyMarked: {
+    borderColor: Colors.fullyMarked,
     borderWidth: 2,
-    borderColor: Colors.hasMarked,
   },
   hasMarked: {
-    borderColor: Colors.hasMarked,
-    backgroundColor: Colors.hasMarked,
+    borderColor: Colors.fullyMarked,
+  },
+  unmarked: {
+    borderColor: Colors.unmarked,
+  },
+});
+
+const textStyles = StyleSheet.create({
+  base: {
+    color: 'transparent',
+  },
+  fullyMarked: {
+    color: Colors.fullyMarked,
+    fontWeight: 'bold',
+  },
+  hasMarked: {
+    color: Colors.fullyMarked,
+  },
+  unmarked: {
   },
 });

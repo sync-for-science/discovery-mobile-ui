@@ -12,6 +12,7 @@ import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
+import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
@@ -31,9 +32,15 @@ const SubTypeAccordion = ({
         </BaseText>
       </View>
       <View style={styles.rightIconsContainer}>
-        <MarkedIcon
+        <FocusedIcon
+          subType={subType}
           resourceIds={resourceIds}
-          showCount
+          isAccordion
+        />
+        <MarkedIcon
+          subType={subType}
+          resourceIds={resourceIds}
+          isAccordion
         />
         <CollectionIcon
           collectionId={selectedCollectionId}
@@ -104,5 +111,6 @@ const styles = StyleSheet.create({
   },
   rightIconsContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
 });
