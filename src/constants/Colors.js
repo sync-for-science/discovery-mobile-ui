@@ -24,6 +24,7 @@ export default {
   baseText: gray3,
   divider: gray1,
   collectionIcon: yellow1,
+  collectionUnselected: gray1,
   fullyFocused: blue4,
   fullyMarked: blue4,
   hasFocused: blue4,
