@@ -9,36 +9,31 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
-  if (subTypeData === {}) {
-    return null;
-  }
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        {Object.entries(subTypeData)
-          .sort(sortEntriesBySubType)
-          .map(([subType, values]) => {
-            const resourceIds = fromContentPanel
-              ? values.collectionDateFilteredResourceIds
-              : values.dateFilteredResourceIds;
+const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => (
+  <View style={styles.root}>
+    <View style={styles.container}>
+      {Object.entries(subTypeData)
+        .sort(sortEntriesBySubType)
+        .map(([subType, values]) => {
+          const resourceIds = fromContentPanel
+            ? values.collectionDateFilteredResourceIds
+            : values.dateFilteredResourceIds;
 
-            if (resourceIds.length === 0) {
-              return null;
-            }
-            return (
-              <SubTypeAccordion
-                key={subType}
-                subType={subType}
-                resourceIds={resourceIds}
-                dateFilteredCount={values.dateFilteredCount}
-              />
-            );
-          })}
-      </View>
+          if (resourceIds.length === 0) {
+            return null;
+          }
+          return (
+            <SubTypeAccordion
+              key={subType}
+              subType={subType}
+              resourceIds={resourceIds}
+              dateFilteredCount={values.dateFilteredCount}
+            />
+          );
+        })}
     </View>
-  );
-};
+  </View>
+);
 
 SubTypeAccordionsContainer.propTypes = {
   subTypeData: shape({}).isRequired,
