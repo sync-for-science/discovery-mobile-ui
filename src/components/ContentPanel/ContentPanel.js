@@ -6,11 +6,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { shape, string } from 'prop-types';
 
-import { selectedCollectionSubTypeDataSelector, collectionsResourceIdsSelector } from '../../redux/selectors';
+import { selectedCollectionSubTypeDataSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../../constants/Colors';
 
-const ContentPanel = ({ collections, selectedCollection, selectedCollectionSubTypeData, collectionsResourceIds }) => {
+const ContentPanel = ({
+  collections, selectedCollection, selectedCollectionSubTypeData,
+}) => {
   const collection = collections[selectedCollection];
   return (
     <ScrollView>
@@ -38,7 +40,6 @@ const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollection: state.selectedCollection,
   selectedCollectionSubTypeData: selectedCollectionSubTypeDataSelector(state),
-  collectionsResourceIds: collectionsResourceIdsSelector(state)
 });
 
 export default connect(mapStateToProps, null)(ContentPanel);

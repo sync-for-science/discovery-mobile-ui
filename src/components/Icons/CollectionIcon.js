@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  arrayOf, bool, func, string,
+  arrayOf, bool, func, shape, string,
 } from 'prop-types';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -16,12 +16,12 @@ const CollectionIcon = ({
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
   previewCollection,
-  collectionResourceIds,
-  previewCollectionId
+  collectionsResourceIds,
+  previewCollectionId,
 }) => {
   const selectedOrPreviewResourceIds = previewCollection
-    ? collectionResourceIds[previewCollectionId]
-    : collectionResourceIds[collectionId];
+    ? collectionsResourceIds[previewCollectionId]
+    : collectionsResourceIds[collectionId];
 
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = selectedOrPreviewResourceIds[id];
@@ -55,6 +55,8 @@ CollectionIcon.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   previewCollection: bool,
+  collectionsResourceIds: shape({}).isRequired,
+  previewCollectionId: string.isRequired,
 };
 
 CollectionIcon.defaultProps = {
@@ -63,7 +65,7 @@ CollectionIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   previewCollectionId: state.previewCollectionId,
-  collectionResourceIds: collectionsResourceIdsSelector(state) 
+  collectionsResourceIds: collectionsResourceIdsSelector(state),
 });
 
 const mapDispatchToProps = {

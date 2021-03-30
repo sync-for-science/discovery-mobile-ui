@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape } from 'prop-types';
+import { string, shape, bool } from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -76,14 +76,14 @@ const ResourceCard = ({
   selectedCollectionId,
   collectionsResourceIds,
   previewCollection,
-  previewCollectionId
+  previewCollectionId,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
   const inCollection = previewCollection
     ? !!collectionsResourceIds[previewCollectionId][resourceId]
-    : !!collectionsResourceIds[selectedCollectionId][resourceId]
+    : !!collectionsResourceIds[selectedCollectionId][resourceId];
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -128,11 +128,13 @@ ResourceCard.propTypes = {
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
-  collectionResourceIds: shape({}),
+  collectionsResourceIds: shape({}).isRequired,
+  previewCollectionId: string.isRequired,
+  previewCollection: bool,
 };
 
 ResourceCard.defaultProps = {
-  collectionResourceIds: {},
+  previewCollection: false,
 };
 
 const mapStateToProps = (state) => ({
@@ -140,7 +142,7 @@ const mapStateToProps = (state) => ({
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
   collectionsResourceIds: collectionsResourceIdsSelector(state),
-  previewCollectionId: state.previewCollectionId
+  previewCollectionId: state.previewCollectionId,
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
