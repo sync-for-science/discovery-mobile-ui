@@ -246,13 +246,10 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
   }
 };
 
-const pruneEmpty = ((o) => Object.entries(o).reduce((acc, [k, v]) => {
-  // prune items whose values are 0, null, undefined, or empty string:
-  if (v) {
-    acc[k] = v;
-  }
-  return acc;
-}, {}));
+// prune items whose values are 0, null, undefined, or empty string:
+const pruneEmpty = ((o) => Object.entries(o)
+  .filter(([, v]) => v)
+  .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
 const preloadedMarkedResources = {
   focusedSubtype: '', // only a single sub-type can be focused
