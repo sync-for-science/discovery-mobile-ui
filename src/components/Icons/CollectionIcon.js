@@ -72,10 +72,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    borderWidth: 2,
-    borderColor: Colors.collectionIcon,
+    borderWidth: 0.5,
+    borderColor: Colors.collectionUnselected,
   },
   hasResource: {
+    borderColor: Colors.collectionIcon,
     backgroundColor: Colors.collectionIcon,
+    borderWidth: 2,
   },
 });
