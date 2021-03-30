@@ -268,13 +268,13 @@ export const lastAddedResourceIdSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
 );
 
+// replace with collectionsResourceIdsSelector[selectedCollectionId]
 export const collectionResourceIdsSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
   (collections, selectedCollectionId) => {
     return collections[selectedCollectionId]?.resourceIds
   },
 );
-
 
 // new
 export const collectionsResourceIdsSelector = createSelector(
@@ -298,75 +298,23 @@ const subTypeResourceIdsSelector = createSelector(
   }, {}),
 );
 
-const filteredResourceTypesSelector = createSelector(
-  [
-    collectionResourceIdsSelector,
-    timelineItemsInRangeSelector,
-    subTypeResourceIdsSelector,
-  ],
-  (
-    collectionResourceIdsObjects,
-    timelineItemsInRange,
-    subTypeResourceIds,
-  ) => {
-    if (!collectionResourceIdsObjects) {
-      return {};
-    }
-    const selectedCollectionResourceIds = Object.keys(collectionResourceIdsObjects);
-    return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
-      if (!acc[type]) {
-        acc[type] = {};
-      }
-      if (!acc[type].subTypes) {
-        acc[type].subTypes = {};
-      }
-      if (!acc[type].subTypes[subType]) {
-        acc[type].subTypes[subType] = {};
-        acc[type].subTypes[subType].resourceIds = Array.from(subTypeResourceIds[subType]);
-        acc[type].subTypes[subType].count = Array.from(subTypeResourceIds[subType]).length;
-        acc[type].subTypes[subType].dateFilteredResourceIds = [];
-        acc[type].subTypes[subType].dateFilteredCount = 0;
-        acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
-        acc[type].subTypes[subType].collectionDateFilteredCount = 0;
-        
-      }
-
-      acc[type].subTypes[subType].dateFilteredResourceIds.push(id);
-      acc[type].subTypes[subType].dateFilteredCount = (
-        acc[type].subTypes[subType].dateFilteredResourceIds.length
-      );
-
-      if (selectedCollectionResourceIds.includes(id)) {
-        acc[type].subTypes[subType].collectionDateFilteredResourceIds.push(id);
-        acc[type].subTypes[subType].collectionDateFilteredCount = (
-          acc[type].subTypes[subType].collectionDateFilteredResourceIds.length
-        );
-      }
-
-      return acc;
-    }, {});
-  },
-);
-
 export const allCollectionsFilteredResourceTypesSelector = createSelector(
   [
-    collectionResourceIdsSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
     collectionsSelector,
     collectionsResourceIdsSelector,
   ],
   (
-    collectionResourceIdsObjects,
     timelineItemsInRange,
     subTypeResourceIds,
     collections,
     collectionsResourceIds
   ) => {
-    if (!collectionResourceIdsObjects) {
-      return {};
-    }
     return Object.keys(collections).reduce((accOut, collectionId) => {
+      if (!collectionsResourceIds[collectionId]) {
+        return accOut;
+      }
       const data = [...timelineItemsInRange].reverse().reduce((accIn, { id, type, subType }) => {
         if (!accIn[type]) {
           accIn[type] = {};
@@ -435,6 +383,7 @@ export const selectedCollectionSubTypeDataSelector = createSelector(
   },
 );
 
+// replace with collectionsResourceIdsSelector[previewCollectionId]
 export const previewCollectionResourceIdsSelector = createSelector(
   [collectionsSelector, previewCollectionIdSelector],
   (collections, previewCollectionId) => collections[previewCollectionId]?.resourceIds,

@@ -1,12 +1,12 @@
 import {
-  arrayOf, bool, func, string, shape,
+  arrayOf, bool, func, string,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 
-import { collectionResourceIdsSelector, previewCollectionResourceIdsSelector } from '../../redux/selectors';
+import { collectionsResourceIdsSelector } from '../../redux/selectors';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 
 const CollectionIcon = ({
@@ -15,13 +15,13 @@ const CollectionIcon = ({
   showCount,
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
-  collectionResourceIds,
   previewCollection,
-  previewCollectionResourceIds,
+  collectionResourceIds,
+  previewCollectionId
 }) => {
   const selectedOrPreviewResourceIds = previewCollection
-    ? previewCollectionResourceIds
-    : collectionResourceIds;
+    ? collectionResourceIds[previewCollectionId]
+    : collectionResourceIds[collectionId];
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = selectedOrPreviewResourceIds[id];
     return inCollection ? acc + 1 : acc;
@@ -53,9 +53,7 @@ CollectionIcon.propTypes = {
   showCount: bool.isRequired,
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
-  collectionResourceIds: shape({}).isRequired,
   previewCollection: bool,
-  previewCollectionResourceIds: shape({}).isRequired,
 };
 
 CollectionIcon.defaultProps = {
@@ -63,8 +61,8 @@ CollectionIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  collectionResourceIds: collectionResourceIdsSelector(state),
-  previewCollectionResourceIds: previewCollectionResourceIdsSelector(state),
+  previewCollectionId: state.previewCollectionId,
+  collectionResourceIds: collectionsResourceIdsSelector(state) 
 });
 
 const mapDispatchToProps = {
