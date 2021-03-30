@@ -154,12 +154,14 @@ const TimelineItems = ({
           height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
           color={BAR_COLOR}
         />
-        <Bar
-          x={0}
-          width={BAR_WIDTH}
-          height={Math.max(collectionItems.length * tickUnits, 4)}
-          color={Colors.collectionIcon}
-        />
+        {!collectionItems.length ? null : (
+          <Bar
+            x={0}
+            width={BAR_WIDTH}
+            height={Math.max(collectionItems.length * tickUnits, 4)}
+            color={Colors.collectionIcon}
+          />
+        )}
         <MarkedIndicators
           markedItems={markedItems}
         />
