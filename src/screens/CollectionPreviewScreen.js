@@ -12,11 +12,11 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../constants/Colors';
 import CollectionPreviewActionIcon from '../components/Icons/CollectionPreviewActionIcon';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
-import { previewCollectionFlattenedSubTypesSelector } from '../redux/selectors';
+import { previewCollectionSubTypeDataSelector } from '../redux/selectors';
 
 const CollectionPreviewScreen = ({
   route, navigation, collections, selectedCollectionId,
-  previewCollectionFlattenedSubTypes,
+  previewCollectionSubTypeData,
 }) => {
   const { params: { collectionId } } = route;
   const collection = collections[collectionId];
@@ -46,12 +46,12 @@ const CollectionPreviewScreen = ({
           />
         </Right>
       </Header>
-      {Object.keys(previewCollectionFlattenedSubTypes).length > 0
+      {Object.keys(previewCollectionSubTypeData).length > 0
         ? (
           <SubTypeAccordionsContainer
             showAllSubTypes
             previewCollection
-            subTypeData={previewCollectionFlattenedSubTypes}
+            subTypeData={previewCollectionSubTypeData}
           />
         )
         : (
@@ -68,13 +68,13 @@ CollectionPreviewScreen.propTypes = {
   collections: shape({}).isRequired,
   route: shape({}).isRequired,
   selectedCollectionId: string.isRequired,
-  previewCollectionFlattenedSubTypes: shape({}).isRequired,
+  previewCollectionSubTypeData: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollectionId: state.selectedCollection,
-  previewCollectionFlattenedSubTypes: previewCollectionFlattenedSubTypesSelector(state),
+  previewCollectionSubTypeData: previewCollectionSubTypeDataSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CollectionPreviewScreen);

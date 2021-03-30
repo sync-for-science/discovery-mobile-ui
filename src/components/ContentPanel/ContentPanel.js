@@ -6,19 +6,19 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import { shape, string } from 'prop-types';
 
-import { collectionFlattenedSubTypesSelector } from '../../redux/selectors';
+import { selectedCollectionSubTypeDataSelector, collectionsResourceIdsSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../../constants/Colors';
 
-const ContentPanel = ({ collections, selectedCollection, collectionFlattenedSubTypes }) => {
+const ContentPanel = ({ collections, selectedCollection, selectedCollectionSubTypeData, collectionsResourceIds }) => {
   const collection = collections[selectedCollection];
   return (
     <ScrollView>
       <View>
         <Text style={styles.title}>{collection?.label}</Text>
       </View>
-      { Object.keys(collectionFlattenedSubTypes).length > 0 ? (
-        <SubTypeAccordionsContainer showAllSubTypes subTypeData={collectionFlattenedSubTypes} />
+      { Object.keys(selectedCollectionSubTypeData).length > 0 ? (
+        <SubTypeAccordionsContainer showAllSubTypes subTypeData={selectedCollectionSubTypeData} />
       ) : (
         <View style={styles.noRecordsContainer}>
           <Text style={styles.noRecordsText}>No Records Selected</Text>
@@ -31,13 +31,14 @@ const ContentPanel = ({ collections, selectedCollection, collectionFlattenedSubT
 ContentPanel.propTypes = {
   collections: shape({}).isRequired,
   selectedCollection: string.isRequired,
-  collectionFlattenedSubTypes: shape({}).isRequired,
+  selectedCollectionSubTypeData: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collections: state.collections,
   selectedCollection: state.selectedCollection,
-  collectionFlattenedSubTypes: collectionFlattenedSubTypesSelector(state),
+  selectedCollectionSubTypeData: selectedCollectionSubTypeDataSelector(state),
+  collectionsResourceIds: collectionsResourceIdsSelector(state)
 });
 
 export default connect(mapStateToProps, null)(ContentPanel);
