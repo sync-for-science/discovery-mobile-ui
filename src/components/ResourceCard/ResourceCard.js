@@ -18,7 +18,7 @@ import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import {
   patientSelector,
   patientAgeAtResourcesSelector,
-  collectionResourceIdsSelector,
+  collectionsResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
@@ -74,12 +74,16 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   selectedCollectionId,
-  collectionResourceIds,
+  collectionsResourceIds,
+  previewCollection,
+  previewCollectionId
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-
+  const inCollection = previewCollection
+    ? !!collectionsResourceIds[previewCollectionId][resourceId]
+    : !!collectionsResourceIds[selectedCollectionId][resourceId]
   return (
     <View style={styles.root}>
       <View style={styles.header}>
@@ -100,6 +104,7 @@ const ResourceCard = ({
             showCount={false}
             collectionId={selectedCollectionId}
             resourceIds={[resourceId]}
+            previewCollection={previewCollection}
           />
         </View>
       </View>
@@ -109,7 +114,7 @@ const ResourceCard = ({
       <BaseDivider />
       <View style={styles.buttonContainer}>
         <AddRemoveButton
-          inCollection={!!collectionResourceIds[resourceId]}
+          inCollection={inCollection}
           collectionId={selectedCollectionId}
           resourceId={resourceId}
         />
@@ -134,7 +139,8 @@ const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  collectionResourceIds: collectionResourceIdsSelector(state),
+  collectionsResourceIds: collectionsResourceIdsSelector(state),
+  previewCollectionId: state.previewCollectionId
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

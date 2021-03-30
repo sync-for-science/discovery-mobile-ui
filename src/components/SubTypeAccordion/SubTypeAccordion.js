@@ -61,6 +61,7 @@ const SubTypeAccordion = ({
         key={resourceId}
         resourceId={resourceId}
         selectedCollectionId={selectedCollectionId}
+        previewCollection={previewCollection}
       />
     ),
   );
