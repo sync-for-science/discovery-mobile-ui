@@ -268,14 +268,6 @@ export const lastAddedResourceIdSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
 );
 
-// replace with collectionsResourceIdsSelector[selectedCollectionId]
-export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => {
-    return collections[selectedCollectionId]?.resourceIds
-  },
-);
-
 // new
 export const collectionsResourceIdsSelector = createSelector(
   [collectionsSelector],
@@ -381,12 +373,6 @@ export const selectedCollectionSubTypeDataSelector = createSelector(
     });
     return collectionFlattenedSubTypes;
   },
-);
-
-// replace with collectionsResourceIdsSelector[previewCollectionId]
-export const previewCollectionResourceIdsSelector = createSelector(
-  [collectionsSelector, previewCollectionIdSelector],
-  (collections, previewCollectionId) => collections[previewCollectionId]?.resourceIds,
 );
 
 export const previewCollectionSubTypeDataSelector = createSelector(
