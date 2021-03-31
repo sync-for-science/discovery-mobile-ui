@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, View, TouchableOpacity, Text
+  StyleSheet, SafeAreaView, StatusBar, View, TouchableOpacity
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Swiper from 'react-native-swiper';
@@ -18,6 +18,7 @@ import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
+import CatalogScreenActionIcon from '../components/Icons/CatalogScreenActionIcon'
 
 const CatalogScreenHeader = ({collection, handleOpenDrawer, navigation}) => {
   return (
@@ -34,9 +35,7 @@ const CatalogScreenHeader = ({collection, handleOpenDrawer, navigation}) => {
         <Title>{collection?.label}</Title>
       </View>
       <Right>
-        <TouchableOpacity onPress={() => {}}>
-          <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
-        </TouchableOpacity>
+        <CatalogScreenActionIcon />
       </Right>
     </Header>
   )
@@ -95,7 +94,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: Colors.screenBackground,
+    backgroundColor: Colors.backgroundColor,
     alignItems: 'center',
   },
   drawerIcon: {
