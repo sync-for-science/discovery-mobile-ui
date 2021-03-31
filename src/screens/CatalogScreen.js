@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { shape, string } from 'prop-types';
 import Timeline from '../components/Timeline';
@@ -19,6 +19,26 @@ import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
 
+const CatalogScreenHeader = ({collection, handleOpenDrawer}) => {
+  return (
+    <Header style={styles.header}>
+      <Left>
+        <TouchableOpacity onPress={handleOpenDrawer} style={{paddingLeft: 10}}>
+          <FontAwesome5 name="filter" size={24} color="black" color={Colors.darkgrey}/>
+        </TouchableOpacity>
+      </Left>
+      <Body>
+        <Title>{collection?.label}</Title>
+      </Body>
+      <Right>
+        <TouchableOpacity onPress={() => {}}>
+          <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
+        </TouchableOpacity>
+      </Right>
+    </Header>
+  )
+}
+
 const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes, collection }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -28,17 +48,7 @@ const CatalogScreen = ({ selectedResourceType, selectedFlattenedSubTypes, collec
       index={0}
     >
       <FilterDrawer>
-        <Header style={styles.header}>
-          <Left />
-          <Body>
-            <Title>{collection?.label}</Title>
-          </Body>
-          <Right>
-            <TouchableOpacity onPress={() => {}}>
-              <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
-            </TouchableOpacity>
-          </Right>
-        </Header>
+        <CatalogScreenHeader collection={collection}/>
         <View>
           <Timeline />
           <ResourceTypeSelector />
