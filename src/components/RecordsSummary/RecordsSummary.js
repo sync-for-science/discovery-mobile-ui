@@ -14,7 +14,6 @@ import {
 } from '../../resources/fhirReader';
 import { supportedResourcesSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import { clearPatientData } from '../../features/patient/patientDataSlice';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
@@ -92,9 +91,7 @@ const mapStateToProps = (state) => ({
   sortedResourceTypes: supportedResourcesSelector(state),
 });
 
-const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
-
-export default connect(mapStateToProps, mapDispatchToProps)(RecordsSummary);
+export default connect(mapStateToProps, null)(RecordsSummary);
 
 const styles = StyleSheet.create({
   recordSummaryContainer: {
