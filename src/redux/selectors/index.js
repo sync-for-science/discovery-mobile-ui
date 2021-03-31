@@ -28,8 +28,8 @@ export const markedResourcesSelector = (state) => state.markedResources;
 
 export const collectionSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollection) => collections[selectedCollection]
-)
+  (collections, selectedCollection) => collections[selectedCollection],
+);
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],

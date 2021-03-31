@@ -41,8 +41,12 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer, navigation }) => (
 
 CatalogScreenHeader.propTypes = {
   collection: shape({}).isRequired,
-  handleOpenDrawer: func.isRequired,
+  handleOpenDrawer: func,
   navigation: shape({}).isRequired,
+};
+
+CatalogScreenHeader.defaultProps = {
+  handleOpenDrawer: null,
 };
 
 const CatalogScreen = ({
