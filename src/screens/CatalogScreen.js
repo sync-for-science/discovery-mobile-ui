@@ -23,13 +23,13 @@ const CatalogScreenHeader = ({collection, handleOpenDrawer}) => {
   return (
     <Header style={styles.header}>
       <Left>
-        <TouchableOpacity onPress={handleOpenDrawer} style={{paddingLeft: 10}}>
+        <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
           <FontAwesome5 name="filter" size={24} color="black" color={Colors.darkgrey}/>
         </TouchableOpacity>
       </Left>
-      <Body>
+      <View>
         <Title>{collection?.label}</Title>
-      </Body>
+      </View>
       <Right>
         <TouchableOpacity onPress={() => {}}>
           <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
@@ -93,5 +93,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: Colors.screenBackground,
+    alignItems: 'center',
   },
+  drawerIcon: {
+    paddingLeft: 10
+  }
 });
