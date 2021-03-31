@@ -1,4 +1,6 @@
-import React, {useRef, cloneElement} from 'react';
+import React, {
+  useRef, cloneElement, isValidElement, Children,
+} from 'react';
 import {
   bool, func, node, shape, string,
 } from 'prop-types';
@@ -68,14 +70,14 @@ const FilterDrawer = ({
     </View>
   );
 
-  const drawerRef = useRef(null)
+  const drawerRef = useRef(null);
   const handleOpenDrawer = () => {
-    drawerRef.current.openDrawer()
-  }
+    drawerRef.current.openDrawer();
+  };
 
-  const childrenWithProps = React.Children.map(children, child => {
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { handleOpenDrawer });
+  const childrenWithProps = Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, { handleOpenDrawer });
     }
     return child;
   });

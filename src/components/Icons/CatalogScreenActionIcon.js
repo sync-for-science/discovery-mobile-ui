@@ -1,8 +1,8 @@
-import React from 'react'
-import { TouchableOpacity, ActionSheetIOS } from 'react-native'
+import React from 'react';
+import { TouchableOpacity, ActionSheetIOS } from 'react-native';
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
 const CatalogScreenActionIcon = () => {
   const handlePress = () => {
@@ -21,11 +21,11 @@ const CatalogScreenActionIcon = () => {
         } else if (buttonIndex === 2) {
           // duplicateAlert();
         } else if (buttonIndex === 3) {
-          if (collectionsCount <= 1) {
-            // deleteErrorAlert();
-          } else {
-            // deleteCollectionAlert();
-          }
+          // if (collectionsCount <= 1) {
+          //   deleteErrorAlert();
+          // } else {
+          //   deleteCollectionAlert();
+          // }
         }
       },
     );
@@ -35,7 +35,7 @@ const CatalogScreenActionIcon = () => {
     <TouchableOpacity onPress={handlePress}>
       <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default CatalogScreenActionIcon
+export default CatalogScreenActionIcon;
