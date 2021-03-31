@@ -46,14 +46,14 @@ Variance.propTypes = {
 };
 
 const Bar = ({
-  x, height, width,
+  x, height, width, color,
 }) => (
   <Line
     x1={x}
     y1={BAR_HEIGHT}
     x2={x}
     y2={BAR_HEIGHT - height}
-    stroke={BAR_COLOR}
+    stroke={color}
     strokeWidth={width}
     vectorEffect="non-scaling-stroke"
     shapeRendering="crispEdges"
@@ -64,6 +64,7 @@ Bar.propTypes = {
   x: number.isRequired,
   width: number.isRequired,
   height: number.isRequired,
+  color: string.isRequired,
 };
 
 const getCartoucheHeight = (cardinality) => {
@@ -136,7 +137,7 @@ const TimelineItems = ({
   return intervals
     .filter(({ items }) => !!items.length)
     .map(({
-      key, position, zScore, items, markedItems,
+      key, position, zScore, items, markedItems, collectionItems,
     }) => (
       <G
         key={key}
@@ -151,8 +152,16 @@ const TimelineItems = ({
           x={0}
           width={BAR_WIDTH}
           height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
-          zScore={zScore}
+          color={BAR_COLOR}
         />
+        {!collectionItems.length ? null : (
+          <Bar
+            x={0}
+            width={BAR_WIDTH}
+            height={Math.max(collectionItems.length * tickUnits, 4)}
+            color={Colors.collectionIcon}
+          />
+        )}
         <MarkedIndicators
           markedItems={markedItems}
         />
@@ -416,6 +425,7 @@ TimelineBrowser.propTypes = {
         subType: string.isRequired,
         marked: arrayOf(string).isRequired,
       }).isRequired).isRequired,
+      collectionItems: arrayOf(string).isRequired,
     })).isRequired, // that have records
     intervalLength: number.isRequired,
     maxCount: number.isRequired,
