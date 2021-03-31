@@ -17,6 +17,7 @@ const CollectionsListScreen = ({ navigation, collections, createCollectionAction
   const handleNewCollectionPress = () => {
     Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text));
   };
+  
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -37,7 +38,7 @@ const CollectionsListScreen = ({ navigation, collections, createCollectionAction
             key={id}
             collectionId={id}
             label={label}
-            handlePress={() => navigation.navigate('CollectionPreview', { collectionId: id })}
+            handlePress={() => navigation.navigate('Catalog')}
           />
         ))}
       </View>
