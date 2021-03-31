@@ -6,7 +6,6 @@ import {
 } from 'react-native';
 
 import Colors from '../../constants/Colors';
-import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const ProviderRow = ({ name, latestDataYear }) => (
   <View style={styles.providerTypeRow}>
@@ -64,9 +63,7 @@ ProvidersSummary.defaultProps = {
 const mapStateToProps = () => ({
 });
 
-const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProvidersSummary);
+export default connect(mapStateToProps, null)(ProvidersSummary);
 
 const styles = StyleSheet.create({
   providerSummaryContainer: {

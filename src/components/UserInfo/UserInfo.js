@@ -11,7 +11,6 @@ import {
   getPatientName,
 } from '../../resources/fhirReader';
 import { patientSelector, timelinePropsSelector } from '../../redux/selectors';
-import { clearPatientData } from '../../features/patient/patientDataSlice';
 
 const UI_DATE_FORMAT = 'MMM d, Y';
 
@@ -60,9 +59,7 @@ const mapStateToProps = (state) => ({
   timelineProps: timelinePropsSelector(state),
 });
 
-const mapDispatchToProps = { clearPatientDataAction: clearPatientData };
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
+export default connect(mapStateToProps, null)(UserInfo);
 
 const styles = StyleSheet.create({
   userContainer: {
