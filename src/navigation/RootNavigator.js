@@ -4,9 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-
 import { shape } from 'prop-types';
-import LoginScreen from '../screens/LoginScreen';
+
+import AuthStackScreen from '../screens/AuthStackScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
@@ -15,7 +15,6 @@ import Colors from '../constants/Colors';
 
 const HomeTab = createBottomTabNavigator();
 const CollectionsStack = createStackNavigator();
-const AuthStack = createStackNavigator();
 
 function selectIconName(name, focused) {
   switch (name) {
@@ -72,18 +71,6 @@ const HomeTabScreen = () => (
     <HomeTab.Screen name="Catalog" component={CatalogScreen} />
     <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
   </HomeTab.Navigator>
-);
-
-const AuthStackScreen = () => (
-  <AuthStack.Navigator headerMode="none">
-    <AuthStack.Screen
-      name="PreAuth"
-      component={LoginScreen}
-      options={{
-        title: 'Discovery Mobile App',
-      }}
-    />
-  </AuthStack.Navigator>
 );
 
 const RootNavigator = ({ patientData }) => (
