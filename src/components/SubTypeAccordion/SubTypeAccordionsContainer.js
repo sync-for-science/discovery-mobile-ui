@@ -7,15 +7,14 @@ import { shape, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
-const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
-  if (subTypeData === {}) {
-    return null;
-  }
+const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        {Object.entries(subTypeData).map(([subType, values]) => {
+const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => (
+  <View style={styles.root}>
+    <View style={styles.container}>
+      {Object.entries(subTypeData)
+        .sort(sortEntriesBySubType)
+        .map(([subType, values]) => {
           const resourceIds = fromContentPanel
             ? values.collectionDateFilteredResourceIds
             : values.dateFilteredResourceIds;
@@ -32,10 +31,9 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => {
             />
           );
         })}
-      </View>
     </View>
-  );
-};
+  </View>
+);
 
 SubTypeAccordionsContainer.propTypes = {
   subTypeData: shape({}).isRequired,

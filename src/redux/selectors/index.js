@@ -119,7 +119,7 @@ const timelineItemsInRangeSelector = createSelector(
 );
 
 // eslint-disable-next-line max-len
-const sortEntriesBySubType = () => ([, s1], [, s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
+const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
 const MAX_INTERVAL_COUNT = 50;
 
@@ -204,7 +204,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // eslint-disable-next-line no-param-reassign
         interval.markedItems = Object.entries(markedItemsDictionaryByType)
-          .sort(sortEntriesBySubType) // keep cartouches in same order, by resource subType label
+          .sort(sortMarkedItemsBySubType) // keep cartouches in alphabetical order by subType label
           .map(([subType, items]) => ({
             subType,
             marked: items,
