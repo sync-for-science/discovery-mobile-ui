@@ -255,7 +255,7 @@ export const collectionsCountSelector = createSelector(
 // eslint-disable-next-line max-len
 const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const MAX_INTERVAL_COUNT = 50;
+const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
   [timelineItemsInRangeSelector, timelineRangeSelector, markedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
