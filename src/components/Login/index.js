@@ -17,7 +17,7 @@ import {
   authAsync, buildFhirIssUrl, initializeFhirClient, getBundle,
 } from '../../resources/fhirAuth';
 
-import PatientPicker, { DEFAULT_PATIENT_ID } from '../PatientPicker';
+import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
 
 const Login = ({
   authResult,
