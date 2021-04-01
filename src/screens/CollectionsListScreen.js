@@ -68,7 +68,7 @@ const CollectionsListScreen = ({
             key={id}
             collectionId={id}
             label={label}
-            handlePress={() => navigation.navigate('Catalog')}
+            navigation={navigation}
           />
         ))}
       </View>

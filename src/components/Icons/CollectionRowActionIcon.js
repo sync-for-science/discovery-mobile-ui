@@ -13,21 +13,12 @@ import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const CollectionRowActionIcon = ({
-  collections,
   collectionId,
   collectionsCount,
   deleteCollectionAction,
   renameCollectionAction,
-  selected,
   duplicateCollectionAction,
 }) => {
-  const handleDeleteCollection = () => {
-    const nextCollectionId = selected
-      ? Object.keys(collections).filter((id) => id !== collectionId)[0]
-      : null;
-    deleteCollectionAction(collectionId, nextCollectionId, selected);
-  };
-
   const renameAlert = () => Alert.prompt(
     'Rename Collection',
     'Enter new name for this collection.',
@@ -57,7 +48,7 @@ const CollectionRowActionIcon = ({
       },
       {
         text: 'Delete',
-        onPress: handleDeleteCollection,
+        onPress: () => deleteCollectionAction(collectionId),
         style: 'destructive',
       },
     ],
@@ -115,18 +106,15 @@ const CollectionRowActionIcon = ({
 };
 
 CollectionRowActionIcon.propTypes = {
-  collections: shape({}).isRequired,
   collectionId: string.isRequired,
   collectionsCount: number.isRequired,
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
-  selected: bool.isRequired,
   duplicateCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
-  collections: state.collections,
 });
 
 const mapDispatchToProps = {
