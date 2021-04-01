@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
 
-import AuthStackScreen from '../screens/AuthStackScreen';
+import UnauthorizedNavigator from './UnauthorizedNavigator';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
@@ -75,7 +75,7 @@ const HomeTabScreen = () => (
 
 const RootNavigator = ({ patientData }) => (
   <NavigationContainer>
-    {patientData ? <HomeTabScreen /> : <AuthStackScreen />}
+    {patientData ? <HomeTabScreen /> : <UnauthorizedNavigator />}
   </NavigationContainer>
 );
 
