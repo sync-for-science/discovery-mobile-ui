@@ -7,7 +7,8 @@ import { shape, func } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { MaterialIcons, FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+
 import { useFocusEffect } from '@react-navigation/native';
 
 import { clearAuth } from '../features/auth/authSlice';
@@ -50,7 +51,7 @@ const CollectionsListScreen = ({
       <Header style={styles.header}>
         <Left style={styles.logoutContainer}>
           <TouchableOpacity onPress={handleLogout}>
-            <MaterialIcons name="logout" size={30} color={Colors.darkgrey} />
+            <FontAwesome name="sign-out" size={30} color={Colors.darkgrey} style={styles.logoutIcon} />
           </TouchableOpacity>
         </Left>
         <Body>
@@ -109,4 +110,7 @@ const styles = StyleSheet.create({
   logoutContainer: {
     marginLeft: 5,
   },
+  logoutIcon: {
+    transform: [{rotateY: '180deg'}]
+  }
 });

@@ -10,15 +10,12 @@ const CollectionRow = ({
   collectionId,
   label,
   navigation,
-}) => {
-
-  return (
-    <TouchableOpacity style={styles.collectionRow} onPress={() => navigation.navigate('Catalog')}>
-      <BaseText>{label}</BaseText>
-      <CollectionRowActionIcon collectionId={collectionId} />
-    </TouchableOpacity>
-  );
-};
+}) => (
+  <TouchableOpacity style={styles.collectionRow} onPress={() => navigation.navigate('Catalog')}>
+    <BaseText style={styles.labelText}>{label}</BaseText>
+    <CollectionRowActionIcon collectionId={collectionId} />
+  </TouchableOpacity>
+);
 
 CollectionRow.propTypes = {
   collectionId: string.isRequired,
@@ -40,4 +37,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Colors.lightgrey,
     width: '90%',
   },
+  labelText: {
+    color: 'black'
+  }
 });
