@@ -77,7 +77,9 @@ const Login = ({
             setPatientId={setPatientId}
           />
         </View>
-        <SkipLoginButton />
+        { !loading && (
+          <SkipLoginButton />
+        )}
         { !loading && (
           <TouchableOpacity
             style={styles.login}
