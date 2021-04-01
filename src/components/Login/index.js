@@ -24,7 +24,6 @@ const Login = ({
   authResult,
   clearAuthAction,
   patientData,
-  navigation,
   setAuthAction,
   setPatientDataAction,
 }) => {
@@ -54,7 +53,7 @@ const Login = ({
 
       queryPatient(patientId, fhirClient);
     }
-  }, [authResult, patientData, navigation]);
+  }, [authResult, patientData]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -96,7 +95,6 @@ const Login = ({
 };
 
 Login.propTypes = {
-  navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
   setPatientDataAction: func.isRequired,
   authResult: shape({}),

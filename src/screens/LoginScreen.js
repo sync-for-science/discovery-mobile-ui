@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,7 +13,7 @@ import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
-const LoginScreen = ({ navigation }) => (
+const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View
@@ -32,7 +31,7 @@ const LoginScreen = ({ navigation }) => (
             <H2 style={styles.descriptionText}>Discovery Mobile</H2>
           </View>
         </View>
-        <Login navigation={navigation} />
+        <Login />
       </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
@@ -42,10 +41,6 @@ const LoginScreen = ({ navigation }) => (
     </View>
   </SafeAreaView>
 );
-
-LoginScreen.propTypes = {
-  navigation: PropTypes.shape({ navigate: PropTypes.func.isRequired }).isRequired,
-};
 
 export default LoginScreen;
 
