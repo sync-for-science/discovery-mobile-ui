@@ -111,6 +111,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   logoutIcon: {
-    transform: [{rotateY: '180deg'}]
-  }
+    transform: [{ rotateY: '180deg' }],
+  },
 });

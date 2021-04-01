@@ -38,6 +38,6 @@ const styles = StyleSheet.create({
     width: '90%',
   },
   labelText: {
-    color: 'black'
-  }
+    color: 'black',
+  },
 });
