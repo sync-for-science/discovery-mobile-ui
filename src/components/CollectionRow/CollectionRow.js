@@ -1,31 +1,45 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { func, shape, string } from 'prop-types';
+import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
+import { selectCollection } from '../../redux/action-creators';
 
 const CollectionRow = ({
   collectionId,
   label,
   navigation,
-}) => (
-  <TouchableOpacity style={styles.collectionRow} onPress={() => navigation.navigate('Catalog')}>
-    <BaseText style={styles.labelText}>{label}</BaseText>
-    <CollectionRowActionIcon collectionId={collectionId} />
-  </TouchableOpacity>
-);
+  selectCollectionAction,
+}) => {
+  const handlePress = () => {
+    selectCollectionAction(collectionId);
+    navigation.navigate('Catalog');
+  };
+
+  return (
+    <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
+      <BaseText style={styles.labelText}>{label}</BaseText>
+      <CollectionRowActionIcon collectionId={collectionId} />
+    </TouchableOpacity>
+  );
+};
 
 CollectionRow.propTypes = {
   collectionId: string.isRequired,
   label: string.isRequired,
   selectedCollectionId: string.isRequired,
   navigation: shape({}).isRequired,
-  selectCollectionAction: func.isRequired
+  selectCollectionAction: func.isRequired,
 };
 
-export default CollectionRow;
+const mapDispatchToProps = {
+  selectCollectionAction: selectCollection,
+};
+
+export default connect(null, mapDispatchToProps)(CollectionRow);
 
 const styles = StyleSheet.create({
   collectionRow: {
