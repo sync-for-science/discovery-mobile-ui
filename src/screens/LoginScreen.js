@@ -12,7 +12,7 @@ import {
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
 
-import Login from '../components/Login/Login';
+import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import mockBundle from '../../assets/mock_data/bundle-blake-eichmann.json';
