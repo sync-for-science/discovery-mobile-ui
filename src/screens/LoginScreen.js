@@ -11,8 +11,6 @@ import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
 
 import Login from '../components/Login';
-import SkipLoginButton from '../components/Login/SkipLoginButton';
-
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 
@@ -37,7 +35,6 @@ const LoginScreen = ({ navigation }) => (
         <Login navigation={navigation} />
       </View>
       <View style={styles.vermonsterContainer}>
-        <SkipLoginButton />
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>

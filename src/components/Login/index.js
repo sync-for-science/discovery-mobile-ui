@@ -18,6 +18,7 @@ import {
 } from '../../resources/fhirAuth';
 
 import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
+import SkipLoginButton from './SkipLoginButton';
 
 const Login = ({
   authResult,
@@ -76,6 +77,7 @@ const Login = ({
             setPatientId={setPatientId}
           />
         </View>
+        <SkipLoginButton />
         { !loading && (
           <TouchableOpacity
             style={styles.login}
