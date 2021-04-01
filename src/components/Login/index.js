@@ -17,13 +17,13 @@ import {
   authAsync, buildFhirIssUrl, initializeFhirClient, getBundle,
 } from '../../resources/fhirAuth';
 
-import PatientPicker, { DEFAULT_PATIENT_ID } from '../PatientPicker';
+import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
+import SkipLoginButton from './SkipLoginButton';
 
 const Login = ({
   authResult,
   clearAuthAction,
   patientData,
-  navigation,
   setAuthAction,
   setPatientDataAction,
 }) => {
@@ -53,7 +53,7 @@ const Login = ({
 
       queryPatient(patientId, fhirClient);
     }
-  }, [authResult, patientData, navigation]);
+  }, [authResult, patientData]);
 
   const handleLogin = async () => {
     setLoading(true);
@@ -68,21 +68,26 @@ const Login = ({
   return (
     <View>
       <View style={styles.body}>
-        { loading && <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> }
-        <View style={styles.patientPickerContainer}>
-          <PatientPicker
-            loading={loading}
-            patientId={mockPatientId}
-            setPatientId={setPatientId}
-          />
-        </View>
+        { loading && (
+          <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View>
+        )}
         { !loading && (
-          <TouchableOpacity
-            style={styles.login}
-            onPress={handleLogin}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
+          <>
+            <View style={styles.patientPickerContainer}>
+              <PatientPicker
+                loading={loading}
+                patientId={mockPatientId}
+                setPatientId={setPatientId}
+              />
+            </View>
+            <SkipLoginButton />
+            <TouchableOpacity
+              style={styles.login}
+              onPress={handleLogin}
+            >
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
     </View>
@@ -90,7 +95,6 @@ const Login = ({
 };
 
 Login.propTypes = {
-  navigation: shape({}).isRequired,
   setAuthAction: func.isRequired,
   setPatientDataAction: func.isRequired,
   authResult: shape({}),
