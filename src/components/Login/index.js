@@ -69,24 +69,26 @@ const Login = ({
   return (
     <View>
       <View style={styles.body}>
-        { loading && <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View> }
-        <View style={styles.patientPickerContainer}>
-          <PatientPicker
-            loading={loading}
-            patientId={mockPatientId}
-            setPatientId={setPatientId}
-          />
-        </View>
-        { !loading && (
-          <SkipLoginButton />
+        { loading && (
+          <View style={styles.spinnerContainer}><ActivityIndicator size="large" color={Colors.primary} /></View>
         )}
         { !loading && (
-          <TouchableOpacity
-            style={styles.login}
-            onPress={handleLogin}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
+          <>
+            <View style={styles.patientPickerContainer}>
+              <PatientPicker
+                loading={loading}
+                patientId={mockPatientId}
+                setPatientId={setPatientId}
+              />
+            </View>
+            <SkipLoginButton />
+            <TouchableOpacity
+              style={styles.login}
+              onPress={handleLogin}
+            >
+              <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
+          </>
         )}
       </View>
     </View>
