@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { bool, func } from 'prop-types';
+import { bool, func, shape } from 'prop-types';
 
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
+import { markedDateRangeSelector } from '../../redux/selectors';
+import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
 const highlightedRecordsDescription = 'Only displays highlighted records.';
@@ -13,11 +15,19 @@ const highlightedRecordsDescription = 'Only displays highlighted records.';
 const MarkedSegmentControl = ({
   showMarkedOnly,
   toggleShowMarkedOnlyAction,
+  markedDateRange,
+  updateDateRangeFilter,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
-  const handleChange = (selectedSegmentIndex) => {
-    toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
+  const handleChange = (event) => {
+    if (event === 0) {
+      toggleShowMarkedOnlyAction(false);
+      updateDateRangeFilter({ dateRangeStart: undefined, dateRangeEnd: undefined });
+    } else {
+      toggleShowMarkedOnlyAction(true);
+      updateDateRangeFilter(markedDateRange);
+    }
   };
 
   return (
@@ -35,14 +45,24 @@ const MarkedSegmentControl = ({
 MarkedSegmentControl.propTypes = {
   showMarkedOnly: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
+  markedDateRange: shape({}).isRequired,
+  updateDateRangeFilter: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   showMarkedOnly: state.showMarkedOnly,
+  markedDateRange: markedDateRangeSelector(state),
 });
 
 const mapDispatchToProps = {
   toggleShowMarkedOnlyAction: toggleShowMarkedOnly,
+  updateDateRangeFilter: ({ dateRangeStart, dateRangeEnd }) => ({
+    type: actionTypes.UPDATE_DATE_RANGE_FILTER,
+    payload: {
+      dateRangeStart,
+      dateRangeEnd,
+    },
+  }),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl);

@@ -117,7 +117,14 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
-
+const defaultMarkedResources = {
+  focusedSubtype: '', // only a single sub-type can be focused
+  // "marked" -- dictionary whose keys are resource ids and values are enum:
+  // 0 -- unmarked
+  // 1 -- marked
+  // 2 -- focused
+  marked: {},
+};
 const createCollection = (
   name = null,
   duplicateResourceIds = null,
@@ -128,13 +135,16 @@ const createCollection = (
   const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
   const resourceIds = duplicateResourceIds || {};
   const lastAddedResourceId = duplicateLastAddedResourceId || null;
+
   return {
     [collectionId]: {
+      id: collectionId,
       created: timeCreated,
       lastUpdated: timeCreated,
       label,
       resourceIds,
       lastAddedResourceId,
+      markedResources: defaultMarkedResources,
     },
   };
 };
@@ -182,6 +192,42 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.UPDATE_MARKED_RESOURCES: {
+      const { subType, resourceIdsMap, collectionId } = action.payload;
+      const newCollection = { ...state[collectionId] };
+      const deFocus = (!subType || subType !== newCollection.markedResources.focusedSubtype);
+
+      const previousMarked = !deFocus
+        ? newCollection.markedResources.marked
+        : Object.entries(newCollection.markedResources.marked)
+          .reduce((acc, [id, prevValue]) => ({
+            ...acc,
+            [id]: (prevValue === FOCUSED ? MARKED : prevValue),
+          }), {});
+
+      const newlyMarked = Object.entries(resourceIdsMap)
+        .reduce((acc, [id, newValue]) => ({
+          ...acc,
+          // eslint-disable-next-line max-len
+          [id]: ((newValue === FOCUSED && (previousMarked[id] === MARKED)) ? FOCUSED : newValue),
+        }), {});
+
+      newCollection.markedResources = {
+        focusedSubtype: subType,
+        marked: pruneEmpty({
+          ...previousMarked,
+          ...newlyMarked,
+        }),
+      };
+
+      return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.CLEAR_MARKED_RESOURCES: {
+      const collectionId = action.payload;
+      const updatedCollection = { ...state[collectionId] };
+      updatedCollection.markedResources = defaultMarkedResources;
+      return { ...state, [collectionId]: updatedCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
@@ -252,6 +298,7 @@ const preloadedMarkedResources = {
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_MARKED_RESOURCES:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedMarkedResources;
     }

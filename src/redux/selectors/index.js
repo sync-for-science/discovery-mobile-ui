@@ -26,6 +26,10 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
+const showCollectionOnlySelector = (state) => state.showCollectionOnly;
+
+const showMarkedOnlySelector = (state) => state.showMarkedOnly;
+
 export const markedResourcesSelector = (state) => state.markedResources;
 
 export const collectionSelector = createSelector(
@@ -177,6 +181,11 @@ export const collectionResourceIdsSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
 );
 
+const markedResourceIdsSelector = createSelector(
+  [collectionsSelector, selectedCollectionSelector],
+  (collections, selectedCollectionId) => collections[selectedCollectionId]?.markedResources?.marked,
+);
+
 const subTypeResourceIdsSelector = createSelector(
   [resourcesSelector],
   (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
@@ -190,19 +199,24 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
+    resourcesSelector,
     collectionResourceIdsSelector,
+    markedResourceIdsSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
+    resources,
     collectionResourceIdsObjects,
+    markedResourceIdsObjects,
     timelineItemsInRange,
     subTypeResourceIds,
   ) => {
     if (!collectionResourceIdsObjects) {
       return {};
     }
-    const selectedCollectionResourceIds = Object.keys(collectionResourceIdsObjects);
+    const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
+    const markedResourceIds = Object.keys(markedResourceIdsObjects);
     return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};
@@ -218,31 +232,31 @@ const filteredResourceTypesSelector = createSelector(
         acc[type].subTypes[subType].dateFilteredCount = 0;
         acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
         acc[type].subTypes[subType].collectionDateFilteredCount = 0;
+        acc[type].subTypes[subType].collectionDateRange = {};
+        acc[type].subTypes[subType].markedDateFilteredResourceIds = [];
+        acc[type].subTypes[subType].markedDateFilteredCount = 0;
       }
       acc[type].subTypes[subType].dateFilteredResourceIds.push(id);
       acc[type].subTypes[subType].dateFilteredCount = (
         acc[type].subTypes[subType].dateFilteredResourceIds.length
       );
 
-      if (selectedCollectionResourceIds.includes(id)) {
+      if (collectionResourceIds.includes(id)) {
         acc[type].subTypes[subType].collectionDateFilteredResourceIds.push(id);
         acc[type].subTypes[subType].collectionDateFilteredCount = (
           acc[type].subTypes[subType].collectionDateFilteredResourceIds.length
         );
       }
 
+      if (markedResourceIds.includes(id)) {
+        acc[type].subTypes[subType].markedDateFilteredResourceIds.push(id);
+        acc[type].subTypes[subType].markedDateFilteredCount = (
+          acc[type].subTypes[subType].markedDateFilteredResourceIds.length
+        );
+      }
+
       return acc;
     }, {});
-  },
-);
-
-export const selectedFlattenedSubTypesSelector = createSelector(
-  [filteredResourceTypesSelector, selectedResourceTypeSelector],
-  (filteredResourceTypes, selectedResourceType) => {
-    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {};
-    }
-    return filteredResourceTypes[selectedResourceType].subTypes;
   },
 );
 
@@ -381,6 +395,167 @@ export const timelineIntervalsSelector = createSelector(
       recordCount1SD,
       recordCount2SD,
       recordCount2SDplus,
+    };
+  },
+);
+
+// selected ResourceType && in collection
+const selectedResourceTypeAndCollectionDataSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
+    const subTypeData = {};
+    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.collectionDateFilteredCount > 0) {
+          if (!subTypeData[subType]) {
+            subTypeData[subType] = {};
+          }
+          subTypeData[subType] = subTypeValues;
+        }
+      });
+    });
+    return subTypeData;
+  },
+);
+
+// selected ResourceType && marked
+const selectedResourceTypeAndMarkedDataSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
+    const subTypeData = {};
+    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.markedDateFilteredCount > 0) {
+          if (!subTypeData[subType]) {
+            subTypeData[subType] = {};
+          }
+          subTypeData[subType] = subTypeValues;
+        }
+      });
+    });
+    return subTypeData;
+  },
+);
+
+// selected ResourceType && in collection && marked
+const selectedResourceTypeAndCollectionAndMarkedDataSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
+    const subTypeData = {};
+    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        const collectionIds = subTypeValues.collectionDateFilteredResourceIds;
+        const markedIds = subTypeValues.markedDateFilteredResourceIds;
+        if (collectionIds.some((collectionId) => markedIds.includes(collectionId))) {
+          if (!subTypeData[subType]) {
+            subTypeData[subType] = {};
+          }
+          subTypeData[subType] = subTypeValues;
+        }
+      });
+    });
+    return subTypeData;
+  },
+);
+
+export const catalogSubTypeDataSelector = createSelector(
+  [
+    filteredResourceTypesSelector,
+    selectedResourceTypeSelector,
+    showCollectionOnlySelector,
+    showMarkedOnlySelector,
+    selectedResourceTypeAndCollectionDataSelector,
+    selectedResourceTypeAndMarkedDataSelector,
+    selectedResourceTypeAndCollectionAndMarkedDataSelector,
+  ],
+  (
+    filteredResourceTypes,
+    selectedResourceType,
+    showCollectionOnly,
+    showMarkedOnly,
+    selectedResourceTypeAndCollectionData,
+    selectedResourceTypeAndMarkedData,
+    selectedResourceTypeAndCollectionAndMarkedData,
+  ) => {
+    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
+      return {};
+    }
+
+    if (!showCollectionOnly && !showMarkedOnly) {
+      return filteredResourceTypes[selectedResourceType].subTypes;
+    }
+
+    if (showCollectionOnly && !showMarkedOnly) {
+      return selectedResourceTypeAndCollectionData;
+    }
+
+    if (!showCollectionOnly && showMarkedOnly) {
+      return selectedResourceTypeAndMarkedData;
+    }
+
+    if (showCollectionOnly && showMarkedOnly) {
+      return selectedResourceTypeAndCollectionAndMarkedData;
+    }
+
+    console.error( // eslint-disable-line no-console
+      `Unknown filter setting in catalogSubTypeDataSelector, showCollectionOnly: ${showCollectionOnly}, showMarkedOnly: ${showMarkedOnly}`,
+    );
+    return {};
+  },
+);
+
+export const collectionDateRangeSelector = createSelector(
+  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
+  (resources, selectedCollectionId, collections) => {
+    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
+    if (collectionResourceIds.length === 0) {
+      return {
+        dateRangeStart: undefined,
+        dateRangeEnd: undefined,
+      };
+    }
+    const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (collectionResourceIds.includes(id)) {
+        acc.push(resourceValues);
+      }
+      return acc;
+    }, []);
+    const sortedCollectionResources = collectionResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+    return {
+      dateRangeStart: startOfDay(sortedCollectionResources[0].timelineDate),
+      dateRangeEnd: endOfDay(
+        sortedCollectionResources[sortedCollectionResources.length - 1].timelineDate,
+      ),
+    };
+  },
+);
+
+export const markedDateRangeSelector = createSelector(
+  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
+  (resources, selectedCollectionId, collections) => {
+    const markedResourceIds = Object.keys(
+      collections[selectedCollectionId]?.markedResources?.marked,
+    );
+    if (markedResourceIds.length === 0) {
+      return {
+        dateRangeStart: undefined,
+        dateRangeEnd: undefined,
+      };
+    }
+    const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (markedResourceIds.includes(id)) {
+        acc.push(resourceValues);
+      }
+      return acc;
+    }, []);
+    const sortedMarkedResources = markedResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+    return {
+      dateRangeStart: startOfDay(sortedMarkedResources[0].timelineDate),
+      dateRangeEnd: endOfDay(
+        sortedMarkedResources[sortedMarkedResources.length - 1].timelineDate,
+      ),
     };
   },
 );
