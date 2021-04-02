@@ -5,7 +5,7 @@ import {
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 import {
-  bool, func, number, shape, string,
+  func, number, string,
 } from 'prop-types';
 
 import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';

@@ -30,7 +30,6 @@ const CollectionRow = ({
 CollectionRow.propTypes = {
   collectionId: string.isRequired,
   label: string.isRequired,
-  selectedCollectionId: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
 };
