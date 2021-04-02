@@ -28,7 +28,7 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
       </TouchableOpacity>
     </Left>
     <View>
-      <Title>{collection?.label}</Title>
+      <Title style={{color: 'black'}}>{collection?.label}</Title>
     </View>
     <Right>
       <CatalogModal />
@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.backgroundColor,
     alignItems: 'center',
+    elevation: 0,
   },
   drawerIcon: {
     paddingLeft: 10,

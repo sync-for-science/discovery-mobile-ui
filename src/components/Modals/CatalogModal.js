@@ -1,32 +1,44 @@
 import React, {useState} from 'react'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 import Colors from '../../constants/Colors'
 
 export const CatalogModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [segControlIndex, setsSegControlIndex] = useState(0)
   return (
     <View style={styles.root}>
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(false);
         }}>
-        <TouchableOpacity style={styles.centeredView} onPress={() => setModalVisible(!modalVisible)}>
+        <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.modalText}>Hello World!</Text>
-            <TouchableOpacity
-              style={{ ...styles.openButton, backgroundColor: '#2196F3' }}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}>
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </TouchableOpacity>
+              <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
+                <Text style={styles.modalText}>Record Filters</Text>
+                <TouchableOpacity onPress={() => setModalVisible(false)}>
+                  <Text>Close</Text>
+                </TouchableOpacity>
+              </View>
+            <View style={{width: '100%', marginTop: 20}}>
+              <SegmentedControl
+                values={['All Records', 'Collection Records']}
+                selectedIndex={segControlIndex}
+                onChange={(event) => {
+                  setsSegControlIndex(event.nativeEvent.selectedSegmentIndex);
+                }}
+                fontStyle={{fontSize: 16, color: 'black'}}
+                activeFontStyle={{fontSize: 16}}
+                tintColor="lightblue"
+              />
+            </View>
           </View>
-        </TouchableOpacity>
+        </View>
       </Modal>
       <TouchableOpacity
         onPress={() => {
@@ -48,24 +60,25 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    shadowColor: 'black',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: -100,
+    // },
+    // shadowOpacity: 1,
+    // shadowRadius: 300,
   },
   modalView: {
     height: '50%',
-    width: '70%',
+    width: '100%',
     backgroundColor: 'white',
     borderRadius: 20,
-    padding: 35,
+    padding: 25,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    
     elevation: 5,
   },
   textStyle: {
