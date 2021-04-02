@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { FontAwesome5, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { func, shape, string } from 'prop-types';
 
 import Timeline from '../components/Timeline';
@@ -20,12 +20,9 @@ import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
 import CatalogScreenActionIcon from '../components/Icons/CatalogScreenActionIcon';
 
-const CatalogScreenHeader = ({ collection, handleOpenDrawer, navigation }) => (
+const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
-    <Left style={styles.leftHeaderIcons}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Ionicons name="chevron-back" size={30} color={Colors.primary} />
-      </TouchableOpacity>
+    <Left>
       <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
         <FontAwesome5 name="filter" size={24} color={Colors.darkgrey} />
       </TouchableOpacity>
@@ -42,7 +39,6 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer, navigation }) => (
 CatalogScreenHeader.propTypes = {
   collection: shape({}).isRequired,
   handleOpenDrawer: func,
-  navigation: shape({}).isRequired,
 };
 
 CatalogScreenHeader.defaultProps = {
@@ -50,7 +46,7 @@ CatalogScreenHeader.defaultProps = {
 };
 
 const CatalogScreen = ({
-  navigation, selectedResourceType, selectedFlattenedSubTypes, collection,
+  selectedResourceType, selectedFlattenedSubTypes, collection,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -58,9 +54,11 @@ const CatalogScreen = ({
       loop={false}
       showsPagination={false}
       index={0}
+      showsPagination
     >
+
       <FilterDrawer>
-        <CatalogScreenHeader collection={collection} navigation={navigation} />
+        <CatalogScreenHeader collection={collection} />
         <View>
           <Timeline />
           <ResourceTypeSelector />
@@ -80,7 +78,6 @@ CatalogScreen.propTypes = {
   selectedResourceType: string,
   selectedFlattenedSubTypes: shape({}).isRequired,
   collection: shape({}).isRequired,
-  navigation: shape({}).isRequired,
 };
 
 CatalogScreen.defaultProps = {
@@ -110,9 +107,5 @@ const styles = StyleSheet.create({
   },
   drawerIcon: {
     paddingLeft: 20,
-  },
-  leftHeaderIcons: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
 });
