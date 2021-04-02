@@ -92,6 +92,7 @@ const FilterDrawer = ({
         drawerType="front"
         drawerBackgroundColor="white"
         renderNavigationView={renderDrawer}
+        edgeWidth={-wp('100%')}
       >
         <View style={styles.childrenContainer}>
           {childrenWithProps}

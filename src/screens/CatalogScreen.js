@@ -54,9 +54,7 @@ const CatalogScreen = ({
       loop={false}
       showsPagination={false}
       index={0}
-      showsPagination
     >
-
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
         <View>
@@ -106,6 +104,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   drawerIcon: {
-    paddingLeft: 20,
+    paddingLeft: 10,
   },
 });
