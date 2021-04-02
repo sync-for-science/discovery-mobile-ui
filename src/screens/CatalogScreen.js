@@ -18,7 +18,7 @@ import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
-import CatalogScreenActionIcon from '../components/Icons/CatalogScreenActionIcon';
+import CatalogModal from '../components/Modals/CatalogModal'
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
@@ -31,7 +31,7 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
       <Title>{collection?.label}</Title>
     </View>
     <Right>
-      <CatalogScreenActionIcon />
+      <CatalogModal />
     </Right>
   </Header>
 );
@@ -47,7 +47,8 @@ CatalogScreenHeader.defaultProps = {
 
 const CatalogScreen = ({
   selectedResourceType, selectedFlattenedSubTypes, collection,
-}) => (
+}) => {
+  return (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -55,6 +56,7 @@ const CatalogScreen = ({
       showsPagination={false}
       index={0}
     >
+      
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
         <View>
@@ -70,7 +72,7 @@ const CatalogScreen = ({
       <ContentPanel />
     </Swiper>
   </SafeAreaView>
-);
+)};
 
 CatalogScreen.propTypes = {
   selectedResourceType: string,
