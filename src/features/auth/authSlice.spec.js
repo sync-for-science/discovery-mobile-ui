@@ -1,7 +1,10 @@
 import authReducer, { setAuth, clearAuth, initialState } from './authSlice';
 
 const token = { auth_token: '1234' };
-const stateWithToken = { authResult: token };
+const stateWithToken = {
+  baseUrl: null,
+  authResult: token,
+};
 
 describe('auth reducer', () => {
   it('should handle initial state', () => {
@@ -14,7 +17,10 @@ describe('auth reducer', () => {
     expect(
       authReducer(initialState, {
         type: setAuth.type,
-        payload: token,
+        payload: {
+          baseUrl: null,
+          authResult: token,
+        },
       }),
     ).toEqual(stateWithToken);
   });

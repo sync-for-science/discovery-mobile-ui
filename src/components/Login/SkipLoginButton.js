@@ -3,8 +3,18 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-native';
 
+import { actionTypes } from '../../redux/action-types';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
-import { setPatientData } from '../../features/patient/patientDataSlice';
+
+export const MOCK_AUTH = {
+  baseUrl: '',
+  authResult: {
+    accessToken: '',
+    additionalParameters: {
+      patient: '',
+    },
+  },
+};
 
 const showSkipLogin = process.env.NODE_ENV === 'development';
 
@@ -24,8 +34,17 @@ SkipLoginButton.propTypes = {
   setMockData: PropTypes.func.isRequired,
 };
 
-const mapDispatchToProps = {
-  setMockData: () => setPatientData(mockBundle),
-};
+const mapDispatchToProps = (dispatch) => ({
+  setMockData: () => {
+    dispatch(({
+      type: actionTypes.SET_AUTH,
+      payload: MOCK_AUTH,
+    }));
+    dispatch(({
+      type: actionTypes.FHIR_FETCH_SUCCESS,
+      payload: mockBundle,
+    }));
+  },
+});
 
 export default connect(null, mapDispatchToProps)(SkipLoginButton);
