@@ -1,9 +1,8 @@
 export const actionTypes = { // eslint-disable-line import/prefer-default-export
-  // SET_PATIENT_DATA string is implicitly derived from:
-  //     patientDataSlice.name (value) + patientDataSlice.reducers.setPatientData (key)
-  SET_PATIENT_DATA: 'patientData/setPatientData',
-  CLEAR_PATIENT_DATA: 'patientData/clearPatientData',
+  SET_AUTH: 'auth/setAuth', // implicitly derived from src/features/auth/authSlice.js
+  CLEAR_PATIENT_DATA: 'CLEAR_PATIENT_DATA',
   FHIR_FETCH_SUCCESS: 'FHIR_FETCH_SUCCESS',
+  FHIR_FETCH_ERROR: 'FHIR_FETCH_ERROR',
   REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',

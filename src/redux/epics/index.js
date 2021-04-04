@@ -1,21 +1,48 @@
 import { from, of } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
 import {
   createEpicMiddleware, combineEpics, ofType,
 } from 'redux-observable';
 import {
-  catchError, map, concatMap,
+  catchError, map, concatMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
 import { pathEq, flatten } from 'ramda';
 
 import { actionTypes } from '../action-types';
+import FhirClient from '../middleware/fhir-client';
+import { MOCK_AUTH } from '../../components/Login/SkipLoginButton';
 
-const flattenResources = (action$) => action$.pipe(
-  ofType(actionTypes.SET_PATIENT_DATA),
-  map(({ payload }) => ({
-    type: actionTypes.FHIR_FETCH_SUCCESS,
-    payload,
-  })),
+const handleError = (error, message, type) => {
+  console.error(`${message}: `, error); // eslint-disable-line no-console
+  return of({
+    type: type ?? 'ERROR',
+    error: true,
+    payload: { message, error },
+  });
+};
+
+const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
+  ofType(actionTypes.SET_AUTH),
+  // delay(2000), // e.g.: for debugging
+  switchMap(({ payload }) => {
+    const { accessToken, additionalParameters: { patient: patientId } } = payload.authResult;
+
+    if (payload === MOCK_AUTH) {
+      return Promise.resolve({
+        type: 'SET_MOCK_PATIENT_DATA', // must emit an action or stream of actions
+      });
+    }
+
+    fhirClient.initialize(payload.baseUrl, accessToken);
+
+    return from(fhirClient.queryPatient(patientId)).pipe(
+      map((result) => ({
+        type: actionTypes.FHIR_FETCH_SUCCESS,
+        payload: result,
+      })),
+      catchError((error) => handleError(error, 'from(fhirClient.queryPatient(patientId)).pipe', actionTypes.FHIR_FETCH_ERROR)),
+    );
+  }),
+  catchError((error) => handleError(error, 'Error in initializeFhirClient switchMap')),
 );
 
 const groupByType = (action$, state$) => action$.pipe(
@@ -42,40 +69,31 @@ const extractNextUrls = (() => {
   };
 })();
 
-const handleError = (error, message) => {
-  console.error(`${message}: `, error); // eslint-disable-line no-console
-  return of({
-    type: 'ERROR',
-    error: true,
-    payload: { message, error },
-  });
-};
-
-const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
+const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
   // delay(1000), // e.g.: for debugging
-  concatMap(({ payload }) => {
-    const accumulatedLinks = extractNextUrls(payload);
-    const nextRequests$ = from(accumulatedLinks).pipe(
-      concatMap((url) => rxAjax.getJSON(url)),
-    );
-    return nextRequests$.pipe(
-      map((result) => ({
-        type: actionTypes.FHIR_FETCH_SUCCESS,
-        payload: result,
-      })),
-      catchError((error) => handleError(error, 'Error in requestNextItems nextRequests$.pipe')),
-    );
-  }),
+  concatMap(({ payload }) => from(extractNextUrls(payload)).pipe(
+    concatMap((url) => fhirClient.request(url)),
+  ).pipe(
+    map((result) => ({
+      type: actionTypes.FHIR_FETCH_SUCCESS,
+      payload: result,
+    })),
+    catchError((error) => handleError(error, 'Error in requestNextItems nextRequests$.pipe')),
+  )),
+  takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
+  repeat(),
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
 export const rootEpic = combineEpics(
-  flattenResources,
+  initializeFhirClient,
   groupByType,
   requestNextItems,
 );
 
 export default createEpicMiddleware({
-  dependencies: { rxAjax: ajax },
+  dependencies: {
+    fhirClient: new FhirClient(),
+  },
 });
