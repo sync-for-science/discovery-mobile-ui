@@ -13,13 +13,13 @@ import { actionTypes } from '../action-types';
 const flattenResources = (action$) => action$.pipe(
   ofType(actionTypes.SET_PATIENT_DATA),
   map(({ payload }) => ({
-    type: actionTypes.FLATTEN_RESOURCES,
+    type: actionTypes.FHIR_FETCH_SUCCESS,
     payload,
   })),
 );
 
 const groupByType = (action$, state$) => action$.pipe(
-  ofType(actionTypes.FLATTEN_RESOURCES),
+  ofType(actionTypes.FHIR_FETCH_SUCCESS),
   map(() => {
     const { resources } = state$.value;
     return ({
@@ -52,7 +52,7 @@ const handleError = (error, message) => {
 };
 
 const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
-  ofType(actionTypes.FLATTEN_RESOURCES),
+  ofType(actionTypes.FHIR_FETCH_SUCCESS),
   // delay(1000), // e.g.: for debugging
   concatMap(({ payload }) => {
     const accumulatedLinks = extractNextUrls(payload);
@@ -61,7 +61,7 @@ const requestNextItems = (action$, state$, { rxAjax }) => action$.pipe(
     );
     return nextRequests$.pipe(
       map((result) => ({
-        type: actionTypes.FLATTEN_RESOURCES,
+        type: actionTypes.FHIR_FETCH_SUCCESS,
         payload: result,
       })),
       catchError((error) => handleError(error, 'Error in requestNextItems nextRequests$.pipe')),

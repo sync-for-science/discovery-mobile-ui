@@ -12,7 +12,7 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResources;
     }
-    case actionTypes.FLATTEN_RESOURCES: {
+    case actionTypes.FHIR_FETCH_SUCCESS: {
       const newState = { ...state }; // detect mutation
       processResource(newState, action.payload, 0);
       return newState;

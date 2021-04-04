@@ -3,7 +3,7 @@ export const actionTypes = { // eslint-disable-line import/prefer-default-export
   //     patientDataSlice.name (value) + patientDataSlice.reducers.setPatientData (key)
   SET_PATIENT_DATA: 'patientData/setPatientData',
   CLEAR_PATIENT_DATA: 'patientData/clearPatientData',
-  FLATTEN_RESOURCES: 'FLATTEN_RESOURCES',
+  FHIR_FETCH_SUCCESS: 'FHIR_FETCH_SUCCESS',
   REQUEST_NEXT_ITEMS: 'REQUEST_NEXT_ITEMS',
   GROUP_BY_TYPE: 'GROUP_BY_TYPE',
   ADD_FILTER_OPEN_FLAG: 'ADD_FILTER_OPEN_FLAG',
