@@ -18,9 +18,13 @@ const RESOURCE_TYPES = [
 export default class FhirClient {
   constructor() {
     this.client = null;
+    this.baseUrl = null;
+    this.accessToken = null;
   }
 
   initialize(baseUrl, accessToken) {
+    this.baseUrl = baseUrl;
+    this.accessToken = accessToken;
     this.client = new Client({
       baseUrl,
       customHeaders: {
@@ -48,5 +52,9 @@ export default class FhirClient {
 
   async request(url) {
     return this.client.request(url);
+  }
+
+  async resolve(reference) {
+    return this.client.resolve(reference);
   }
 }

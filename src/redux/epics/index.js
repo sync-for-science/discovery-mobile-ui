@@ -5,7 +5,9 @@ import {
 import {
   catchError, map, concatMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
-import { pathEq, flatten } from 'ramda';
+import {
+  path, pathEq, flatten,
+} from 'ramda';
 
 import { actionTypes } from '../action-types';
 import FhirClient from '../middleware/fhir-client';
@@ -62,10 +64,38 @@ const extractNextUrls = (() => {
 
   return ({ link, entry }, depth = 0) => {
     let urls = [extractNextUrlFromLink(link)];
-    if (entry && depth < 4) {
-      urls = urls.concat(entry.map(({ resource }) => extractNextUrls(resource, depth + 1)));
+    if (entry) {
+      if (depth < 2) {
+        urls = urls.concat(entry.map(({ resource }) => extractNextUrls(resource, depth + 1)));
+      } else {
+        console.error('extractReferences depth: ', depth, entry); // eslint-disable-line no-console
+      }
     }
     return flatten(urls).filter((url) => !!url);
+  };
+})();
+
+const extractReferences = (() => {
+  const getServiceProvider = (entry) => path(['resource', 'serviceProvider'], entry);
+  const dedupeReferences = (entry) => (entry || [])
+    .map(getServiceProvider)
+    .reduce((acc, serviceProvider) => {
+      if (serviceProvider?.reference) {
+        acc[serviceProvider.reference] = serviceProvider;
+      }
+      return acc;
+    }, {});
+
+  return ({ entry }, depth = 0) => {
+    let urns = Object.values(dedupeReferences(entry));
+    if (entry) {
+      if (depth < 2) {
+        urns = urns.concat(entry.map(({ resource }) => extractReferences(resource, depth + 1)));
+      } else {
+        console.error('extractReferences depth: ', depth, entry); // eslint-disable-line no-console
+      }
+    }
+    return flatten(urns).filter((urn) => !!urn);
   };
 })();
 
@@ -86,10 +116,28 @@ const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
+const requestReferences = (action$, state$, { fhirClient }) => action$.pipe(
+  ofType(actionTypes.FHIR_FETCH_SUCCESS),
+  // delay(1000), // e.g.: for debugging
+  concatMap(({ payload }) => from(extractReferences(payload)).pipe(
+    concatMap((ref) => from(fhirClient.resolve(ref))),
+  ).pipe(
+    map((result) => ({
+      type: actionTypes.FHIR_FETCH_SUCCESS,
+      payload: result,
+    })),
+    catchError((error) => handleError(error, 'Error in requestReferences references$.pipe')),
+  )),
+  takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
+  repeat(),
+  catchError((error) => handleError(error, 'Error in requestReferences concatMap')),
+);
+
 export const rootEpic = combineEpics(
   initializeFhirClient,
   groupByType,
   requestNextItems,
+  requestReferences,
 );
 
 export default createEpicMiddleware({
