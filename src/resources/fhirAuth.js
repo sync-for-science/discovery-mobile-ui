@@ -13,17 +13,7 @@ export const buildFhirIssUrl = (patientId) => {
   return `https://launch.smarthealthit.org/v/r4/sim/${Buffer.from(issDataString).toString('base64')}/fhir`;
 };
 
-export const initializeFhirClient = (fhirIss, accessToken) => {
-  if (!accessToken) {
-    return new Client({ baseUrl: fhirIss });
-  }
-  return new Client({
-    baseUrl: fhirIss,
-    customHeaders: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-};
+export const initializeFhirClient = (fhirIss) => new Client({ baseUrl: fhirIss });
 
 export async function authAsync(fhirIss) {
   const fhirClient = initializeFhirClient(fhirIss);
@@ -62,42 +52,3 @@ export async function authAsync(fhirIss) {
 
   return result;
 }
-
-// Provider found in "serviceProvider" within some records
-// Vital Signs and Lab Results found in Observation.
-// Web UI shows how to parse ^ in FhirTransform
-const resourceTypes = [
-  'Patient',
-  'ExplanationOfBenefit',
-  'Claim',
-  'Condition',
-  'Encounter',
-  'Immunization',
-  'MedicationRequest',
-  'CarePlan',
-  'DiagnosticReport',
-  'Procedure',
-  'Observation',
-];
-
-const buildBundleEntries = (patientId) => (
-  resourceTypes.map((type) => (
-    {
-      request: {
-        method: 'GET',
-        url: (type === 'Patient') ? `${type}/${patientId}` : `${type}?patient=${patientId}`,
-      },
-    }
-  ))
-);
-
-export const getRequestBundle = (patientId) => ({
-  resourceType: 'Bundle',
-  type: 'batch',
-  entry: buildBundleEntries(patientId),
-});
-
-export const getBundle = (patientId, fhirClient) => {
-  const requestBundle = getRequestBundle(patientId);
-  return fhirClient.batch({ body: requestBundle });
-};
