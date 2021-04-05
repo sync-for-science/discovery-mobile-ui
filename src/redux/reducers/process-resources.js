@@ -87,7 +87,10 @@ const processResource = (acc, resource, depth) => {
   const { id, resourceType } = resource;
   if (resourceType === 'Bundle') {
     if (!resource.entry) {
-      console.warn(`No resource.entry -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
+      if (!(resource.type === 'searchset' && resource.total === 0)) {
+        // ^ e.g.: CarePlan, Claim, and ExplanationOfBenefit "searchsets" often have 0 results
+        console.warn(`No resource.entry -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
+      }
       return;
     }
     resource.entry.forEach((entry) => {
