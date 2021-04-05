@@ -12,10 +12,10 @@ import { MaterialIcons, FontAwesome } from '@expo/vector-icons'; // eslint-disab
 import { useFocusEffect } from '@react-navigation/native';
 
 import { clearAuth } from '../features/auth/authSlice';
-import { clearPatientData } from '../features/patient/patientDataSlice';
 import Colors from '../constants/Colors';
 import { createCollection } from '../redux/action-creators';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
+import { actionTypes } from '../redux/action-types';
 
 const CollectionsListScreen = ({
   navigation,
@@ -92,7 +92,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   createCollectionAction: createCollection,
   clearAuthAction: clearAuth,
-  clearPatientDataAction: clearPatientData,
+  clearPatientDataAction: () => ({
+    type: actionTypes.CLEAR_PATIENT_DATA,
+  }),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScreen);

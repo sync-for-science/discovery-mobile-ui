@@ -5,23 +5,24 @@ import { shape } from 'prop-types';
 
 import UnauthorizedNavigator from './UnauthorizedNavigator';
 import AuthorizedNavigator from './AuthorizedNavigator';
+import { authSelector } from '../redux/selectors';
 
-const RootNavigator = ({ patientData }) => (
+const RootNavigator = ({ authResult }) => (
   <NavigationContainer>
-    {patientData ? <AuthorizedNavigator /> : <UnauthorizedNavigator />}
+    {!authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
   </NavigationContainer>
 );
 
 RootNavigator.propTypes = {
-  patientData: shape({}),
+  authResult: shape({}),
 };
 
 RootNavigator.defaultProps = {
-  patientData: null,
+  authResult: null,
 };
 
 const mapStateToProps = (state) => ({
-  patientData: state.patient.patientData,
+  authResult: authSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RootNavigator);

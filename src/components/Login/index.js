@@ -1,66 +1,46 @@
-import React, { useEffect, useState } from 'react';
-import { func, shape } from 'prop-types';
+import React, { useState } from 'react';
+import { func } from 'prop-types';
 import {
+  Alert,
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { setPatientData } from '../../features/patient/patientDataSlice';
-import { setAuth, clearAuth } from '../../features/auth/authSlice';
+import { setAuth } from '../../features/auth/authSlice';
 import Colors from '../../constants/Colors';
 import {
-  authAsync, buildFhirIssUrl, initializeFhirClient, getBundle,
+  authAsync, buildFhirIssUrl,
 } from '../../resources/fhirAuth';
 
 import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
 import SkipLoginButton from './SkipLoginButton';
 
 const Login = ({
-  authResult,
-  clearAuthAction,
-  patientData,
   setAuthAction,
-  setPatientDataAction,
 }) => {
   const [loading, setLoading] = useState(false);
   const [mockPatientId, setPatientId] = useState(DEFAULT_PATIENT_ID);
   const fhirIss = buildFhirIssUrl(mockPatientId);
 
-  useEffect(() => {
-    if (authResult && !patientData) {
-      const {
-        accessToken,
-        additionalParameters: { patient: patientId },
-      } = authResult;
-      const fhirClient = initializeFhirClient(fhirIss, accessToken);
-
-      const queryPatient = async (patientIdProp, fhirClientProp) => {
-        try {
-          const bundle = await getBundle(patientIdProp, fhirClientProp);
-          setPatientDataAction(bundle);
-        } catch (error) {
-          clearAuthAction();
-          setLoading(false);
-          console.error('Error fetching patient data:', error); // eslint-disable-line no-console
-          Alert.alert('Login Error', 'Error fetching patient data.', ['ok']);
-        }
-      };
-
-      queryPatient(patientId, fhirClient);
-    }
-  }, [authResult, patientData]);
-
   const handleLogin = async () => {
     setLoading(true);
-    const authResponse = await authAsync(fhirIss);
-    if (authResponse) {
-      setAuthAction(authResponse);
-    } else {
+    try {
+      const authResponse = await authAsync(fhirIss);
+      if (authResponse) {
+        setLoading(false);
+        setAuthAction({
+          baseUrl: fhirIss,
+          authResult: authResponse,
+        });
+      }
+    } catch (error) {
+      console.error('AppAuth Error:', error); // eslint-disable-line no-console
+      Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
+      // enable patient-picker and login buttons to render:
       setLoading(false);
     }
   };
@@ -96,27 +76,16 @@ const Login = ({
 
 Login.propTypes = {
   setAuthAction: func.isRequired,
-  setPatientDataAction: func.isRequired,
-  authResult: shape({}),
-  clearAuthAction: func.isRequired,
-  patientData: shape({}),
 };
 
 Login.defaultProps = {
-  authResult: null,
-  patientData: null,
 };
-
-const mapStateToProps = (state) => ({
-  authResult: state.auth.authResult,
-  patientData: state.patient.patientData,
-});
 
 const mapDispatchToProps = {
-  setAuthAction: setAuth, clearAuthAction: clearAuth, setPatientDataAction: setPatientData,
+  setAuthAction: setAuth,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(null, mapDispatchToProps)(Login);
 
 const styles = StyleSheet.create({
   sectionContainer: {

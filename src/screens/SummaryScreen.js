@@ -9,7 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
-import { clearPatientData } from '../features/patient/patientDataSlice';
+import { actionTypes } from '../redux/action-types';
 import Demographics from '../components/Demographics/Demographics';
 import UserInfo from '../components/UserInfo/UserInfo';
 import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
@@ -21,10 +21,6 @@ const SummaryScreen = ({
   const clearData = () => {
     clearAuthAction();
     clearPatientDataAction();
-  };
-
-  const handleLogout = () => {
-    clearData();
   };
 
   useFocusEffect(
@@ -45,7 +41,7 @@ const SummaryScreen = ({
         <Demographics />
         <RecordsSummary />
         <ProvidersSummary />
-        <Button title="Logout" onPress={handleLogout} />
+        <Button title="Logout" onPress={clearData} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -58,7 +54,9 @@ SummaryScreen.propTypes = {
 
 const mapDispatchToProps = {
   clearAuthAction: clearAuth,
-  clearPatientDataAction: clearPatientData,
+  clearPatientDataAction: () => ({
+    type: actionTypes.CLEAR_PATIENT_DATA,
+  }),
 };
 
 export default connect(null, mapDispatchToProps)(SummaryScreen);
