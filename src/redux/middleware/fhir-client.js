@@ -55,6 +55,9 @@ export default class FhirClient {
   }
 
   async resolve(reference) {
+    if (!this.baseUrl) {
+      return Promise.reject(new Error(`resolving reference: ${reference?.reference}\nNo baseUrl -- is this skip-login mock data?`));
+    }
     return this.client.resolve(reference);
   }
 }
