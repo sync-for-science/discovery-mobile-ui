@@ -7,10 +7,15 @@ import Colors from '../../constants/Colors'
 import BaseText from '../Generic/BaseText'
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
-import { clearCollection } from '../../redux/action-creators'
+import { clearCollection, clearMarkedResources } from '../../redux/action-creators'
 
-export const CatalogModal = ({collectionId, clearCollectionAction}) => {
+export const CatalogModal = ({
+  collectionId, 
+  clearCollectionAction, 
+  clearMarkedResourcesAction
+}) => {
   const [modalVisible, setModalVisible] = useState(false);
+
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
       clearCollectionAction(collectionId)
@@ -35,9 +40,31 @@ export const CatalogModal = ({collectionId, clearCollectionAction}) => {
     )
     
   }
+
   const handleClearMarked = () => {
-    setModalVisible(false)
+    const clearAndCloseModal = () => {
+      clearMarkedResourcesAction()
+      setModalVisible(false)
+    }
+
+    Alert.alert(
+      'Clear Highlighted Events', 
+      'Are you sure you want to clear the highlighted events?',
+      [
+        {
+          text: 'Cancel', 
+          onPress: () => {}, 
+          style: 'cancel'
+        },
+        {
+          text: 'Clear', 
+          onPress: clearAndCloseModal, 
+          style: 'destructive'
+        },
+      ]
+    )
   }
+
   return (
     <View style={styles.root}>
       <Modal
@@ -79,7 +106,8 @@ export const CatalogModal = ({collectionId, clearCollectionAction}) => {
 }
 
 const mapDispatchToProps = {
-  clearCollectionAction: clearCollection
+  clearCollectionAction: clearCollection,
+  clearMarkedResourcesAction: clearMarkedResources
 }
 
 export default connect(null, mapDispatchToProps)(CatalogModal)

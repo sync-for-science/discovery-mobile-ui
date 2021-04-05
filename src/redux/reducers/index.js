@@ -253,6 +253,7 @@ const preloadedMarkedResources = {
 
 export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
   switch (action.type) {
+    case actionTypes.CLEAR_MARKED_RESOURCES:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedMarkedResources;
     }

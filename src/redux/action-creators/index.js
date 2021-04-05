@@ -46,13 +46,17 @@ export const renameCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearCollection = (collectionId) => {
-  return ({
+export const clearCollection = (collectionId) => ({
   type: actionTypes.CLEAR_COLLECTION,
   payload: collectionId,
-})};
+});
 
 export const duplicateCollection = (collectionId, collectionName) => ({
   type: actionTypes.DUPLICATE_COLLECTION,
   payload: { collectionId, collectionName },
+});
+
+export const clearMarkedResources = (collectionId) => ({
+  type: actionTypes.CLEAR_MARKED_RESOURCES,
+  payload: collectionId,
 });
