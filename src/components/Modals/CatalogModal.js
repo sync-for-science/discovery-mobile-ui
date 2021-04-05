@@ -1,16 +1,23 @@
 import React, {useState} from 'react'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-
+import { connect} from 'react-redux'
 
 import Colors from '../../constants/Colors'
 import BaseText from '../Generic/BaseText'
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
+import { clearCollection } from '../../redux/action-creators'
 
-export const CatalogModal = () => {
+export const CatalogModal = ({collectionId, clearCollectionAction}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const handleClearCollection = () => {
+    clearCollectionAction(collectionId)
+    setModalVisible(false)
+  }
+  const handleClearMarked = () => {
+    setModalVisible(false)
+  }
   return (
     <View style={styles.root}>
       <Modal
@@ -31,10 +38,10 @@ export const CatalogModal = () => {
             <View style={styles.controlsContainer}>
               <CollectionSegmentControl />
               <MarkedSegmentControl />
-              <TouchableOpacity style={styles.button} onPress={() => {}}>
+              <TouchableOpacity style={styles.button} onPress={handleClearCollection}>
                 <BaseText variant="buttonDestructive">Clear Collection</BaseText>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={() => {}}>
+              <TouchableOpacity style={styles.button} onPress={handleClearMarked}>
                 <BaseText variant="buttonDestructive">Clear Highlighted Events</BaseText>
               </TouchableOpacity>
             </View>
@@ -51,7 +58,11 @@ export const CatalogModal = () => {
   )
 }
 
-export default CatalogModal
+const mapDispatchToProps = {
+  clearCollectionAction: clearCollection
+}
+
+export default connect(null, mapDispatchToProps)(CatalogModal)
 
 const styles = StyleSheet.create({
   root: {

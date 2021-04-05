@@ -62,15 +62,10 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
   switch (action.type) {
     case actionTypes.CREATE_COLLECTION:
     case actionTypes.SELECT_COLLECTION:
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadResourceTypeFilters;
-    }
-    case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION: {
-      if (action.payload.isSelectedCollection) {
-        return preloadResourceTypeFilters;
-      }
-      return state;
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const currentSetting = state[action.payload];
@@ -102,17 +97,12 @@ const preloadSelectedTimelineRange = {
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
-    case actionTypes.CREATE_COLLECTION:
+    case actionTypes.CREATE_COLLECTION:  
     case actionTypes.SELECT_COLLECTION:
+    case actionTypes.DELETE_COLLECTION:
+    case actionTypes.CLEAR_COLLECTION:
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadSelectedTimelineRange;
-    }
-    case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION: {
-      if (action.payload.isSelectedCollection) {
-        return preloadSelectedTimelineRange;
-      }
-      return state;
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
       return {
@@ -140,6 +130,7 @@ const createCollection = (
   const lastAddedResourceId = duplicateLastAddedResourceId || null;
   return {
     [collectionId]: {
+      id: collectionId,
       created: timeCreated,
       lastUpdated: timeCreated,
       label,

@@ -31,7 +31,7 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
       <Title style={{color: 'black'}}>{collection?.label}</Title>
     </View>
     <Right>
-      <CatalogModal />
+      <CatalogModal collectionId={collection.id} />
     </Right>
   </Header>
 );

@@ -46,10 +46,12 @@ export const renameCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearCollection = (collectionId) => ({
+export const clearCollection = (collectionId) => {
+  console.log('hello2')
+  return ({
   type: actionTypes.CLEAR_COLLECTION,
   payload: collectionId,
-});
+})};
 
 export const duplicateCollection = (collectionId, collectionName) => ({
   type: actionTypes.DUPLICATE_COLLECTION,
