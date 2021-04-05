@@ -13,10 +13,8 @@ export const buildFhirIssUrl = (patientId) => {
   return `https://launch.smarthealthit.org/v/r4/sim/${Buffer.from(issDataString).toString('base64')}/fhir`;
 };
 
-export const initializeFhirClient = (fhirIss) => new Client({ baseUrl: fhirIss });
-
 export async function authAsync(fhirIss) {
-  const fhirClient = initializeFhirClient(fhirIss);
+  const fhirClient = new Client({ baseUrl: fhirIss });
   const { authorizeUrl, tokenUrl } = await fhirClient.smartAuthMetadata();
 
   const config = {
