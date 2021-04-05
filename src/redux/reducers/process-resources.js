@@ -1,4 +1,6 @@
 // processResource() executes once per/resource, as paginated FHIR requests resolve.
+const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization'];
+const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization'];
 
 const getType = (resource) => {
   const { resourceType } = resource;
@@ -39,7 +41,9 @@ const getSubType = (resource) => {
       subType = resource.category?.[0]?.text;
       break;
     default:
-      console.warn(`No subType found for resource: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
+      if (!RESOURCES_WITHOUT_SUBTYPES.includes(resource.resourceType)) {
+        console.warn(`No subType found for resource: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
+      }
       subType = 'Other';
       break;
   }
@@ -67,7 +71,9 @@ const getTimelineDate = (resource) => {
     // MedicationRequest
     return new Date(resource.authoredOn);
   }
-  console.warn(`No date found for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
+  if (!RESOURCES_WITHOUT_DATES.includes(resource.resourceType)) {
+    console.warn(`No date found for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
+  }
   return null;
 };
 
