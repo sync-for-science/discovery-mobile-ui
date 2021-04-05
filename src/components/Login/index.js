@@ -27,13 +27,18 @@ const Login = ({
 
   const handleLogin = async () => {
     setLoading(true);
-    const authResponse = await authAsync(fhirIss);
-    if (authResponse) {
+    try {
+      const authResponse = await authAsync(fhirIss);
+      if (authResponse) {
+        setLoading(false);
+        setAuthAction({
+          baseUrl: fhirIss,
+          authResult: authResponse,
+        });
+      }
+    } catch (error) {
+      // error is handled with Alert in resources/fhirAuth.js:
       setLoading(false);
-      setAuthAction({
-        baseUrl: fhirIss,
-        authResult: authResponse,
-      });
     }
   };
 
