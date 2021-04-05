@@ -29,7 +29,7 @@
     "expo-app-auth": "~9.3.0",
     "expo-linking": "~2.0.0",
     "expo-status-bar": "~1.0.3",
-    "fhir-kit-client": "^1.6.2",
+    "fhir-kit-client": "^1.6.5",
     "native-base": "^2.15.2",
     "prop-types": "^15.7.2",
     "ramda": "^0.27.1",
