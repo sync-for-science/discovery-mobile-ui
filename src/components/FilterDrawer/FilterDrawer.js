@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  useRef, cloneElement, isValidElement, Children,
+} from 'react';
 import {
   bool, func, node, shape, string,
 } from 'prop-types';
@@ -68,18 +70,32 @@ const FilterDrawer = ({
     </View>
   );
 
+  const drawerRef = useRef(null);
+  const handleOpenDrawer = () => {
+    drawerRef.current.openDrawer();
+  };
+
+  const childrenWithProps = Children.map(children, (child) => {
+    if (isValidElement(child)) {
+      return cloneElement(child, { handleOpenDrawer });
+    }
+    return child;
+  });
+
   return (
     <View style={styles.container}>
       <DrawerLayout
+        ref={drawerRef}
         drawerWidth={wp('60%')}
         keyboardDismissMode="on-drag"
         drawerPosition={DrawerLayout.positions.Left}
         drawerType="front"
         drawerBackgroundColor="white"
         renderNavigationView={renderDrawer}
+        edgeWidth={-wp('100%')}
       >
         <View style={styles.childrenContainer}>
-          {children}
+          {childrenWithProps}
         </View>
       </DrawerLayout>
     </View>
