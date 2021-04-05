@@ -1,6 +1,5 @@
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
-import { Alert } from 'react-native';
 
 const { Buffer } = require('buffer');
 
@@ -39,14 +38,5 @@ export async function authAsync(fhirIss) {
       'online_access',
     ],
   };
-
-  let result;
-  try {
-    result = await AppAuth.authAsync(config);
-  } catch (error) {
-    console.error('AppAuth Error:', error); // eslint-disable-line no-console
-    Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
-  }
-
-  return result;
+  return AppAuth.authAsync(config);
 }

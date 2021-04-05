@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { func } from 'prop-types';
 import {
+  Alert,
   StyleSheet,
   Text,
   View,
@@ -37,7 +38,9 @@ const Login = ({
         });
       }
     } catch (error) {
-      // error is handled with Alert in resources/fhirAuth.js:
+      console.error('AppAuth Error:', error); // eslint-disable-line no-console
+      Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
+      // enable patient-picker and login buttons to render:
       setLoading(false);
     }
   };
