@@ -46,7 +46,7 @@ export const patientSelector = createSelector(
 );
 
 // eslint-disable-next-line max-len
-const sortEntriesByResourceType = () => ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
+const sortEntriesByResourceType = ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
 
 export const supportedResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector],
