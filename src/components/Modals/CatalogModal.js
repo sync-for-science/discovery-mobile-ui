@@ -1,13 +1,16 @@
 import React, {useState} from 'react'
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+
 
 import Colors from '../../constants/Colors'
+import BaseText from '../Generic/BaseText'
+import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
+import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 
 export const CatalogModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [segControlIndex, setsSegControlIndex] = useState(0)
+  
   return (
     <View style={styles.root}>
       <Modal
@@ -19,23 +22,21 @@ export const CatalogModal = () => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-              <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '100%'}}>
-                <Text style={styles.modalText}>Record Filters</Text>
+              <View style={styles.modalHeaderContainer}>
+                <BaseText variant="sectionTitle">Record Filters</BaseText>
                 <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Text>Close</Text>
+                  <Ionicons name="close" size={30} color="black" />
                 </TouchableOpacity>
               </View>
-            <View style={{width: '100%', marginTop: 20}}>
-              <SegmentedControl
-                values={['All Records', 'Collection Records']}
-                selectedIndex={segControlIndex}
-                onChange={(event) => {
-                  setsSegControlIndex(event.nativeEvent.selectedSegmentIndex);
-                }}
-                fontStyle={{fontSize: 16, color: 'black'}}
-                activeFontStyle={{fontSize: 16}}
-                tintColor="lightblue"
-              />
+            <View style={styles.controlsContainer}>
+              <CollectionSegmentControl />
+              <MarkedSegmentControl />
+              <TouchableOpacity style={styles.button} onPress={() => {}}>
+                <BaseText variant="buttonDestructive">Clear Collection</BaseText>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.button} onPress={() => {}}>
+                <BaseText variant="buttonDestructive">Clear Highlighted Events</BaseText>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -64,12 +65,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)',
     shadowColor: 'black',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: -100,
-    // },
-    // shadowOpacity: 1,
-    // shadowRadius: 300,
   },
   modalView: {
     height: '50%',
@@ -78,16 +73,29 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 25,
     alignItems: 'center',
-    
     elevation: 5,
+  },
+  modalHeaderContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    width: '100%', 
+    alignItems: 'center'
   },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'center',
   },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
+  controlsContainer: {
+    width: '100%', 
+    marginTop: 20
   },
+  button: {
+    width: '100%',
+    paddingVertical: 15,
+    backgroundColor: Colors.lightgrey2,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 30
+  }
 });
