@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect} from 'react-redux'
 
@@ -12,8 +12,28 @@ import { clearCollection } from '../../redux/action-creators'
 export const CatalogModal = ({collectionId, clearCollectionAction}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const handleClearCollection = () => {
-    clearCollectionAction(collectionId)
-    setModalVisible(false)
+    const clearAndCloseModal = () => {
+      clearCollectionAction(collectionId)
+      setModalVisible(false)
+    }
+    
+    Alert.alert(
+      'Clear Collection', 
+      'Are you sure you want to clear the records saved to this collection?',
+      [
+        {
+          text: 'Cancel', 
+          onPress: () => {}, 
+          style: 'cancel'
+        },
+        {
+          text: 'Clear', 
+          onPress: clearAndCloseModal, 
+          style: 'destructive'
+        },
+      ]
+    )
+    
   }
   const handleClearMarked = () => {
     setModalVisible(false)
