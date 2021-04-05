@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  arrayOf, shape, string, number,
+  arrayOf, shape, string,
 } from 'prop-types';
 import {
   StyleSheet, Text, View,
@@ -10,16 +10,14 @@ import {
 import { providersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
-const ProviderRow = ({ name, latestDataYear }) => (
+const ProviderRow = ({ name }) => (
   <View style={styles.providerTypeRow}>
     <Text style={styles.providerName}>{name}</Text>
-    <Text style={styles.providerLatestDate}>{latestDataYear}</Text>
   </View>
 );
 
 ProviderRow.propTypes = {
   name: string.isRequired,
-  latestDataYear: number.isRequired,
 };
 
 const ProvidersSummary = ({ providers }) => (
@@ -33,16 +31,11 @@ const ProvidersSummary = ({ providers }) => (
       </Text>
     </View>
     <View style={styles.providerTypeContainer}>
-      <View style={styles.providerTypeRow}>
-        <Text style={styles.providerName} />
-        <Text style={styles.providerLatestDateLabel}>latest data</Text>
-      </View>
       {providers.map(
-        ({ name, latestDataYear }) => (
+        ({ name }) => (
           <ProviderRow
             key={name}
             name={name}
-            latestDataYear={latestDataYear}
           />
         ),
       )}
