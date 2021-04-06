@@ -64,3 +64,7 @@ export const clearMarkedResources = (collectionId) => ({
 export const toggleShowCollectionOnly = () => ({
   type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
 })
+
+export const toggleShowMarkedOnly = () => ({
+  type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
+})

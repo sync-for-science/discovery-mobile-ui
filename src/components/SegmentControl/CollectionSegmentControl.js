@@ -16,7 +16,7 @@ const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
     toggleShowCollectionOnlyAction()
     setSegControlIndex(event)
   }
-  
+
   return (
     <View style={styles.root}>
       <BaseSegmentControl
@@ -30,7 +30,7 @@ const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
 }
 
 const mapDispatchToProps = {
-  toggleShowCollectionOnlyAction: toggleShowCollectionOnly
+  toggleShowCollectionOnlyAction: toggleShowCollectionOnly,
 }
 
 export default connect(null, mapDispatchToProps)(CollectionSegmentControl)

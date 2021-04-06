@@ -296,3 +296,13 @@ export const showCollectionOnlyReducer = (state = false, action) => {
       return state
   }
 }
+
+export const showMarkedOnlyReducer = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
+      return !state
+    }
+    default: 
+      return state
+  }
+}
