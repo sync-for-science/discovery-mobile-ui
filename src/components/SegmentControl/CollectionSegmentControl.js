@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import BaseSegmentControl from '../Generic/BaseSegmentControl'
 import { connect } from 'react-redux'
@@ -9,8 +9,8 @@ import { toggleShowCollectionOnly } from '../../redux/action-creators'
 const allRecordsDescription = "Displays all records."
 const collectionRecordsDescription = "Only displays records saved to the collection."
 
-const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
-  const [segControlIndex, setSegControlIndex] = useState(0)
+const CollectionSegmentControl = ({showCollectionOnly, toggleShowCollectionOnlyAction}) => {
+  const segControlIndex = showCollectionOnly ? 1 : 0
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription
   const handleChange = (event) => {
     if (event === 0) {
@@ -18,7 +18,6 @@ const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
     } else {
       toggleShowCollectionOnlyAction(true)
     }
-    setSegControlIndex(event)
   }
 
   return (
@@ -33,11 +32,15 @@ const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  showCollectionOnly: state.showCollectionOnly
+})
+
 const mapDispatchToProps = {
   toggleShowCollectionOnlyAction: toggleShowCollectionOnly,
 }
 
-export default connect(null, mapDispatchToProps)(CollectionSegmentControl)
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionSegmentControl)
 
 const styles = StyleSheet.create({
   root: {

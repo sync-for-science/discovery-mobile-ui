@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import BaseSegmentControl from '../Generic/BaseSegmentControl'
 import { connect } from 'react-redux'
@@ -9,8 +9,8 @@ import BaseText from '../Generic/BaseText'
 const allRecordsDescription = "Displays all records."
 const highlightedRecordsDescription = "Only displays highlighted records."
 
-const MarkedSegmentControl = ({toggleShowMarkedOnlyAction}) => {
-  const [segControlIndex, setSegControlIndex] = useState(0)
+const MarkedSegmentControl = ({showMarkedOnly, toggleShowMarkedOnlyAction}) => {
+  const segControlIndex = showMarkedOnly ? 1 : 0
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription
   const handleChange = (event) => {
     if (event === 0) {
@@ -18,7 +18,6 @@ const MarkedSegmentControl = ({toggleShowMarkedOnlyAction}) => {
     } else {
       toggleShowMarkedOnlyAction(true)
     }
-    setSegControlIndex(event)
   }
 
   return (
@@ -33,12 +32,15 @@ const MarkedSegmentControl = ({toggleShowMarkedOnlyAction}) => {
   )
 }
 
+const mapStateToProps = (state) => ({
+  showMarkedOnly: state.showMarkedOnly
+})
 
 const mapDispatchToProps = {
   toggleShowMarkedOnlyAction: toggleShowMarkedOnly,
 }
 
-export default connect(null, mapDispatchToProps)(MarkedSegmentControl)
+export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl)
 
 const styles = StyleSheet.create({
   root: {
