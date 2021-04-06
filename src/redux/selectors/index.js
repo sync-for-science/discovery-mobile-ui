@@ -207,6 +207,7 @@ const filteredResourceTypesSelector = createSelector(
       return {};
     }
     const selectedCollectionResourceIds = Object.keys(collectionResourceIdsObjects);
+    console.log('selectedCollectionResourceIds', selectedCollectionResourceIds)
     return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};
@@ -379,21 +380,22 @@ export const timelineIntervalsSelector = createSelector(
   },
 );
 
-const selectedResourceSubTypeDataSelector = createSelector(
+// selected ResourceType && in collection
+const selectedResourceTypeAndCollectionDataSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
-    const collectionFlattenedSubTypes = {};
+    const subTypeData = {};
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         if (subTypeValues.collectionDateFilteredCount > 0) {
-          if (!collectionFlattenedSubTypes[subType]) {
-            collectionFlattenedSubTypes[subType] = {};
+          if (!subTypeData[subType]) {
+            subTypeData[subType] = {};
           }
-          collectionFlattenedSubTypes[subType] = subTypeValues;
+          subTypeData[subType] = subTypeValues;
         }
       });
     });
-    return collectionFlattenedSubTypes;
+    return subTypeData;
   },
 );
 
@@ -403,14 +405,14 @@ export const catalogSubTypeDataSelector = createSelector(
     selectedResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
-    selectedResourceSubTypeDataSelector,
+    selectedResourceTypeAndCollectionDataSelector,
   ],
   (
     filteredResourceTypes,
     selectedResourceType,
     showCollectionOnly,
     showMarkedOnly,
-    selectedResourceSubTypeData,
+    selectedResourceTypeAndCollectionData,
   ) => {
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
@@ -421,7 +423,7 @@ export const catalogSubTypeDataSelector = createSelector(
     }
 
     if (showCollectionOnly && !showMarkedOnly) {
-      return selectedResourceSubTypeData;
+      return selectedResourceTypeAndCollectionData;
     }
 
     if (!showCollectionOnly && showMarkedOnly) {
