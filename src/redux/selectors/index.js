@@ -530,3 +530,32 @@ export const collectionDateRangeSelector = createSelector(
     };
   },
 );
+
+export const markedDateRangeSelector = createSelector(
+  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
+  (resources, selectedCollectionId, collections) => {
+    const markedResourceIds = Object.keys(
+      collections[selectedCollectionId]?.markedResources?.marked,
+    );
+    if (markedResourceIds.length === 0) {
+      return {
+        dateRangeStart: undefined,
+        dateRangeEnd: undefined,
+      };
+    }
+    const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (markedResourceIds.includes(id)) {
+        acc.push(resourceValues);
+      }
+      return acc;
+    }, []);
+    const sortedMarkedResources = markedResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+    return {
+      dateRangeStart: startOfDay(sortedMarkedResources[0].timelineDate),
+      dateRangeEnd: endOfDay(
+        sortedMarkedResources[sortedMarkedResources.length - 1].timelineDate,
+      ),
+    };
+  },
+);
