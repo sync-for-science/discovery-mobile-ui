@@ -13,7 +13,11 @@ const MarkedSegmentControl = ({toggleShowMarkedOnlyAction}) => {
   const [segControlIndex, setSegControlIndex] = useState(0)
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription
   const handleChange = (event) => {
-    toggleShowMarkedOnlyAction()
+    if (event === 0) {
+      toggleShowMarkedOnlyAction(false)
+    } else {
+      toggleShowMarkedOnlyAction(true)
+    }
     setSegControlIndex(event)
   }
 

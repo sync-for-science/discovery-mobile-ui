@@ -290,7 +290,7 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
 export const showCollectionOnlyReducer = (state = false, action) => {
   switch(action.type) {
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
-      return !state
+      return action.payload
     }
     default: 
       return state
@@ -300,7 +300,8 @@ export const showCollectionOnlyReducer = (state = false, action) => {
 export const showMarkedOnlyReducer = (state = false, action) => {
   switch(action.type) {
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      return !state
+      console.log('action', action)
+      return action.payload
     }
     default: 
       return state

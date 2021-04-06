@@ -13,7 +13,11 @@ const CollectionSegmentControl = ({toggleShowCollectionOnlyAction}) => {
   const [segControlIndex, setSegControlIndex] = useState(0)
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription
   const handleChange = (event) => {
-    toggleShowCollectionOnlyAction()
+    if (event === 0) {
+      toggleShowCollectionOnlyAction(false)
+    } else {
+      toggleShowCollectionOnlyAction(true)
+    }
     setSegControlIndex(event)
   }
 
