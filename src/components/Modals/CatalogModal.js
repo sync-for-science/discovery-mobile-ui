@@ -45,7 +45,7 @@ const CatalogModal = ({
 
   const handleClearMarked = () => {
     const clearAndCloseModal = () => {
-      clearMarkedResourcesAction();
+      clearMarkedResourcesAction(collectionId);
       setModalVisible(false);
     };
 

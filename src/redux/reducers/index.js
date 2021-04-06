@@ -117,7 +117,14 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
-
+const defaultMarkedResources = {
+  focusedSubtype: '', // only a single sub-type can be focused
+  // "marked" -- dictionary whose keys are resource ids and values are enum:
+  // 0 -- unmarked
+  // 1 -- marked
+  // 2 -- focused
+  marked: {},
+};
 const createCollection = (
   name = null,
   duplicateResourceIds = null,
@@ -128,14 +135,7 @@ const createCollection = (
   const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
   const resourceIds = duplicateResourceIds || {};
   const lastAddedResourceId = duplicateLastAddedResourceId || null;
-  const markedResources = {
-    focusedSubtype: '', // only a single sub-type can be focused
-    // "marked" -- dictionary whose keys are resource ids and values are enum:
-    // 0 -- unmarked
-    // 1 -- marked
-    // 2 -- focused
-    marked: {},
-  };
+
   return {
     [collectionId]: {
       id: collectionId,
@@ -144,7 +144,7 @@ const createCollection = (
       label,
       resourceIds,
       lastAddedResourceId,
-      markedResources,
+      markedResources: defaultMarkedResources,
     },
   };
 };
@@ -222,6 +222,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       };
 
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.CLEAR_MARKED_RESOURCES: {
+      const collectionId = action.payload;
+      const updatedCollection = { ...state[collectionId] };
+      updatedCollection.markedResources = defaultMarkedResources;
+      return { ...state, [collectionId]: updatedCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
