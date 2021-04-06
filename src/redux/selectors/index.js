@@ -28,6 +28,8 @@ const selectedCollectionSelector = (state) => state.selectedCollection;
 
 const showCollectionOnlySelector = (state) => state.showCollectionOnly
 
+const showMarkedOnlySelector = (state) => state.showMarkedOnly
+
 export const markedResourcesSelector = (state) => state.markedResources;
 
 export const collectionSelector = createSelector(
@@ -377,27 +379,9 @@ export const timelineIntervalsSelector = createSelector(
   },
 );
 
-
-export const catalogSubTypeDataSelector = createSelector(
-  [
-    filteredResourceTypesSelector, 
-    selectedResourceTypeSelector, 
-    showCollectionOnlySelector,
-  ],
-  (
-    filteredResourceTypes, 
-    selectedResourceType, 
-    showCollectionOnly,
-    ) => {
-    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {};
-    }
-
-    if (!showCollectionOnly) {
-      return filteredResourceTypes[selectedResourceType].subTypes;
-    }
-
-    // if showCollectionOnly === true
+const selectedResourceSubTypeDataSelector = createSelector(
+  [filteredResourceTypesSelector, selectedResourceTypeSelector],
+  (filteredResourceTypes, selectedResourceType) => {
     const collectionFlattenedSubTypes = {};
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
@@ -410,5 +394,42 @@ export const catalogSubTypeDataSelector = createSelector(
       });
     });
     return collectionFlattenedSubTypes;
+  }
+)
+
+export const catalogSubTypeDataSelector = createSelector(
+  [
+    filteredResourceTypesSelector, 
+    selectedResourceTypeSelector, 
+    showCollectionOnlySelector,
+    showMarkedOnlySelector,
+    selectedResourceSubTypeDataSelector
+  ],
+  (
+    filteredResourceTypes, 
+    selectedResourceType, 
+    showCollectionOnly,
+    showMarkedOnly,
+    selectedResourceSubTypeData
+    ) => {
+    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
+      return {};
+    }
+
+    if (!showCollectionOnly && !showMarkedOnly) {
+      return filteredResourceTypes[selectedResourceType].subTypes;
+    }
+
+    if (showCollectionOnly && !showMarkedOnly) {
+      return selectedResourceSubTypeData
+    }
+
+    if (!showCollectionOnly && showMarkedOnly) {
+      return {}
+    }
+
+    if (showCollectionOnly && showMarkedOnly) {
+      return {}
+    }
   },
 )
