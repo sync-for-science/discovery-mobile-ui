@@ -19,7 +19,7 @@ const MarkedIcon = ({
   isAccordion,
   updateMarkedResources,
   markedResources,
-  collectionId
+  collectionId,
 }) => {
   const { marked } = markedResources;
 
@@ -73,6 +73,7 @@ MarkedIcon.propTypes = {
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
+  collectionId: string.isRequired,
 };
 
 MarkedIcon.defaultProps = {
@@ -80,7 +81,7 @@ MarkedIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
-  collectionId: state.selectedCollection
+  collectionId: state.selectedCollection,
 });
 
 const mapDispatchToProps = {
@@ -89,7 +90,7 @@ const mapDispatchToProps = {
     payload: {
       subType,
       resourceIdsMap,
-      collectionId
+      collectionId,
     },
   }),
 };

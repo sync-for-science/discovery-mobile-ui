@@ -63,10 +63,10 @@ export const clearMarkedResources = (collectionId) => ({
 
 export const toggleShowCollectionOnly = (boolean) => ({
   type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
-  payload: boolean
-})
+  payload: boolean,
+});
 
 export const toggleShowMarkedOnly = (boolean) => ({
   type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
-  payload: boolean
-})
+  payload: boolean,
+});

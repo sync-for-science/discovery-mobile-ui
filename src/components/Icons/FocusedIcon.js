@@ -19,7 +19,7 @@ const FocusedIcon = ({
   isAccordion,
   updateFocusedResources,
   markedResources,
-  collectionId
+  collectionId,
 }) => {
   const { marked } = markedResources;
 
@@ -41,7 +41,11 @@ const FocusedIcon = ({
       updateFocusedResources(newSubType, resourceIdsMap, collectionId);
     } else {
       // (unmarked or marked) > focused > marked
-      updateFocusedResources(subType, { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) }, collectionId);
+      updateFocusedResources(
+        subType,
+        { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) },
+        collectionId,
+      );
     }
   };
 
@@ -71,6 +75,7 @@ FocusedIcon.propTypes = {
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
+  collectionId: string.isRequired,
 };
 
 FocusedIcon.defaultProps = {
@@ -78,7 +83,7 @@ FocusedIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
-  collectionId: state.selectedCollection
+  collectionId: state.selectedCollection,
 });
 
 const mapDispatchToProps = {
@@ -87,7 +92,7 @@ const mapDispatchToProps = {
     payload: {
       subType,
       resourceIdsMap,
-      collectionId
+      collectionId,
     },
   }),
 };

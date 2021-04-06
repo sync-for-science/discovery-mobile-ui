@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   buttonDestructive: {
     fontSize: 18,
-    color: Colors.destructive
+    color: Colors.destructive,
   },
   title: {
     fontWeight: '700',

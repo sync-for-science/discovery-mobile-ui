@@ -2,7 +2,7 @@ const gray1 = '#c2c2c2';
 const gray2 = '#d9d9d9';
 const gray3 = '#5e5e5e';
 const gray4 = '#f2f2f2'; // default screen background
-const gray5 = '#ECECEC'
+const gray5 = '#ECECEC';
 const blue1 = '#3477e3';
 const blue2 = '#c7d7f0';
 const blue3 = '#143263';
@@ -11,7 +11,7 @@ const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
 const blue7 = '#9dc3e6';
 const yellow1 = '#ffc000';
-const red1 = 'red'
+const red1 = 'red';
 
 export default {
   primary: blue1,
@@ -35,5 +35,5 @@ export default {
   unmarked: gray1,
   countIcon: gray1,
   screenBackground: gray4,
-  destructive: red1
+  destructive: red1,
 };

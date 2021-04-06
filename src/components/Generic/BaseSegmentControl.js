@@ -1,9 +1,14 @@
-import React from 'react'
-import { StyleSheet } from 'react-native'
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
+import {
+  arrayOf, func, number, string,
+} from 'prop-types';
 
-const BaseSegmentControl = ({values, selectedIndex, handleChange, activeColor = null}) => {
-  const tintColor = activeColor ? activeColor : "lightblue"
+const BaseSegmentControl = ({
+  values, selectedIndex, handleChange, activeColor,
+}) => {
+  const tintColor = activeColor || 'lightblue';
   return (
     <SegmentedControl
       values={values}
@@ -15,17 +20,28 @@ const BaseSegmentControl = ({values, selectedIndex, handleChange, activeColor = 
       activeFontStyle={styles.scActiveFontStyle}
       tintColor={tintColor}
     />
-  )
-}
+  );
+};
 
-export default BaseSegmentControl
+BaseSegmentControl.propTypes = {
+  values: arrayOf(number.isRequired).isRequired,
+  selectedIndex: number.isRequired,
+  handleChange: func.isRequired,
+  activeColor: string,
+};
+
+BaseSegmentControl.defaultProps = {
+  activeColor: null,
+};
+
+export default BaseSegmentControl;
 
 const styles = StyleSheet.create({
   scFontStyle: {
-    fontSize: 16, 
-    color: 'black'
+    fontSize: 16,
+    color: 'black',
   },
   scActiveFontStyle: {
-    fontSize: 16
-  }
-})
+    fontSize: 16,
+  },
+});

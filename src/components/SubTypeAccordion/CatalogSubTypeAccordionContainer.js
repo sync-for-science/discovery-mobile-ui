@@ -10,33 +10,31 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const CatalogSubTypeAccordionContainer = ({ catalogSubTypeData, fromContentPanel }) => {
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        {Object.entries(catalogSubTypeData)
-          .sort(sortEntriesBySubType)
-          .map(([subType, values]) => {
-            const resourceIds = fromContentPanel
-              ? values.collectionDateFilteredResourceIds
-              : values.dateFilteredResourceIds;
+const CatalogSubTypeAccordionContainer = ({ catalogSubTypeData, fromContentPanel }) => (
+  <View style={styles.root}>
+    <View style={styles.container}>
+      {Object.entries(catalogSubTypeData)
+        .sort(sortEntriesBySubType)
+        .map(([subType, values]) => {
+          const resourceIds = fromContentPanel
+            ? values.collectionDateFilteredResourceIds
+            : values.dateFilteredResourceIds;
 
-            if (resourceIds.length === 0) {
-              return null;
-            }
-            return (
-              <SubTypeAccordion
-                key={subType}
-                subType={subType}
-                resourceIds={resourceIds}
-                dateFilteredCount={values.dateFilteredCount}
-              />
-            );
-          })}
-      </View>
+          if (resourceIds.length === 0) {
+            return null;
+          }
+          return (
+            <SubTypeAccordion
+              key={subType}
+              subType={subType}
+              resourceIds={resourceIds}
+              dateFilteredCount={values.dateFilteredCount}
+            />
+          );
+        })}
     </View>
-  )
-};
+  </View>
+);
 
 CatalogSubTypeAccordionContainer.propTypes = {
   catalogSubTypeData: shape({}).isRequired,

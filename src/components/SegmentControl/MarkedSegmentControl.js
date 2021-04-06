@@ -1,24 +1,25 @@
-import React from 'react'
-import { View, StyleSheet } from 'react-native'
-import BaseSegmentControl from '../Generic/BaseSegmentControl'
-import { connect } from 'react-redux'
-import { toggleShowMarkedOnly } from '../../redux/action-creators'
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
+import { bool, func } from 'prop-types';
+import BaseSegmentControl from '../Generic/BaseSegmentControl';
+import { toggleShowMarkedOnly } from '../../redux/action-creators';
 
-import BaseText from '../Generic/BaseText'
+import BaseText from '../Generic/BaseText';
 
-const allRecordsDescription = "Displays all records."
-const highlightedRecordsDescription = "Only displays highlighted records."
+const allRecordsDescription = 'Displays all records.';
+const highlightedRecordsDescription = 'Only displays highlighted records.';
 
-const MarkedSegmentControl = ({showMarkedOnly, toggleShowMarkedOnlyAction}) => {
-  const segControlIndex = showMarkedOnly ? 1 : 0
-  const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription
+const MarkedSegmentControl = ({ showMarkedOnly, toggleShowMarkedOnlyAction }) => {
+  const segControlIndex = showMarkedOnly ? 1 : 0;
+  const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
   const handleChange = (event) => {
     if (event === 0) {
-      toggleShowMarkedOnlyAction(false)
+      toggleShowMarkedOnlyAction(false);
     } else {
-      toggleShowMarkedOnlyAction(true)
+      toggleShowMarkedOnlyAction(true);
     }
-  }
+  };
 
   return (
     <View style={styles.root}>
@@ -29,18 +30,23 @@ const MarkedSegmentControl = ({showMarkedOnly, toggleShowMarkedOnlyAction}) => {
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
-  )
-}
+  );
+};
+
+MarkedSegmentControl.propTypes = {
+  showMarkedOnly: bool.isRequired,
+  toggleShowMarkedOnlyAction: func.isRequired,
+};
 
 const mapStateToProps = (state) => ({
-  showMarkedOnly: state.showMarkedOnly
-})
+  showMarkedOnly: state.showMarkedOnly,
+});
 
 const mapDispatchToProps = {
   toggleShowMarkedOnlyAction: toggleShowMarkedOnly,
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl)
+export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl);
 
 const styles = StyleSheet.create({
   root: {
@@ -48,7 +54,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     marginTop: 10,
-    width: "100%",
-    textAlign: 'center'
-  }
-})
+    width: '100%',
+    textAlign: 'center',
+  },
+});

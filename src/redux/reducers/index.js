@@ -97,7 +97,7 @@ const preloadSelectedTimelineRange = {
 };
 export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
   switch (action.type) {
-    case actionTypes.CREATE_COLLECTION:  
+    case actionTypes.CREATE_COLLECTION:
     case actionTypes.SELECT_COLLECTION:
     case actionTypes.DELETE_COLLECTION:
     case actionTypes.CLEAR_COLLECTION:
@@ -135,7 +135,7 @@ const createCollection = (
     // 1 -- marked
     // 2 -- focused
     marked: {},
-  }
+  };
   return {
     [collectionId]: {
       id: collectionId,
@@ -195,14 +195,16 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       const { subType, resourceIdsMap, collectionId } = action.payload;
-      const newCollection = {...state[collectionId]}
+      const newCollection = { ...state[collectionId] };
       const deFocus = (!subType || subType !== newCollection.markedResourceIds.focusedSubtype);
 
-      const previousMarked = !deFocus ? newCollection.markedResourceIds.marked : Object.entries(newCollection.markedResourceIds.marked)
-        .reduce((acc, [id, prevValue]) => ({
-          ...acc,
-          [id]: (prevValue === FOCUSED ? MARKED : prevValue),
-        }), {});
+      const previousMarked = !deFocus
+        ? newCollection.markedResourceIds.marked
+        : Object.entries(newCollection.markedResourceIds.marked)
+          .reduce((acc, [id, prevValue]) => ({
+            ...acc,
+            [id]: (prevValue === FOCUSED ? MARKED : prevValue),
+          }), {});
 
       const newlyMarked = Object.entries(resourceIdsMap)
         .reduce((acc, [id, newValue]) => ({
@@ -212,14 +214,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         }), {});
 
       newCollection.markedResourceIds = {
-          focusedSubtype: subType,
-          marked: pruneEmpty({
-            ...previousMarked,
-            ...newlyMarked,
-          }),
-        };
+        focusedSubtype: subType,
+        marked: pruneEmpty({
+          ...previousMarked,
+          ...newlyMarked,
+        }),
+      };
 
-      return {...state, [collectionId]: newCollection}
+      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
@@ -325,21 +327,21 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
 };
 
 export const showCollectionOnlyReducer = (state = false, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
-      return action.payload
+      return action.payload;
     }
-    default: 
-      return state
+    default:
+      return state;
   }
-}
+};
 
 export const showMarkedOnlyReducer = (state = false, action) => {
-  switch(action.type) {
+  switch (action.type) {
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      return action.payload
+      return action.payload;
     }
-    default: 
-      return state
+    default:
+      return state;
   }
-}
+};

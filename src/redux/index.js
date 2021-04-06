@@ -10,7 +10,7 @@ import {
   selectedCollectionReducer,
   showCollectionOnlyReducer,
   markedResourcesReducer,
-  showMarkedOnlyReducer
+  showMarkedOnlyReducer,
 } from './reducers';
 import epicMiddleware, { rootEpic } from './epics';
 

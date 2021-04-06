@@ -1,87 +1,90 @@
-import React, {useState} from 'react'
-import { Alert, Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Alert, Modal, StyleSheet, TouchableOpacity, View,
+} from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { connect} from 'react-redux'
+import { connect } from 'react-redux';
 
-import Colors from '../../constants/Colors'
-import BaseText from '../Generic/BaseText'
+import { func, string } from 'prop-types';
+import Colors from '../../constants/Colors';
+import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
-import { clearCollection, clearMarkedResources } from '../../redux/action-creators'
+import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
 
-export const CatalogModal = ({
-  collectionId, 
-  clearCollectionAction, 
-  clearMarkedResourcesAction
+const CatalogModal = ({
+  collectionId,
+  clearCollectionAction,
+  clearMarkedResourcesAction,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
-      clearCollectionAction(collectionId)
-      setModalVisible(false)
-    }
-    
+      clearCollectionAction(collectionId);
+      setModalVisible(false);
+    };
+
     Alert.alert(
-      'Clear Collection', 
+      'Clear Collection',
       'Are you sure you want to clear the records saved to this collection?',
       [
         {
-          text: 'Cancel', 
-          onPress: () => {}, 
-          style: 'cancel'
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
         },
         {
-          text: 'Clear', 
-          onPress: clearAndCloseModal, 
-          style: 'destructive'
+          text: 'Clear',
+          onPress: clearAndCloseModal,
+          style: 'destructive',
         },
-      ]
-    )
-    
-  }
+      ],
+    );
+  };
 
   const handleClearMarked = () => {
     const clearAndCloseModal = () => {
-      clearMarkedResourcesAction()
-      setModalVisible(false)
-    }
+      clearMarkedResourcesAction();
+      setModalVisible(false);
+    };
 
     Alert.alert(
-      'Clear Highlighted Events', 
+      'Clear Highlighted Events',
       'Are you sure you want to clear the highlighted events?',
       [
         {
-          text: 'Cancel', 
-          onPress: () => {}, 
-          style: 'cancel'
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
         },
         {
-          text: 'Clear', 
-          onPress: clearAndCloseModal, 
-          style: 'destructive'
+          text: 'Clear',
+          onPress: clearAndCloseModal,
+          style: 'destructive',
         },
-      ]
-    )
-  }
+      ],
+    );
+  };
 
   return (
     <View style={styles.root}>
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(false);
-        }}>
+        }}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-              <View style={styles.modalHeaderContainer}>
-                <BaseText variant="sectionTitle">Record Filters</BaseText>
-                <TouchableOpacity onPress={() => setModalVisible(false)}>
-                  <Ionicons name="close" size={30} color="black" />
-                </TouchableOpacity>
-              </View>
+            <View style={styles.modalHeaderContainer}>
+              <BaseText variant="sectionTitle">Record Filters</BaseText>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Ionicons name="close" size={30} color="black" />
+              </TouchableOpacity>
+            </View>
             <View style={styles.controlsContainer}>
               <CollectionSegmentControl />
               <MarkedSegmentControl />
@@ -98,19 +101,26 @@ export const CatalogModal = ({
       <TouchableOpacity
         onPress={() => {
           setModalVisible(true);
-        }}>
+        }}
+      >
         <Entypo name="dots-three-vertical" size={24} color={Colors.darkgrey} />
-      </TouchableOpacity>        
+      </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
+
+CatalogModal.propTypes = {
+  collectionId: string.isRequired,
+  clearCollectionAction: func.isRequired,
+  clearMarkedResourcesAction: func.isRequired,
+};
 
 const mapDispatchToProps = {
   clearCollectionAction: clearCollection,
-  clearMarkedResourcesAction: clearMarkedResources
-}
+  clearMarkedResourcesAction: clearMarkedResources,
+};
 
-export default connect(null, mapDispatchToProps)(CatalogModal)
+export default connect(null, mapDispatchToProps)(CatalogModal);
 
 const styles = StyleSheet.create({
   root: {
@@ -135,10 +145,10 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalHeaderContainer: {
-    flexDirection: 'row', 
-    justifyContent: 'space-between', 
-    width: '100%', 
-    alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    alignItems: 'center',
   },
   textStyle: {
     color: 'white',
@@ -146,8 +156,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   controlsContainer: {
-    width: '100%', 
-    marginTop: 20
+    width: '100%',
+    marginTop: 20,
   },
   button: {
     width: '100%',
@@ -155,6 +165,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightgrey2,
     borderRadius: 10,
     alignItems: 'center',
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });

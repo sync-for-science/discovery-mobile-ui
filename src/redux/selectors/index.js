@@ -26,9 +26,9 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
-const showCollectionOnlySelector = (state) => state.showCollectionOnly
+const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
-const showMarkedOnlySelector = (state) => state.showMarkedOnly
+const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
 export const markedResourcesSelector = (state) => state.markedResources;
 
@@ -394,24 +394,24 @@ const selectedResourceSubTypeDataSelector = createSelector(
       });
     });
     return collectionFlattenedSubTypes;
-  }
-)
+  },
+);
 
 export const catalogSubTypeDataSelector = createSelector(
   [
-    filteredResourceTypesSelector, 
-    selectedResourceTypeSelector, 
+    filteredResourceTypesSelector,
+    selectedResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
-    selectedResourceSubTypeDataSelector
+    selectedResourceSubTypeDataSelector,
   ],
   (
-    filteredResourceTypes, 
-    selectedResourceType, 
+    filteredResourceTypes,
+    selectedResourceType,
     showCollectionOnly,
     showMarkedOnly,
-    selectedResourceSubTypeData
-    ) => {
+    selectedResourceSubTypeData,
+  ) => {
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
     }
@@ -421,15 +421,20 @@ export const catalogSubTypeDataSelector = createSelector(
     }
 
     if (showCollectionOnly && !showMarkedOnly) {
-      return selectedResourceSubTypeData
+      return selectedResourceSubTypeData;
     }
 
     if (!showCollectionOnly && showMarkedOnly) {
-      return {}
+      return {};
     }
 
     if (showCollectionOnly && showMarkedOnly) {
-      return {}
+      return {};
     }
+
+    console.error(
+      `Unknown filter setting in catalogSubTypeDataSelector, showCollectionOnly: ${showCollectionOnly}, showMarkedOnly: ${showMarkedOnly}`,
+    ); // eslint-disable-line no-console
+    return {};
   },
-)
+);
