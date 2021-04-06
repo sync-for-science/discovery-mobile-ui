@@ -2,14 +2,14 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
-const BaseSegmentControl = ({values, selectedIndex, setSelectedIndex, activeColor = null}) => {
+const BaseSegmentControl = ({values, selectedIndex, handleChange, activeColor = null}) => {
   const tintColor = activeColor ? activeColor : "lightblue"
   return (
     <SegmentedControl
       values={values}
       selectedIndex={selectedIndex}
       onChange={(event) => {
-        setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+        handleChange(event.nativeEvent.selectedSegmentIndex);
       }}
       fontStyle={styles.scFontStyle}
       activeFontStyle={styles.scActiveFontStyle}

@@ -286,3 +286,13 @@ export const markedResourcesReducer = (state = preloadedMarkedResources, action)
       return state;
   }
 };
+
+export const showCollectionOnlyReducer = (state = false, action) => {
+  switch(action.type) {
+    case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
+      return !state
+    }
+    default: 
+      return state
+  }
+}
