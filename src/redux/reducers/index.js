@@ -128,7 +128,7 @@ const createCollection = (
   const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
   const resourceIds = duplicateResourceIds || {};
   const lastAddedResourceId = duplicateLastAddedResourceId || null;
-  const markedResourcesIds = {
+  const markedResources = {
     focusedSubtype: '', // only a single sub-type can be focused
     // "marked" -- dictionary whose keys are resource ids and values are enum:
     // 0 -- unmarked
@@ -144,7 +144,7 @@ const createCollection = (
       label,
       resourceIds,
       lastAddedResourceId,
-      markedResourceIds: markedResourcesIds,
+      markedResources,
     },
   };
 };
@@ -196,11 +196,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       const { subType, resourceIdsMap, collectionId } = action.payload;
       const newCollection = { ...state[collectionId] };
-      const deFocus = (!subType || subType !== newCollection.markedResourceIds.focusedSubtype);
+      const deFocus = (!subType || subType !== newCollection.markedResources.focusedSubtype);
 
       const previousMarked = !deFocus
-        ? newCollection.markedResourceIds.marked
-        : Object.entries(newCollection.markedResourceIds.marked)
+        ? newCollection.markedResources.marked
+        : Object.entries(newCollection.markedResources.marked)
           .reduce((acc, [id, prevValue]) => ({
             ...acc,
             [id]: (prevValue === FOCUSED ? MARKED : prevValue),
@@ -213,7 +213,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           [id]: ((newValue === FOCUSED && (previousMarked[id] === MARKED)) ? FOCUSED : newValue),
         }), {});
 
-      newCollection.markedResourceIds = {
+      newCollection.markedResources = {
         focusedSubtype: subType,
         marked: pruneEmpty({
           ...previousMarked,
