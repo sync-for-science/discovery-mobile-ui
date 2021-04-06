@@ -6,27 +6,27 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { collectionDateRangeSelector } from '../../redux/selectors'
-import { actionTypes } from '../../redux/action-types'
+import { collectionDateRangeSelector } from '../../redux/selectors';
+import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
 const collectionRecordsDescription = 'Only displays records saved to the collection.';
 
-const CollectionSegmentControl = ({ 
-  showCollectionOnly, 
-  toggleShowCollectionOnlyAction, 
-  collectionDateRange, 
-  updateDateRangeFilter 
+const CollectionSegmentControl = ({
+  showCollectionOnly,
+  toggleShowCollectionOnlyAction,
+  collectionDateRange,
+  updateDateRangeFilter,
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
   const handleChange = (event) => {
     if (event === 0) {
       toggleShowCollectionOnlyAction(false);
-      updateDateRangeFilter({dateRangeStart: undefined, dateRangeEnd: undefined})
+      updateDateRangeFilter({ dateRangeStart: undefined, dateRangeEnd: undefined });
     } else {
       toggleShowCollectionOnlyAction(true);
-      updateDateRangeFilter(collectionDateRange)
+      updateDateRangeFilter(collectionDateRange);
     }
   };
 
@@ -45,21 +45,22 @@ const CollectionSegmentControl = ({
 CollectionSegmentControl.propTypes = {
   showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
-  collectionDateRange: shape({}).isRequired
+  collectionDateRange: shape({}).isRequired,
+  updateDateRangeFilter: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   showCollectionOnly: state.showCollectionOnly,
-  collectionDateRange: collectionDateRangeSelector(state)
+  collectionDateRange: collectionDateRangeSelector(state),
 });
 
 const mapDispatchToProps = {
   toggleShowCollectionOnlyAction: toggleShowCollectionOnly,
-  updateDateRangeFilter: ({dateRangeStart, dateRangeEnd}) => ({
+  updateDateRangeFilter: ({ dateRangeStart, dateRangeEnd }) => ({
     type: actionTypes.UPDATE_DATE_RANGE_FILTER,
-    payload: { 
+    payload: {
       dateRangeStart,
-      dateRangeEnd
+      dateRangeEnd,
     },
   }),
 };

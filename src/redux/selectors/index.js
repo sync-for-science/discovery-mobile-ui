@@ -443,10 +443,10 @@ const selectedResourceTypeAndCollectionAndMarkedDataSelector = createSelector(
   (filteredResourceTypes, selectedResourceType) => {
     const subTypeData = {};
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
-      Object.entries(subTypes).some(([subType, subTypeValues]) => {
-        const collectionIds = subTypeValues.collectionDateFilteredResourceIds
-        const markedIds = subTypeValues.markedDateFilteredResourceIds
-        if (collectionIds.some(collectionId => markedIds.includes(collectionId))) {
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        const collectionIds = subTypeValues.collectionDateFilteredResourceIds;
+        const markedIds = subTypeValues.markedDateFilteredResourceIds;
+        if (collectionIds.some((collectionId) => markedIds.includes(collectionId))) {
           if (!subTypeData[subType]) {
             subTypeData[subType] = {};
           }
@@ -497,9 +497,9 @@ export const catalogSubTypeDataSelector = createSelector(
       return selectedResourceTypeAndCollectionAndMarkedData;
     }
 
-    console.error(
+    console.error( // eslint-disable-line no-console
       `Unknown filter setting in catalogSubTypeDataSelector, showCollectionOnly: ${showCollectionOnly}, showMarkedOnly: ${showMarkedOnly}`,
-    ); // eslint-disable-line no-console
+    );
     return {};
   },
 );
@@ -507,23 +507,26 @@ export const catalogSubTypeDataSelector = createSelector(
 export const collectionDateRangeSelector = createSelector(
   [resourcesSelector, selectedCollectionSelector, collectionsSelector],
   (resources, selectedCollectionId, collections) => {
-    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds)
+    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
     if (collectionResourceIds.length === 0) {
       return {
         dateRangeStart: undefined,
-        dateRangeEnd: undefined
-      }
+        dateRangeEnd: undefined,
+      };
     }
     const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
       if (collectionResourceIds.includes(id)) {
-        acc.push(resourceValues)
+        acc.push(resourceValues);
       }
-      return acc
-    }, [])
-    const sortedCollectionResources = collectionResources.sort((a, b) => a.timelineDate - b.timelineDate)
+      return acc;
+    }, []);
+    const sortedCollectionResources = collectionResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
     return {
       dateRangeStart: startOfDay(sortedCollectionResources[0].timelineDate),
-      dateRangeEnd: endOfDay(sortedCollectionResources[sortedCollectionResources.length - 1].timelineDate)
-    }
-  }
-)
+      dateRangeEnd: endOfDay(
+        sortedCollectionResources[sortedCollectionResources.length - 1].timelineDate,
+      ),
+    };
+  },
+);
