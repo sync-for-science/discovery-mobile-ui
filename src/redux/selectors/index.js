@@ -26,6 +26,8 @@ const collectionsSelector = (state) => state.collections;
 
 const selectedCollectionSelector = (state) => state.selectedCollection;
 
+const showCollectionOnlySelector = (state) => state.showCollectionOnly
+
 export const markedResourcesSelector = (state) => state.markedResources;
 
 export const collectionSelector = createSelector(
@@ -236,16 +238,6 @@ const filteredResourceTypesSelector = createSelector(
   },
 );
 
-export const selectedFlattenedSubTypesSelector = createSelector(
-  [filteredResourceTypesSelector, selectedResourceTypeSelector],
-  (filteredResourceTypes, selectedResourceType) => {
-    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {};
-    }
-    return filteredResourceTypes[selectedResourceType].subTypes;
-  },
-);
-
 export const collectionFlattenedSubTypesSelector = createSelector(
   [filteredResourceTypesSelector],
   (filteredResourceTypes) => {
@@ -384,3 +376,39 @@ export const timelineIntervalsSelector = createSelector(
     };
   },
 );
+
+
+export const catalogSubTypeDataSelector = createSelector(
+  [
+    filteredResourceTypesSelector, 
+    selectedResourceTypeSelector, 
+    showCollectionOnlySelector,
+  ],
+  (
+    filteredResourceTypes, 
+    selectedResourceType, 
+    showCollectionOnly,
+    ) => {
+    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
+      return {};
+    }
+
+    if (!showCollectionOnly) {
+      return filteredResourceTypes[selectedResourceType].subTypes;
+    }
+
+    // if showCollectionOnly === true
+    const collectionFlattenedSubTypes = {};
+    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
+      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+        if (subTypeValues.collectionDateFilteredCount > 0) {
+          if (!collectionFlattenedSubTypes[subType]) {
+            collectionFlattenedSubTypes[subType] = {};
+          }
+          collectionFlattenedSubTypes[subType] = subTypeValues;
+        }
+      });
+    });
+    return collectionFlattenedSubTypes;
+  },
+)

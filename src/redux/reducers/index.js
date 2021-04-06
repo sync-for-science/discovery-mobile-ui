@@ -300,7 +300,6 @@ export const showCollectionOnlyReducer = (state = false, action) => {
 export const showMarkedOnlyReducer = (state = false, action) => {
   switch(action.type) {
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      console.log('action', action)
       return action.payload
     }
     default: 

@@ -13,11 +13,11 @@ import { func, shape, string } from 'prop-types';
 
 import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
-import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
+import CatalogSubTypeAccordionContainer from '../components/SubTypeAccordion/CatalogSubTypeAccordionContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
-import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
+import { collectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal'
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -46,7 +46,7 @@ CatalogScreenHeader.defaultProps = {
 };
 
 const CatalogScreen = ({
-  selectedResourceType, selectedFlattenedSubTypes, collection,
+  selectedResourceType, collection,
 }) => {
   return (
   <SafeAreaView style={styles.safeAreaView}>
@@ -65,7 +65,7 @@ const CatalogScreen = ({
         </View>
         <ScrollView>
           { selectedResourceType && (
-            <SubTypeAccordionsContainer subTypeData={selectedFlattenedSubTypes} />
+            <CatalogSubTypeAccordionContainer />
           )}
         </ScrollView>
       </FilterDrawer>
@@ -86,7 +86,6 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
-  selectedFlattenedSubTypes: selectedFlattenedSubTypesSelector(state),
   collection: collectionSelector(state),
 });
 
