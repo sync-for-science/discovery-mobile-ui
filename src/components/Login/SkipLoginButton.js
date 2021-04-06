@@ -7,7 +7,7 @@ import { actionTypes } from '../../redux/action-types';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
 
 export const MOCK_AUTH = {
-  baseUrl: '',
+  baseUrl: '/', // some value is needed to successfully instantiate fhir-kit-client, to resolve contained resources
   authResult: {
     accessToken: '',
     additionalParameters: {

@@ -28,13 +28,14 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   switchMap(({ payload }) => {
     const { accessToken, additionalParameters: { patient: patientId } } = payload.authResult;
 
+    // For "Skip Login", an instance is needed to resolve mock-data contained resources:
+    fhirClient.initialize(payload.baseUrl, accessToken);
+
     if (payload === MOCK_AUTH) {
       return Promise.resolve({
         type: 'SET_MOCK_PATIENT_DATA', // must emit an action or stream of actions
       });
     }
-
-    fhirClient.initialize(payload.baseUrl, accessToken);
 
     return from(fhirClient.queryPatient(patientId)).pipe(
       map((result) => ({
@@ -120,7 +121,7 @@ const requestReferences = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
   // delay(1000), // e.g.: for debugging
   concatMap(({ payload }) => from(extractReferences(payload)).pipe(
-    concatMap((ref) => from(fhirClient.resolve(ref))),
+    concatMap((ref) => from(fhirClient.resolve({ reference: ref.reference, context: payload }))),
   ).pipe(
     map((result) => ({
       type: actionTypes.FHIR_FETCH_SUCCESS,

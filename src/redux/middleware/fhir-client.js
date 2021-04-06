@@ -18,13 +18,9 @@ const RESOURCE_TYPES = [
 export default class FhirClient {
   constructor() {
     this.client = null;
-    this.baseUrl = null;
-    this.accessToken = null;
   }
 
   initialize(baseUrl, accessToken) {
-    this.baseUrl = baseUrl;
-    this.accessToken = accessToken;
     this.client = new Client({
       baseUrl,
       customHeaders: {
@@ -54,10 +50,7 @@ export default class FhirClient {
     return this.client.request(url);
   }
 
-  async resolve(reference) {
-    if (!this.baseUrl) {
-      return Promise.reject(new Error(`resolving reference: ${reference?.reference}\nNo baseUrl -- is this skip-login mock data?`));
-    }
-    return this.client.resolve(reference);
+  async resolve(params) {
+    return this.client.resolve(params);
   }
 }
