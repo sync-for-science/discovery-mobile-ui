@@ -128,6 +128,14 @@ const createCollection = (
   const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
   const resourceIds = duplicateResourceIds || {};
   const lastAddedResourceId = duplicateLastAddedResourceId || null;
+  const markedResourcesIds = {
+    focusedSubtype: '', // only a single sub-type can be focused
+    // "marked" -- dictionary whose keys are resource ids and values are enum:
+    // 0 -- unmarked
+    // 1 -- marked
+    // 2 -- focused
+    marked: {},
+  }
   return {
     [collectionId]: {
       id: collectionId,
@@ -136,6 +144,7 @@ const createCollection = (
       label,
       resourceIds,
       lastAddedResourceId,
+      markedResourceIds: markedResourcesIds,
     },
   };
 };
@@ -183,6 +192,34 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.UPDATE_MARKED_RESOURCES: {
+      const { subType, resourceIdsMap, collectionId } = action.payload;
+      const newCollection = {...state[collectionId]}
+      const deFocus = (!subType || subType !== newCollection.markedResourceIds.focusedSubtype);
+
+      const previousMarked = !deFocus ? newCollection.markedResourceIds.marked : Object.entries(newCollection.markedResourceIds.marked)
+        .reduce((acc, [id, prevValue]) => ({
+          ...acc,
+          [id]: (prevValue === FOCUSED ? MARKED : prevValue),
+        }), {});
+
+      const newlyMarked = Object.entries(resourceIdsMap)
+        .reduce((acc, [id, newValue]) => ({
+          ...acc,
+          // eslint-disable-next-line max-len
+          [id]: ((newValue === FOCUSED && (previousMarked[id] === MARKED)) ? FOCUSED : newValue),
+        }), {});
+
+      newCollection.markedResourceIds = {
+          focusedSubtype: subType,
+          marked: pruneEmpty({
+            ...previousMarked,
+            ...newlyMarked,
+          }),
+        };
+
+      return {...state, [collectionId]: newCollection}
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);

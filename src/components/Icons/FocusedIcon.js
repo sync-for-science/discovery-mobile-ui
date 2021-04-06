@@ -19,6 +19,7 @@ const FocusedIcon = ({
   isAccordion,
   updateFocusedResources,
   markedResources,
+  collectionId
 }) => {
   const { marked } = markedResources;
 
@@ -37,10 +38,10 @@ const FocusedIcon = ({
         // eslint-disable-next-line max-len, no-nested-ternary
         [id]: (marked[id] && fullyFocused) ? MARKED : (marked[id] === MARKED ? FOCUSED : marked[id]),
       }), {});
-      updateFocusedResources(newSubType, resourceIdsMap);
+      updateFocusedResources(newSubType, resourceIdsMap, collectionId);
     } else {
       // (unmarked or marked) > focused > marked
-      updateFocusedResources(subType, { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) });
+      updateFocusedResources(subType, { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) }, collectionId);
     }
   };
 
@@ -77,14 +78,16 @@ FocusedIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
+  collectionId: state.selectedCollection
 });
 
 const mapDispatchToProps = {
-  updateFocusedResources: (subType, resourceIdsMap) => ({
+  updateFocusedResources: (subType, resourceIdsMap, collectionId) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,
+      collectionId
     },
   }),
 };
