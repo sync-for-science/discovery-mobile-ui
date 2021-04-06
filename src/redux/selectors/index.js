@@ -199,12 +199,14 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
+    resourcesSelector,
     collectionResourceIdsSelector,
     markedResourceIdsSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
+    resources,
     collectionResourceIdsObjects,
     markedResourceIdsObjects,
     timelineItemsInRange,
@@ -230,6 +232,7 @@ const filteredResourceTypesSelector = createSelector(
         acc[type].subTypes[subType].dateFilteredCount = 0;
         acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
         acc[type].subTypes[subType].collectionDateFilteredCount = 0;
+        acc[type].subTypes[subType].collectionDateRange = {};
         acc[type].subTypes[subType].markedDateFilteredResourceIds = [];
         acc[type].subTypes[subType].markedDateFilteredCount = 0;
       }
@@ -463,7 +466,7 @@ export const catalogSubTypeDataSelector = createSelector(
     showMarkedOnlySelector,
     selectedResourceTypeAndCollectionDataSelector,
     selectedResourceTypeAndMarkedDataSelector,
-    selectedResourceTypeAndCollectionAndMarkedDataSelector
+    selectedResourceTypeAndCollectionAndMarkedDataSelector,
   ],
   (
     filteredResourceTypes,
@@ -472,7 +475,7 @@ export const catalogSubTypeDataSelector = createSelector(
     showMarkedOnly,
     selectedResourceTypeAndCollectionData,
     selectedResourceTypeAndMarkedData,
-    selectedResourceTypeAndCollectionAndMarkedData
+    selectedResourceTypeAndCollectionAndMarkedData,
   ) => {
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
@@ -500,3 +503,27 @@ export const catalogSubTypeDataSelector = createSelector(
     return {};
   },
 );
+
+export const collectionDateRangeSelector = createSelector(
+  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
+  (resources, selectedCollectionId, collections) => {
+    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds)
+    if (collectionResourceIds.length === 0) {
+      return {
+        dateRangeStart: undefined,
+        dateRangeEnd: undefined
+      }
+    }
+    const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (collectionResourceIds.includes(id)) {
+        acc.push(resourceValues)
+      }
+      return acc
+    }, [])
+    const sortedCollectionResources = collectionResources.sort((a, b) => a.timelineDate - b.timelineDate)
+    return {
+      dateRangeStart: startOfDay(sortedCollectionResources[0].timelineDate),
+      dateRangeEnd: endOfDay(sortedCollectionResources[sortedCollectionResources.length - 1].timelineDate)
+    }
+  }
+)

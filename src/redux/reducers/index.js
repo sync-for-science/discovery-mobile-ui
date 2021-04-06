@@ -105,6 +105,7 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
       return preloadSelectedTimelineRange;
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
+      console.log('action', action)
       return {
         ...state,
         ...action.payload,
