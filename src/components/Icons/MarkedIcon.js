@@ -19,6 +19,7 @@ const MarkedIcon = ({
   isAccordion,
   updateMarkedResources,
   markedResources,
+  collectionId,
 }) => {
   const { marked } = markedResources;
 
@@ -32,13 +33,13 @@ const MarkedIcon = ({
         [id]: (allAreMarked ? UNMARKED : FOCUSED),
       }), {});
       const newSubType = allAreMarked ? '' : subType; // no subType if turning all off
-      updateMarkedResources(newSubType, resourceIdsMap);
+      updateMarkedResources(newSubType, resourceIdsMap, collectionId);
     } else { // only one resourceId:
       if (markedOrFocusedCount) {
-        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED });
+        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED }, collectionId);
       }
       if (!markedOrFocusedCount) { // one resourceId, that neither marked nor focused:
-        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, true);
+        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, collectionId);
       }
     }
   };
@@ -72,6 +73,7 @@ MarkedIcon.propTypes = {
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
+  collectionId: string.isRequired,
 };
 
 MarkedIcon.defaultProps = {
@@ -79,14 +81,16 @@ MarkedIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
+  collectionId: state.selectedCollection,
 });
 
 const mapDispatchToProps = {
-  updateMarkedResources: (subType, resourceIdsMap) => ({
+  updateMarkedResources: (subType, resourceIdsMap, collectionId) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,
+      collectionId,
     },
   }),
 };

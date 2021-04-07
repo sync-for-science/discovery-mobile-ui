@@ -17,7 +17,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
-import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
+import { collectionSelector, catalogSubTypeDataSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -46,7 +46,7 @@ CatalogScreenHeader.defaultProps = {
 };
 
 const CatalogScreen = ({
-  selectedResourceType, selectedFlattenedSubTypes, collection,
+  selectedResourceType, collection, catalogSubTypeData
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -55,6 +55,7 @@ const CatalogScreen = ({
       showsPagination={false}
       index={0}
     >
+
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
         <View>
@@ -63,7 +64,7 @@ const CatalogScreen = ({
         </View>
         <ScrollView>
           { selectedResourceType && (
-            <SubTypeAccordionsContainer subTypeData={selectedFlattenedSubTypes} />
+            <SubTypeAccordionsContainer subTypeData={catalogSubTypeData} />
           )}
         </ScrollView>
       </FilterDrawer>
@@ -74,7 +75,6 @@ const CatalogScreen = ({
 
 CatalogScreen.propTypes = {
   selectedResourceType: string,
-  selectedFlattenedSubTypes: shape({}).isRequired,
   collection: shape({}).isRequired,
 };
 
@@ -84,8 +84,8 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
-  selectedFlattenedSubTypes: selectedFlattenedSubTypesSelector(state),
   collection: collectionSelector(state),
+  catalogSubTypeData: catalogSubTypeDataSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.backgroundColor,
     alignItems: 'center',
+    elevation: 0,
   },
   drawerIcon: {
     paddingLeft: 10,
