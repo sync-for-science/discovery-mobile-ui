@@ -16,12 +16,8 @@ const CollectionSegmentControl = ({
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
-  const handleChange = (event) => {
-    if (event === 0) {
-      toggleShowCollectionOnlyAction(false);
-    } else {
-      toggleShowCollectionOnlyAction(true);
-    }
+  const handleChange = (selectedSegmentIndex) => {
+    toggleShowCollectionOnlyAction(selectedSegmentIndex !== 0);
   };
 
   return (
@@ -29,7 +25,7 @@ const CollectionSegmentControl = ({
       <BaseSegmentControl
         values={['All Records', 'Collection Records']}
         selectedIndex={segControlIndex}
-        handleChange={handleChange}
+        onChange={handleChange}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>

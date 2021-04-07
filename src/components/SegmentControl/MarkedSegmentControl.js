@@ -16,12 +16,8 @@ const MarkedSegmentControl = ({
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
-  const handleChange = (event) => {
-    if (event === 0) {
-      toggleShowMarkedOnlyAction(false);
-    } else {
-      toggleShowMarkedOnlyAction(true);
-    }
+  const handleChange = (selectedSegmentIndex) => {
+    toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
   };
 
   return (
@@ -29,7 +25,7 @@ const MarkedSegmentControl = ({
       <BaseSegmentControl
         values={['All Records', 'Highlighted Records']}
         selectedIndex={segControlIndex}
-        handleChange={handleChange}
+        onChange={handleChange}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
