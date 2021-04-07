@@ -55,3 +55,13 @@ export const duplicateCollection = (collectionId, collectionName) => ({
   type: actionTypes.DUPLICATE_COLLECTION,
   payload: { collectionId, collectionName },
 });
+
+export const toggleShowCollectionOnly = (boolean) => ({
+  type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
+  payload: boolean,
+});
+
+export const toggleShowMarkedOnly = (boolean) => ({
+  type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
+  payload: boolean,
+});

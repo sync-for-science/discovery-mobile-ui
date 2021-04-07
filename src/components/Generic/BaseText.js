@@ -35,12 +35,20 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   button: {
-    fontWeight: '700',
     color: Colors.primary,
+  },
+  buttonDestructive: {
+    fontSize: 18,
+    color: Colors.destructive,
   },
   title: {
     fontWeight: '700',
     color: 'black',
+  },
+  sectionTitle: {
+    fontWeight: '700',
+    color: 'black',
+    fontSize: 20,
   },
   screenTitle: {
     fontWeight: '700',

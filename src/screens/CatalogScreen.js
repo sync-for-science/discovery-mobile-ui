@@ -18,7 +18,7 @@ import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { selectedFlattenedSubTypesSelector, collectionSelector } from '../redux/selectors';
-import CatalogScreenActionIcon from '../components/Icons/CatalogScreenActionIcon';
+import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
@@ -28,10 +28,10 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
       </TouchableOpacity>
     </Left>
     <View>
-      <Title>{collection?.label}</Title>
+      <Title style={{ color: 'black' }}>{collection?.label}</Title>
     </View>
     <Right>
-      <CatalogScreenActionIcon />
+      <CatalogModal collectionId={collection.id} />
     </Right>
   </Header>
 );
