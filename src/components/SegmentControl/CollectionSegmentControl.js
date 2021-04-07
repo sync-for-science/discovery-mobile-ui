@@ -6,7 +6,7 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { collectionDateRangeSelector } from '../../redux/selectors';
+import { collectionDateRangeSelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -47,11 +47,13 @@ CollectionSegmentControl.propTypes = {
   toggleShowCollectionOnlyAction: func.isRequired,
   collectionDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
+  collection: bool
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   showCollectionOnly: state.showCollectionOnly,
   collectionDateRange: collectionDateRangeSelector(state),
+  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
 });
 
 const mapDispatchToProps = {

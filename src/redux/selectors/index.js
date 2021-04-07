@@ -559,3 +559,90 @@ export const markedDateRangeSelector = createSelector(
     };
   },
 );
+
+export const filterTriggerDateRangeSelector = createSelector(
+  [
+    resourcesSelector, 
+    selectedCollectionSelector, 
+    collectionsSelector, 
+    showMarkedOnlySelector, 
+    showCollectionOnlySelector,
+    (_, ownProps) => ownProps
+  ],
+  (
+    resources, 
+    selectedCollectionId, 
+    collections, 
+    showMarkedOnly, 
+    showCollectionOnly,
+    ownProps
+  ) => {
+    const { collection, marked } = ownProps
+    console.log('collection', collection)
+    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
+    const markedResourceIds = Object.keys(
+      collections[selectedCollectionId]?.markedResources?.marked,
+    );
+
+    if ((markedResourceIds.length === 0) || (collectionResourceIds.length === 0)) {
+      return {
+        dateRangeStart: undefined,
+        dateRangeEnd: undefined,
+      };
+    }
+
+    const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (collectionResourceIds.includes(id)) {
+        acc.push(resourceValues);
+      }
+      return acc;
+    }, []);
+    
+    const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+      if (markedResourceIds.includes(id)) {
+        acc.push(resourceValues);
+      }
+      return acc;
+    }, []);
+
+    const sortedCollectionResources = collectionResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+    const sortedMarkedResources = markedResources
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+    const combinedResources = [...collectionResources, ...markedResources]
+      .sort((a, b) => a.timelineDate - b.timelineDate);
+
+    console.log('showCollectionOnly', showCollectionOnly)
+    console.log('showMarkedOnly', showMarkedOnly)
+    if (collection) {
+      if (!showCollectionOnly && !showMarkedOnly) {
+        console.log('collection && !showCollectionOnly && !showMarkedOnly')
+      } else if (showCollectionOnly && !showMarkedOnly) {
+        console.log('collection && showCollectionOnly && !showMarkedOnly')
+      } else if (!showCollectionOnly && showMarkedOnly) {
+        console.log('collection && !showCollectionOnly && showMarkedOnly')
+      } else if (showCollectionOnly && showMarkedOnly) {
+        console.log('collection && showCollectionOnly && showMarkedOnly')
+      }
+    }
+
+    if (marked) {
+      if (!showCollectionOnly && !showMarkedOnly) {
+        console.log('marked && !showCollectionOnly && !showMarkedOnly')
+      } else if (showCollectionOnly && !showMarkedOnly) {
+        console.log('marked && showCollectionOnly && !showMarkedOnly')
+      } else if (!showCollectionOnly && showMarkedOnly) {
+        console.log('marked && !showCollectionOnly && showMarkedOnly')
+      } else if (showCollectionOnly && showMarkedOnly) {
+        console.log('marked && showCollectionOnly && showMarkedOnly')
+      }
+    }
+
+    return {
+      dateRangeStart: startOfDay(sortedMarkedResources[0].timelineDate),
+      dateRangeEnd: endOfDay(
+        sortedMarkedResources[sortedMarkedResources.length - 1].timelineDate,
+      ),
+    };
+  },
+);

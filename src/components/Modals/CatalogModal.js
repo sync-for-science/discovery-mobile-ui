@@ -86,7 +86,7 @@ const CatalogModal = ({
               </TouchableOpacity>
             </View>
             <View style={styles.controlsContainer}>
-              <CollectionSegmentControl />
+              <CollectionSegmentControl collection />
               <MarkedSegmentControl />
               <TouchableOpacity style={styles.button} onPress={handleClearCollection}>
                 <BaseText variant="buttonDestructive">Clear Collection</BaseText>
