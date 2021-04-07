@@ -404,6 +404,9 @@ const selectedResourceTypeAndCollectionDataSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
     const subTypeData = {};
+    if (!selectedResourceType) {
+      return subTypeData
+    }
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         if (subTypeValues.collectionDateFilteredCount > 0) {
@@ -423,6 +426,9 @@ const selectedResourceTypeAndMarkedDataSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
     const subTypeData = {};
+    if (!selectedResourceType) {
+      return subTypeData
+    }
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         if (subTypeValues.markedDateFilteredCount > 0) {
@@ -442,6 +448,9 @@ const selectedResourceTypeAndCollectionAndMarkedDataSelector = createSelector(
   [filteredResourceTypesSelector, selectedResourceTypeSelector],
   (filteredResourceTypes, selectedResourceType) => {
     const subTypeData = {};
+    if (!selectedResourceType) {
+      return subTypeData
+    }
     Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
       Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
         const collectionIds = subTypeValues.collectionDateFilteredResourceIds;
