@@ -1,71 +1,21 @@
 import React, { useState } from 'react';
 import {
-  Alert, Modal, StyleSheet, TouchableOpacity, View,
+  Modal, StyleSheet, TouchableOpacity, View,
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { func, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
-import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
 
-const CatalogModal = ({
-  collectionId,
-  clearCollectionAction,
-  clearMarkedResourcesAction,
-}) => {
+const CatalogModal = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleClearCollection = () => {
-    const clearAndCloseModal = () => {
-      clearCollectionAction(collectionId);
-      setModalVisible(false);
-    };
+  const handleClearCollection = () => {};
 
-    Alert.alert(
-      'Clear Collection',
-      'Are you sure you want to clear the records saved to this collection?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: 'Clear',
-          onPress: clearAndCloseModal,
-          style: 'destructive',
-        },
-      ],
-    );
-  };
-
-  const handleClearMarked = () => {
-    const clearAndCloseModal = () => {
-      clearMarkedResourcesAction(collectionId);
-      setModalVisible(false);
-    };
-
-    Alert.alert(
-      'Clear Highlighted Events',
-      'Are you sure you want to clear the highlighted events?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {
-          text: 'Clear',
-          onPress: clearAndCloseModal,
-          style: 'destructive',
-        },
-      ],
-    );
-  };
+  const handleClearMarked = () => {};
 
   return (
     <View style={styles.root}>
@@ -109,18 +59,7 @@ const CatalogModal = ({
   );
 };
 
-CatalogModal.propTypes = {
-  collectionId: string.isRequired,
-  clearCollectionAction: func.isRequired,
-  clearMarkedResourcesAction: func.isRequired,
-};
-
-const mapDispatchToProps = {
-  clearCollectionAction: clearCollection,
-  clearMarkedResourcesAction: clearMarkedResources,
-};
-
-export default connect(null, mapDispatchToProps)(CatalogModal);
+export default connect(null, null)(CatalogModal);
 
 const styles = StyleSheet.create({
   root: {
