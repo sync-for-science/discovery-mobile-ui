@@ -578,17 +578,19 @@ export const filterTriggerDateRangeSelector = createSelector(
     ownProps
   ) => {
     const { collection, marked } = ownProps
-    console.log('collection', collection)
+    const defaultTimeRange = { dateRangeStart: undefined, dateRangeEnd: undefined };
+
     const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
     const markedResourceIds = Object.keys(
       collections[selectedCollectionId]?.markedResources?.marked,
     );
 
-    if ((markedResourceIds.length === 0) || (collectionResourceIds.length === 0)) {
-      return {
-        dateRangeStart: undefined,
-        dateRangeEnd: undefined,
-      };
+    if (collection && (collectionResourceIds.length === 0)) {
+      return defaultTimeRange
+    }
+
+    if (marked && (markedResourceIds.length === 0)) {
+      return defaultTimeRange
     }
 
     const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
@@ -609,40 +611,42 @@ export const filterTriggerDateRangeSelector = createSelector(
       .sort((a, b) => a.timelineDate - b.timelineDate);
     const sortedMarkedResources = markedResources
       .sort((a, b) => a.timelineDate - b.timelineDate);
-    const combinedResources = [...collectionResources, ...markedResources]
+    const sortedCombinedResources = [...collectionResources, ...markedResources]
       .sort((a, b) => a.timelineDate - b.timelineDate);
 
-    console.log('showCollectionOnly', showCollectionOnly)
-    console.log('showMarkedOnly', showMarkedOnly)
-    if (collection) {
-      if (!showCollectionOnly && !showMarkedOnly) {
-        console.log('collection && !showCollectionOnly && !showMarkedOnly')
-      } else if (showCollectionOnly && !showMarkedOnly) {
-        console.log('collection && showCollectionOnly && !showMarkedOnly')
-      } else if (!showCollectionOnly && showMarkedOnly) {
-        console.log('collection && !showCollectionOnly && showMarkedOnly')
-      } else if (showCollectionOnly && showMarkedOnly) {
-        console.log('collection && showCollectionOnly && showMarkedOnly')
-      }
-    }
-
-    if (marked) {
-      if (!showCollectionOnly && !showMarkedOnly) {
-        console.log('marked && !showCollectionOnly && !showMarkedOnly')
-      } else if (showCollectionOnly && !showMarkedOnly) {
-        console.log('marked && showCollectionOnly && !showMarkedOnly')
-      } else if (!showCollectionOnly && showMarkedOnly) {
-        console.log('marked && !showCollectionOnly && showMarkedOnly')
-      } else if (showCollectionOnly && showMarkedOnly) {
-        console.log('marked && showCollectionOnly && showMarkedOnly')
-      }
-    }
-
-    return {
-      dateRangeStart: startOfDay(sortedMarkedResources[0].timelineDate),
+    const createDateRange = (resources) => ({
+      dateRangeStart: startOfDay(resources[0].timelineDate),
       dateRangeEnd: endOfDay(
-        sortedMarkedResources[sortedMarkedResources.length - 1].timelineDate,
+        resources[resources.length - 1].timelineDate,
       ),
-    };
+    })
+
+    // feed to CollectionSegmentControl
+    if (collection) {
+      if (!showCollectionOnly && !showMarkedOnly) { // after collection setting change > showCollectionOnly && !showMarkedOnly
+        return createDateRange(sortedCollectionResources)
+      } else if (showCollectionOnly && !showMarkedOnly) { // after collection setting change > !showCollectionOnly && !showMarkedOnly
+        return defaultTimeRange
+      } else if (!showCollectionOnly && showMarkedOnly) { // after collection setting change > showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedCombinedResources)
+      } else if (showCollectionOnly && showMarkedOnly) { // after collection setting change > !showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedMarkedResources)
+      }
+    }
+
+    // feed to MarkedSegmentControl
+    if (marked) {
+      if (!showCollectionOnly && !showMarkedOnly) { // after setting change > !showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedMarkedResources)
+      } else if (showCollectionOnly && !showMarkedOnly) { // after setting change > showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedCombinedResources)
+      } else if (!showCollectionOnly && showMarkedOnly) { // after setting change > !showCollectionOnly && !showMarkedOnly
+        return defaultTimeRange
+      } else if (showCollectionOnly && showMarkedOnly) { // after setting change > showCollectionOnly && !showMarkedOnly
+        return createDateRange(sortedCollectionResources)
+      }
+    }
+
+    return defaultTimeRange;
   },
 );
