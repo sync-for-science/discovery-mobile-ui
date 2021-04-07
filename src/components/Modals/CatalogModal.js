@@ -92,7 +92,7 @@ const CatalogModal = ({
                 <BaseText variant="buttonDestructive">Clear Collection</BaseText>
               </TouchableOpacity>
               <TouchableOpacity style={styles.button} onPress={handleClearMarked}>
-                <BaseText variant="buttonDestructive">Clear Highlighted Events</BaseText>
+                <BaseText variant="buttonDestructive">Clear Highlighted Records</BaseText>
               </TouchableOpacity>
             </View>
           </View>
