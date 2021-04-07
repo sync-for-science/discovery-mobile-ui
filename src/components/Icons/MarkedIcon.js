@@ -20,6 +20,7 @@ const MarkedIcon = ({
   updateMarkedResources,
   markedResources,
   collectionId,
+  showMarkedOnly
 }) => {
   const { marked } = markedResources;
 
@@ -46,9 +47,13 @@ const MarkedIcon = ({
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
+  const iconStyle = markedOrFocusedCount
+    ? (showMarkedOnly ? styles.hasMarkedDisabled : styles.hasMarked)
+    : styles.unmarked
   // eslint-disable-next-line no-nested-ternary, max-len
-  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
+  const textStyle = markedOrFocusedCount
+    ? (showMarkedOnly ? textStyles.hasMarkedDisabled : textStyles.hasMarked)
+    : textStyles.unmarked
 
   return (
     <TouchableOpacity
@@ -57,6 +62,7 @@ const MarkedIcon = ({
         iconStyle,
       ]}
       onPress={handlePress}
+      disabled={showMarkedOnly}
     >
       <Text style={[textStyle.base, textStyle]}>{iconCount}</Text>
     </TouchableOpacity>
@@ -68,12 +74,12 @@ MarkedIcon.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   isAccordion: bool.isRequired,
   updateMarkedResources: func.isRequired,
-  // updateFocusedResources: func.isRequired,
   markedResources: shape({
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
   collectionId: string.isRequired,
+  showMarkedOnly: bool.isRequired
 };
 
 MarkedIcon.defaultProps = {
@@ -82,6 +88,7 @@ MarkedIcon.defaultProps = {
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
   collectionId: state.selectedCollection,
+  showMarkedOnly: state.showMarkedOnly
 });
 
 const mapDispatchToProps = {
@@ -109,15 +116,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 5,
   },
-  fullyMarked: {
-    borderColor: Colors.fullyMarked,
-    borderWidth: 2,
+  unmarked: {
+    borderColor: Colors.unmarked,
   },
   hasMarked: {
     borderColor: Colors.fullyMarked,
+    borderWidth: 2,
   },
-  unmarked: {
-    borderColor: Colors.unmarked,
+  hasMarkedDisabled: {
+    borderColor: Colors.fullyMarked,
   },
 });
 
@@ -125,13 +132,13 @@ const textStyles = StyleSheet.create({
   base: {
     color: 'transparent',
   },
-  fullyMarked: {
-    color: Colors.fullyMarked,
-    fontWeight: 'bold',
+  unmarked: {
   },
   hasMarked: {
     color: Colors.fullyMarked,
+    fontWeight: 'bold',
   },
-  unmarked: {
+  hasMarkedDisabled: {
+    color: Colors.fullyMarked,
   },
 });

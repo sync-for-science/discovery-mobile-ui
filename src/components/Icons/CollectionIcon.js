@@ -28,8 +28,9 @@ const CollectionIcon = ({
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
+  // eslint-disable-next-line no-nested-ternary, max-len
   const iconStyle = resourceCount 
-    ? showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource 
+    ? (showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource)
     : null;
 
   const textStyle = showCollectionOnly ? styles.textDisabled : styles.text
