@@ -6,7 +6,7 @@ import { bool, func, shape } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { filterTriggerDateRangeSelector, markedDateRangeSelector } from '../../redux/selectors';
+import { filterTriggerDateRangeSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -15,20 +15,15 @@ const highlightedRecordsDescription = 'Only displays highlighted records.';
 const MarkedSegmentControl = ({
   showMarkedOnly,
   toggleShowMarkedOnlyAction,
-  markedDateRange,
   updateDateRangeFilter,
   filterTriggerDateRange,
 }) => {
+  console.log('MARKED', filterTriggerDateRange)
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
-  const handleChange = (event) => {
-    if (event === 0) {
-      toggleShowMarkedOnlyAction(false);
-      updateDateRangeFilter({ dateRangeStart: undefined, dateRangeEnd: undefined });
-    } else {
-      toggleShowMarkedOnlyAction(true);
-      updateDateRangeFilter(markedDateRange);
-    }
+  const handleChange = (selectedSegmentIndex) => {
+    toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
+    updateDateRangeFilter(filterTriggerDateRange);
   };
 
   return (
@@ -52,7 +47,6 @@ MarkedSegmentControl.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   showMarkedOnly: state.showMarkedOnly,
-  markedDateRange: markedDateRangeSelector(state),
   filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
 });
 

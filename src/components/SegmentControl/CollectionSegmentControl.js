@@ -6,7 +6,7 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { collectionDateRangeSelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
+import { filterTriggerDateRangeSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -15,20 +15,14 @@ const collectionRecordsDescription = 'Only displays records saved to the collect
 const CollectionSegmentControl = ({
   showCollectionOnly,
   toggleShowCollectionOnlyAction,
-  collectionDateRange,
   updateDateRangeFilter,
   filterTriggerDateRange
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
-  const handleChange = (event) => {
-    if (event === 0) {
-      toggleShowCollectionOnlyAction(false);
-      updateDateRangeFilter({ dateRangeStart: undefined, dateRangeEnd: undefined });
-    } else {
-      toggleShowCollectionOnlyAction(true);
-      updateDateRangeFilter(collectionDateRange);
-    }
+  const handleChange = (selectedSegmentIndex) => {
+    toggleShowCollectionOnlyAction(selectedSegmentIndex !== 0);
+    updateDateRangeFilter(filterTriggerDateRange);
   };
 
   return (
@@ -52,7 +46,6 @@ CollectionSegmentControl.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   showCollectionOnly: state.showCollectionOnly,
-  collectionDateRange: collectionDateRangeSelector(state),
   filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
 });
 

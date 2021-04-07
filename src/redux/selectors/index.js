@@ -504,62 +504,6 @@ export const catalogSubTypeDataSelector = createSelector(
   },
 );
 
-export const collectionDateRangeSelector = createSelector(
-  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
-  (resources, selectedCollectionId, collections) => {
-    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
-    if (collectionResourceIds.length === 0) {
-      return {
-        dateRangeStart: undefined,
-        dateRangeEnd: undefined,
-      };
-    }
-    const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
-      if (collectionResourceIds.includes(id)) {
-        acc.push(resourceValues);
-      }
-      return acc;
-    }, []);
-    const sortedCollectionResources = collectionResources
-      .sort((a, b) => a.timelineDate - b.timelineDate);
-    return {
-      dateRangeStart: startOfDay(sortedCollectionResources[0].timelineDate),
-      dateRangeEnd: endOfDay(
-        sortedCollectionResources[sortedCollectionResources.length - 1].timelineDate,
-      ),
-    };
-  },
-);
-
-export const markedDateRangeSelector = createSelector(
-  [resourcesSelector, selectedCollectionSelector, collectionsSelector],
-  (resources, selectedCollectionId, collections) => {
-    const markedResourceIds = Object.keys(
-      collections[selectedCollectionId]?.markedResources?.marked,
-    );
-    if (markedResourceIds.length === 0) {
-      return {
-        dateRangeStart: undefined,
-        dateRangeEnd: undefined,
-      };
-    }
-    const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
-      if (markedResourceIds.includes(id)) {
-        acc.push(resourceValues);
-      }
-      return acc;
-    }, []);
-    const sortedMarkedResources = markedResources
-      .sort((a, b) => a.timelineDate - b.timelineDate);
-    return {
-      dateRangeStart: startOfDay(sortedMarkedResources[0].timelineDate),
-      dateRangeEnd: endOfDay(
-        sortedMarkedResources[sortedMarkedResources.length - 1].timelineDate,
-      ),
-    };
-  },
-);
-
 export const filterTriggerDateRangeSelector = createSelector(
   [
     resourcesSelector, 
