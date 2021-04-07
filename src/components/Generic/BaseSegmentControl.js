@@ -6,7 +6,7 @@ import {
 } from 'prop-types';
 
 const BaseSegmentControl = ({
-  values, selectedIndex, handleChange, activeColor,
+  values, selectedIndex, onChange, activeColor,
 }) => {
   const tintColor = activeColor || 'lightblue';
   return (
@@ -14,7 +14,7 @@ const BaseSegmentControl = ({
       values={values}
       selectedIndex={selectedIndex}
       onChange={(event) => {
-        handleChange(event.nativeEvent.selectedSegmentIndex);
+        onChange(event.nativeEvent.selectedSegmentIndex);
       }}
       fontStyle={styles.scFontStyle}
       activeFontStyle={styles.scActiveFontStyle}
@@ -26,7 +26,7 @@ const BaseSegmentControl = ({
 BaseSegmentControl.propTypes = {
   values: arrayOf(string.isRequired).isRequired,
   selectedIndex: number.isRequired,
-  handleChange: func.isRequired,
+  onChange: func.isRequired,
   activeColor: string,
 };
 
