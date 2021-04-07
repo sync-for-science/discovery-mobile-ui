@@ -45,8 +45,19 @@ export const patientSelector = createSelector(
   },
 );
 
+export const providersSelector = createSelector(
+  [resourcesSelector, resourceIdsGroupedByTypeSelector],
+  (resources, resourceIdsGroupedByType) => {
+    const serviceProviders = resourceIdsGroupedByType?.Organization?.Other;
+    if (serviceProviders) {
+      return Array.from(serviceProviders).map((id) => resources[id]);
+    }
+    return [];
+  },
+);
+
 // eslint-disable-next-line max-len
-const sortEntriesByResourceType = () => ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
+const sortEntriesByResourceType = ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
 
 export const supportedResourcesSelector = createSelector(
   [resourceIdsGroupedByTypeSelector],

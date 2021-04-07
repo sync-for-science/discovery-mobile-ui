@@ -1,66 +1,59 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { string, number } from 'prop-types';
+import {
+  arrayOf, shape, string,
+} from 'prop-types';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
 
+import { providersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
-const ProviderRow = ({ name, latestDataYear }) => (
+const ProviderRow = ({ name }) => (
   <View style={styles.providerTypeRow}>
     <Text style={styles.providerName}>{name}</Text>
-    <Text style={styles.providerLatestDate}>{latestDataYear}</Text>
   </View>
 );
 
 ProviderRow.propTypes = {
   name: string.isRequired,
-  latestDataYear: number.isRequired,
 };
 
-const ProvidersSummary = () => {
-  const providers = [
-    { name: 'LAC/Olive View-UCLA Medical Center', latestDataYear: 2020 },
-    { name: 'Pacific Alliance Medical Center', latestDataYear: 2018 },
-  ];
-
-  return (
-    <View style={styles.providerSummaryContainer}>
-      <View style={styles.providersHeader}>
-        <Text style={styles.providersHeaderText}>
-          providers
-        </Text>
-        <Text style={styles.providersHeaderTotal}>
-          {`${providers.length} Total`}
-        </Text>
-      </View>
-      <View style={styles.providerTypeContainer}>
-        <View style={styles.providerTypeRow}>
-          <Text style={styles.providerName} />
-          <Text style={styles.providerLatestDateLabel}>latest data</Text>
-        </View>
-        {providers.map(
-          ({ name, latestDataYear }) => (
-            <ProviderRow
-              key={name}
-              name={name}
-              latestDataYear={latestDataYear}
-            />
-          ),
-        )}
-      </View>
+const ProvidersSummary = ({ providers }) => (
+  <View style={styles.providerSummaryContainer}>
+    <View style={styles.providersHeader}>
+      <Text style={styles.providersHeaderText}>
+        providers
+      </Text>
+      <Text style={styles.providersHeaderTotal}>
+        {`${providers.length} Total`}
+      </Text>
     </View>
-  );
-};
+    <View style={styles.providerTypeContainer}>
+      {providers.map(
+        ({ name }) => (
+          <ProviderRow
+            key={name}
+            name={name}
+          />
+        ),
+      )}
+    </View>
+  </View>
+);
 
 ProvidersSummary.propTypes = {
+  providers: arrayOf(shape({
+    name: string.isRequired,
+  })).isRequired,
 };
 
 ProvidersSummary.defaultProps = {
 };
 
-const mapStateToProps = () => ({
+const mapStateToProps = (state) => ({
+  providers: providersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ProvidersSummary);

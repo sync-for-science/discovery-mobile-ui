@@ -49,4 +49,8 @@ export default class FhirClient {
   async request(url) {
     return this.client.request(url);
   }
+
+  async resolve(params) {
+    return this.client.resolve(params);
+  }
 }
