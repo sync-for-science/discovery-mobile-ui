@@ -24,7 +24,7 @@ const BaseSegmentControl = ({
 };
 
 BaseSegmentControl.propTypes = {
-  values: arrayOf(number.isRequired).isRequired,
+  values: arrayOf(string.isRequired).isRequired,
   selectedIndex: number.isRequired,
   handleChange: func.isRequired,
   activeColor: string,
