@@ -16,7 +16,7 @@ const CollectionSegmentControl = ({
   showCollectionOnly,
   toggleShowCollectionOnlyAction,
   updateDateRangeFilter,
-  filterTriggerDateRange
+  filterTriggerDateRange,
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
@@ -40,7 +40,7 @@ const CollectionSegmentControl = ({
 CollectionSegmentControl.propTypes = {
   showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
-  collectionDateRange: shape({}).isRequired,
+  filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
 };
 
