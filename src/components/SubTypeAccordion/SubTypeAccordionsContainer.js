@@ -10,34 +10,13 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel, showCollectionOnly, showMarkedOnly, accordionsContainerData }) => {
-  console.log('fromContentPanel', fromContentPanel, accordionsContainerData)
+const SubTypeAccordionsContainer = ({ accordionsContainerData }) => {
   return (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)
         .sort(sortEntriesBySubType)
         .map(([subType, values]) => {
-          console.log('values', values)
-
-          const resourceIds = fromContentPanel
-            ? values.collectionDateFilteredResourceIds
-            : values.dateFilteredResourceIds;
-          // this is where separate SubTypeAccordionContainer components would be helpful
-          // one for displaying just CollectionPreview
-          // one for displaying showCollectionOnly and showMarkedOnly in CatalogScreen
-          // let resourceIds
-          // if (fromContentPanel) {
-          //   resourceIds = values.collectionDateFilteredResourceIds
-          // } else if (showCollectionOnly && !showMarkedOnly) {
-          //   resourceIds = values.collectionDateFilteredResourceIds
-          // } else if (!showCollectionOnly && showMarkedOnly) {
-          //   resourceIds = values.markedDateFilteredResourceIds
-          // } else if (showCollectionOnly && showMarkedOnly) {
-          //   resourceIds = values.collectionAndMarkedResourceIds
-          // }
-
-          // return null
           if (values.length === 0) {
             return null;
           }
@@ -55,10 +34,8 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel, showCollect
 )};
 
 SubTypeAccordionsContainer.propTypes = {
-  subTypeData: shape({}).isRequired,
+  accordionsContainerData: shape({}).isRequired,
   fromContentPanel: bool,
-  showCollectionOnly: bool.isRequired,
-  showMarkedOnly: bool.isRequired
 };
 
 SubTypeAccordionsContainer.defaultProps = {
@@ -66,9 +43,6 @@ SubTypeAccordionsContainer.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  resourceTypeFilters: state.resourceTypeFilters,
-  showCollectionOnly: state.showCollectionOnly,
-  showMarkedOnly: state.showMarkedOnly,
   accordionsContainerData: accordionsContainerDataSelector(state, ownProps)
 });
 

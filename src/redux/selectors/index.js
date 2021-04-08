@@ -199,14 +199,12 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
-    resourcesSelector,
     collectionResourceIdsSelector,
     markedResourceIdsSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
-    resources,
     collectionResourceIdsObjects,
     markedResourceIdsObjects,
     timelineItemsInRange,
@@ -221,9 +219,6 @@ const filteredResourceTypesSelector = createSelector(
       if (!acc[type]) {
         acc[type] = {};
       }
-      // if (!acc[type].subTypes) {
-      //   acc[type].subTypes = {};
-      // }
       if (!acc[type][subType]) {
         acc[type][subType] = {};
         acc[type][subType].resourceIds = Array.from(subTypeResourceIds[subType]);
@@ -395,84 +390,6 @@ export const timelineIntervalsSelector = createSelector(
   },
 );
 
-// selected ResourceType && in collection
-const selectedResourceTypeAndCollectionDataSelector = createSelector(
-  [filteredResourceTypesSelector, selectedResourceTypeSelector],
-  (filteredResourceTypes, selectedResourceType) => {
-    const subTypeData = {};
-    if (!selectedResourceType) {
-      return subTypeData
-    }
-    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
-      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
-        if (subTypeValues.collectionDateFilteredCount > 0) {
-          if (!subTypeData[subType]) {
-            subTypeData[subType] = {};
-          }
-          subTypeData[subType] = subTypeValues;
-        }
-      });
-    });
-    return subTypeData;
-  },
-);
-
-// selected ResourceType && marked
-const selectedResourceTypeAndMarkedDataSelector = createSelector(
-  [filteredResourceTypesSelector, selectedResourceTypeSelector],
-  (filteredResourceTypes, selectedResourceType) => {
-    const subTypeData = {};
-    if (!selectedResourceType) {
-      return subTypeData
-    }
-    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
-      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
-        if (subTypeValues.markedDateFilteredCount > 0) {
-          if (!subTypeData[subType]) {
-            subTypeData[subType] = {};
-          }
-          subTypeData[subType] = subTypeValues;
-        }
-      });
-    });
-    return subTypeData;
-  },
-);
-
-// selected ResourceType && in collection && marked
-const selectedResourceTypeAndCollectionAndMarkedDataSelector = createSelector(
-  [filteredResourceTypesSelector, selectedResourceTypeSelector],
-  (filteredResourceTypes, selectedResourceType) => {
-    const subTypeData = {};
-    if (!selectedResourceType) {
-      return subTypeData
-    }
-    Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
-      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
-        if (subTypeValues.collectionAndMarkedCount > 0) {
-          if (!subTypeData[subType]) {
-            subTypeData[subType] = {};
-          }
-          subTypeData[subType] = subTypeValues;
-        }
-
-        // const collectionIds = subTypeValues.collectionDateFilteredResourceIds;
-        // const markedIds = subTypeValues.markedDateFilteredResourceIds;
-        // if (collectionIds.some((collectionId) => markedIds.includes(collectionId))) {
-        //   if (!subTypeData[subType]) {
-        //     subTypeData[subType] = {};
-        //   }
-        //   subTypeData[subType] = subTypeValues;
-        // }
-      });
-    });
-    return subTypeData;
-  },
-);
-
-// accordionDataSelector
-// determines which accordionData aka subTypeData to show based on showOnly flags
-// consolidates those resources of a specific flag into a simple object ie: showCollectionOnly === true => subTypeData[subType] = {resourceIds: [collectionResourceIds]}
 export const accordionsContainerDataSelector = createSelector(
   [
     filteredResourceTypesSelector,
@@ -496,13 +413,15 @@ export const accordionsContainerDataSelector = createSelector(
     const subTypeData = {};
 
     if (fromContentPanel) {
+      // creates object of subType: subTypeValues regardless of selectedResourceType
       Object.entries(filteredResourceTypes).forEach(([_, resourceTypeValues]) => {
         Object.entries(resourceTypeValues).forEach(([subType, subTypeValues]) => {
           if (subTypeValues.collectionDateFilteredCount > 0) {
             if (!subTypeData[subType]) {
               subTypeData[subType] = {};
             }
-            subTypeData[subType] = subTypeValues;
+            subTypeData[subType].resourceIds = subTypeValues.collectionDateFilteredResourceIds;
+            subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
           }
         });
       });
@@ -510,6 +429,8 @@ export const accordionsContainerDataSelector = createSelector(
     }
 
     if (fromCatalogScreen) {
+      // creates object of subType: subTypeValues only within 
+      // the selectedResourceType and filter settings 
       if (!selectedResourceType) {
         return {}
       }
@@ -518,8 +439,23 @@ export const accordionsContainerDataSelector = createSelector(
       let resourceIds
 
       if (!showCollectionOnly && !showMarkedOnly) {
-        count = "dateFilteredCount"
         resourceIds = "dateFilteredResourceIds"
+        count = "dateFilteredCount"
+      }
+
+      if (showCollectionOnly && !showMarkedOnly) {
+        resourceIds = "collectionDateFilteredResourceIds"
+        count = "collectionDateFilteredCount"
+      }
+
+      if (!showCollectionOnly && showMarkedOnly) {
+        resourceIds = "markedDateFilteredResourceIds"
+        count = "markedDateFilteredCount"
+      }
+
+      if (showCollectionOnly && showMarkedOnly) {
+        resourceIds = "collectionAndMarkedResourceIds"
+        count = "collectionAndMarkedCount"
       }
 
       Object.entries(filteredResourceTypes[selectedResourceType])
@@ -536,59 +472,6 @@ export const accordionsContainerDataSelector = createSelector(
       return subTypeData;
     }
     
-
     return {}
   }
 )
-
-
-export const catalogSubTypeDataSelector = createSelector(
-  [
-    filteredResourceTypesSelector,
-    selectedResourceTypeSelector,
-    showCollectionOnlySelector,
-    showMarkedOnlySelector,
-    selectedResourceTypeAndCollectionDataSelector,
-    selectedResourceTypeAndMarkedDataSelector,
-    selectedResourceTypeAndCollectionAndMarkedDataSelector,
-  ],
-  (
-    filteredResourceTypes,
-    selectedResourceType,
-    showCollectionOnly,
-    showMarkedOnly,
-    selectedResourceTypeAndCollectionData,
-    selectedResourceTypeAndMarkedData,
-    selectedResourceTypeAndCollectionAndMarkedData,
-  ) => {
-    console.log('selectedResourceTypeAndCollectionData', selectedResourceTypeAndCollectionData)
-    console.log('selectedResourceTypeAndMarkedData', selectedResourceTypeAndMarkedData)
-    console.log('selectedResourceTypeAndCollectionAndMarkedData', selectedResourceTypeAndCollectionAndMarkedData)
-    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {};
-    }
-
-    if (!showCollectionOnly && !showMarkedOnly) {
-      return filteredResourceTypes[selectedResourceType].subTypes;
-    }
-
-    if (showCollectionOnly && !showMarkedOnly) {
-      console.log('selectedResourceTypeAndCollectionData', selectedResourceTypeAndCollectionData)
-      return selectedResourceTypeAndCollectionData;
-    }
-
-    if (!showCollectionOnly && showMarkedOnly) {
-      return selectedResourceTypeAndMarkedData;
-    }
-
-    if (showCollectionOnly && showMarkedOnly) {
-      console.log('selectedResourceTypeAndCollectionAndMarkedData', selectedResourceTypeAndCollectionAndMarkedData)
-      return selectedResourceTypeAndCollectionAndMarkedData;
-    }
-
-    console.error( // eslint-disable-line no-console
-      `Unknown filter setting in catalogSubTypeDataSelector, showCollectionOnly: ${showCollectionOnly}, showMarkedOnly: ${showMarkedOnly}`,
-    );
-    return {};
-  },
-);
