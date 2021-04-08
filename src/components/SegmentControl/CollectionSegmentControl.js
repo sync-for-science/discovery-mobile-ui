@@ -1,12 +1,13 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { bool, func } from 'prop-types';
+import { bool, func, shape } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
+import { activeCollectionShowCollectionOnlySelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
+import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
 const collectionRecordsDescription = 'Only displays records saved to the collection.';
@@ -14,11 +15,14 @@ const collectionRecordsDescription = 'Only displays records saved to the collect
 const CollectionSegmentControl = ({
   showCollectionOnly,
   toggleShowCollectionOnlyAction,
+  updateDateRangeFilter,
+  filterTriggerDateRange
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
     toggleShowCollectionOnlyAction(selectedSegmentIndex !== 0);
+    updateDateRangeFilter(filterTriggerDateRange);
   };
 
   return (
@@ -36,14 +40,24 @@ const CollectionSegmentControl = ({
 CollectionSegmentControl.propTypes = {
   showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
+  collectionDateRange: shape({}).isRequired,
+  updateDateRangeFilter: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   showCollectionOnly: activeCollectionShowCollectionOnlySelector(state),
+  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
 });
 
 const mapDispatchToProps = {
   toggleShowCollectionOnlyAction: toggleShowCollectionOnly,
+  updateDateRangeFilter: ({ dateRangeStart, dateRangeEnd }) => ({
+    type: actionTypes.UPDATE_DATE_RANGE_FILTER,
+    payload: {
+      dateRangeStart,
+      dateRangeEnd,
+    },
+  }),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionSegmentControl);
