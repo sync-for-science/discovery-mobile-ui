@@ -47,13 +47,9 @@ const MarkedIcon = ({
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = markedOrFocusedCount
-    ? (showMarkedOnly ? styles.hasMarkedDisabled : styles.hasMarked)
-    : styles.unmarked
+  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
   // eslint-disable-next-line no-nested-ternary, max-len
-  const textStyle = markedOrFocusedCount
-    ? (showMarkedOnly ? textStyles.hasMarkedDisabled : textStyles.hasMarked)
-    : textStyles.unmarked
+  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
 
   return (
     <TouchableOpacity
@@ -116,15 +112,15 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 5,
   },
-  unmarked: {
-    borderColor: Colors.unmarked,
-  },
-  hasMarked: {
+  fullyMarked: {
     borderColor: Colors.fullyMarked,
     borderWidth: 2,
   },
-  hasMarkedDisabled: {
+  hasMarked: {
     borderColor: Colors.fullyMarked,
+  },
+  unmarked: {
+    borderColor: Colors.unmarked,
   },
 });
 
@@ -132,13 +128,13 @@ const textStyles = StyleSheet.create({
   base: {
     color: 'transparent',
   },
-  unmarked: {
-  },
-  hasMarked: {
+  fullyMarked: {
     color: Colors.fullyMarked,
     fontWeight: 'bold',
   },
-  hasMarkedDisabled: {
+  hasMarked: {
     color: Colors.fullyMarked,
+  },
+  unmarked: {
   },
 });
