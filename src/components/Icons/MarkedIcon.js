@@ -20,12 +20,13 @@ const MarkedIcon = ({
   updateMarkedResources,
   markedResources,
   collectionId,
-  showMarkedOnly
+  showMarkedOnly,
+  subTypeCount
 }) => {
   const { marked } = markedResources;
-
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
-  const allAreMarked = markedOrFocusedCount === resourceIds.length;
+  const totalCount = isAccordion ? subTypeCount : resourceIds.length
+  const allAreMarked = markedOrFocusedCount === totalCount;
 
   const handlePress = () => {
     if (isAccordion) { // could be one or more resourceId:
@@ -46,10 +47,31 @@ const MarkedIcon = ({
   };
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
-  // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
-  // eslint-disable-next-line no-nested-ternary, max-len
-  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
+
+  let iconStyle
+  let textStyle
+  if (allAreMarked) {
+    if (showMarkedOnly) {
+      iconStyle = styles.fullyMarkedDisabled
+      textStyle = textStyles.fullyMarkedDisabled
+    } else {
+      iconStyle = styles.fullyMarked
+      textStyle = textStyles.fullyMarked
+    }
+  } else {
+    if (markedOrFocusedCount) {
+      if (showMarkedOnly) {
+        iconStyle = styles.hasMarkedDisabled
+        textStyle = textStyles.hasMarkedDisabled
+      } else {
+        iconStyle = styles.hasMarked
+        textStyle = textStyles.hasMarked
+      }
+    } else {
+      iconStyle = styles.unmarked
+      textStyle = textStyles.unmarked
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -60,7 +82,7 @@ const MarkedIcon = ({
       onPress={handlePress}
       disabled={showMarkedOnly}
     >
-      <Text style={[textStyle.base, textStyle]}>{iconCount}</Text>
+      <Text style={[textStyles.base, textStyle]}>{iconCount}</Text>
     </TouchableOpacity>
   );
 };
@@ -119,6 +141,13 @@ const styles = StyleSheet.create({
   hasMarked: {
     borderColor: Colors.fullyMarked,
   },
+  fullyMarkedDisabled: {
+    borderColor: Colors.lightgrey,
+    borderWidth: 2,
+  },
+  hasMarkedDisabled: {
+    borderColor: Colors.lightgrey,
+  },
   unmarked: {
     borderColor: Colors.unmarked,
   },
@@ -134,6 +163,13 @@ const textStyles = StyleSheet.create({
   },
   hasMarked: {
     color: Colors.fullyMarked,
+  },
+  fullyMarkedDisabled: {
+    color: Colors.lightgrey,
+    fontWeight: 'bold',
+  },
+  hasMarkedDisabled: {
+    color: Colors.lightgrey,
   },
   unmarked: {
   },

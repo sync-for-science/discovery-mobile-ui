@@ -17,7 +17,7 @@ import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
-  dateFilteredCount,
+  subTypeCount,
   resourceIds,
   selectedCollectionId,
   subType,
@@ -26,7 +26,7 @@ const SubTypeAccordion = ({
   const renderHeader = (item) => (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
-        <CountIcon count={dateFilteredCount} />
+        <CountIcon count={subTypeCount} />
         <BaseText style={styles.headerText}>
           {item.title}
         </BaseText>
@@ -40,6 +40,7 @@ const SubTypeAccordion = ({
         <MarkedIcon
           subType={subType}
           resourceIds={resourceIds}
+          subTypeCount={subTypeCount}
           isAccordion
         />
         <CollectionIcon
@@ -76,7 +77,7 @@ const SubTypeAccordion = ({
 };
 
 SubTypeAccordion.propTypes = {
-  dateFilteredCount: number.isRequired,
+  subTypeCount: number.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   selectedCollectionId: string.isRequired,
   subType: string.isRequired,

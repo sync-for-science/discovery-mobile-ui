@@ -25,7 +25,7 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData }) => {
               key={subType}
               subType={subType}
               resourceIds={values.resourceIds}
-              dateFilteredCount={values.subTypeCount}
+              subTypeCount={values.subTypeCount}
             />
           );
         })}
