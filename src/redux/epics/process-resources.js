@@ -1,6 +1,7 @@
 // processResource() executes once per/resource, as paginated FHIR requests resolve.
 const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization'];
 const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization'];
+const KNOWN_UNSUPPORTED_OBSERVATIONS = ['survey']; // procedure ?
 
 const getType = (resource) => {
   const { resourceType } = resource;
@@ -11,7 +12,9 @@ const getType = (resource) => {
       case 'vital-signs':
         return code;
       default: {
-        console.info(`Unsupported code type for Observation ${resource.id}: `, code); // eslint-disable-line no-console
+        if (!KNOWN_UNSUPPORTED_OBSERVATIONS.includes(code)) {
+          console.info(`Unsupported code type for Observation ${resource.id}: `, code); // eslint-disable-line no-console
+        }
         return 'UNSUPPORTED_OBSERVATION';
       }
     }
