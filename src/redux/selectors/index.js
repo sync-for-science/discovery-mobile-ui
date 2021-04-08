@@ -105,7 +105,6 @@ export const sortedTimelineItemsSelector = createSelector(
 export const timelinePropsSelector = createSelector(
   [sortedTimelineItemsSelector],
   (items) => {
-    console.log('items', items)
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
     return ({
