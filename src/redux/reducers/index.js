@@ -229,6 +229,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 
       return { ...state, [collectionId]: newCollection };
     }
+    case actionTypes.CLEAR_MARKED_RESOURCES: {
+      const collectionId = action.payload;
+      const updatedCollection = { ...state[collectionId] };
+      updatedCollection.markedResources = defaultMarkedResources;
+      return { ...state, [collectionId]: updatedCollection };
+    }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
       return { ...state, ...newCollection };
