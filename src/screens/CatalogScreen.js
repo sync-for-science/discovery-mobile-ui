@@ -64,7 +64,7 @@ const CatalogScreen = ({
         </View>
         <ScrollView>
           { selectedResourceType && (
-            <SubTypeAccordionsContainer subTypeData={catalogSubTypeData} fromCatalogScreen />
+            <SubTypeAccordionsContainer fromCatalogScreen />
           )}
         </ScrollView>
       </FilterDrawer>
@@ -85,7 +85,7 @@ CatalogScreen.defaultProps = {
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
   collection: collectionSelector(state),
-  catalogSubTypeData: catalogSubTypeDataSelector(state),
+  // catalogSubTypeData: catalogSubTypeDataSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);

@@ -221,77 +221,57 @@ const filteredResourceTypesSelector = createSelector(
       if (!acc[type]) {
         acc[type] = {};
       }
-      if (!acc[type].subTypes) {
-        acc[type].subTypes = {};
-      }
-      if (!acc[type].subTypes[subType]) {
-        acc[type].subTypes[subType] = {};
-        acc[type].subTypes[subType].resourceIds = Array.from(subTypeResourceIds[subType]);
-        acc[type].subTypes[subType].count = Array.from(subTypeResourceIds[subType]).length;
-        acc[type].subTypes[subType].dateFilteredResourceIds = [];
-        acc[type].subTypes[subType].dateFilteredCount = 0;
-        acc[type].subTypes[subType].collectionDateFilteredResourceIds = [];
-        acc[type].subTypes[subType].collectionDateFilteredCount = 0;
-        acc[type].subTypes[subType].collectionDateRange = {};
-        acc[type].subTypes[subType].markedDateFilteredResourceIds = [];
-        acc[type].subTypes[subType].markedDateFilteredCount = 0;
-        acc[type].subTypes[subType].collectionAndMarkedResourceIds = [];
-        acc[type].subTypes[subType].collectionAndMarkedCount = 0;
+      // if (!acc[type].subTypes) {
+      //   acc[type].subTypes = {};
+      // }
+      if (!acc[type][subType]) {
+        acc[type][subType] = {};
+        acc[type][subType].resourceIds = Array.from(subTypeResourceIds[subType]);
+        acc[type][subType].count = Array.from(subTypeResourceIds[subType]).length;
+        acc[type][subType].dateFilteredResourceIds = [];
+        acc[type][subType].dateFilteredCount = 0;
+        acc[type][subType].collectionDateFilteredResourceIds = [];
+        acc[type][subType].collectionDateFilteredCount = 0;
+        acc[type][subType].collectionDateRange = {};
+        acc[type][subType].markedDateFilteredResourceIds = [];
+        acc[type][subType].markedDateFilteredCount = 0;
+        acc[type][subType].collectionAndMarkedResourceIds = [];
+        acc[type][subType].collectionAndMarkedCount = 0;
 
       }
-      acc[type].subTypes[subType].dateFilteredResourceIds.push(id);
-      acc[type].subTypes[subType].dateFilteredCount = (
-        acc[type].subTypes[subType].dateFilteredResourceIds.length
+      acc[type][subType].dateFilteredResourceIds.push(id);
+      acc[type][subType].dateFilteredCount = (
+        acc[type][subType].dateFilteredResourceIds.length
       );
 
       if (collectionResourceIds.includes(id)) {
-        acc[type].subTypes[subType].collectionDateFilteredResourceIds.push(id);
-        acc[type].subTypes[subType].collectionDateFilteredCount = (
-          acc[type].subTypes[subType].collectionDateFilteredResourceIds.length
+        acc[type][subType].collectionDateFilteredResourceIds.push(id);
+        acc[type][subType].collectionDateFilteredCount = (
+          acc[type][subType].collectionDateFilteredResourceIds.length
         );
       }
 
       if (markedResourceIds.includes(id)) {
-        acc[type].subTypes[subType].markedDateFilteredResourceIds.push(id);
-        acc[type].subTypes[subType].markedDateFilteredCount = (
-          acc[type].subTypes[subType].markedDateFilteredResourceIds.length
+        acc[type][subType].markedDateFilteredResourceIds.push(id);
+        acc[type][subType].markedDateFilteredCount = (
+          acc[type][subType].markedDateFilteredResourceIds.length
         );
       }
 
-      const collectionIds = acc[type].subTypes[subType].collectionDateFilteredResourceIds
-      const markedIds = acc[type].subTypes[subType].markedDateFilteredResourceIds
-      const collectionAndMarkedIds = acc[type].subTypes[subType].collectionAndMarkedResourceIds
+      const collectionIds = acc[type][subType].collectionDateFilteredResourceIds
+      const markedIds = acc[type][subType].markedDateFilteredResourceIds
+      const collectionAndMarkedIds = acc[type][subType].collectionAndMarkedResourceIds
 
       collectionIds.forEach(id => {
         if (markedIds.includes(id) && !collectionAndMarkedIds.includes(id)) {
-          acc[type].subTypes[subType].collectionAndMarkedResourceIds.push(id)
-          acc[type].subTypes[subType].collectionAndMarkedCount = ( 
-            acc[type].subTypes[subType].collectionAndMarkedResourceIds.length
+          acc[type][subType].collectionAndMarkedResourceIds.push(id)
+          acc[type][subType].collectionAndMarkedCount = ( 
+            acc[type][subType].collectionAndMarkedResourceIds.length
           )
         }
       })
       return acc;
     }, {});
-  },
-);
-
-export const collectionFlattenedSubTypesSelector = createSelector(
-  [filteredResourceTypesSelector],
-  (filteredResourceTypes) => {
-    const collectionFlattenedSubTypes = {};
-    Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
-      console.log('resourceTypeValues', resourceTypeValues)
-      const { subTypes } = resourceTypeValues;
-      Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
-        if (subTypeValues.collectionDateFilteredCount > 0) {
-          if (!collectionFlattenedSubTypes[subType]) {
-            collectionFlattenedSubTypes[subType] = {};
-          }
-          collectionFlattenedSubTypes[subType] = subTypeValues;
-        }
-      });
-    });
-    return collectionFlattenedSubTypes;
   },
 );
 
@@ -499,7 +479,6 @@ export const accordionsContainerDataSelector = createSelector(
     selectedResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
-    collectionFlattenedSubTypesSelector,
     (_, ownProps) => ownProps
   ],
   (
@@ -507,20 +486,34 @@ export const accordionsContainerDataSelector = createSelector(
     selectedResourceType,
     showCollectionOnly,
     showMarkedOnly,
-    collectionFlattenedSubTypes,
     ownProps
   ) => {
-    // console.log('collectionFlattenedSubTypes', collectionFlattenedSubTypes)
     const { fromContentPanel, fromCatalogScreen } = ownProps
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
     }
 
+    const subTypeData = {};
+
     if (fromContentPanel) {
-      return collectionFlattenedSubTypes
+      Object.entries(filteredResourceTypes).forEach(([_, resourceTypeValues]) => {
+        Object.entries(resourceTypeValues).forEach(([subType, subTypeValues]) => {
+          if (subTypeValues.collectionDateFilteredCount > 0) {
+            if (!subTypeData[subType]) {
+              subTypeData[subType] = {};
+            }
+            subTypeData[subType] = subTypeValues;
+          }
+        });
+      });
+      return subTypeData;
     }
 
     if (fromCatalogScreen) {
+      if (!selectedResourceType) {
+        return {}
+      }
+
       let count
       let resourceIds
 
@@ -529,24 +522,18 @@ export const accordionsContainerDataSelector = createSelector(
         resourceIds = "dateFilteredResourceIds"
       }
 
-      const subTypeData = {};
-      if (!selectedResourceType) {
-        return subTypeData
-      }
-
-      Object.entries(filteredResourceTypes[selectedResourceType]).forEach(([, subTypes]) => {
-        console.log('subTypes', subTypes)
-        Object.entries(subTypes).forEach(([subType, subTypeValues]) => {
+      Object.entries(filteredResourceTypes[selectedResourceType])
+        .forEach(([subType, subTypeValues]) => {
           if (subTypeValues[count] > 0) {
             if (!subTypeData[subType]) {
               subTypeData[subType] = {};
             }
-            subTypeData[subType] = subTypeValues[resourceIds];
+            subTypeData[subType].resourceIds = subTypeValues[resourceIds];
+            subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
           }
-        });
-      });
+        }
+      );
       return subTypeData;
-
     }
     
 

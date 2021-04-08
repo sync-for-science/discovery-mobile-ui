@@ -15,9 +15,10 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel, showCollect
   return (
   <View style={styles.root}>
     <View style={styles.container}>
-      {Object.entries(subTypeData)
+      {Object.entries(accordionsContainerData)
         .sort(sortEntriesBySubType)
         .map(([subType, values]) => {
+          console.log('values', values)
 
           const resourceIds = fromContentPanel
             ? values.collectionDateFilteredResourceIds
@@ -37,15 +38,15 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel, showCollect
           // }
 
           // return null
-          if (resourceIds.length === 0) {
+          if (values.length === 0) {
             return null;
           }
           return (
             <SubTypeAccordion
               key={subType}
               subType={subType}
-              resourceIds={resourceIds}
-              dateFilteredCount={values.dateFilteredCount}
+              resourceIds={values.resourceIds}
+              dateFilteredCount={values.subTypeCount}
             />
           );
         })}
