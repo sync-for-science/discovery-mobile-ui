@@ -9,7 +9,7 @@ import { Text } from 'native-base';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
-  markedResourcesSelector,
+  collectionMarkedResourcesSelector,
 } from '../../redux/selectors';
 import { MARKED, FOCUSED } from '../../constants/marked-status';
 
@@ -22,9 +22,7 @@ const FocusedIcon = ({
   collectionId,
 }) => {
   const { marked } = markedResources;
-
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
-
   const focusedCount = resourceIds.reduce((acc, id) => (marked[id] === FOCUSED ? acc + 1 : acc), 0);
   const markedCount = resourceIds.reduce((acc, id) => (marked[id] === MARKED ? acc + 1 : acc), 0);
   const allAreFocused = resourceIds.length === focusedCount;
@@ -82,7 +80,7 @@ FocusedIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  markedResources: markedResourcesSelector(state),
+  markedResources: collectionMarkedResourcesSelector(state),
   collectionId: state.selectedCollection,
 });
 

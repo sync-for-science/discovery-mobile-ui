@@ -32,12 +32,15 @@ const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
 const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
-export const markedResourcesSelector = (state) => state.markedResources;
-
 export const collectionSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
   (collections, selectedCollection) => collections[selectedCollection],
 );
+
+export const collectionMarkedResourcesSelector = createSelector(
+  [collectionSelector],
+  (collection) => collection.markedResources
+)
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
@@ -282,8 +285,8 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, markedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
-  (timelineItemsInRange, timelineRange, markedResources, resources, collectionIds) => {
+  [timelineItemsInRangeSelector, timelineRangeSelector, collectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+  (timelineItemsInRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -350,7 +353,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => markedResources.marked[id]) // either MARKED or FOCUSED
+          .filter((id) => collectionMarkedResources.marked[id]) // either MARKED or FOCUSED
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -366,7 +369,7 @@ export const timelineIntervalsSelector = createSelector(
           .map(([subType, items]) => ({
             subType,
             marked: items,
-            focused: items.filter((id) => markedResources.marked[id] === FOCUSED),
+            focused: items.filter((id) => collectionMarkedResources.marked[id] === FOCUSED),
           }));
 
         // eslint-disable-next-line no-param-reassign
