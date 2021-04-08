@@ -473,22 +473,22 @@ export const accordionsContainerDataSelector = createSelector(
 
 export const filterTriggerDateRangeSelector = createSelector(
   [
-    resourcesSelector, 
-    selectedCollectionSelector, 
-    collectionsSelector, 
-    showMarkedOnlySelector, 
+    resourcesSelector,
+    selectedCollectionSelector,
+    collectionsSelector,
+    showMarkedOnlySelector,
     showCollectionOnlySelector,
-    (_, ownProps) => ownProps
+    (_, ownProps) => ownProps,
   ],
   (
-    resources, 
-    selectedCollectionId, 
-    collections, 
-    showMarkedOnly, 
+    resources,
+    selectedCollectionId,
+    collections,
+    showMarkedOnly,
     showCollectionOnly,
-    ownProps
+    ownProps,
   ) => {
-    const { collection, marked } = ownProps
+    const { collection, marked } = ownProps;
     const defaultTimeRange = { dateRangeStart: undefined, dateRangeEnd: undefined };
 
     const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
@@ -497,11 +497,11 @@ export const filterTriggerDateRangeSelector = createSelector(
     );
 
     if (collection && (collectionResourceIds.length === 0)) {
-      return defaultTimeRange
+      return defaultTimeRange;
     }
 
     if (marked && (markedResourceIds.length === 0)) {
-      return defaultTimeRange
+      return defaultTimeRange;
     }
 
     const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
@@ -510,7 +510,7 @@ export const filterTriggerDateRangeSelector = createSelector(
       }
       return acc;
     }, []);
-    
+
     const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
       if (markedResourceIds.includes(id)) {
         acc.push(resourceValues);
@@ -525,36 +525,44 @@ export const filterTriggerDateRangeSelector = createSelector(
     const sortedCombinedResources = [...collectionResources, ...markedResources]
       .sort((a, b) => a.timelineDate - b.timelineDate);
 
-    const createDateRange = (resources) => ({
-      dateRangeStart: startOfDay(resources[0].timelineDate),
+    const createDateRange = (res) => ({
+      dateRangeStart: startOfDay(res[0].timelineDate),
       dateRangeEnd: endOfDay(
-        resources[resources.length - 1].timelineDate,
+        res[res.length - 1].timelineDate,
       ),
-    })
+    });
 
     // feed to CollectionSegmentControl
     if (collection) {
-      if (!showCollectionOnly && !showMarkedOnly) { // after collection setting change > showCollectionOnly && !showMarkedOnly
-        return createDateRange(sortedCollectionResources)
-      } else if (showCollectionOnly && !showMarkedOnly) { // after collection setting change > !showCollectionOnly && !showMarkedOnly
-        return defaultTimeRange
-      } else if (!showCollectionOnly && showMarkedOnly) { // after collection setting change > showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedCombinedResources)
-      } else if (showCollectionOnly && showMarkedOnly) { // after collection setting change > !showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedMarkedResources)
+      if (!showCollectionOnly && !showMarkedOnly) {
+        // after collection setting change > showCollectionOnly && !showMarkedOnly
+        return createDateRange(sortedCollectionResources);
+      } if (showCollectionOnly && !showMarkedOnly) {
+        // after collection setting change > !showCollectionOnly && !showMarkedOnly
+        return defaultTimeRange;
+      } if (!showCollectionOnly && showMarkedOnly) {
+        // after collection setting change > showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedCombinedResources);
+      } if (showCollectionOnly && showMarkedOnly) {
+        // after collection setting change > !showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedMarkedResources);
       }
     }
 
     // feed to MarkedSegmentControl
     if (marked) {
-      if (!showCollectionOnly && !showMarkedOnly) { // after setting change > !showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedMarkedResources)
-      } else if (showCollectionOnly && !showMarkedOnly) { // after setting change > showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedCombinedResources)
-      } else if (!showCollectionOnly && showMarkedOnly) { // after setting change > !showCollectionOnly && !showMarkedOnly
-        return defaultTimeRange
-      } else if (showCollectionOnly && showMarkedOnly) { // after setting change > showCollectionOnly && !showMarkedOnly
-        return createDateRange(sortedCollectionResources)
+      if (!showCollectionOnly && !showMarkedOnly) {
+        // after setting change > !showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedMarkedResources);
+      } if (showCollectionOnly && !showMarkedOnly) {
+        // after setting change > showCollectionOnly && showMarkedOnly
+        return createDateRange(sortedCombinedResources);
+      } if (!showCollectionOnly && showMarkedOnly) {
+        // after setting change > !showCollectionOnly && !showMarkedOnly
+        return defaultTimeRange;
+      } if (showCollectionOnly && showMarkedOnly) {
+        // after setting change > showCollectionOnly && !showMarkedOnly
+        return createDateRange(sortedCollectionResources);
       }
     }
 

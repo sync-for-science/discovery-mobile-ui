@@ -18,7 +18,6 @@ const MarkedSegmentControl = ({
   updateDateRangeFilter,
   filterTriggerDateRange,
 }) => {
-  console.log('MARKED', filterTriggerDateRange)
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
@@ -41,13 +40,13 @@ const MarkedSegmentControl = ({
 MarkedSegmentControl.propTypes = {
   showMarkedOnly: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
-  markedDateRange: shape({}).isRequired,
+  filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   showMarkedOnly: state.showMarkedOnly,
-  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
+  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {
