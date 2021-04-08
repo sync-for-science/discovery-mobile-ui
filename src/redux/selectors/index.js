@@ -186,11 +186,6 @@ export const collectionResourceIdsSelector = createSelector(
   (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
 );
 
-const markedResourceIdsSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId]?.markedResources?.marked,
-);
-
 const subTypeResourceIdsSelector = createSelector(
   [resourcesSelector],
   (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
@@ -205,13 +200,13 @@ const subTypeResourceIdsSelector = createSelector(
 const filteredResourceTypesSelector = createSelector(
   [
     collectionResourceIdsSelector,
-    markedResourceIdsSelector,
+    collectionMarkedResourcesSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
     collectionResourceIdsObjects,
-    markedResourceIdsObjects,
+    collectionMarkedResources,
     timelineItemsInRange,
     subTypeResourceIds,
   ) => {
@@ -219,7 +214,7 @@ const filteredResourceTypesSelector = createSelector(
       return {};
     }
     const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
-    const markedResourceIds = Object.keys(markedResourceIdsObjects);
+    const markedResourceIds = Object.keys(collectionMarkedResources.marked);
     return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};
