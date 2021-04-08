@@ -51,7 +51,7 @@ const CatalogModal = ({
 
     Alert.alert(
       'Clear Highlighted Events',
-      'Are you sure you want to clear the highlighted events?',
+      'Are you sure you want to clear the highlighted records?',
       [
         {
           text: 'Cancel',
