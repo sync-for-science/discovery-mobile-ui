@@ -16,7 +16,7 @@ const CollectionIcon = ({
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
   collectionResourceIds,
-  showCollectionOnly
+  showCollectionOnly,
 }) => {
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = collectionResourceIds[id];
@@ -29,11 +29,11 @@ const CollectionIcon = ({
     : addResourceToCollectionAction(collectionId, resourceIds));
 
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = resourceCount 
+  const iconStyle = resourceCount
     ? (showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource)
     : null;
 
-  const textStyle = showCollectionOnly ? styles.textDisabled : styles.text
+  const textStyle = showCollectionOnly ? styles.textDisabled : styles.text;
 
   return (
     <TouchableOpacity
@@ -56,12 +56,12 @@ CollectionIcon.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   collectionResourceIds: shape({}).isRequired,
-  showCollectionOnly: bool.isRequired
+  showCollectionOnly: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionResourceIds: collectionResourceIdsSelector(state),
-  showCollectionOnly: state.showCollectionOnly
+  showCollectionOnly: state.showCollectionOnly,
 });
 
 const mapDispatchToProps = {
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   textDisabled: {
-    color: Colors.darkgrey2
+    color: Colors.darkgrey2,
   },
   base: {
     height: 30,

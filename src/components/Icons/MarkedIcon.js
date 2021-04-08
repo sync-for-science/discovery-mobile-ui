@@ -1,5 +1,5 @@
 import {
-  arrayOf, shape, func, string, bool,
+  arrayOf, shape, func, string, bool, number,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -21,11 +21,11 @@ const MarkedIcon = ({
   markedResources,
   collectionId,
   showMarkedOnly,
-  subTypeCount
+  subTypeCount,
 }) => {
   const { marked } = markedResources;
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
-  const totalCount = isAccordion ? subTypeCount : resourceIds.length
+  const totalCount = isAccordion ? subTypeCount : resourceIds.length;
   const allAreMarked = markedOrFocusedCount === totalCount;
 
   const handlePress = () => {
@@ -48,29 +48,27 @@ const MarkedIcon = ({
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
 
-  let iconStyle
-  let textStyle
+  let iconStyle;
+  let textStyle;
   if (allAreMarked) {
     if (showMarkedOnly) {
-      iconStyle = styles.fullyMarkedDisabled
-      textStyle = textStyles.fullyMarkedDisabled
+      iconStyle = styles.fullyMarkedDisabled;
+      textStyle = textStyles.fullyMarkedDisabled;
     } else {
-      iconStyle = styles.fullyMarked
-      textStyle = textStyles.fullyMarked
+      iconStyle = styles.fullyMarked;
+      textStyle = textStyles.fullyMarked;
+    }
+  } else if (markedOrFocusedCount) {
+    if (showMarkedOnly) {
+      iconStyle = styles.hasMarkedDisabled;
+      textStyle = textStyles.hasMarkedDisabled;
+    } else {
+      iconStyle = styles.hasMarked;
+      textStyle = textStyles.hasMarked;
     }
   } else {
-    if (markedOrFocusedCount) {
-      if (showMarkedOnly) {
-        iconStyle = styles.hasMarkedDisabled
-        textStyle = textStyles.hasMarkedDisabled
-      } else {
-        iconStyle = styles.hasMarked
-        textStyle = textStyles.hasMarked
-      }
-    } else {
-      iconStyle = styles.unmarked
-      textStyle = textStyles.unmarked
-    }
+    iconStyle = styles.unmarked;
+    textStyle = textStyles.unmarked;
   }
 
   return (
@@ -97,7 +95,8 @@ MarkedIcon.propTypes = {
     marked: shape({}).isRequired,
   }).isRequired,
   collectionId: string.isRequired,
-  showMarkedOnly: bool.isRequired
+  showMarkedOnly: bool.isRequired,
+  subTypeCount: number.isRequired,
 };
 
 MarkedIcon.defaultProps = {
@@ -106,7 +105,7 @@ MarkedIcon.defaultProps = {
 const mapStateToProps = (state) => ({
   markedResources: markedResourcesSelector(state),
   collectionId: state.selectedCollection,
-  showMarkedOnly: state.showMarkedOnly
+  showMarkedOnly: state.showMarkedOnly,
 });
 
 const mapDispatchToProps = {

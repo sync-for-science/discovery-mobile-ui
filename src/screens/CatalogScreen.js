@@ -17,7 +17,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
-import { collectionSelector, catalogSubTypeDataSelector } from '../redux/selectors';
+import { collectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -46,7 +46,7 @@ CatalogScreenHeader.defaultProps = {
 };
 
 const CatalogScreen = ({
-  selectedResourceType, collection, catalogSubTypeData
+  selectedResourceType, collection,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -85,7 +85,6 @@ CatalogScreen.defaultProps = {
 const mapStateToProps = (state) => ({
   selectedResourceType: state.selectedResourceType,
   collection: collectionSelector(state),
-  // catalogSubTypeData: catalogSubTypeDataSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);

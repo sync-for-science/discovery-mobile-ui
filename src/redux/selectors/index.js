@@ -1,5 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
-import { pick, values, uniqBy, prop, uniqWith } from 'ramda';
+import {
+  pick, values,
+} from 'ramda';
 import {
   startOfDay, endOfDay, differenceInDays,
   compareAsc, format, parse, intervalToDuration, isWithinInterval,
@@ -232,7 +234,6 @@ const filteredResourceTypesSelector = createSelector(
         acc[type][subType].markedDateFilteredCount = 0;
         acc[type][subType].collectionAndMarkedResourceIds = [];
         acc[type][subType].collectionAndMarkedCount = 0;
-
       }
       acc[type][subType].dateFilteredResourceIds.push(id);
       acc[type][subType].dateFilteredCount = (
@@ -253,18 +254,18 @@ const filteredResourceTypesSelector = createSelector(
         );
       }
 
-      const collectionIds = acc[type][subType].collectionDateFilteredResourceIds
-      const markedIds = acc[type][subType].markedDateFilteredResourceIds
-      const collectionAndMarkedIds = acc[type][subType].collectionAndMarkedResourceIds
+      const collectionIds = acc[type][subType].collectionDateFilteredResourceIds;
+      const markedIds = acc[type][subType].markedDateFilteredResourceIds;
+      const collectionAndMarkedIds = acc[type][subType].collectionAndMarkedResourceIds;
 
-      collectionIds.forEach(id => {
-        if (markedIds.includes(id) && !collectionAndMarkedIds.includes(id)) {
-          acc[type][subType].collectionAndMarkedResourceIds.push(id)
-          acc[type][subType].collectionAndMarkedCount = ( 
+      collectionIds.forEach((collectionId) => {
+        if (markedIds.includes(collectionId) && !collectionAndMarkedIds.includes(collectionId)) {
+          acc[type][subType].collectionAndMarkedResourceIds.push(collectionId);
+          acc[type][subType].collectionAndMarkedCount = (
             acc[type][subType].collectionAndMarkedResourceIds.length
-          )
+          );
         }
-      })
+      });
       return acc;
     }, {});
   },
@@ -396,16 +397,16 @@ export const accordionsContainerDataSelector = createSelector(
     selectedResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
-    (_, ownProps) => ownProps
+    (_, ownProps) => ownProps,
   ],
   (
     filteredResourceTypes,
     selectedResourceType,
     showCollectionOnly,
     showMarkedOnly,
-    ownProps
+    ownProps,
   ) => {
-    const { fromContentPanel, fromCatalogScreen } = ownProps
+    const { fromContentPanel, fromCatalogScreen } = ownProps;
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
     }
@@ -414,7 +415,7 @@ export const accordionsContainerDataSelector = createSelector(
 
     if (fromContentPanel) {
       // creates object of subType: subTypeValues regardless of selectedResourceType
-      Object.entries(filteredResourceTypes).forEach(([_, resourceTypeValues]) => {
+      Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
         Object.entries(resourceTypeValues).forEach(([subType, subTypeValues]) => {
           if (subTypeValues.collectionDateFilteredCount > 0) {
             if (!subTypeData[subType]) {
@@ -429,33 +430,33 @@ export const accordionsContainerDataSelector = createSelector(
     }
 
     if (fromCatalogScreen) {
-      // creates object of subType: subTypeValues only within 
-      // the selectedResourceType and filter settings 
+      // creates object of subType: subTypeValues only within
+      // the selectedResourceType and filter settings
       if (!selectedResourceType) {
-        return {}
+        return {};
       }
 
-      let count
-      let resourceIds
+      let count;
+      let resourceIds;
 
       if (!showCollectionOnly && !showMarkedOnly) {
-        resourceIds = "dateFilteredResourceIds"
-        count = "dateFilteredCount"
+        resourceIds = 'dateFilteredResourceIds';
+        count = 'dateFilteredCount';
       }
 
       if (showCollectionOnly && !showMarkedOnly) {
-        resourceIds = "collectionDateFilteredResourceIds"
-        count = "collectionDateFilteredCount"
+        resourceIds = 'collectionDateFilteredResourceIds';
+        count = 'collectionDateFilteredCount';
       }
 
       if (!showCollectionOnly && showMarkedOnly) {
-        resourceIds = "markedDateFilteredResourceIds"
-        count = "markedDateFilteredCount"
+        resourceIds = 'markedDateFilteredResourceIds';
+        count = 'markedDateFilteredCount';
       }
 
       if (showCollectionOnly && showMarkedOnly) {
-        resourceIds = "collectionAndMarkedResourceIds"
-        count = "collectionAndMarkedCount"
+        resourceIds = 'collectionAndMarkedResourceIds';
+        count = 'collectionAndMarkedCount';
       }
 
       Object.entries(filteredResourceTypes[selectedResourceType])
@@ -467,11 +468,10 @@ export const accordionsContainerDataSelector = createSelector(
             subTypeData[subType].resourceIds = subTypeValues[resourceIds];
             subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
           }
-        }
-      );
+        });
       return subTypeData;
     }
-    
-    return {}
-  }
-)
+
+    return {};
+  },
+);
