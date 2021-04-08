@@ -39,8 +39,8 @@ export const collectionSelector = createSelector(
 
 export const collectionMarkedResourcesSelector = createSelector(
   [collectionSelector],
-  (collection) => collection.markedResources
-)
+  (collection) => collection.markedResources,
+);
 
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
