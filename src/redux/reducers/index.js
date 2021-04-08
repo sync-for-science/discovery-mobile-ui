@@ -117,6 +117,12 @@ export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, act
 
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
+
+// prune items whose values are 0, null, undefined, or empty string:
+const pruneEmpty = ((o) => Object.entries(o)
+  .filter(([, v]) => v)
+  .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
+
 const defaultMarkedResources = {
   focusedSubtype: '', // only a single sub-type can be focused
   // "marked" -- dictionary whose keys are resource ids and values are enum:
@@ -270,55 +276,6 @@ export const selectedCollectionReducer = (state = defaultCollectionId, action) =
         return action.payload.nextCollectionId;
       }
       return state;
-    }
-    default:
-      return state;
-  }
-};
-
-// prune items whose values are 0, null, undefined, or empty string:
-const pruneEmpty = ((o) => Object.entries(o)
-  .filter(([, v]) => v)
-  .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
-
-const preloadedMarkedResources = {
-  focusedSubtype: '', // only a single sub-type can be focused
-  // "marked" -- dictionary whose keys are resource ids and values are enum:
-  // 0 -- unmarked
-  // 1 -- marked
-  // 2 -- focused
-  marked: {},
-};
-
-export const markedResourcesReducer = (state = preloadedMarkedResources, action) => {
-  switch (action.type) {
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadedMarkedResources;
-    }
-    case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const { subType, resourceIdsMap, force = false } = action.payload;
-      const deFocus = (!subType || subType !== state.focusedSubtype);
-
-      const previousMarked = !deFocus ? state.marked : Object.entries(state.marked)
-        .reduce((acc, [id, prevValue]) => ({
-          ...acc,
-          [id]: (prevValue === FOCUSED ? MARKED : prevValue),
-        }), {});
-
-      const newlyMarked = Object.entries(resourceIdsMap)
-        .reduce((acc, [id, newValue]) => ({
-          ...acc,
-          // eslint-disable-next-line max-len
-          [id]: ((newValue === FOCUSED && (force || previousMarked[id] === MARKED)) ? FOCUSED : newValue),
-        }), {});
-
-      return {
-        focusedSubtype: subType,
-        marked: pruneEmpty({
-          ...previousMarked,
-          ...newlyMarked,
-        }),
-      };
     }
     default:
       return state;

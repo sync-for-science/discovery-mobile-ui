@@ -9,7 +9,6 @@ import {
   collectionsReducer,
   selectedCollectionReducer,
   showCollectionOnlyReducer,
-  markedResourcesReducer,
   showMarkedOnlyReducer,
 } from './reducers';
 import epicMiddleware, { rootEpic } from './epics';
@@ -24,7 +23,6 @@ const rootReducer = combineReducers({
   collections: collectionsReducer,
   selectedCollection: selectedCollectionReducer,
   showCollectionOnly: showCollectionOnlyReducer,
-  markedResources: markedResourcesReducer,
   showMarkedOnly: showMarkedOnlyReducer,
 });
 
