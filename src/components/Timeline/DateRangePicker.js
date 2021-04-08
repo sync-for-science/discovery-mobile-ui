@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 
 import DatePicker from './DatePicker';
-import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
+import { timelinePropsSelector, dateRangeFiltersSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
@@ -54,7 +54,7 @@ DateRangePicker.propTypes = {
 
 const mapStateToProps = (state) => ({
   timelineProps: timelinePropsSelector(state),
-  dateRangeFilter: dateRangeFilterFiltersSelector(state),
+  dateRangeFilter: dateRangeFiltersSelector(state),
 });
 
 const mapDispatchToProps = {
