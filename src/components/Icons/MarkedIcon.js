@@ -96,10 +96,11 @@ MarkedIcon.propTypes = {
   }).isRequired,
   collectionId: string.isRequired,
   showMarkedOnly: bool.isRequired,
-  subTypeCount: number.isRequired,
+  subTypeCount: number,
 };
 
 MarkedIcon.defaultProps = {
+  subTypeCount: null,
 };
 
 const mapStateToProps = (state) => ({
