@@ -20,7 +20,7 @@ const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByTy
 
 const selectedResourceTypeSelector = (state) => state.selectedResourceType;
 
-export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
+export const dateRangeFiltersSelector = (state) => state.dateRangeFilter;
 
 const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
@@ -105,6 +105,7 @@ export const sortedTimelineItemsSelector = createSelector(
 export const timelinePropsSelector = createSelector(
   [sortedTimelineItemsSelector],
   (items) => {
+    console.log('items', items)
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
     return ({
@@ -116,10 +117,10 @@ export const timelinePropsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [dateRangeFilterFiltersSelector, timelinePropsSelector],
-  (dateRangeFilterFilters, timelineProps) => {
+  [dateRangeFiltersSelector, timelinePropsSelector],
+  (dateRangeFilters, timelineProps) => {
     const { minimumDate, maximumDate } = timelineProps;
-    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
+    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilters;
     return {
       dateRangeStart,
       dateRangeEnd,
