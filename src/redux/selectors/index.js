@@ -37,9 +37,27 @@ export const collectionSelector = createSelector(
   (collections, selectedCollection) => collections[selectedCollection],
 );
 
+export const collectionResourceIdsSelector = createSelector(
+  [collectionSelector],
+  (collection) => collection.resourceIds,
+);
+
 export const collectionMarkedResourcesSelector = createSelector(
   [collectionSelector],
   (collection) => collection.markedResources,
+);
+
+const collectionAndMarkedResourceIdsSelector = createSelector(
+  [collectionResourceIdsSelector, collectionMarkedResourcesSelector],
+  (collectionResourceIds, collectionMarkedResources) => {
+    const markedResourceIds = Object.keys(collectionMarkedResources.marked);
+    return markedResourceIds.reduce((acc, markedId) => {
+      if (collectionResourceIds[markedId]) {
+        acc.push(markedId);
+      }
+      return acc;
+    }, []);
+  },
 );
 
 export const patientSelector = createSelector(
@@ -179,11 +197,6 @@ export const orderedResourceTypeFiltersSelector = createSelector(
 export const lastAddedResourceIdSelector = createSelector(
   [collectionsSelector, selectedCollectionSelector],
   (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
-);
-
-export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
 );
 
 const subTypeResourceIdsSelector = createSelector(
@@ -575,5 +588,54 @@ export const filterTriggerDateRangeSelector = createSelector(
     }
 
     return defaultTimeRange;
+  },
+);
+
+export const resourceTypeFiltersParsedSelector = createSelector(
+  [
+    resourcesSelector,
+    orderedResourceTypeFiltersSelector,
+    collectionResourceIdsSelector,
+    collectionMarkedResourcesSelector,
+    collectionAndMarkedResourceIdsSelector,
+    showCollectionOnlySelector,
+    showMarkedOnlySelector,
+  ],
+  (
+    resources,
+    orderedResourceTypeFilters,
+    collectionResourceIds,
+    collectionMarkedResources,
+    collectionAndMarkedResourceIds,
+    showCollectionOnly,
+    showMarkedOnly,
+  ) => {
+    if (!showCollectionOnly && !showMarkedOnly) {
+      return orderedResourceTypeFilters;
+    }
+
+    let selectedIds;
+    if (showCollectionOnly && !showMarkedOnly) {
+      selectedIds = Object.keys(collectionResourceIds);
+    } if (!showCollectionOnly && showMarkedOnly) {
+      selectedIds = Object.keys(collectionMarkedResources.marked);
+    } if (showCollectionOnly && showMarkedOnly) {
+      selectedIds = collectionAndMarkedResourceIds;
+    }
+
+    const resourceTypesFromSelectedIds = [];
+    selectedIds.forEach((id) => {
+      const { type } = resources[id];
+      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
+        resourceTypesFromSelectedIds.push(type);
+      }
+    });
+
+    return resourceTypesFromSelectedIds.sort().reduce((acc, type) => {
+      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
+        acc[type] = orderedResourceTypeFilters[type];
+      }
+      return acc;
+    }, {});
   },
 );
