@@ -12,6 +12,7 @@ import {
 import { actionTypes } from '../action-types';
 import FhirClient from '../middleware/fhir-client';
 import { MOCK_AUTH } from '../../components/Login/SkipLoginButton';
+import flattenResources from './process-resources';
 
 const handleError = (error, message, type) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
@@ -48,13 +49,13 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in initializeFhirClient switchMap')),
 );
 
-const groupByType = (action$, state$) => action$.pipe(
+const flattenResponsePayload = (action$) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
-  map(() => {
-    const { resources } = state$.value;
+  map(({ payload }) => {
+    const flattened = flattenResources(payload);
     return ({
       type: actionTypes.GROUP_BY_TYPE,
-      payload: resources,
+      payload: flattened,
     });
   }),
 );
@@ -136,7 +137,7 @@ const requestReferences = (action$, state$, { fhirClient }) => action$.pipe(
 
 export const rootEpic = combineEpics(
   initializeFhirClient,
-  groupByType,
+  flattenResponsePayload,
   requestNextItems,
   requestReferences,
 );

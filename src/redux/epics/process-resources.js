@@ -83,9 +83,9 @@ const getTimelineDate = (resource) => {
 const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 
-const processResource = (acc, resource, depth) => {
+const processResource = (resource, acc = { resources: {}, contained: new Map() }, depth = 0) => {
   if (depth > MAX_DEPTH) {
-    return;
+    return acc;
   }
   const { id, resourceType } = resource;
   if (resourceType === 'Bundle') {
@@ -94,24 +94,27 @@ const processResource = (acc, resource, depth) => {
         // ^ e.g.: CarePlan, Claim, and ExplanationOfBenefit "searchsets" often have 0 results
         console.warn(`No resource.entry -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
       }
-      return;
+      return acc;
     }
     resource.entry.forEach((entry) => {
       const status = entry?.response?.status;
       if (!STATUSES_OK.includes(status)) {
         console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
       }
-      processResource(acc, entry.resource, depth + 1);
+      if (resource.contained && entry.resource?.id) {
+        acc.contained.set(entry.resource?.id, resource.contained);
+      }
+      processResource(entry.resource, acc, depth + 1);
     });
   } else {
     if (!id) {
       console.warn(`No id -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
-      return;
+      return acc;
     }
     if (acc[id]) {
       console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
     }
-    acc[id] = {
+    acc.resources[id] = {
       ...resource,
       // TODO: namespace these custom fields? ...or create a Map resources <==> custom fields?
       type: getType(resource),
@@ -119,6 +122,7 @@ const processResource = (acc, resource, depth) => {
       timelineDate: getTimelineDate(resource),
     };
   }
+  return acc;
 };
 
 export default processResource;

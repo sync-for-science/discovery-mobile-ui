@@ -1,21 +1,26 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { actionTypes } from '../action-types';
-import processResource from '../epics/process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
 
-export const flattenedResourcesReducer = (state = preloadedResources, action) => {
-  switch (action.type) {
+export const flattenedResourcesReducer = (state = preloadedResources, { type, payload }) => {
+  switch (type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResources;
     }
-    case actionTypes.FHIR_FETCH_SUCCESS: {
-      const newState = { ...state }; // detect mutation
-      processResource(newState, action.payload, 0);
-      return newState;
+    case actionTypes.GROUP_BY_TYPE: {
+      Object.entries(payload.resources).forEach(([id, resource]) => {
+        if (state[id]) {
+          console.error(`resource ${id} of type ${resource.resourceType} already added.`);
+        }
+      });
+      return {
+        ...state,
+        ...payload.resources,
+      };
     }
     default:
       return state;
@@ -31,21 +36,25 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     }
     case actionTypes.GROUP_BY_TYPE: {
       const { payload } = action;
-      return Object.entries(payload).reduce((acc, [id, resource]) => {
-        const { type: resourceType, subType } = resource;
-        if (!acc[resourceType]) {
-          acc[resourceType] = {};
-        }
-        if (!acc[resourceType][subType]) {
-          acc[resourceType][subType] = new Set();
-        }
-        if (acc[resourceType][subType].has(resource.id)) {
+      return Object.values(payload.resources).reduce((acc, resource) => {
+        const { id, type: resourceType, subType } = resource;
+        const prevType = acc[resourceType] ?? {};
+        const prevSubType = prevType[subType] ?? new Set();
+        if (prevSubType.has(resource.id)) {
           console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
         } else {
-          acc[resourceType][subType].add(resource.id);
+          prevSubType.add(resource.id);
         }
-        return acc;
-      }, {});
+        return {
+          ...acc,
+          ...{
+            [resourceType]: {
+              ...prevType,
+              [subType]: prevSubType,
+            },
+          },
+        };
+      }, state);
     }
     default:
       return state;
