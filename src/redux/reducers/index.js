@@ -4,21 +4,26 @@ import { produce } from 'immer';
 import { clone } from 'ramda';
 
 import { actionTypes } from '../action-types';
-import processResource from '../epics/process-resources';
 import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
 
-export const flattenedResourcesReducer = (state = preloadedResources, action) => {
-  switch (action.type) {
+export const flattenedResourcesReducer = (state = preloadedResources, { type, payload }) => {
+  switch (type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResources;
     }
-    case actionTypes.FHIR_FETCH_SUCCESS: {
-      const newState = { ...state }; // detect mutation
-      processResource(newState, action.payload, 0);
-      return newState;
+    case actionTypes.RESOURCE_BATCH: {
+      Object.entries(payload.resources).forEach(([id, resource]) => {
+        if (state[id]) {
+          console.warn(`resource ${id} of type ${resource.resourceType} already added.`); // eslint-disable-line no-console
+        }
+      });
+      return {
+        ...state,
+        ...payload.resources,
+      };
     }
     default:
       return state;
