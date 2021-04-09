@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { filteredResourceTypesSelector } from '../../redux/selectors'
+import { filteredResourceTypesSelector } from '../../redux/selectors';
 
 const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
@@ -40,7 +40,7 @@ CategoryButton.defaultProps = {
 const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
-  filteredResourceTypes
+  filteredResourceTypes,
 }) => (
   <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
     {Object.entries(filteredResourceTypes).map(([resourceType, filterOpen]) => {
