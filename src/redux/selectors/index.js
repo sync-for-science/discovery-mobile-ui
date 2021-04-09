@@ -57,6 +57,24 @@ export const activeCollectionShowMarkedOnlySelector = createSelector(
   (activeCollection) => activeCollection.showMarkedOnly,
 );
 
+export const activeCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.resourceIds,
+);
+
+const collectionAndMarkedResourceIdsSelector = createSelector(
+  [activeCollectionResourceIdsSelector, activeCollectionMarkedResourcesSelector],
+  (collectionResourceIds, collectionMarkedResources) => {
+    const markedResourceIds = Object.keys(collectionMarkedResources.marked);
+    return markedResourceIds.reduce((acc, markedId) => {
+      if (collectionResourceIds[markedId]) {
+        acc.push(markedId);
+      }
+      return acc;
+    }, []);
+  },
+);
+
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
@@ -196,11 +214,6 @@ export const lastAddedResourceIdSelector = createSelector(
   (collections, activeCollectionId) => collections[activeCollectionId].lastAddedResourceId,
 );
 
-export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, activeCollectionIdSelector],
-  (collections, activeCollectionId) => collections[activeCollectionId]?.resourceIds,
-);
-
 const subTypeResourceIdsSelector = createSelector(
   [resourcesSelector],
   (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
@@ -214,7 +227,7 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
-    collectionResourceIdsSelector,
+    activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
@@ -295,7 +308,7 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+  [timelineItemsInRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, activeCollectionResourceIdsSelector], // eslint-disable-line max-len
   (timelineItemsInRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
     let intervals = [];
     let intervalLength = 0;
@@ -590,5 +603,54 @@ export const filterTriggerDateRangeSelector = createSelector(
     }
 
     return defaultTimeRange;
+  },
+);
+
+export const resourceTypeFiltersParsedSelector = createSelector(
+  [
+    resourcesSelector,
+    orderedResourceTypeFiltersSelector,
+    activeCollectionResourceIdsSelector,
+    activeCollectionMarkedResourcesSelector,
+    collectionAndMarkedResourceIdsSelector,
+    showCollectionOnlySelector,
+    showMarkedOnlySelector,
+  ],
+  (
+    resources,
+    orderedResourceTypeFilters,
+    collectionResourceIds,
+    collectionMarkedResources,
+    collectionAndMarkedResourceIds,
+    showCollectionOnly,
+    showMarkedOnly,
+  ) => {
+    if (!showCollectionOnly && !showMarkedOnly) {
+      return orderedResourceTypeFilters;
+    }
+
+    let selectedIds;
+    if (showCollectionOnly && !showMarkedOnly) {
+      selectedIds = Object.keys(collectionResourceIds);
+    } if (!showCollectionOnly && showMarkedOnly) {
+      selectedIds = Object.keys(collectionMarkedResources.marked);
+    } if (showCollectionOnly && showMarkedOnly) {
+      selectedIds = collectionAndMarkedResourceIds;
+    }
+
+    const resourceTypesFromSelectedIds = [];
+    selectedIds.forEach((id) => {
+      const { type } = resources[id];
+      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
+        resourceTypesFromSelectedIds.push(type);
+      }
+    });
+
+    return resourceTypesFromSelectedIds.sort().reduce((acc, type) => {
+      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
+        acc[type] = orderedResourceTypeFilters[type];
+      }
+      return acc;
+    }, {});
   },
 );
