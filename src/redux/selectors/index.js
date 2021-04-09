@@ -541,9 +541,9 @@ export const filterTriggerDateRangeSelector = createSelector(
       .sort((a, b) => a.timelineDate - b.timelineDate);
 
     const createDateRange = (res) => ({
-      dateRangeStart: startOfDay(res[0].timelineDate),
+      dateRangeStart: startOfDay(res[0]?.timelineDate),
       dateRangeEnd: endOfDay(
-        res[res.length - 1].timelineDate,
+        res[res.length - 1]?.timelineDate,
       ),
     });
 
