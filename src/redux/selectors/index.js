@@ -585,8 +585,8 @@ export const filterTriggerDateRangeSelector = createSelector(
 const filteredResourceIdsSelector = createSelector(
   [
     resourcesSelector,
-    collectionResourceIdsSelector, 
-    collectionMarkedResourcesSelector, 
+    collectionResourceIdsSelector,
+    collectionMarkedResourcesSelector,
     collectionAndMarkedResourceIdsSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
@@ -600,29 +600,29 @@ const filteredResourceIdsSelector = createSelector(
     showMarkedOnly,
   ) => {
     if (showCollectionOnly && !showMarkedOnly) {
-      return Object.keys(collectionResourceIds)
+      return Object.keys(collectionResourceIds);
     }
     if (!showCollectionOnly && showMarkedOnly) {
-      return Object.keys(collectionMarkedResources.marked)
+      return Object.keys(collectionMarkedResources.marked);
     }
     if (showCollectionOnly && showMarkedOnly) {
-      return collectionAndMarkedResourceIds
+      return collectionAndMarkedResourceIds;
     }
     // therefore !showMarkedOnly && !showMarkedOnly
-    return Object.keys(resources)
-  }
-)
+    return Object.keys(resources);
+  },
+);
 
 export const filteredResourceTypesSelector = createSelector(
   [
     resourcesSelector,
     resourceTypeFiltersSelector,
-    filteredResourceIdsSelector
+    filteredResourceIdsSelector,
   ],
   (
     resources,
     resourceTypeFilters,
-    filteredResourceIds
+    filteredResourceIds,
   ) => {
     const resourceTypesFromSelectedIds = [];
     filteredResourceIds.forEach((id) => {
