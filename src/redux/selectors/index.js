@@ -200,15 +200,6 @@ export const patientAgeAtResourcesSelector = createSelector(
   },
 );
 
-export const orderedResourceTypeFiltersSelector = createSelector(
-  [activeCollectionResourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
-    .reduce((acc, resourceType) => {
-      acc[resourceType] = resourceTypeFilters[resourceType];
-      return acc;
-    }, {}),
-);
-
 export const lastAddedResourceIdSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId].lastAddedResourceId,
@@ -225,7 +216,7 @@ const subTypeResourceIdsSelector = createSelector(
   }, {}),
 );
 
-const filteredResourceTypesSelector = createSelector(
+const accordionDataBuilderSelector = createSelector(
   [
     activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
@@ -419,7 +410,7 @@ export const timelineIntervalsSelector = createSelector(
 
 export const accordionsContainerDataSelector = createSelector(
   [
-    filteredResourceTypesSelector,
+    accordionDataBuilderSelector,
     activeCollectionResourceTypeSelector,
     activeCollectionShowCollectionOnlySelector,
     activeCollectionShowMarkedOnlySelector,
@@ -606,10 +597,9 @@ export const filterTriggerDateRangeSelector = createSelector(
   },
 );
 
-export const resourceTypeFiltersParsedSelector = createSelector(
+const filteredResourceIdsSelector = createSelector(
   [
     resourcesSelector,
-    orderedResourceTypeFiltersSelector,
     activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
     collectionAndMarkedResourceIdsSelector,
@@ -618,37 +608,48 @@ export const resourceTypeFiltersParsedSelector = createSelector(
   ],
   (
     resources,
-    orderedResourceTypeFilters,
     collectionResourceIds,
     collectionMarkedResources,
     collectionAndMarkedResourceIds,
     showCollectionOnly,
     showMarkedOnly,
   ) => {
-    if (!showCollectionOnly && !showMarkedOnly) {
-      return orderedResourceTypeFilters;
-    }
-
-    let selectedIds;
     if (showCollectionOnly && !showMarkedOnly) {
-      selectedIds = Object.keys(collectionResourceIds);
-    } if (!showCollectionOnly && showMarkedOnly) {
-      selectedIds = Object.keys(collectionMarkedResources.marked);
-    } if (showCollectionOnly && showMarkedOnly) {
-      selectedIds = collectionAndMarkedResourceIds;
+      return Object.keys(collectionResourceIds)
     }
+    if (!showCollectionOnly && showMarkedOnly) {
+      return Object.keys(collectionMarkedResources.marked)
+    }
+    if (showCollectionOnly && showMarkedOnly) {
+      return collectionAndMarkedResourceIds
+    }
+    // therefore !showMarkedOnly && !showMarkedOnly
+    return Object.keys(resources)
+  }
+)
 
+export const filteredResourceTypesSelector = createSelector(
+  [
+    resourcesSelector,
+    resourceTypeFiltersSelector,
+    filteredResourceIdsSelector
+  ],
+  (
+    resources,
+    resourceTypeFilters,
+    filteredResourceIds
+  ) => {
     const resourceTypesFromSelectedIds = [];
-    selectedIds.forEach((id) => {
+    filteredResourceIds.forEach((id) => {
       const { type } = resources[id];
-      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
+      if (Object.keys(resourceTypeFilters).includes(type)) {
         resourceTypesFromSelectedIds.push(type);
       }
     });
 
     return resourceTypesFromSelectedIds.sort().reduce((acc, type) => {
-      if (Object.keys(orderedResourceTypeFilters).includes(type)) {
-        acc[type] = orderedResourceTypeFilters[type];
+      if (Object.keys(resourceTypeFilters).includes(type)) {
+        acc[type] = resourceTypeFilters[type];
       }
       return acc;
     }, {});
