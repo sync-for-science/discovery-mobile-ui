@@ -4,7 +4,7 @@ import { produce } from 'immer';
 import { clone } from 'ramda';
 
 import { actionTypes } from '../action-types';
-import processResource from './process-resources';
+import processResource from '../epics/process-resources';
 import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
