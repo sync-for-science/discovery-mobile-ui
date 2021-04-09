@@ -64,7 +64,7 @@ const CatalogScreen = ({
         </View>
         <ScrollView>
           { selectedResourceType && (
-            <SubTypeAccordionsContainer fromCatalogScreen />
+            <SubTypeAccordionsContainer />
           )}
         </ScrollView>
       </FilterDrawer>

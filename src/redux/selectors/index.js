@@ -427,49 +427,46 @@ export const accordionsContainerDataSelector = createSelector(
       return subTypeData;
     }
 
-    if (fromCatalogScreen) {
-      // creates object of subType: subTypeValues only within
-      // the selectedResourceType and filter settings
-      if (!selectedResourceType) {
-        return {};
-      }
-
-      let count;
-      let resourceIds;
-
-      if (!showCollectionOnly && !showMarkedOnly) {
-        resourceIds = 'dateFilteredResourceIds';
-        count = 'dateFilteredCount';
-      }
-
-      if (showCollectionOnly && !showMarkedOnly) {
-        resourceIds = 'collectionDateFilteredResourceIds';
-        count = 'collectionDateFilteredCount';
-      }
-
-      if (!showCollectionOnly && showMarkedOnly) {
-        resourceIds = 'markedDateFilteredResourceIds';
-        count = 'markedDateFilteredCount';
-      }
-
-      if (showCollectionOnly && showMarkedOnly) {
-        resourceIds = 'collectionAndMarkedResourceIds';
-        count = 'collectionAndMarkedCount';
-      }
-
-      Object.entries(filteredResourceTypes[selectedResourceType])
-        .forEach(([subType, subTypeValues]) => {
-          if (subTypeValues[count] > 0) {
-            if (!subTypeData[subType]) {
-              subTypeData[subType] = {};
-            }
-            subTypeData[subType].resourceIds = subTypeValues[resourceIds];
-            subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
-          }
-        });
-      return subTypeData;
+    // data for CatalogScreen SubTypeAccordionsContainer
+    // creates object of subType: subTypeValues only within
+    // the selectedResourceType and filter settings
+    if (!selectedResourceType) {
+      return {};
     }
 
-    return {};
+    let count;
+    let resourceIds;
+
+    if (!showCollectionOnly && !showMarkedOnly) {
+      resourceIds = 'dateFilteredResourceIds';
+      count = 'dateFilteredCount';
+    }
+
+    if (showCollectionOnly && !showMarkedOnly) {
+      resourceIds = 'collectionDateFilteredResourceIds';
+      count = 'collectionDateFilteredCount';
+    }
+
+    if (!showCollectionOnly && showMarkedOnly) {
+      resourceIds = 'markedDateFilteredResourceIds';
+      count = 'markedDateFilteredCount';
+    }
+
+    if (showCollectionOnly && showMarkedOnly) {
+      resourceIds = 'collectionAndMarkedResourceIds';
+      count = 'collectionAndMarkedCount';
+    }
+
+    Object.entries(filteredResourceTypes[selectedResourceType])
+      .forEach(([subType, subTypeValues]) => {
+        if (subTypeValues[count] > 0) {
+          if (!subTypeData[subType]) {
+            subTypeData[subType] = {};
+          }
+          subTypeData[subType].resourceIds = subTypeValues[resourceIds];
+          subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
+        }
+      });
+    return subTypeData;
   },
 );
