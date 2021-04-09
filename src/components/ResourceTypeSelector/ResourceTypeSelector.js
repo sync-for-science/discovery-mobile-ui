@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text,
+  StyleSheet, Text, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
@@ -21,9 +21,11 @@ const CategoryButton = ({ resourceType, selectedResourceType, selectResourceType
     === resourceType ? styles.buttonSelectedText : styles.buttonText;
 
   return (
-    <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-      <Text style={buttonTextStyle}>{categoryDisplay}</Text>
-    </Button>
+    <View>
+      <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+        <Text style={buttonTextStyle}>{categoryDisplay}</Text>
+      </Button>
+    </View>
   );
 };
 
@@ -41,23 +43,40 @@ const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
   filteredResourceTypes,
-}) => (
-  <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-    {Object.entries(filteredResourceTypes).map(([resourceType, filterOpen]) => {
-      if (filterOpen) {
-        return (
-          <CategoryButton
-            key={resourceType}
-            resourceType={resourceType}
-            selectedResourceType={selectedResourceType}
-            selectResourceTypeAction={selectResourceTypeAction}
-          />
-        );
-      }
-      return null;
-    })}
-  </ScrollView>
-);
+}) => {
+  const hasResourceTypes = Object.keys(filteredResourceTypes).length > 0;
+
+  if (!hasResourceTypes) {
+    return (
+      <View style={styles.noResourceTypesTextContainer}>
+        <Text style={styles.noResourceTypesText}>(No Resources to Filter)</Text>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView
+      style={styles.root}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
+    >
+      {Object.entries(filteredResourceTypes).map(([resourceType, filterOpen]) => {
+        if (filterOpen) {
+          return (
+            <CategoryButton
+              key={resourceType}
+              resourceType={resourceType}
+              selectedResourceType={selectedResourceType}
+              selectResourceTypeAction={selectResourceTypeAction}
+            />
+          );
+        }
+        return null;
+      })}
+    </ScrollView>
+  );
+};
 
 ResourceTypeSelector.propTypes = {
   filteredResourceTypes: shape({}).isRequired,
@@ -84,9 +103,7 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: Colors.mediumgrey,
     borderColor: 'gray',
-    marginTop: 20,
     flexDirection: 'row',
-    padding: 10,
   },
   button: {
     paddingHorizontal: 10,
@@ -103,5 +120,22 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
+  },
+  contentContainerStyle: {
+    flexDirection: 'row',
+    height: 65,
+    alignItems: 'center',
+  },
+  noResourceTypesTextContainer: {
+    height: 65,
+    width: '100%',
+    backgroundColor: Colors.mediumgrey,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  noResourceTypesText: {
+    color: Colors.darkgrey,
+    fontStyle: 'italic',
   },
 });
