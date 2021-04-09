@@ -525,12 +525,20 @@ export const filterTriggerDateRangeSelector = createSelector(
     const sortedCombinedResources = [...collectionResources, ...markedResources]
       .sort((a, b) => a.timelineDate - b.timelineDate);
 
-    const createDateRange = (res) => ({
-      dateRangeStart: startOfDay(res[0]?.timelineDate),
-      dateRangeEnd: endOfDay(
-        res[res.length - 1]?.timelineDate,
-      ),
-    });
+    const createDateRange = (res) => {
+      if (res.length === 0) {
+        return ({
+          dateRangeStart: undefined,
+          dateRangeEnd: undefined,
+        });
+      }
+      return ({
+        dateRangeStart: startOfDay(res[0]?.timelineDate),
+        dateRangeEnd: endOfDay(
+          res[res.length - 1]?.timelineDate,
+        ),
+      });
+    };
 
     // feed to CollectionSegmentControl
     if (collection) {
