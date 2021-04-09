@@ -404,7 +404,7 @@ export const accordionsContainerDataSelector = createSelector(
     showMarkedOnly,
     ownProps,
   ) => {
-    const { fromContentPanel, fromCatalogScreen } = ownProps;
+    const { fromContentPanel } = ownProps;
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
     }
