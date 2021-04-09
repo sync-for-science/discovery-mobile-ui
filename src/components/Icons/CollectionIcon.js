@@ -16,6 +16,7 @@ const CollectionIcon = ({
   addResourceToCollectionAction,
   removeResourceFromCollectionAction,
   collectionResourceIds,
+  showCollectionOnly,
 }) => {
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = collectionResourceIds[id];
@@ -27,7 +28,12 @@ const CollectionIcon = ({
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
-  const iconStyle = resourceCount ? styles.hasResource : null;
+  // eslint-disable-next-line no-nested-ternary, max-len
+  const iconStyle = resourceCount
+    ? (showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource)
+    : null;
+
+  const textStyle = showCollectionOnly ? styles.textDisabled : styles.text;
 
   return (
     <TouchableOpacity
@@ -36,8 +42,9 @@ const CollectionIcon = ({
         iconStyle,
       ]}
       onPress={handlePress}
+      disabled={showCollectionOnly}
     >
-      <Text style={styles.text}>{iconCount}</Text>
+      <Text style={textStyle}>{iconCount}</Text>
     </TouchableOpacity>
   );
 };
@@ -49,10 +56,12 @@ CollectionIcon.propTypes = {
   addResourceToCollectionAction: func.isRequired,
   removeResourceFromCollectionAction: func.isRequired,
   collectionResourceIds: shape({}).isRequired,
+  showCollectionOnly: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionResourceIds: collectionResourceIdsSelector(state),
+  showCollectionOnly: state.showCollectionOnly,
 });
 
 const mapDispatchToProps = {
@@ -64,7 +73,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionIcon);
 
 const styles = StyleSheet.create({
   text: {
-    color: 'white',
+    color: 'black',
+  },
+  textDisabled: {
+    color: Colors.darkgrey2,
   },
   base: {
     height: 30,
@@ -78,6 +90,11 @@ const styles = StyleSheet.create({
   hasResource: {
     borderColor: Colors.collectionIcon,
     backgroundColor: Colors.collectionIcon,
+    borderWidth: 2,
+  },
+  hasResourceDisabled: {
+    borderColor: Colors.collectionIconDisabled,
+    backgroundColor: Colors.collectionIconDisabled,
     borderWidth: 2,
   },
 });

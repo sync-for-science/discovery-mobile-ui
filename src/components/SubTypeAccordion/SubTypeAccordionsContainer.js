@@ -3,31 +3,28 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shape, bool } from 'prop-types';
+import { shape } from 'prop-types';
+import { accordionsContainerDataSelector } from '../../redux/selectors';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => (
+const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
   <View style={styles.root}>
     <View style={styles.container}>
-      {Object.entries(subTypeData)
+      {Object.entries(accordionsContainerData)
         .sort(sortEntriesBySubType)
         .map(([subType, values]) => {
-          const resourceIds = fromContentPanel
-            ? values.collectionDateFilteredResourceIds
-            : values.dateFilteredResourceIds;
-
-          if (resourceIds.length === 0) {
+          if (values.length === 0) {
             return null;
           }
           return (
             <SubTypeAccordion
               key={subType}
               subType={subType}
-              resourceIds={resourceIds}
-              dateFilteredCount={values.dateFilteredCount}
+              resourceIds={values.resourceIds}
+              subTypeCount={values.subTypeCount}
             />
           );
         })}
@@ -36,16 +33,11 @@ const SubTypeAccordionsContainer = ({ subTypeData, fromContentPanel }) => (
 );
 
 SubTypeAccordionsContainer.propTypes = {
-  subTypeData: shape({}).isRequired,
-  fromContentPanel: bool,
+  accordionsContainerData: shape({}).isRequired,
 };
 
-SubTypeAccordionsContainer.defaultProps = {
-  fromContentPanel: false,
-};
-
-const mapStateToProps = (state) => ({
-  resourceTypeFilters: state.resourceTypeFilters,
+const mapStateToProps = (state, ownProps) => ({
+  accordionsContainerData: accordionsContainerDataSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);

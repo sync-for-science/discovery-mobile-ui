@@ -9,7 +9,7 @@ import { Text } from 'native-base';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
-  markedResourcesSelector,
+  collectionMarkedResourcesSelector,
 } from '../../redux/selectors';
 import { MARKED, FOCUSED } from '../../constants/marked-status';
 
@@ -19,11 +19,10 @@ const FocusedIcon = ({
   isAccordion,
   updateFocusedResources,
   markedResources,
+  collectionId,
 }) => {
   const { marked } = markedResources;
-
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => (marked[id] ? acc + 1 : acc), 0);
-
   const focusedCount = resourceIds.reduce((acc, id) => (marked[id] === FOCUSED ? acc + 1 : acc), 0);
   const markedCount = resourceIds.reduce((acc, id) => (marked[id] === MARKED ? acc + 1 : acc), 0);
   const allAreFocused = resourceIds.length === focusedCount;
@@ -37,10 +36,14 @@ const FocusedIcon = ({
         // eslint-disable-next-line max-len, no-nested-ternary
         [id]: (marked[id] && fullyFocused) ? MARKED : (marked[id] === MARKED ? FOCUSED : marked[id]),
       }), {});
-      updateFocusedResources(newSubType, resourceIdsMap);
+      updateFocusedResources(newSubType, resourceIdsMap, collectionId);
     } else {
       // (unmarked or marked) > focused > marked
-      updateFocusedResources(subType, { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) });
+      updateFocusedResources(
+        subType,
+        { [resourceIds[0]]: (focusedCount ? MARKED : FOCUSED) },
+        collectionId,
+      );
     }
   };
 
@@ -70,21 +73,24 @@ FocusedIcon.propTypes = {
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
+  collectionId: string.isRequired,
 };
 
 FocusedIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  markedResources: markedResourcesSelector(state),
+  markedResources: collectionMarkedResourcesSelector(state),
+  collectionId: state.selectedCollection,
 });
 
 const mapDispatchToProps = {
-  updateFocusedResources: (subType, resourceIdsMap) => ({
+  updateFocusedResources: (subType, resourceIdsMap, collectionId) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,
+      collectionId,
     },
   }),
 };

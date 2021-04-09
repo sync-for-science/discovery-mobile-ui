@@ -1,5 +1,5 @@
 import {
-  arrayOf, shape, func, string, bool,
+  arrayOf, shape, func, string, bool, number,
 } from 'prop-types';
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
@@ -9,7 +9,7 @@ import { Text } from 'native-base';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
-  markedResourcesSelector,
+  collectionMarkedResourcesSelector,
 } from '../../redux/selectors';
 import { UNMARKED, FOCUSED } from '../../constants/marked-status';
 
@@ -19,11 +19,14 @@ const MarkedIcon = ({
   isAccordion,
   updateMarkedResources,
   markedResources,
+  collectionId,
+  showMarkedOnly,
+  subTypeCount,
 }) => {
   const { marked } = markedResources;
-
   const markedOrFocusedCount = resourceIds.reduce((acc, id) => ((marked[id]) ? acc + 1 : acc), 0);
-  const allAreMarked = markedOrFocusedCount === resourceIds.length;
+  const totalCount = isAccordion ? subTypeCount : resourceIds.length;
+  const allAreMarked = markedOrFocusedCount === totalCount;
 
   const handlePress = () => {
     if (isAccordion) { // could be one or more resourceId:
@@ -32,22 +35,41 @@ const MarkedIcon = ({
         [id]: (allAreMarked ? UNMARKED : FOCUSED),
       }), {});
       const newSubType = allAreMarked ? '' : subType; // no subType if turning all off
-      updateMarkedResources(newSubType, resourceIdsMap);
+      updateMarkedResources(newSubType, resourceIdsMap, collectionId);
     } else { // only one resourceId:
       if (markedOrFocusedCount) {
-        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED });
+        updateMarkedResources(subType, { [resourceIds[0]]: UNMARKED }, collectionId);
       }
       if (!markedOrFocusedCount) { // one resourceId, that neither marked nor focused:
-        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, true);
+        updateMarkedResources(subType, { [resourceIds[0]]: FOCUSED }, collectionId);
       }
     }
   };
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
-  // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = allAreMarked ? styles.fullyMarked : (markedOrFocusedCount ? styles.hasMarked : styles.unmarked);
-  // eslint-disable-next-line no-nested-ternary, max-len
-  const textStyle = allAreMarked ? textStyles.fullyMarked : (markedOrFocusedCount ? textStyles.hasMarked : textStyles.unmarked);
+
+  let iconStyle;
+  let textStyle;
+  if (allAreMarked) {
+    if (showMarkedOnly) {
+      iconStyle = styles.fullyMarkedDisabled;
+      textStyle = textStyles.fullyMarkedDisabled;
+    } else {
+      iconStyle = styles.fullyMarked;
+      textStyle = textStyles.fullyMarked;
+    }
+  } else if (markedOrFocusedCount) {
+    if (showMarkedOnly) {
+      iconStyle = styles.hasMarkedDisabled;
+      textStyle = textStyles.hasMarkedDisabled;
+    } else {
+      iconStyle = styles.hasMarked;
+      textStyle = textStyles.hasMarked;
+    }
+  } else {
+    iconStyle = styles.unmarked;
+    textStyle = textStyles.unmarked;
+  }
 
   return (
     <TouchableOpacity
@@ -56,8 +78,9 @@ const MarkedIcon = ({
         iconStyle,
       ]}
       onPress={handlePress}
+      disabled={showMarkedOnly}
     >
-      <Text style={[textStyle.base, textStyle]}>{iconCount}</Text>
+      <Text style={[textStyles.base, textStyle]}>{iconCount}</Text>
     </TouchableOpacity>
   );
 };
@@ -67,26 +90,32 @@ MarkedIcon.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   isAccordion: bool.isRequired,
   updateMarkedResources: func.isRequired,
-  // updateFocusedResources: func.isRequired,
   markedResources: shape({
     focusedSubtype: string.isRequired,
     marked: shape({}).isRequired,
   }).isRequired,
+  collectionId: string.isRequired,
+  showMarkedOnly: bool.isRequired,
+  subTypeCount: number,
 };
 
 MarkedIcon.defaultProps = {
+  subTypeCount: null,
 };
 
 const mapStateToProps = (state) => ({
-  markedResources: markedResourcesSelector(state),
+  markedResources: collectionMarkedResourcesSelector(state),
+  collectionId: state.selectedCollection,
+  showMarkedOnly: state.showMarkedOnly,
 });
 
 const mapDispatchToProps = {
-  updateMarkedResources: (subType, resourceIdsMap) => ({
+  updateMarkedResources: (subType, resourceIdsMap, collectionId) => ({
     type: actionTypes.UPDATE_MARKED_RESOURCES,
     payload: {
       subType,
       resourceIdsMap,
+      collectionId,
     },
   }),
 };
@@ -112,6 +141,13 @@ const styles = StyleSheet.create({
   hasMarked: {
     borderColor: Colors.fullyMarked,
   },
+  fullyMarkedDisabled: {
+    borderColor: Colors.lightgrey,
+    borderWidth: 2,
+  },
+  hasMarkedDisabled: {
+    borderColor: Colors.lightgrey,
+  },
   unmarked: {
     borderColor: Colors.unmarked,
   },
@@ -127,6 +163,13 @@ const textStyles = StyleSheet.create({
   },
   hasMarked: {
     color: Colors.fullyMarked,
+  },
+  fullyMarkedDisabled: {
+    color: Colors.lightgrey,
+    fontWeight: 'bold',
+  },
+  hasMarkedDisabled: {
+    color: Colors.lightgrey,
   },
   unmarked: {
   },
