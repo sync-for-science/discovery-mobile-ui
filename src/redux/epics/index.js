@@ -52,10 +52,10 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
 const flattenResponsePayload = (action$) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
   map(({ payload }) => {
-    const flattened = flattenResources(payload);
+    const { resources, context } = flattenResources(payload);
     return ({
       type: actionTypes.GROUP_BY_TYPE,
-      payload: flattened,
+      payload: { resources, context },
     });
   }),
 );

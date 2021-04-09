@@ -83,7 +83,7 @@ const getTimelineDate = (resource) => {
 const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 
-const processResource = (resource, acc = { resources: {}, contained: new Map() }, depth = 0) => {
+const processResource = (resource, acc = { resources: {}, context: new Map() }, depth = 0) => {
   if (depth > MAX_DEPTH) {
     return acc;
   }
@@ -102,7 +102,7 @@ const processResource = (resource, acc = { resources: {}, contained: new Map() }
         console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
       }
       if (resource.contained && entry.resource?.id) {
-        acc.contained.set(entry.resource?.id, resource.contained);
+        acc.context.set(entry.resource?.id, resource.contained);
       }
       processResource(entry.resource, acc, depth + 1);
     });
