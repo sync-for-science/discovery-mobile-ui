@@ -56,17 +56,20 @@ const FilterDrawer = ({
   children,
   filteredResourceTypes,
 }) => {
+  const hasResourceTypes = Object.keys(filteredResourceTypes).length > 0;
   const renderDrawer = () => (
     <View style={styles.drawerContainer}>
-      <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(filteredResourceTypes).map(([resourceType, value]) => (
-        <ResourceTypeFilter
-          key={resourceType}
-          resourceType={resourceType}
-          filterOpen={value}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-        />
-      ))}
+      <Text style={styles.drawerTitle}>Category Filters</Text>
+      { hasResourceTypes
+        ? Object.entries(filteredResourceTypes).map(([resourceType, value]) => (
+          <ResourceTypeFilter
+            key={resourceType}
+            resourceType={resourceType}
+            filterOpen={value}
+            toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          />
+        ))
+        : <Text style={styles.noFiltersText}>(No Resources to Filter)</Text>}
     </View>
   );
 
@@ -141,5 +144,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginVertical: 10,
+  },
+  noFiltersText: {
+    color: Colors.darkgrey,
+    fontStyle: 'italic',
+    width: '100%',
+    textAlign: 'center',
   },
 });
