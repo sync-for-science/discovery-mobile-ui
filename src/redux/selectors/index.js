@@ -483,8 +483,8 @@ export const accordionsContainerDataSelector = createSelector(
         }
       });
     return subTypeData;
-  }
-)
+  },
+);
 
 export const filterTriggerDateRangeSelector = createSelector(
   [
