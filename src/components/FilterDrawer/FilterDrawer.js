@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
-import { filteredResourceTypesSelector } from '../../redux/selectors';
+import { filteredResourceTypesSelector, activeCollectionResourceTypeFiltersSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
   const label = PLURAL_RESOURCE_TYPES[resourceType];
@@ -54,12 +54,12 @@ ResourceTypeFilter.propTypes = {
 const FilterDrawer = ({
   toggleResourceTypeFilterAction,
   children,
-  filteredResourceTypes,
+  resourceTypeFilters,
 }) => {
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(filteredResourceTypes).map(([resourceType, value]) => (
+      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
@@ -101,13 +101,13 @@ const FilterDrawer = ({
 };
 
 FilterDrawer.propTypes = {
-  filteredResourceTypes: shape({}).isRequired,
+  resourceTypeFilters: shape({}).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  filteredResourceTypes: filteredResourceTypesSelector(state),
+  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -132,5 +132,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
     marginVertical: 10,
+  },
+  noFiltersText: {
+    color: Colors.darkgrey,
+    fontStyle: 'italic',
+    width: '100%',
+    textAlign: 'center',
   },
 });
