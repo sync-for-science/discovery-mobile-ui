@@ -11,7 +11,7 @@ export const flattenedResourcesReducer = (state = preloadedResources, { type, pa
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResources;
     }
-    case actionTypes.GROUP_BY_TYPE: {
+    case actionTypes.RESOURCE_BATCH: {
       Object.entries(payload.resources).forEach(([id, resource]) => {
         if (state[id]) {
           console.error(`resource ${id} of type ${resource.resourceType} already added.`);
@@ -34,7 +34,7 @@ export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, 
     case actionTypes.CLEAR_PATIENT_DATA: {
       return preloadedResourceIdsGroupedByType;
     }
-    case actionTypes.GROUP_BY_TYPE: {
+    case actionTypes.RESOURCE_BATCH: {
       const { payload } = action;
       return Object.values(payload.resources).reduce((acc, resource) => {
         const { id, type: resourceType, subType } = resource;

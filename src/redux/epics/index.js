@@ -54,7 +54,7 @@ const flattenResponsePayload = (action$) => action$.pipe(
   map(({ payload }) => {
     const { resources, context } = flattenResources(payload);
     return ({
-      type: actionTypes.GROUP_BY_TYPE,
+      type: actionTypes.RESOURCE_BATCH,
       payload: { resources, context },
     });
   }),
