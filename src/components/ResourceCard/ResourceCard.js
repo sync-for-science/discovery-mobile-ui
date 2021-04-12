@@ -106,14 +106,6 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource, patientAgeAtResources[resourceId])}
       </View>
-      <BaseDivider />
-      <View style={styles.buttonContainer}>
-        <AddRemoveButton
-          inCollection={!!collectionResourceIds[resourceId]}
-          collectionId={collectionId}
-          resourceId={resourceId}
-        />
-      </View>
     </View>
   );
 };
@@ -141,12 +133,11 @@ export default connect(mapStateToProps, null)(ResourceCard);
 
 const styles = StyleSheet.create({
   root: {
-    marginVertical: 10,
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderTopColor: Colors.lightgrey,
-    borderBottomColor: Colors.lightgrey,
+    borderTopColor: Colors.resourceCardBorder,
+    borderBottomColor: Colors.resourceCardBorder,
   },
   header: {
     flexDirection: 'row',
@@ -158,14 +149,6 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 10,
     paddingBottom: 15,
-  },
-  buttonContainer: {
-    padding: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  removeButton: {
-    color: 'red',
   },
   iconContainer: {
     marginLeft: 10,

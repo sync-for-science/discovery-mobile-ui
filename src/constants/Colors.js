@@ -40,4 +40,5 @@ export default {
   countIcon: gray5,
   screenBackground: gray4,
   destructive: red1,
+  resourceCardBorder: gray4,
 };
