@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { bool, func, shape } from 'prop-types';
+import { array, bool, func, shape } from 'prop-types';
 
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionShowMarkedOnlySelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
+import { activeCollectionShowMarkedOnlySelector, filterTriggerDateRangeSelector, activeCollectionMarkedResourcesSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -17,6 +17,7 @@ const MarkedSegmentControl = ({
   toggleShowMarkedOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
+  markedResources,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
@@ -24,6 +25,8 @@ const MarkedSegmentControl = ({
     toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
     updateDateRangeFilter(filterTriggerDateRange);
   };
+  const markedResourcesIds = Object.keys(markedResources)
+  const isEnabled = markedResourcesIds.length > 0
 
   return (
     <View style={styles.root}>
@@ -31,6 +34,7 @@ const MarkedSegmentControl = ({
         values={['All Records', 'Highlighted Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
+        enabled={isEnabled}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
@@ -42,11 +46,13 @@ MarkedSegmentControl.propTypes = {
   toggleShowMarkedOnlyAction: func.isRequired,
   filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
+  markedResources: array.isRequired
 };
 
 const mapStateToProps = (state) => ({
   showMarkedOnly: activeCollectionShowMarkedOnlySelector(state),
-  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps)
+  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
+  markedResources: activeCollectionMarkedResourcesSelector(state)
 });
 
 const mapDispatchToProps = {
