@@ -5,19 +5,25 @@ import {
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { func, string } from 'prop-types';
+import { arrayOf, func, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
+import { collectionMarkedResourcesIdsSelector, collectionMarkedResourcesSelector, collectionResourceIdsSelectorArray } from '../../redux/selectors';
+
 
 const CatalogModal = ({
   collectionId,
   clearCollectionAction,
   clearMarkedResourcesAction,
+  collectionMarkedResourcesIds,
+  collectionResourcesIds
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const hasMarkedIds = collectionMarkedResourcesIds.length > 0
+  const hasCollectionIds = collectionResourcesIds.length > 0
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
@@ -86,13 +92,35 @@ const CatalogModal = ({
               </TouchableOpacity>
             </View>
             <View style={styles.controlsContainer}>
-              <CollectionSegmentControl collection />
-              <MarkedSegmentControl marked />
-              <TouchableOpacity style={styles.button} onPress={handleClearCollection}>
-                <BaseText variant="buttonDestructive">Clear Collection</BaseText>
+              <CollectionSegmentControl 
+                collection 
+                hasCollectionIds
+              />
+              <MarkedSegmentControl 
+                marked 
+                hasMarkedIds
+              />
+              <TouchableOpacity 
+                style={styles.button} 
+                onPress={handleClearCollection} 
+                disabled={!hasCollectionIds}
+              >
+                <BaseText 
+                  variant={hasCollectionIds ? "buttonDestructive" : "buttonDisabled"}
+                >
+                  Clear Collection
+                </BaseText>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleClearMarked}>
-                <BaseText variant="buttonDestructive">Clear Highlighted Records</BaseText>
+              <TouchableOpacity 
+                style={styles.button} 
+                onPress={handleClearMarked}
+                disabled={!hasMarkedIds}
+              >
+                <BaseText 
+                  variant={hasMarkedIds ? "buttonDestructive" : "buttonDisabled"}
+                >
+                  Clear Highlighted Records
+                </BaseText>
               </TouchableOpacity>
             </View>
           </View>
@@ -113,6 +141,8 @@ CatalogModal.propTypes = {
   collectionId: string.isRequired,
   clearCollectionAction: func.isRequired,
   clearMarkedResourcesAction: func.isRequired,
+  collectionMarkedResourcesIds: arrayOf(string.isRequired).isRequired,
+  collectionResourcesIds: arrayOf(string.isRequired).isRequired,
 };
 
 const mapDispatchToProps = {
@@ -120,7 +150,12 @@ const mapDispatchToProps = {
   clearMarkedResourcesAction: clearMarkedResources,
 };
 
-export default connect(null, mapDispatchToProps)(CatalogModal);
+const mapStateToProps = (state) => ({
+  collectionMarkedResourcesIds: collectionMarkedResourcesIdsSelector(state),
+  collectionResourcesIds: collectionResourceIdsSelectorArray(state),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogModal);
 
 const styles = StyleSheet.create({
   root: {

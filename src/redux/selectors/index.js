@@ -62,6 +62,7 @@ export const activeCollectionResourceIdsSelector = createSelector(
   (activeCollection) => activeCollection.resourceIds,
 );
 
+// replace with activeCollectionMarkedResourcesSelector
 export const collectionMarkedResourcesIdsSelector = createSelector(
   [collectionSelector],
   (collection) => Object.keys(collection.markedResources.marked),
