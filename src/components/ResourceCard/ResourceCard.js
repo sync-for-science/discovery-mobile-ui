@@ -13,19 +13,16 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import BaseDivider from '../Generic/BaseDivider';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import {
   patientSelector,
   patientAgeAtResourcesSelector,
-  collectionResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
-import AddRemoveButton from './AddRemoveButton';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -74,7 +71,6 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   collectionId,
-  collectionResourceIds,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
@@ -115,18 +111,12 @@ ResourceCard.propTypes = {
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
   collectionId: string.isRequired,
-  collectionResourceIds: shape({}),
-};
-
-ResourceCard.defaultProps = {
-  collectionResourceIds: {},
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  collectionResourceIds: collectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

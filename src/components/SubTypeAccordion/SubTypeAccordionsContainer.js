@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  FlatList, StyleSheet, View, Text
+  StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape } from 'prop-types';
@@ -10,9 +10,7 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ accordionsContainerData }) => 
-
-(
+const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)

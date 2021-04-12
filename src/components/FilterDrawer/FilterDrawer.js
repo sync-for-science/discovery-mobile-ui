@@ -83,20 +83,20 @@ const FilterDrawer = ({
   });
 
   return (
-      <DrawerLayout
-        ref={drawerRef}
-        drawerWidth={wp('60%')}
-        keyboardDismissMode="on-drag"
-        drawerPosition={DrawerLayout.positions.Left}
-        drawerType="front"
-        drawerBackgroundColor="white"
-        renderNavigationView={renderDrawer}
-        edgeWidth={-wp('100%')}
-      >
-        <View style={styles.childrenContainer}>
-          {childrenWithProps}
-        </View>
-      </DrawerLayout>
+    <DrawerLayout
+      ref={drawerRef}
+      drawerWidth={wp('60%')}
+      keyboardDismissMode="on-drag"
+      drawerPosition={DrawerLayout.positions.Left}
+      drawerType="front"
+      drawerBackgroundColor="white"
+      renderNavigationView={renderDrawer}
+      edgeWidth={-wp('100%')}
+    >
+      <View style={styles.childrenContainer}>
+        {childrenWithProps}
+      </View>
+    </DrawerLayout>
   );
 };
 
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   childrenContainer: {
     width: '100%',
-    height: '100%'
+    height: '100%',
   },
   categoryRow: {
     flexDirection: 'row',
