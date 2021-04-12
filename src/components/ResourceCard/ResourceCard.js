@@ -126,10 +126,6 @@ export default connect(mapStateToProps, null)(ResourceCard);
 const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderTopColor: Colors.resourceCardBorder,
-    borderBottomColor: Colors.resourceCardBorder,
     marginBottom: 10,
     marginHorizontal: 10,
   },
