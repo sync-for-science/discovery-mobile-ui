@@ -37,7 +37,7 @@ export default {
   hasFocused: blue4,
   hasMarked: blue7,
   unmarked: gray1,
-  countIcon: gray1,
+  countIcon: gray2,
   screenBackground: gray4,
   destructive: red1,
 };
