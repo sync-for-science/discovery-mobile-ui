@@ -2,8 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Button } from 'native-base';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   func, shape, string, bool,
 } from 'prop-types';
@@ -20,9 +19,9 @@ const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) =>
   const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
 
   return (
-    <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+    <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
       <Text style={buttonTextStyle}>{categoryDisplay}</Text>
-    </Button>
+    </TouchableOpacity>
   );
 };
 
@@ -87,14 +86,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginHorizontal: 5,
     backgroundColor: 'white',
+    borderRadius: 20,
   },
   buttonSelected: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    marginHorizontal: 5,
     backgroundColor: Colors.primary,
+    borderRadius: 20,
   },
   buttonSelectedText: {
     color: 'white',
