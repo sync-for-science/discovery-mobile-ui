@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   headerText: {
-    color: 'black'
+    color: 'black',
   },
   logoutContainer: {
     marginLeft: 5,
