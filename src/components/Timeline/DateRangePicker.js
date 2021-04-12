@@ -65,12 +65,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(DateRangePicker);
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    paddingHorizontal: 40,
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginBottom: 10,
   },
   dash: {
     fontSize: 30,
