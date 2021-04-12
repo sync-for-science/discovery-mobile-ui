@@ -57,7 +57,7 @@ const FilterDrawer = ({
   children,
 }) => {
   const renderDrawer = () => (
-    <View style={styles.drawerContainer}>
+    <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
       {Object.entries(orderedResourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
@@ -83,7 +83,6 @@ const FilterDrawer = ({
   });
 
   return (
-    <View style={styles.container}>
       <DrawerLayout
         ref={drawerRef}
         drawerWidth={wp('60%')}
@@ -98,7 +97,6 @@ const FilterDrawer = ({
           {childrenWithProps}
         </View>
       </DrawerLayout>
-    </View>
   );
 };
 
@@ -119,13 +117,6 @@ const mapDispatchToProps = {
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  drawerContainer: {
-    flex: 1,
-    paddingTop: 10,
-  },
   drawerTitle: {
     marginTop: 10,
     marginBottom: 20,
@@ -134,6 +125,7 @@ const styles = StyleSheet.create({
   },
   childrenContainer: {
     width: '100%',
+    height: '100%'
   },
   categoryRow: {
     flexDirection: 'row',

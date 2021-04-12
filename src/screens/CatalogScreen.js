@@ -55,13 +55,11 @@ const CatalogScreen = ({ collection }) => (
     >
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
-        <View>
           <Timeline />
           <ResourceTypeSelector />
-        </View>
-        <ScrollView>
-          <SubTypeAccordionsContainer />
-        </ScrollView>
+          <ScrollView style={styles.scrollView}>
+            <SubTypeAccordionsContainer />
+          </ScrollView>
       </FilterDrawer>
       <ContentPanel />
     </Swiper>
@@ -98,4 +96,8 @@ const styles = StyleSheet.create({
   drawerIcon: {
     paddingLeft: 10,
   },
+  scrollView: {
+    flex: 1,
+    backgroundColor: 'white'
+  }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text,
+  StyleSheet, Text, View
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -39,21 +39,28 @@ const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
 }) => (
-  <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-    {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
-      if (filterOpen) {
-        return (
-          <CategoryButton
-            key={resourceType}
-            resourceType={resourceType}
-            isActive={selectedResourceType === resourceType}
-            selectResourceTypeAction={selectResourceTypeAction}
-          />
-        );
-      }
-      return null;
-    })}
-  </ScrollView>
+  <View>
+    <ScrollView 
+      style={styles.root} 
+      horizontal 
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
+    >
+      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
+        if (filterOpen) {
+          return (
+            <CategoryButton
+              key={resourceType}
+              resourceType={resourceType}
+              isActive={selectedResourceType === resourceType}
+              selectResourceTypeAction={selectResourceTypeAction}
+            />
+          );
+        }
+        return null;
+      })}
+    </ScrollView>
+  </View>
 );
 
 ResourceTypeSelector.propTypes = {
@@ -81,9 +88,8 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: Colors.mediumgrey,
     borderColor: 'gray',
-    marginTop: 20,
     flexDirection: 'row',
-    padding: 10,
+    paddingHorizontal: 5,
   },
   button: {
     paddingVertical: 10,
@@ -104,5 +110,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
+  },
+  contentContainerStyle: {
+    flexDirection: 'row',
+    height: 65,
+    alignItems: 'center',
   },
 });
