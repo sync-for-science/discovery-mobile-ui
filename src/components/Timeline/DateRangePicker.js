@@ -1,7 +1,7 @@
 import React from 'react';
 import { func, instanceOf, shape } from 'prop-types';
 import {
-  SafeAreaView, StyleSheet,
+  StyleSheet, View, Text
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -11,6 +11,7 @@ import {
 import { updateDateRange } from '../../redux/action-creators';
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, activeCollectionDateRangeFilterSelector } from '../../redux/selectors';
+import Colors from '../../constants/Colors'
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
   const { minimumDate, maximumDate } = timelineProps;
@@ -21,22 +22,21 @@ const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter
   const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilter;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <DatePicker
-        label="Start"
         activeDate={dateRangeStart}
         minimumDate={minimumDate}
         maximumDate={min([maximumDate, dateRangeEnd])}
         onDateSelect={(d) => updateDateRangeFilter('dateRangeStart', startOfDay(d))}
       />
+      <View><Text style={styles.dash}>-</Text></View>
       <DatePicker
-        label="End"
         activeDate={dateRangeEnd}
         minimumDate={max([minimumDate, dateRangeStart])}
         maximumDate={maximumDate}
         onDateSelect={(d) => updateDateRangeFilter('dateRangeEnd', endOfDay(d))}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -66,9 +66,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(DateRangePicker);
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    paddingHorizontal: 40,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginBottom: 10,
   },
-  picker: {
-  },
+  dash: {
+    fontSize: 30,
+    color: Colors.darkgrey
+  }
 });
