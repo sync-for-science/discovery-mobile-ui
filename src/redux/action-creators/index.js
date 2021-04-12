@@ -56,6 +56,11 @@ export const duplicateCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
+export const clearMarkedResources = (collectionId) => ({
+  type: actionTypes.CLEAR_MARKED_RESOURCES,
+  payload: collectionId,
+});
+
 export const toggleShowCollectionOnly = (boolean) => ({
   type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
   payload: boolean,
