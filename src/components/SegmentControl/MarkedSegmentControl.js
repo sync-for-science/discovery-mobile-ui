@@ -6,7 +6,7 @@ import { bool, func, shape } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionShowMarkedOnlySelector, filterTriggerDateRangeSelector, activeCollectionMarkedResourcesSelector } from '../../redux/selectors';
+import { activeCollectionShowMarkedOnlySelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -17,7 +17,7 @@ const MarkedSegmentControl = ({
   toggleShowMarkedOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
-  collectionMarkedResources,
+  hasMarkedIds
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
@@ -25,17 +25,15 @@ const MarkedSegmentControl = ({
     toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
     updateDateRangeFilter(filterTriggerDateRange);
   };
-  const markedResourcesIds = Object.keys(collectionMarkedResources.marked)
-  const isEnabled = markedResourcesIds.length > 0
 
   // reset SegmentControl and TimelineRange when user
   // clears Marked Records while in Show Marked Only view
   useEffect(() => {
-    if (showMarkedOnly && markedResourcesIds.length === 0) {
+    if (showMarkedOnly && !hasMarkedIds) {
       toggleShowMarkedOnlyAction(false);
       updateDateRangeFilter(filterTriggerDateRange);
     }
-  }, [segControlIndex, isEnabled]);
+  }, [showMarkedOnly, hasMarkedIds]);
 
   return (
     <View style={styles.root}>
@@ -43,7 +41,7 @@ const MarkedSegmentControl = ({
         values={['All Records', 'Highlighted Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
-        enabled={isEnabled}
+        enabled={hasMarkedIds}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
@@ -55,13 +53,12 @@ MarkedSegmentControl.propTypes = {
   toggleShowMarkedOnlyAction: func.isRequired,
   filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
-  collectionMarkedResources: shape({}).isRequired
+  hasMarkedIds: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   showMarkedOnly: activeCollectionShowMarkedOnlySelector(state),
   filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
-  collectionMarkedResources: activeCollectionMarkedResourcesSelector(state)
 });
 
 const mapDispatchToProps = {
