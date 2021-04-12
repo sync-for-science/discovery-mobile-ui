@@ -64,6 +64,7 @@ export default connect(null, mapDispatchToProps)(SummaryScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   screen: {
     flex: 1,

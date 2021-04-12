@@ -102,12 +102,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScree
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white'
   },
   collectionRowContainer: {
     alignItems: 'center',
   },
   header: {
-    backgroundColor: Colors.screenBackground,
+    backgroundColor: 'white',
   },
   logoutContainer: {
     marginLeft: 5,

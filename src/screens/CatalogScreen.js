@@ -82,6 +82,7 @@ export default connect(mapStateToProps, null)(CatalogScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white'
   },
   screen: {
     flex: 1,
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
   },
@@ -98,6 +99,5 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    backgroundColor: 'white',
   },
 });
