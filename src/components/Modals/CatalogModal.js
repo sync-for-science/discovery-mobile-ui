@@ -5,7 +5,9 @@ import {
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { arrayOf, func, shape, string } from 'prop-types';
+import {
+  arrayOf, func, shape, string,
+} from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
