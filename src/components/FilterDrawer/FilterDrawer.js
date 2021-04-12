@@ -124,8 +124,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   childrenContainer: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
   categoryRow: {
     flexDirection: 'row',

@@ -69,7 +69,7 @@ const SubTypeAccordion = ({
   );
 
   return (
-    <View style={{ backgroundColor: Colors.primaryLight2 }}>
+    <View style={styles.accordionContainer}>
       <Accordion
         dataArray={dataArray}
         expanded={[]}
@@ -121,5 +121,8 @@ const styles = StyleSheet.create({
   rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  accordionContainer: {
+    backgroundColor: Colors.primaryLight2,
   },
 });

@@ -11,7 +11,7 @@ const ContentPanel = () => (
     <View>
       <Text style={styles.title}>Details Panel</Text>
     </View>
-    <SubTypeAccordionsContainer fromContentPanel cheese="cheese2" />
+    <SubTypeAccordionsContainer fromContentPanel />
   </ScrollView>
 );
 
