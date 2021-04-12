@@ -29,7 +29,7 @@ const CollectionSegmentControl = ({
   // reset SegmentControl and TimelineRange when user
   // clears Collection Records while in Show Collection Only view
   useEffect(() => {
-    if (showCollectionOnly && hasCollectionIds) {
+    if (showCollectionOnly && !hasCollectionIds) {
       toggleShowCollectionOnlyAction(false);
       updateDateRangeFilter(filterTriggerDateRange);
     }
