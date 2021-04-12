@@ -24,10 +24,12 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
+  index
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
+  const firstHeaderStyle = index === 0 ? styles.firstHeader : {}
   const renderHeader = (item) => (
-    <View style={styles.header}>
+    <View style={[styles.header, firstHeaderStyle]}>
       <View style={styles.headerTextContainer}>
         <CountIcon count={subTypeCount} />
         <BaseText style={styles.headerText}>
@@ -98,10 +100,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderTopColor: Colors.lightgrey,
-    borderTopWidth: 1,
     borderBottomColor: Colors.lightgrey,
     borderBottomWidth: 1,
+  },
+  firstHeader: {
+    borderTopColor: Colors.lightgrey,
+    borderTopWidth: 1,
   },
   headerTextContainer: {
     flexDirection: 'row',
