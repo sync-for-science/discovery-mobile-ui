@@ -1,7 +1,7 @@
 import React from 'react';
 import { func, instanceOf, shape } from 'prop-types';
 import {
-  StyleSheet, View, Text
+  StyleSheet, View, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
   },
   dash: {
     fontSize: 30,
-    color: Colors.darkgrey
-  }
+    color: Colors.darkgrey,
+  },
 });

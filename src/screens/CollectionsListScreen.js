@@ -102,7 +102,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScree
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   collectionRowContainer: {
     alignItems: 'center',

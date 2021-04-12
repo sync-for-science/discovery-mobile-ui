@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape } from 'prop-types';
+import { string, shape, number } from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -19,7 +19,6 @@ import {
   patientAgeAtResourcesSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
-import Colors from '../../constants/Colors';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
@@ -76,7 +75,7 @@ const ResourceCard = ({
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
-  const firstCardStyle = index === 0 ? styles.firstCard : {}
+  const firstCardStyle = index === 0 ? styles.firstCard : {};
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -113,6 +112,7 @@ ResourceCard.propTypes = {
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
   collectionId: string.isRequired,
+  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   firstCard: {
-    marginTop: 10
+    marginTop: 10,
   },
   header: {
     flexDirection: 'row',

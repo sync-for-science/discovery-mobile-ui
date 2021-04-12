@@ -82,7 +82,7 @@ export default connect(mapStateToProps, null)(CatalogScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   screen: {
     flex: 1,

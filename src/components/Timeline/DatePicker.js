@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { string, func, instanceOf } from 'prop-types';
+import { func, instanceOf } from 'prop-types';
 import {
-  Platform, SafeAreaView, View, Text, Button, StyleSheet, TouchableOpacity
+  Platform, View, Text, StyleSheet, TouchableOpacity,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
 const DatePicker = ({
-  label, activeDate, minimumDate, maximumDate, onDateSelect,
+  activeDate, minimumDate, maximumDate, onDateSelect,
 }) => {
   const isAndroid = Platform.OS === 'android';
 
@@ -26,12 +26,14 @@ const DatePicker = ({
 
   return (
     <View style={styles.container}>
-      {isAndroid && 
+      {isAndroid
+        && (
         <TouchableOpacity style={styles.androidPicker} onPress={() => setVisible(true)}>
           <Text style={styles.androidPickerText}>{format(activeDate, 'MMM do, yyyy')}</Text>
         </TouchableOpacity>
-      }
-      { isVisible && 
+        )}
+      { isVisible
+      && (
       <View>
         <DateTimePicker
           style={styles.picker}
@@ -43,7 +45,7 @@ const DatePicker = ({
           onChange={onChange}
         />
       </View>
-      }
+      )}
     </View>
   );
 };
@@ -61,19 +63,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center', 
+    justifyContent: 'center',
   },
   picker: {
-    width: 125
+    width: 125,
   },
   androidPicker: {
     paddingHorizontal: 10,
     paddingVertical: 7,
     backgroundColor: Colors.lightgrey2,
-    borderRadius: 7
+    borderRadius: 7,
   },
   androidPickerText: {
     color: Colors.primary,
     fontSize: 16,
-  }
+  },
 });

@@ -24,10 +24,10 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
-  index
+  index,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const firstHeaderStyle = index === 0 ? styles.firstHeader : {}
+  const firstHeaderStyle = index === 0 ? styles.firstHeader : {};
   const renderHeader = (item) => (
     <View style={[styles.header, firstHeaderStyle]}>
       <View style={styles.headerTextContainer}>
@@ -58,10 +58,10 @@ const SubTypeAccordion = ({
   );
 
   const renderContent = (item) => item.content.map(
-    (resourceId, index) => (
+    (resourceId, cardIndex) => (
       <ResourceCard
         key={resourceId}
-        index={index}
+        index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
       />
@@ -69,7 +69,7 @@ const SubTypeAccordion = ({
   );
 
   return (
-    <View style={{backgroundColor: Colors.primaryLight2}}>
+    <View style={{ backgroundColor: Colors.primaryLight2 }}>
       <Accordion
         dataArray={dataArray}
         expanded={[]}
@@ -85,6 +85,7 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
+  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
