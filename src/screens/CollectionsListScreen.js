@@ -55,7 +55,7 @@ const CollectionsListScreen = ({
           </TouchableOpacity>
         </Left>
         <Body>
-          <Title>Collections</Title>
+          <Title style={styles.headerText}>Collections</Title>
         </Body>
         <Right>
           <TouchableOpacity onPress={handleNewCollectionPress}>
@@ -109,6 +109,9 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: 'white',
+  },
+  headerText: {
+    color: 'black'
   },
   logoutContainer: {
     marginLeft: 5,
