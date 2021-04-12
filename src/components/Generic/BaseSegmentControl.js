@@ -6,7 +6,7 @@ import {
 } from 'prop-types';
 
 const BaseSegmentControl = ({
-  values, selectedIndex, onChange, activeColor, enabled
+  values, selectedIndex, onChange, activeColor, enabled,
 }) => {
   const tintColor = activeColor || 'lightblue';
   return (
@@ -29,12 +29,12 @@ BaseSegmentControl.propTypes = {
   selectedIndex: number.isRequired,
   onChange: func.isRequired,
   activeColor: string,
-  enabled: bool
+  enabled: bool,
 };
 
 BaseSegmentControl.defaultProps = {
   activeColor: null,
-  enabled: true
+  enabled: true,
 };
 
 export default BaseSegmentControl;

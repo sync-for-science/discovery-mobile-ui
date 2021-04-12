@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { array, bool, func, shape } from 'prop-types';
+import { bool, func, shape } from 'prop-types';
 
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
@@ -17,7 +17,7 @@ const MarkedSegmentControl = ({
   toggleShowMarkedOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
-  markedResources,
+  collectionMarkedResources,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
@@ -25,16 +25,17 @@ const MarkedSegmentControl = ({
     toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
     updateDateRangeFilter(filterTriggerDateRange);
   };
-  const markedResourcesIds = Object.keys(markedResources)
+  const markedResourcesIds = Object.keys(collectionMarkedResources.marked)
   const isEnabled = markedResourcesIds.length > 0
 
-  // reset SegmentControl and TimelineRange when user clears Marked Records while in Show Marked Only view
+  // reset SegmentControl and TimelineRange when user
+  // clears Marked Records while in Show Marked Only view
   useEffect(() => {
-    if (showMarkedOnly && collectionMarkedResourcesIds.length === 0) {
-      toggleShowMarkedOnlyAction(false)
+    if (showMarkedOnly && markedResourcesIds.length === 0) {
+      toggleShowMarkedOnlyAction(false);
       updateDateRangeFilter(filterTriggerDateRange);
     }
-  }, [segControlIndex, isEnabled])
+  }, [segControlIndex, isEnabled]);
 
   return (
     <View style={styles.root}>
@@ -54,13 +55,13 @@ MarkedSegmentControl.propTypes = {
   toggleShowMarkedOnlyAction: func.isRequired,
   filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
-  markedResources: array.isRequired
+  collectionMarkedResources: shape({}).isRequired
 };
 
 const mapStateToProps = (state) => ({
   showMarkedOnly: activeCollectionShowMarkedOnlySelector(state),
   filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
-  markedResources: activeCollectionMarkedResourcesSelector(state)
+  collectionMarkedResources: activeCollectionMarkedResourcesSelector(state)
 });
 
 const mapDispatchToProps = {

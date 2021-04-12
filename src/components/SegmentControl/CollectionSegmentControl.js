@@ -17,7 +17,7 @@ const CollectionSegmentControl = ({
   toggleShowCollectionOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
-  collectionResourceIdObjects
+  collectionResourceIdObjects,
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
@@ -29,13 +29,14 @@ const CollectionSegmentControl = ({
   const collectionResourceIds = Object.keys(collectionResourceIdObjects)
   const isEnabled = collectionResourceIds.length > 0
 
-  // reset SegmentControl and TimelineRange when user clears Collection Records while in Show Collection Only view
+  // reset SegmentControl and TimelineRange when user
+  // clears Collection Records while in Show Collection Only view
   useEffect(() => {
-    if (showMarkedOnly && collectionMarkedResourcesIds.length === 0) {
-      toggleShowMarkedOnlyAction(false)
+    if (showCollectionOnly && collectionResourceIds.length === 0) {
+      toggleShowCollectionOnlyAction(false);
       updateDateRangeFilter(filterTriggerDateRange);
     }
-  }, [showMarkedOnly, collectionMarkedResourcesIds])
+  }, [showCollectionOnly, collectionResourceIds]);
 
   return (
     <View style={styles.root}>
@@ -55,7 +56,7 @@ CollectionSegmentControl.propTypes = {
   toggleShowCollectionOnlyAction: func.isRequired,
   filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
-  collectionResourceIds: shape({}).isRequired
+  collectionResourceIdObjects: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
