@@ -5,24 +5,24 @@ import {
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { arrayOf, func, string } from 'prop-types';
+import { arrayOf, func, shape, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
-import { collectionMarkedResourcesIdsSelector, collectionResourceIdsSelectorArray } from '../../redux/selectors';
+import { collectionMarkedResourcesIdsSelector, collectionResourceIdsSelector } from '../../redux/selectors';
 
 const CatalogModal = ({
   collectionId,
   clearCollectionAction,
   clearMarkedResourcesAction,
   collectionMarkedResourcesIds,
-  collectionResourcesIds,
+  collectionResourcesIdsObjects,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const hasMarkedIds = collectionMarkedResourcesIds.length > 0;
-  const hasCollectionIds = collectionResourcesIds.length > 0;
+  const hasCollectionIds = Object.keys(collectionResourcesIdsObjects).length > 0;
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
@@ -141,7 +141,7 @@ CatalogModal.propTypes = {
   clearCollectionAction: func.isRequired,
   clearMarkedResourcesAction: func.isRequired,
   collectionMarkedResourcesIds: arrayOf(string.isRequired).isRequired,
-  collectionResourcesIds: arrayOf(string.isRequired).isRequired,
+  collectionResourcesIdsObjects: shape({}).isRequired,
 };
 
 const mapDispatchToProps = {
@@ -151,7 +151,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state) => ({
   collectionMarkedResourcesIds: collectionMarkedResourcesIdsSelector(state),
-  collectionResourcesIds: collectionResourceIdsSelectorArray(state),
+  collectionResourcesIdsObjects: collectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogModal);
