@@ -94,11 +94,11 @@ const CatalogModal = ({
             <View style={styles.controlsContainer}>
               <CollectionSegmentControl 
                 collection 
-                hasCollectionIds
+                hasCollectionIds={hasCollectionIds}
               />
               <MarkedSegmentControl 
                 marked 
-                hasMarkedIds
+                hasMarkedIds={hasMarkedIds}
               />
               <TouchableOpacity 
                 style={styles.button} 

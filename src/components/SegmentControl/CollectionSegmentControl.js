@@ -6,7 +6,7 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { filterTriggerDateRangeSelector, collectionResourceIdsSelector } from '../../redux/selectors';
+import { filterTriggerDateRangeSelector } from '../../redux/selectors';
 import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
@@ -17,7 +17,7 @@ const CollectionSegmentControl = ({
   toggleShowCollectionOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
-  collectionResourceIdObjects,
+  hasCollectionIds
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
@@ -26,18 +26,14 @@ const CollectionSegmentControl = ({
     updateDateRangeFilter(filterTriggerDateRange);
   };
 
-  const collectionResourceIds = Object.keys(collectionResourceIdObjects);
-
-  const isEnabled = collectionResourceIds.length > 0;
-
   // reset SegmentControl and TimelineRange when user
   // clears Collection Records while in Show Collection Only view
   useEffect(() => {
-    if (showCollectionOnly && collectionResourceIds.length === 0) {
+    if (showCollectionOnly && hasCollectionIds) {
       toggleShowCollectionOnlyAction(false);
       updateDateRangeFilter(filterTriggerDateRange);
     }
-  }, [showCollectionOnly, collectionResourceIds]);
+  }, [showCollectionOnly, hasCollectionIds]);
 
   return (
     <View style={styles.root}>
@@ -45,7 +41,7 @@ const CollectionSegmentControl = ({
         values={['All Records', 'Collection Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
-        enabled={isEnabled}
+        enabled={hasCollectionIds}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
@@ -57,13 +53,12 @@ CollectionSegmentControl.propTypes = {
   toggleShowCollectionOnlyAction: func.isRequired,
   filterTriggerDateRange: shape({}).isRequired,
   updateDateRangeFilter: func.isRequired,
-  collectionResourceIdObjects: shape({}).isRequired,
+  hasCollectionIds: bool.isRequired
 };
 
 const mapStateToProps = (state, ownProps) => ({
   showCollectionOnly: state.showCollectionOnly,
   filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
-  collectionResourceIdObjects: collectionResourceIdsSelector(state),
 });
 
 const mapDispatchToProps = {
