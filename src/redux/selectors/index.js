@@ -42,6 +42,11 @@ export const collectionResourceIdsSelector = createSelector(
   (collection) => collection.resourceIds,
 );
 
+export const collectionResourceIdsSelectorArray = createSelector(
+  [collectionSelector],
+  (collection) => Object.keys(collection.resourceIds),
+);
+
 export const collectionMarkedResourcesSelector = createSelector(
   [collectionSelector],
   (collection) => collection.markedResources,
