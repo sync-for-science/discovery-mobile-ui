@@ -71,13 +71,15 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   collectionId,
+  index
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
+  const firstCardStyle = index === 0 ? styles.firstCard : {}
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, firstCardStyle]}>
       <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.rightIconsContainer}>
@@ -128,6 +130,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderTopColor: Colors.resourceCardBorder,
     borderBottomColor: Colors.resourceCardBorder,
+    marginBottom: 10,
+    marginHorizontal: 10,
+  },
+  firstCard: {
+    marginTop: 10
   },
   header: {
     flexDirection: 'row',

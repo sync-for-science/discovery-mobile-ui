@@ -56,9 +56,10 @@ const SubTypeAccordion = ({
   );
 
   const renderContent = (item) => item.content.map(
-    (resourceId) => (
+    (resourceId, index) => (
       <ResourceCard
         key={resourceId}
+        index={index}
         resourceId={resourceId}
         collectionId={activeCollectionId}
       />
@@ -66,11 +67,9 @@ const SubTypeAccordion = ({
   );
 
   return (
-    <View style={{ marginBottom: 10 }}>
+    <View style={{backgroundColor: Colors.primaryLight2}}>
       <Accordion
         dataArray={dataArray}
-        icon="add"
-        iconStyle={{ color: 'green' }}
         expanded={[]}
         renderHeader={renderHeader}
         renderContent={renderContent}
