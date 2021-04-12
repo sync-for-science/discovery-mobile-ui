@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { array, bool, func, shape } from 'prop-types';
@@ -27,6 +27,14 @@ const MarkedSegmentControl = ({
   };
   const markedResourcesIds = Object.keys(markedResources)
   const isEnabled = markedResourcesIds.length > 0
+
+  // reset SegmentControl and TimelineRange when user clears Marked Records while in Show Marked Only view
+  useEffect(() => {
+    if (showMarkedOnly && collectionMarkedResourcesIds.length === 0) {
+      toggleShowMarkedOnlyAction(false)
+      updateDateRangeFilter(filterTriggerDateRange);
+    }
+  }, [segControlIndex, isEnabled])
 
   return (
     <View style={styles.root}>
