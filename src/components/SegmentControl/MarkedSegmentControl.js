@@ -17,7 +17,7 @@ const MarkedSegmentControl = ({
   toggleShowMarkedOnlyAction,
   updateDateRangeFilter,
   filterTriggerDateRange,
-  hasMarkedIds
+  hasMarkedIds,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
