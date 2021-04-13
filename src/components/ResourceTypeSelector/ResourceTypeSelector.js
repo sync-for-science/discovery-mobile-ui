@@ -86,34 +86,42 @@ export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: Colors.mediumgrey,
+    backgroundColor: 'white',
     borderColor: 'gray',
     flexDirection: 'row',
     paddingHorizontal: 5,
+    borderTopColor: Colors.mediumgrey,
+    borderTopWidth: 1,
+    borderBottomColor: Colors.mediumgrey,
+    borderBottomWidth: 1,
   },
   button: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     marginHorizontal: 5,
     backgroundColor: 'white',
     borderRadius: 20,
+    borderColor: Colors.mediumgrey,
+    borderWidth: 2,
   },
   buttonSelected: {
-    paddingVertical: 10,
+    paddingVertical: 5,
     paddingHorizontal: 15,
     marginHorizontal: 5,
-    backgroundColor: Colors.primary,
     borderRadius: 20,
+    borderColor: Colors.darkgrey,
+    borderWidth: 2,
   },
   buttonSelectedText: {
-    color: 'white',
+    color: 'black',
+    fontWeight: "700",
   },
   buttonText: {
     color: 'black',
   },
   contentContainerStyle: {
     flexDirection: 'row',
-    height: 65,
+    height: 45,
     alignItems: 'center',
   },
 });
