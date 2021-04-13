@@ -18,23 +18,26 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-const selectedResourceTypeSelector = (state) => state.selectedResourceType;
-
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
 const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
 
 const collectionsSelector = (state) => state.collections;
 
-const selectedCollectionSelector = (state) => state.selectedCollection;
+export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
 const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
 const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
 export const collectionSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollection) => collections[selectedCollection],
+  [collectionsSelector, activeCollectionIdSelector],
+  (collections, activeCollectionId) => collections[activeCollectionId],
+);
+
+export const selectedResourceTypeSelector = createSelector(
+  [collectionSelector],
+  (activeCollection) => activeCollection.selectedResourceType,
 );
 
 export const collectionMarkedResourcesSelector = createSelector(
@@ -177,13 +180,13 @@ export const orderedResourceTypeFiltersSelector = createSelector(
 );
 
 export const lastAddedResourceIdSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId].lastAddedResourceId,
+  [collectionsSelector, activeCollectionIdSelector],
+  (collections, activeCollectionId) => collections[activeCollectionId].lastAddedResourceId,
 );
 
 export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, selectedCollectionSelector],
-  (collections, selectedCollectionId) => collections[selectedCollectionId]?.resourceIds,
+  [collectionsSelector, activeCollectionIdSelector],
+  (collections, activeCollectionId) => collections[activeCollectionId]?.resourceIds,
 );
 
 const subTypeResourceIdsSelector = createSelector(

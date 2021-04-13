@@ -1,13 +1,14 @@
 import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk';
+
 import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
   resourceTypesReducer,
   resourceTypeFiltersReducer,
-  selectedResourceTypeReducer,
   dateRangeFilterReducer,
   collectionsReducer,
-  selectedCollectionReducer,
+  activeCollectionIdReducer,
   showCollectionOnlyReducer,
   showMarkedOnlyReducer,
 } from './reducers';
@@ -18,10 +19,9 @@ const rootReducer = combineReducers({
   resources: flattenedResourcesReducer,
   resourceIdsGroupedByType: resourceTypesReducer,
   resourceTypeFilters: resourceTypeFiltersReducer,
-  selectedResourceType: selectedResourceTypeReducer,
   dateRangeFilter: dateRangeFilterReducer,
   collections: collectionsReducer,
-  selectedCollection: selectedCollectionReducer,
+  activeCollectionId: activeCollectionIdReducer,
   showCollectionOnly: showCollectionOnlyReducer,
   showMarkedOnly: showMarkedOnlyReducer,
 });
@@ -29,6 +29,7 @@ const rootReducer = combineReducers({
 const store = configureStore({
   reducer: rootReducer,
   middleware: compose([
+    thunk,
     epicMiddleware,
     // routerMiddleware(history), // < e.g.: other middleware
   ]),

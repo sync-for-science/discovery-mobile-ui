@@ -73,7 +73,7 @@ const ResourceCard = ({
   resourceId,
   resources,
   patientAgeAtResources,
-  selectedCollectionId,
+  collectionId,
   collectionResourceIds,
 }) => {
   const resource = resources[resourceId];
@@ -98,7 +98,7 @@ const ResourceCard = ({
           />
           <CollectionIcon
             showCount={false}
-            collectionId={selectedCollectionId}
+            collectionId={collectionId}
             resourceIds={[resourceId]}
           />
         </View>
@@ -110,7 +110,7 @@ const ResourceCard = ({
       <View style={styles.buttonContainer}>
         <AddRemoveButton
           inCollection={!!collectionResourceIds[resourceId]}
-          collectionId={selectedCollectionId}
+          collectionId={collectionId}
           resourceId={resourceId}
         />
       </View>
@@ -122,7 +122,7 @@ ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
-  selectedCollectionId: string.isRequired,
+  collectionId: string.isRequired,
   collectionResourceIds: shape({}),
 };
 

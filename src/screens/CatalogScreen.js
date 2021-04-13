@@ -9,7 +9,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { func, shape, string } from 'prop-types';
+import { func, shape } from 'prop-types';
 
 import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
@@ -45,9 +45,7 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({
-  selectedResourceType, collection,
-}) => (
+const CatalogScreen = ({ collection }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -55,7 +53,6 @@ const CatalogScreen = ({
       showsPagination={false}
       index={0}
     >
-
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
         <View>
@@ -63,9 +60,7 @@ const CatalogScreen = ({
           <ResourceTypeSelector />
         </View>
         <ScrollView>
-          { selectedResourceType && (
-            <SubTypeAccordionsContainer />
-          )}
+          <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
       <ContentPanel />
@@ -74,16 +69,13 @@ const CatalogScreen = ({
 );
 
 CatalogScreen.propTypes = {
-  selectedResourceType: string,
   collection: shape({}).isRequired,
 };
 
 CatalogScreen.defaultProps = {
-  selectedResourceType: null,
 };
 
 const mapStateToProps = (state) => ({
-  selectedResourceType: state.selectedResourceType,
   collection: collectionSelector(state),
 });
 

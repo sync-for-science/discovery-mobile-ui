@@ -8,6 +8,9 @@ import {
   arrayOf, number, string,
 } from 'prop-types';
 
+import {
+  activeCollectionIdSelector,
+} from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import BaseText from '../Generic/BaseText';
@@ -19,7 +22,7 @@ import CollectionIcon from '../Icons/CollectionIcon';
 const SubTypeAccordion = ({
   subTypeCount,
   resourceIds,
-  selectedCollectionId,
+  activeCollectionId,
   subType,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
@@ -44,7 +47,7 @@ const SubTypeAccordion = ({
           isAccordion
         />
         <CollectionIcon
-          collectionId={selectedCollectionId}
+          collectionId={activeCollectionId}
           resourceIds={resourceIds}
           showCount
         />
@@ -57,7 +60,7 @@ const SubTypeAccordion = ({
       <ResourceCard
         key={resourceId}
         resourceId={resourceId}
-        selectedCollectionId={selectedCollectionId}
+        collectionId={activeCollectionId}
       />
     ),
   );
@@ -79,12 +82,12 @@ const SubTypeAccordion = ({
 SubTypeAccordion.propTypes = {
   subTypeCount: number.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
-  selectedCollectionId: string.isRequired,
+  activeCollectionId: string.isRequired,
   subType: string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  selectedCollectionId: state.selectedCollection,
+  activeCollectionId: activeCollectionIdSelector(state),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordion);

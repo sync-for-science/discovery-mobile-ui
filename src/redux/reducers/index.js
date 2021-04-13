@@ -78,18 +78,6 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
 };
 
 const preloadSelectedResourceType = null;
-export const selectedResourceTypeReducer = (state = preloadSelectedResourceType, action) => {
-  switch (action.type) {
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadSelectedResourceType;
-    }
-    case actionTypes.SELECT_RESOURCE_TYPE: {
-      return action.payload;
-    }
-    default:
-      return state;
-  }
-};
 
 const preloadSelectedTimelineRange = {
   dateRangeStart: undefined,
@@ -148,6 +136,7 @@ const createCollection = (
       created: timeCreated,
       lastUpdated: timeCreated,
       label,
+      selectedResourceType: preloadSelectedResourceType,
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
@@ -178,6 +167,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.SELECT_RESOURCE_TYPE: {
+      const { collectionId, resourceType } = action.payload;
+      const collection = state[collectionId];
+      return {
+        ...state,
+        [collectionId]: {
+          ...collection,
+          selectedResourceType: resourceType,
+        },
+      };
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -269,7 +269,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-export const selectedCollectionReducer = (state = defaultCollectionId, action) => {
+export const activeCollectionIdReducer = (state = defaultCollectionId, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;

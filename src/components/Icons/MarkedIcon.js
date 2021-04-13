@@ -9,6 +9,7 @@ import { Text } from 'native-base';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
+  activeCollectionIdSelector,
   collectionMarkedResourcesSelector,
 } from '../../redux/selectors';
 import { UNMARKED, FOCUSED } from '../../constants/marked-status';
@@ -105,7 +106,7 @@ MarkedIcon.defaultProps = {
 
 const mapStateToProps = (state) => ({
   markedResources: collectionMarkedResourcesSelector(state),
-  collectionId: state.selectedCollection,
+  collectionId: activeCollectionIdSelector(state),
   showMarkedOnly: state.showMarkedOnly,
 });
 
