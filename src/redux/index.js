@@ -1,4 +1,6 @@
 import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
+import thunk from 'redux-thunk';
+
 import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
@@ -29,6 +31,7 @@ const rootReducer = combineReducers({
 const store = configureStore({
   reducer: rootReducer,
   middleware: compose([
+    thunk,
     epicMiddleware,
     // routerMiddleware(history), // < e.g.: other middleware
   ]),
