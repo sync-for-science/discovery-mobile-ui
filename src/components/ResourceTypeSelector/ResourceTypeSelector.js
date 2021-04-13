@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { activeCollectionResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
+import { filteredResourceTypesSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
 
 const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
@@ -37,7 +37,7 @@ CategoryButton.defaultProps = {
 const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
-  resourceTypeFilters,
+  filteredResourceTypes,
 }) => (
   <View>
     <ScrollView
@@ -47,7 +47,7 @@ const ResourceTypeSelector = ({
       contentContainerStyle={styles.contentContainerStyle}
     >
       {
-        Object.entries(resourceTypeFilters)
+        Object.entries(filteredResourceTypes)
           .filter(([, isVisible]) => isVisible === true)
           .map(([resourceType]) => (
             <CategoryButton
@@ -63,7 +63,7 @@ const ResourceTypeSelector = ({
 );
 
 ResourceTypeSelector.propTypes = {
-  resourceTypeFilters: shape({}).isRequired,
+  filteredResourceTypes: shape({}).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
 };
@@ -73,7 +73,7 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
+  filteredResourceTypes: filteredResourceTypesSelector(state),
   selectedResourceType: activeCollectionResourceTypeSelector(state),
 });
 

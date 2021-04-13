@@ -490,112 +490,112 @@ export const accordionsContainerDataSelector = createSelector(
   },
 );
 
-export const filterTriggerDateRangeSelector = createSelector(
-  [
-    resourcesSelector,
-    activeCollectionIdSelector,
-    collectionsSelector,
-    activeCollectionShowMarkedOnlySelector,
-    activeCollectionShowCollectionOnlySelector,
-    (_, ownProps) => ownProps,
-  ],
-  (
-    resources,
-    activeCollectionId,
-    collections,
-    showMarkedOnly,
-    showCollectionOnly,
-    ownProps,
-  ) => {
-    const { collection, marked } = ownProps;
-    const defaultTimeRange = { dateRangeStart: undefined, dateRangeEnd: undefined };
+// export const filterTriggerDateRangeSelector = createSelector(
+//   [
+//     resourcesSelector,
+//     activeCollectionIdSelector,
+//     collectionsSelector,
+//     activeCollectionShowMarkedOnlySelector,
+//     activeCollectionShowCollectionOnlySelector,
+//     (_, ownProps) => ownProps,
+//   ],
+//   (
+//     resources,
+//     activeCollectionId,
+//     collections,
+//     showMarkedOnly,
+//     showCollectionOnly,
+//     ownProps,
+//   ) => {
+//     const { collection, marked } = ownProps;
+//     const defaultTimeRange = { dateRangeStart: undefined, dateRangeEnd: undefined };
 
-    const collectionResourceIds = Object.keys(collections[activeCollectionId]?.resourceIds);
-    const markedResourceIds = Object.keys(
-      collections[activeCollectionId]?.markedResources?.marked,
-    );
+//     const collectionResourceIds = Object.keys(collections[activeCollectionId]?.resourceIds);
+//     const markedResourceIds = Object.keys(
+//       collections[activeCollectionId]?.markedResources?.marked,
+//     );
 
-    if (collection && (collectionResourceIds.length === 0)) {
-      return defaultTimeRange;
-    }
+//     if (collection && (collectionResourceIds.length === 0)) {
+//       return defaultTimeRange;
+//     }
 
-    if (marked && (markedResourceIds.length === 0)) {
-      return defaultTimeRange;
-    }
+//     if (marked && (markedResourceIds.length === 0)) {
+//       return defaultTimeRange;
+//     }
 
-    const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
-      if (collectionResourceIds.includes(id)) {
-        acc.push(resourceValues);
-      }
-      return acc;
-    }, []);
+//     const collectionResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+//       if (collectionResourceIds.includes(id)) {
+//         acc.push(resourceValues);
+//       }
+//       return acc;
+//     }, []);
 
-    const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
-      if (markedResourceIds.includes(id)) {
-        acc.push(resourceValues);
-      }
-      return acc;
-    }, []);
+//     const markedResources = Object.entries(resources).reduce((acc, [id, resourceValues]) => {
+//       if (markedResourceIds.includes(id)) {
+//         acc.push(resourceValues);
+//       }
+//       return acc;
+//     }, []);
 
-    const sortedCollectionResources = collectionResources
-      .sort((a, b) => a.timelineDate - b.timelineDate);
-    const sortedMarkedResources = markedResources
-      .sort((a, b) => a.timelineDate - b.timelineDate);
-    const sortedCombinedResources = [...collectionResources, ...markedResources]
-      .sort((a, b) => a.timelineDate - b.timelineDate);
+//     const sortedCollectionResources = collectionResources
+//       .sort((a, b) => a.timelineDate - b.timelineDate);
+//     const sortedMarkedResources = markedResources
+//       .sort((a, b) => a.timelineDate - b.timelineDate);
+//     const sortedCombinedResources = [...collectionResources, ...markedResources]
+//       .sort((a, b) => a.timelineDate - b.timelineDate);
 
-    const createDateRange = (res) => {
-      if (res.length === 0) {
-        return ({
-          dateRangeStart: undefined,
-          dateRangeEnd: undefined,
-        });
-      }
-      return ({
-        dateRangeStart: startOfDay(res[0]?.timelineDate),
-        dateRangeEnd: endOfDay(
-          res[res.length - 1]?.timelineDate,
-        ),
-      });
-    };
+//     const createDateRange = (res) => {
+//       if (res.length === 0) {
+//         return ({
+//           dateRangeStart: undefined,
+//           dateRangeEnd: undefined,
+//         });
+//       }
+//       return ({
+//         dateRangeStart: startOfDay(res[0]?.timelineDate),
+//         dateRangeEnd: endOfDay(
+//           res[res.length - 1]?.timelineDate,
+//         ),
+//       });
+//     };
 
-    // feed to CollectionSegmentControl
-    if (collection) {
-      if (!showCollectionOnly && !showMarkedOnly) {
-        // after collection setting change > showCollectionOnly && !showMarkedOnly
-        return createDateRange(sortedCollectionResources);
-      } if (showCollectionOnly && !showMarkedOnly) {
-        // after collection setting change > !showCollectionOnly && !showMarkedOnly
-        return defaultTimeRange;
-      } if (!showCollectionOnly && showMarkedOnly) {
-        // after collection setting change > showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedCombinedResources);
-      } if (showCollectionOnly && showMarkedOnly) {
-        // after collection setting change > !showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedMarkedResources);
-      }
-    }
+//     // feed to CollectionSegmentControl
+//     if (collection) {
+//       if (!showCollectionOnly && !showMarkedOnly) {
+//         // after collection setting change > showCollectionOnly && !showMarkedOnly
+//         return createDateRange(sortedCollectionResources);
+//       } if (showCollectionOnly && !showMarkedOnly) {
+//         // after collection setting change > !showCollectionOnly && !showMarkedOnly
+//         return defaultTimeRange;
+//       } if (!showCollectionOnly && showMarkedOnly) {
+//         // after collection setting change > showCollectionOnly && showMarkedOnly
+//         return createDateRange(sortedCombinedResources);
+//       } if (showCollectionOnly && showMarkedOnly) {
+//         // after collection setting change > !showCollectionOnly && showMarkedOnly
+//         return createDateRange(sortedMarkedResources);
+//       }
+//     }
 
-    // feed to MarkedSegmentControl
-    if (marked) {
-      if (!showCollectionOnly && !showMarkedOnly) {
-        // after setting change > !showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedMarkedResources);
-      } if (showCollectionOnly && !showMarkedOnly) {
-        // after setting change > showCollectionOnly && showMarkedOnly
-        return createDateRange(sortedCombinedResources);
-      } if (!showCollectionOnly && showMarkedOnly) {
-        // after setting change > !showCollectionOnly && !showMarkedOnly
-        return defaultTimeRange;
-      } if (showCollectionOnly && showMarkedOnly) {
-        // after setting change > showCollectionOnly && !showMarkedOnly
-        return createDateRange(sortedCollectionResources);
-      }
-    }
+//     // feed to MarkedSegmentControl
+//     if (marked) {
+//       if (!showCollectionOnly && !showMarkedOnly) {
+//         // after setting change > !showCollectionOnly && showMarkedOnly
+//         return createDateRange(sortedMarkedResources);
+//       } if (showCollectionOnly && !showMarkedOnly) {
+//         // after setting change > showCollectionOnly && showMarkedOnly
+//         return createDateRange(sortedCombinedResources);
+//       } if (!showCollectionOnly && showMarkedOnly) {
+//         // after setting change > !showCollectionOnly && !showMarkedOnly
+//         return defaultTimeRange;
+//       } if (showCollectionOnly && showMarkedOnly) {
+//         // after setting change > showCollectionOnly && !showMarkedOnly
+//         return createDateRange(sortedCollectionResources);
+//       }
+//     }
 
-    return defaultTimeRange;
-  },
-);
+//     return defaultTimeRange;
+//   },
+// );
 
 const filteredResourceIdsSelector = createSelector(
   [

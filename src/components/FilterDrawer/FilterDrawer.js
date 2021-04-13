@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
-import { activeCollectionResourceTypeFiltersSelector } from '../../redux/selectors';
+import { filteredResourceTypesSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
   const label = PLURAL_RESOURCE_TYPES[resourceType];
@@ -54,12 +54,12 @@ ResourceTypeFilter.propTypes = {
 const FilterDrawer = ({
   toggleResourceTypeFilterAction,
   children,
-  resourceTypeFilters,
+  filteredResourceTypes,
 }) => {
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(resourceTypeFilters).map(([resourceType, value]) => (
+      {Object.entries(filteredResourceTypes).map(([resourceType, value]) => (
         <ResourceTypeFilter
           key={resourceType}
           resourceType={resourceType}
@@ -101,13 +101,13 @@ const FilterDrawer = ({
 };
 
 FilterDrawer.propTypes = {
-  resourceTypeFilters: shape({}).isRequired,
+  filteredResourceTypes: shape({}).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
+  filteredResourceTypes: filteredResourceTypesSelector(state),
 });
 
 const mapDispatchToProps = {
