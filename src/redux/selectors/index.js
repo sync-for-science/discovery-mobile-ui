@@ -38,7 +38,7 @@ export const activeCollectionResourceTypeSelector = createSelector(
   (activeCollection) => activeCollection.selectedResourceType,
 );
 
-export const resourceTypeFiltersSelector = createSelector(
+export const activeCollectionResourceTypeFiltersSelector = createSelector(
   [collectionSelector],
   (activeCollection) => activeCollection.resourceTypeFilters,
 );
@@ -134,7 +134,7 @@ const timelineRangeSelector = createSelector(
 );
 
 const timelineItemsInRangeSelector = createSelector(
-  [sortedTimelineItemsSelector, timelineRangeSelector, resourceTypeFiltersSelector],
+  [sortedTimelineItemsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
@@ -174,7 +174,7 @@ export const patientAgeAtResourcesSelector = createSelector(
 );
 
 export const orderedResourceTypeFiltersSelector = createSelector(
-  [resourceTypeFiltersSelector],
+  [activeCollectionResourceTypeFiltersSelector],
   (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
     .reduce((acc, resourceType) => {
       acc[resourceType] = resourceTypeFilters[resourceType];
