@@ -8,9 +8,9 @@ import {
   min, max, startOfDay, endOfDay,
 } from 'date-fns';
 
+import { updateDateRange } from '../../redux/action-creators';
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
-import { actionTypes } from '../../redux/action-types';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
   const { minimumDate, maximumDate } = timelineProps;
@@ -58,10 +58,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateDateRangeFilter: (fieldKey, date) => ({
-    type: actionTypes.UPDATE_DATE_RANGE_FILTER,
-    payload: { [fieldKey]: date },
-  }),
+  updateDateRangeFilter: updateDateRange,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DateRangePicker);

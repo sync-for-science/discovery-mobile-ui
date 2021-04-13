@@ -65,25 +65,6 @@ const preloadSelectedTimelineRange = {
   dateRangeStart: undefined,
   dateRangeEnd: undefined,
 };
-export const dateRangeFilterReducer = (state = preloadSelectedTimelineRange, action) => {
-  switch (action.type) {
-    case actionTypes.CREATE_COLLECTION:
-    case actionTypes.SELECT_COLLECTION:
-    case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION:
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadSelectedTimelineRange;
-    }
-    case actionTypes.UPDATE_DATE_RANGE_FILTER: {
-      return {
-        ...state,
-        ...action.payload,
-      };
-    }
-    default:
-      return state;
-  }
-};
 
 // this same uuid recycled across logins -- which is only development?
 const defaultCollectionId = uuidv4();
@@ -120,6 +101,7 @@ const createCollection = (
       label,
       selectedResourceType: preloadSelectedResourceType,
       resourceTypeFilters: preloadResourceTypeFilters,
+      dateRangeFilter: preloadSelectedTimelineRange,
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
@@ -166,6 +148,19 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const prevValue = draft[collectionId].resourceTypeFilters[resourceType];
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].resourceTypeFilters[resourceType] = !prevValue;
+      });
+    }
+    case actionTypes.UPDATE_DATE_RANGE_FILTER: {
+      const { collectionId, dateRangeStart, dateRangeEnd } = action.payload;
+      return produce(state, (draft) => {
+        if (dateRangeStart) {
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId].dateRangeFilter.dateRangeStart = dateRangeStart;
+        }
+        if (dateRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId].dateRangeFilter.dateRangeEnd = dateRangeEnd;
+        }
       });
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {

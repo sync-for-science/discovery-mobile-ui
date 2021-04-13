@@ -22,6 +22,17 @@ export const selectResourceType = (resourceType) => (dispatch, getState) => {
   });
 };
 
+export const updateDateRange = (fieldKey, date) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.UPDATE_DATE_RANGE_FILTER,
+    payload: {
+      collectionId: activeCollectionId,
+      [fieldKey]: date,
+    },
+  });
+};
+
 export const addResourceToCollection = (collectionId, resourceIds) => {
   const payloadIds = Array.isArray(resourceIds) ? resourceIds : [resourceIds];
   return ({
