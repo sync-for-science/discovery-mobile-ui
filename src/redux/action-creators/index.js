@@ -73,12 +73,24 @@ export const clearMarkedResources = (collectionId) => ({
   payload: collectionId,
 });
 
-export const toggleShowCollectionOnly = (boolean) => ({
-  type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
-  payload: boolean,
-});
+export const toggleShowCollectionOnly = (showCollectionOnly) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
+    payload: {
+      collectionId: activeCollectionId,
+      showCollectionOnly,
+    },
+  });
+};
 
-export const toggleShowMarkedOnly = (boolean) => ({
-  type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
-  payload: boolean,
-});
+export const toggleShowMarkedOnly = (showMarkedOnly) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
+    payload: {
+      collectionId: activeCollectionId,
+      showMarkedOnly,
+    },
+  });
+};

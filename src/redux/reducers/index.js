@@ -123,6 +123,8 @@ const createCollection = (
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
+      showCollectionOnly: false,
+      showMarkedOnly: false,
     },
   };
 };
@@ -251,6 +253,20 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       );
       return { ...state, ...newCollection };
     }
+    case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
+      const { collectionId, showCollectionOnly } = action.payload;
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].showCollectionOnly = showCollectionOnly;
+      });
+    }
+    case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
+      const { collectionId, showMarkedOnly } = action.payload;
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].showMarkedOnly = showMarkedOnly;
+      });
+    }
     default:
       return state;
   }
@@ -269,32 +285,6 @@ export const activeCollectionIdReducer = (state = defaultCollectionId, action) =
         return action.payload.nextCollectionId;
       }
       return state;
-    }
-    default:
-      return state;
-  }
-};
-
-export const showCollectionOnlyReducer = (state = false, action) => {
-  switch (action.type) {
-    case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
-      return action.payload;
-    }
-    case actionTypes.SELECT_COLLECTION: {
-      return false;
-    }
-    default:
-      return state;
-  }
-};
-
-export const showMarkedOnlyReducer = (state = false, action) => {
-  switch (action.type) {
-    case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      return action.payload;
-    }
-    case actionTypes.SELECT_COLLECTION: {
-      return false;
     }
     default:
       return state;

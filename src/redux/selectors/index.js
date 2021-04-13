@@ -24,10 +24,6 @@ const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
-const showCollectionOnlySelector = (state) => state.showCollectionOnly;
-
-const showMarkedOnlySelector = (state) => state.showMarkedOnly;
-
 export const activeCollectionSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId],
@@ -46,6 +42,16 @@ export const activeCollectionResourceTypeFiltersSelector = createSelector(
 export const activeCollectionMarkedResourcesSelector = createSelector(
   [activeCollectionSelector],
   (activeCollection) => activeCollection.markedResources,
+);
+
+export const activeCollectionShowCollectionOnlySelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.showCollectionOnly,
+);
+
+export const activeCollectionShowMarkedOnlySelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.showMarkedOnly,
 );
 
 export const patientSelector = createSelector(
@@ -399,8 +405,8 @@ export const accordionsContainerDataSelector = createSelector(
   [
     filteredResourceTypesSelector,
     activeCollectionResourceTypeSelector,
-    showCollectionOnlySelector,
-    showMarkedOnlySelector,
+    activeCollectionShowCollectionOnlySelector,
+    activeCollectionShowMarkedOnlySelector,
     (_, ownProps) => ownProps,
   ],
   (
