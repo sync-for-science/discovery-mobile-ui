@@ -10,7 +10,7 @@ import {
 
 import { updateDateRange } from '../../redux/action-creators';
 import DatePicker from './DatePicker';
-import { timelinePropsSelector, dateRangeFilterFiltersSelector } from '../../redux/selectors';
+import { timelinePropsSelector, activeCollectionDateRangeFilterSelector } from '../../redux/selectors';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
   const { minimumDate, maximumDate } = timelineProps;
@@ -54,7 +54,7 @@ DateRangePicker.propTypes = {
 
 const mapStateToProps = (state) => ({
   timelineProps: timelinePropsSelector(state),
-  dateRangeFilter: dateRangeFilterFiltersSelector(state),
+  dateRangeFilter: activeCollectionDateRangeFilterSelector(state),
 });
 
 const mapDispatchToProps = {
