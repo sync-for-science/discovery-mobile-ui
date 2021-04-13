@@ -123,6 +123,8 @@ const createCollection = (
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
+      showCollectionOnly: false,
+      showMarkedOnly: false,
     },
   };
 };
@@ -250,6 +252,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         dupCollection.lastAddedResourceId,
       );
       return { ...state, ...newCollection };
+    }
+    case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
+      const { collectionId, showCollectionOnly} = action.payload
+      return {...state, [collectionId]: showCollectionOnly};
     }
     default:
       return state;
