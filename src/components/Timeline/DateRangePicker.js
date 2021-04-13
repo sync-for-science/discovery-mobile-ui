@@ -11,7 +11,7 @@ import {
 import { updateDateRange } from '../../redux/action-creators';
 import DatePicker from './DatePicker';
 import { timelinePropsSelector, activeCollectionDateRangeFilterSelector } from '../../redux/selectors';
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
   const { minimumDate, maximumDate } = timelineProps;
