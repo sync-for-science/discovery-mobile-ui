@@ -5,7 +5,6 @@ import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
   resourceTypesReducer,
-  resourceTypeFiltersReducer,
   dateRangeFilterReducer,
   collectionsReducer,
   activeCollectionIdReducer,
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   auth: authReducer,
   resources: flattenedResourcesReducer,
   resourceIdsGroupedByType: resourceTypesReducer,
-  resourceTypeFilters: resourceTypeFiltersReducer,
   dateRangeFilter: dateRangeFilterReducer,
   collections: collectionsReducer,
   activeCollectionId: activeCollectionIdReducer,
