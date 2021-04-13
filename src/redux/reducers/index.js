@@ -155,11 +155,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         if (dateRangeStart) {
           // eslint-disable-next-line no-param-reassign
-          draft[collectionId].dateRangeFilter.dateRangeStart = dateRangeStart;
+          draft[collectionId].dateRangeFilter.dateRangeStart = dateRangeStart.toISOString();
         }
         if (dateRangeEnd) {
           // eslint-disable-next-line no-param-reassign
-          draft[collectionId].dateRangeFilter.dateRangeEnd = dateRangeEnd;
+          draft[collectionId].dateRangeFilter.dateRangeEnd = dateRangeEnd.toISOString();
         }
       });
     }
