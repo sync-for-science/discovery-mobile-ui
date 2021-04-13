@@ -46,19 +46,18 @@ const ResourceTypeSelector = ({
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.contentContainerStyle}
     >
-      {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
-        if (filterOpen) {
-          return (
+      {
+        Object.entries(resourceTypeFilters)
+          .filter(([, isVisible]) => isVisible === true)
+          .map(([resourceType]) => (
             <CategoryButton
               key={resourceType}
               resourceType={resourceType}
               isActive={selectedResourceType === resourceType}
               selectResourceTypeAction={selectResourceTypeAction}
             />
-          );
-        }
-        return null;
-      })}
+          ))
+      }
     </ScrollView>
   </View>
 );
