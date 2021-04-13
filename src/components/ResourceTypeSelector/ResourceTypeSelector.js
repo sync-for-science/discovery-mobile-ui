@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { selectedResourceTypeSelector } from '../../redux/selectors';
+import { resourceTypeFiltersSelector, selectedResourceTypeSelector } from '../../redux/selectors';
 
 const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
@@ -70,7 +70,7 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: state.resourceTypeFilters,
+  resourceTypeFilters: resourceTypeFiltersSelector(state),
   selectedResourceType: selectedResourceTypeSelector(state),
 });
 

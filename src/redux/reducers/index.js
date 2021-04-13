@@ -58,25 +58,6 @@ const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
     [resourceType]: true,
   }), {});
 
-export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, action) => {
-  switch (action.type) {
-    case actionTypes.CREATE_COLLECTION:
-    case actionTypes.SELECT_COLLECTION:
-    case actionTypes.DELETE_COLLECTION:
-    case actionTypes.CLEAR_COLLECTION:
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadResourceTypeFilters;
-    }
-    case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const currentSetting = state[action.payload];
-      return { ...state, [action.payload]: !currentSetting };
-    }
-
-    default:
-      return state;
-  }
-};
-
 const preloadSelectedResourceType = null;
 
 const preloadSelectedTimelineRange = {
@@ -137,6 +118,7 @@ const createCollection = (
       lastUpdated: timeCreated,
       label,
       selectedResourceType: preloadSelectedResourceType,
+      resourceTypeFilters: preloadResourceTypeFilters,
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
@@ -176,6 +158,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         [collectionId]: {
           ...collection,
           selectedResourceType: resourceType,
+        },
+      };
+    }
+    case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
+      const { collectionId, resourceType } = action.payload;
+      const collection = state[collectionId];
+      const { resourceTypeFilters } = collection;
+      return {
+        ...state,
+        [collectionId]: {
+          ...collection,
+          resourceTypeFilters: {
+            ...resourceTypeFilters,
+            [resourceType]: !resourceTypeFilters[resourceType],
+          },
         },
       };
     }

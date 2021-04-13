@@ -1,9 +1,15 @@
 import { actionTypes } from '../action-types';
 
-export const toggleResourceTypeFilter = (resourceType) => ({
-  type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
-  payload: resourceType,
-});
+export const toggleResourceTypeFilter = (resourceType) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS,
+    payload: {
+      collectionId: activeCollectionId,
+      resourceType,
+    },
+  });
+};
 
 export const selectResourceType = (resourceType) => (dispatch, getState) => {
   const { activeCollectionId } = getState();

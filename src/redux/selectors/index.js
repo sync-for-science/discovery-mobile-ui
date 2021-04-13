@@ -20,8 +20,6 @@ const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByTy
 
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
-
 const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
@@ -38,6 +36,11 @@ export const collectionSelector = createSelector(
 export const selectedResourceTypeSelector = createSelector(
   [collectionSelector],
   (activeCollection) => activeCollection.selectedResourceType,
+);
+
+export const resourceTypeFiltersSelector = createSelector(
+  [collectionSelector],
+  (activeCollection) => activeCollection.resourceTypeFilters,
 );
 
 export const collectionMarkedResourcesSelector = createSelector(
