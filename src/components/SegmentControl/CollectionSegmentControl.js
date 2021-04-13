@@ -6,9 +6,9 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { 
-  activeCollectionShowCollectionOnlySelector, 
-  // filterTriggerDateRangeSelector 
+import {
+  activeCollectionShowCollectionOnlySelector,
+  // filterTriggerDateRangeSelector
 } from '../../redux/selectors';
 // import { actionTypes } from '../../redux/action-types';
 

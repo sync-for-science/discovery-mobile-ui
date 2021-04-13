@@ -145,7 +145,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const { collectionId, resourceType } = action.payload;
       return produce(state, (draft) => {
-        console.log('draft 2', draft[collectionId])
         const prevValue = draft[collectionId].resourceTypeFilters[resourceType];
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].resourceTypeFilters[resourceType] = !prevValue;
@@ -154,7 +153,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
       const { collectionId, dateRangeStart, dateRangeEnd } = action.payload;
       return produce(state, (draft) => {
-        console.log('draft', draft[collectionId])
         if (dateRangeStart) {
           // eslint-disable-next-line no-param-reassign
           draft[collectionId].dateRangeFilter.dateRangeStart = dateRangeStart;

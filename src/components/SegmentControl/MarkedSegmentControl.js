@@ -6,9 +6,9 @@ import { bool, func, shape } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { 
-  activeCollectionShowMarkedOnlySelector, 
-  // filterTriggerDateRangeSelector 
+import {
+  activeCollectionShowMarkedOnlySelector,
+  // filterTriggerDateRangeSelector
 } from '../../redux/selectors';
 // import { actionTypes } from '../../redux/action-types';
 
