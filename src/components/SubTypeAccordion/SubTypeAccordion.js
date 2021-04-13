@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   accordionContainer: {
-    backgroundColor: Colors.primaryLight2,
+    backgroundColor: Colors.resourceCardBorder,
   },
 });

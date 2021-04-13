@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 10,
     marginHorizontal: 10,
+    borderRadius: 10,
   },
   firstCard: {
     marginTop: 10,
