@@ -84,7 +84,13 @@ export const toggleShowCollectionOnly = (boolean) => (dispatch, getState) => {
   });
 };
 
-export const toggleShowMarkedOnly = (boolean) => ({
-  type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
-  payload: boolean,
-});
+export const toggleShowMarkedOnly = (boolean) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.TOGGLE_SHOW_MARKED_ONLY,
+    payload: {
+      collectionId: activeCollectionId,
+      showMarkedOnly: boolean,
+    },
+  });
+};

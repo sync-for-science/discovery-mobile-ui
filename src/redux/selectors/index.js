@@ -24,8 +24,10 @@ const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
+// replace
 const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
+// replace
 const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
 export const activeCollectionSelector = createSelector(
@@ -51,6 +53,11 @@ export const activeCollectionMarkedResourcesSelector = createSelector(
 export const activeCollectionShowCollectionOnlySelector = createSelector(
   [activeCollectionSelector],
   (activeCollection) => activeCollection.showCollectionOnly,
+);
+
+export const activeCollectionShowMarkedOnlySelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.showMarkedOnly,
 );
 
 export const patientSelector = createSelector(

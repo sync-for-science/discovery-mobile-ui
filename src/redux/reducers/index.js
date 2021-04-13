@@ -259,6 +259,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       updatedCollection.showCollectionOnly = showCollectionOnly;
       return { ...state, [collectionId]: updatedCollection };
     }
+    case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
+      const { collectionId, showMarkedOnly } = action.payload;
+      const updatedCollection = { ...state[collectionId] };
+      updatedCollection.showMarkedOnly = showMarkedOnly;
+      return { ...state, [collectionId]: updatedCollection };
+    }
     default:
       return state;
   }
@@ -283,15 +289,3 @@ export const activeCollectionIdReducer = (state = defaultCollectionId, action) =
   }
 };
 
-export const showMarkedOnlyReducer = (state = false, action) => {
-  switch (action.type) {
-    case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      return action.payload;
-    }
-    case actionTypes.SELECT_COLLECTION: {
-      return false;
-    }
-    default:
-      return state;
-  }
-};
