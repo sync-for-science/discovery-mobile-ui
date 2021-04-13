@@ -37,7 +37,7 @@ CategoryButton.defaultProps = {
 const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
-  resourceTypeFilters
+  resourceTypeFilters,
 }) => (
   <View>
     <ScrollView
@@ -63,7 +63,7 @@ const ResourceTypeSelector = ({
 );
 
 ResourceTypeSelector.propTypes = {
-  filteredResourceTypes: shape({}).isRequired,
+  resourceTypeFilters: shape({}).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
 };

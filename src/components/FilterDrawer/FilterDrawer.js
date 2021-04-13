@@ -18,7 +18,7 @@ import { connect } from 'react-redux';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
-import { filteredResourceTypesSelector, activeCollectionResourceTypeFiltersSelector } from '../../redux/selectors';
+import { activeCollectionResourceTypeFiltersSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
   const label = PLURAL_RESOURCE_TYPES[resourceType];

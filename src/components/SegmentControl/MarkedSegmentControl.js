@@ -6,8 +6,11 @@ import { bool, func, shape } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionShowMarkedOnlySelector, filterTriggerDateRangeSelector } from '../../redux/selectors';
-import { actionTypes } from '../../redux/action-types';
+import { 
+  activeCollectionShowMarkedOnlySelector, 
+  // filterTriggerDateRangeSelector 
+} from '../../redux/selectors';
+// import { actionTypes } from '../../redux/action-types';
 
 const allRecordsDescription = 'Displays all records.';
 const highlightedRecordsDescription = 'Only displays highlighted records.';
@@ -15,15 +18,15 @@ const highlightedRecordsDescription = 'Only displays highlighted records.';
 const MarkedSegmentControl = ({
   showMarkedOnly,
   toggleShowMarkedOnlyAction,
-  updateDateRangeFilter,
-  filterTriggerDateRange,
+  // updateDateRangeFilter,
+  // filterTriggerDateRange,
   hasMarkedIds,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
     toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
-    updateDateRangeFilter(filterTriggerDateRange);
+    // updateDateRangeFilter(filterTriggerDateRange);
   };
 
   // reset SegmentControl and TimelineRange when user
@@ -31,7 +34,7 @@ const MarkedSegmentControl = ({
   useEffect(() => {
     if (showMarkedOnly && !hasMarkedIds) {
       toggleShowMarkedOnlyAction(false);
-      updateDateRangeFilter(filterTriggerDateRange);
+      // updateDateRangeFilter(filterTriggerDateRange);
     }
   }, [showMarkedOnly, hasMarkedIds]);
 
@@ -51,25 +54,25 @@ const MarkedSegmentControl = ({
 MarkedSegmentControl.propTypes = {
   showMarkedOnly: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
-  filterTriggerDateRange: shape({}).isRequired,
-  updateDateRangeFilter: func.isRequired,
+  // filterTriggerDateRange: shape({}).isRequired,
+  // updateDateRangeFilter: func.isRequired,
   hasMarkedIds: bool.isRequired,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   showMarkedOnly: activeCollectionShowMarkedOnlySelector(state),
-  filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
+  // filterTriggerDateRange: filterTriggerDateRangeSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {
   toggleShowMarkedOnlyAction: toggleShowMarkedOnly,
-  updateDateRangeFilter: ({ dateRangeStart, dateRangeEnd }) => ({
-    type: actionTypes.UPDATE_DATE_RANGE_FILTER,
-    payload: {
-      dateRangeStart,
-      dateRangeEnd,
-    },
-  }),
+  // updateDateRangeFilter: ({ dateRangeStart, dateRangeEnd }) => ({
+  //   type: actionTypes.UPDATE_DATE_RANGE_FILTER,
+  //   payload: {
+  //     dateRangeStart,
+  //     dateRangeEnd,
+  //   },
+  // }),
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl);

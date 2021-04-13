@@ -62,12 +62,6 @@ export const activeCollectionResourceIdsSelector = createSelector(
   (activeCollection) => activeCollection.resourceIds,
 );
 
-// replace with activeCollectionMarkedResourcesSelector
-export const collectionMarkedResourcesIdsSelector = createSelector(
-  [collectionSelector],
-  (collection) => Object.keys(collection.markedResources.marked),
-);
-
 const collectionAndMarkedResourceIdsSelector = createSelector(
   [activeCollectionResourceIdsSelector, activeCollectionMarkedResourcesSelector],
   (collectionResourceIds, collectionMarkedResources) => {
@@ -499,15 +493,15 @@ export const accordionsContainerDataSelector = createSelector(
 export const filterTriggerDateRangeSelector = createSelector(
   [
     resourcesSelector,
-    selectedCollectionSelector,
+    activeCollectionIdSelector,
     collectionsSelector,
-    showMarkedOnlySelector,
-    showCollectionOnlySelector,
+    activeCollectionShowMarkedOnlySelector,
+    activeCollectionShowCollectionOnlySelector,
     (_, ownProps) => ownProps,
   ],
   (
     resources,
-    selectedCollectionId,
+    activeCollectionId,
     collections,
     showMarkedOnly,
     showCollectionOnly,
@@ -516,9 +510,9 @@ export const filterTriggerDateRangeSelector = createSelector(
     const { collection, marked } = ownProps;
     const defaultTimeRange = { dateRangeStart: undefined, dateRangeEnd: undefined };
 
-    const collectionResourceIds = Object.keys(collections[selectedCollectionId]?.resourceIds);
+    const collectionResourceIds = Object.keys(collections[activeCollectionId]?.resourceIds);
     const markedResourceIds = Object.keys(
-      collections[selectedCollectionId]?.markedResources?.marked,
+      collections[activeCollectionId]?.markedResources?.marked,
     );
 
     if (collection && (collectionResourceIds.length === 0)) {
@@ -609,8 +603,8 @@ const filteredResourceIdsSelector = createSelector(
     activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
     collectionAndMarkedResourceIdsSelector,
-    showCollectionOnlySelector,
-    showMarkedOnlySelector,
+    activeCollectionShowCollectionOnlySelector,
+    activeCollectionShowMarkedOnlySelector,
   ],
   (
     resources,
@@ -637,7 +631,7 @@ const filteredResourceIdsSelector = createSelector(
 export const filteredResourceTypesSelector = createSelector(
   [
     resourcesSelector,
-    resourceTypeFiltersSelector,
+    activeCollectionResourceTypeFiltersSelector,
     filteredResourceIdsSelector,
   ],
   (
