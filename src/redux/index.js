@@ -8,7 +8,7 @@ import {
   resourceTypeFiltersReducer,
   dateRangeFilterReducer,
   collectionsReducer,
-  selectedCollectionReducer,
+  activeCollectionIdReducer,
   showCollectionOnlyReducer,
   showMarkedOnlyReducer,
 } from './reducers';
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   resourceTypeFilters: resourceTypeFiltersReducer,
   dateRangeFilter: dateRangeFilterReducer,
   collections: collectionsReducer,
-  selectedCollection: selectedCollectionReducer,
+  activeCollectionId: activeCollectionIdReducer,
   showCollectionOnly: showCollectionOnlyReducer,
   showMarkedOnly: showMarkedOnlyReducer,
 });

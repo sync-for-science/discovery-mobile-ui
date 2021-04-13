@@ -169,11 +169,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
-      const { selectedCollection, resourceType } = action.payload;
-      const collection = state[selectedCollection];
+      const { collectionId, resourceType } = action.payload;
+      const collection = state[collectionId];
       return {
         ...state,
-        [selectedCollection]: {
+        [collectionId]: {
           ...collection,
           selectedResourceType: resourceType,
         },
@@ -269,7 +269,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-export const selectedCollectionReducer = (state = defaultCollectionId, action) => {
+export const activeCollectionIdReducer = (state = defaultCollectionId, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       return defaultCollectionId;

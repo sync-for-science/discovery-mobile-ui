@@ -6,11 +6,11 @@ export const toggleResourceTypeFilter = (resourceType) => ({
 });
 
 export const selectResourceType = (resourceType) => (dispatch, getState) => {
-  const { selectedCollection } = getState();
+  const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.SELECT_RESOURCE_TYPE,
     payload: {
-      selectedCollection,
+      collectionId: activeCollectionId,
       resourceType,
     },
   });
