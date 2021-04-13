@@ -11,7 +11,7 @@ import { actionTypes } from '../../redux/action-types';
 import {
   activeCollectionIdSelector,
   activeCollectionMarkedResourcesSelector,
-  activeCollectionShowMarkedOnlySelector
+  activeCollectionShowMarkedOnlySelector,
 } from '../../redux/selectors';
 import { UNMARKED, FOCUSED } from '../../constants/marked-status';
 

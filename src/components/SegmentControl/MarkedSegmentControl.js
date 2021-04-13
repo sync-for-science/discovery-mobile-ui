@@ -6,7 +6,7 @@ import { bool, func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionShowMarkedOnlySelector } from '../../redux/selectors'
+import { activeCollectionShowMarkedOnlySelector } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const highlightedRecordsDescription = 'Only displays highlighted records.';

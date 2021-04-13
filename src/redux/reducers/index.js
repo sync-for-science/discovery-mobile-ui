@@ -288,4 +288,3 @@ export const activeCollectionIdReducer = (state = defaultCollectionId, action) =
       return state;
   }
 };
-
