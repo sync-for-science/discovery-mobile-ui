@@ -5,10 +5,16 @@ export const toggleResourceTypeFilter = (resourceType) => ({
   payload: resourceType,
 });
 
-export const selectResourceType = (resourceType) => ({
-  type: actionTypes.SELECT_RESOURCE_TYPE,
-  payload: resourceType,
-});
+export const selectResourceType = (resourceType) => (dispatch, getState) => {
+  const { selectedCollection } = getState();
+  return dispatch({
+    type: actionTypes.SELECT_RESOURCE_TYPE,
+    payload: {
+      selectedCollection,
+      resourceType,
+    },
+  });
+};
 
 export const addResourceToCollection = (collectionId, resourceIds) => {
   const payloadIds = Array.isArray(resourceIds) ? resourceIds : [resourceIds];
