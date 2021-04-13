@@ -43,9 +43,9 @@ export const activeCollectionResourceTypeFiltersSelector = createSelector(
   (activeCollection) => activeCollection.resourceTypeFilters,
 );
 
-export const collectionMarkedResourcesSelector = createSelector(
+export const activeCollectionMarkedResourcesSelector = createSelector(
   [activeCollectionSelector],
-  (collection) => collection.markedResources,
+  (activeCollection) => activeCollection.markedResources,
 );
 
 export const patientSelector = createSelector(
@@ -206,7 +206,7 @@ const subTypeResourceIdsSelector = createSelector(
 const filteredResourceTypesSelector = createSelector(
   [
     collectionResourceIdsSelector,
-    collectionMarkedResourcesSelector,
+    activeCollectionMarkedResourcesSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
@@ -286,7 +286,7 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, collectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+  [timelineItemsInRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
   (timelineItemsInRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
     let intervals = [];
     let intervalLength = 0;
