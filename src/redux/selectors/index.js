@@ -48,6 +48,11 @@ export const activeCollectionMarkedResourcesSelector = createSelector(
   (activeCollection) => activeCollection.markedResources,
 );
 
+export const activeCollectionShowCollectionOnlySelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.showCollectionOnly,
+);
+
 export const patientSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {

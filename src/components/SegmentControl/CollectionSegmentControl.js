@@ -6,6 +6,7 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
+import { activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const collectionRecordsDescription = 'Only displays records saved to the collection.';
@@ -38,7 +39,7 @@ CollectionSegmentControl.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  showCollectionOnly: state.showCollectionOnly,
+  showCollectionOnly: activeCollectionShowCollectionOnlySelector(state),
 });
 
 const mapDispatchToProps = {
