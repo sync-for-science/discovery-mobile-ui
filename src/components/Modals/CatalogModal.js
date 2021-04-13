@@ -23,7 +23,7 @@ const CatalogModal = ({
   collectionResources,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const hasMarkedIds = Object.keys(collectionMarkedResources).length > 0;
+  const hasMarkedIds = Object.keys(collectionMarkedResources.marked).length > 0;
   const hasCollectionIds = Object.keys(collectionResources).length > 0;
 
   const handleClearCollection = () => {
