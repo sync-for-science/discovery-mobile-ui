@@ -18,8 +18,6 @@ const resourcesSelector = (state) => state.resources;
 
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
-export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
-
 const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
@@ -37,6 +35,11 @@ export const activeCollectionResourceTypeSelector = createSelector(
 export const activeCollectionResourceTypeFiltersSelector = createSelector(
   [activeCollectionSelector],
   (activeCollection) => activeCollection.resourceTypeFilters,
+);
+
+export const activeCollectionDateRangeFilterSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.dateRangeFilter,
 );
 
 export const activeCollectionMarkedResourcesSelector = createSelector(
@@ -128,7 +131,7 @@ export const timelinePropsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [dateRangeFilterFiltersSelector, timelinePropsSelector],
+  [activeCollectionDateRangeFilterSelector, timelinePropsSelector],
   (dateRangeFilterFilters, timelineProps) => {
     const { minimumDate, maximumDate } = timelineProps;
     const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
