@@ -28,23 +28,23 @@ const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
 const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
-export const collectionSelector = createSelector(
+export const activeCollectionSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId],
 );
 
 export const activeCollectionResourceTypeSelector = createSelector(
-  [collectionSelector],
+  [activeCollectionSelector],
   (activeCollection) => activeCollection.selectedResourceType,
 );
 
 export const activeCollectionResourceTypeFiltersSelector = createSelector(
-  [collectionSelector],
+  [activeCollectionSelector],
   (activeCollection) => activeCollection.resourceTypeFilters,
 );
 
 export const collectionMarkedResourcesSelector = createSelector(
-  [collectionSelector],
+  [activeCollectionSelector],
   (collection) => collection.markedResources,
 );
 
