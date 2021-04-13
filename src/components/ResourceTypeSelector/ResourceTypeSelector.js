@@ -86,14 +86,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.lightgrey2,
     borderColor: 'gray',
     flexDirection: 'row',
     paddingHorizontal: 5,
-    borderTopColor: Colors.mediumgrey,
-    borderTopWidth: 1,
-    borderBottomColor: Colors.mediumgrey,
-    borderBottomWidth: 1,
   },
   button: {
     paddingVertical: 5,
@@ -105,6 +101,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   buttonSelected: {
+    backgroundColor: 'white',
     paddingVertical: 5,
     paddingHorizontal: 15,
     marginHorizontal: 5,

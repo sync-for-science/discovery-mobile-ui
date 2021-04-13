@@ -72,6 +72,6 @@ const styles = StyleSheet.create({
   },
   dash: {
     fontSize: 30,
-    color: Colors.darkgrey,
+    color: Colors.dash,
   },
 });

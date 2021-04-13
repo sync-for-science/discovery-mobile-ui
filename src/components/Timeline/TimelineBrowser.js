@@ -449,7 +449,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TimelineB
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    height: CHART_HEIGHT,
+    minHeight: CHART_HEIGHT,
   },
   debug: {
     left: 2,
