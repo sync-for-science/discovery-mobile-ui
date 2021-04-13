@@ -24,12 +24,6 @@ const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
-// replace
-const showCollectionOnlySelector = (state) => state.showCollectionOnly;
-
-// replace
-const showMarkedOnlySelector = (state) => state.showMarkedOnly;
-
 export const activeCollectionSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId],
@@ -411,8 +405,8 @@ export const accordionsContainerDataSelector = createSelector(
   [
     filteredResourceTypesSelector,
     activeCollectionResourceTypeSelector,
-    showCollectionOnlySelector,
-    showMarkedOnlySelector,
+    activeCollectionShowCollectionOnlySelector,
+    activeCollectionShowMarkedOnlySelector,
     (_, ownProps) => ownProps,
   ],
   (

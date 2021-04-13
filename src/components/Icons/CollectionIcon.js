@@ -6,7 +6,7 @@ import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 
-import { collectionResourceIdsSelector } from '../../redux/selectors';
+import { collectionResourceIdsSelector, activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 
 const CollectionIcon = ({
@@ -61,7 +61,7 @@ CollectionIcon.propTypes = {
 
 const mapStateToProps = (state) => ({
   collectionResourceIds: collectionResourceIdsSelector(state),
-  showCollectionOnly: state.showCollectionOnly,
+  showCollectionOnly: activeCollectionShowCollectionOnlySelector(state),
 });
 
 const mapDispatchToProps = {
