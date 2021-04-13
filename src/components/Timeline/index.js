@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity,
 } from 'react-native';
-// import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import DateRangePicker from './DateRangePicker';
-import TimelineBrowser, { CHART_HEIGHT } from './TimelineBrowser';
+import TimelineBrowser from './TimelineBrowser';
 
-const Timeline = () => (
-  <View style={styles.root}>
-    <DateRangePicker />
-    <TimelineBrowser />
-  </View>
-);
+import Colors from '../../constants/Colors';
+
+const Timeline = () => {
+  const [showTimeline, setShowTimeline] = useState(true);
+  const expandIcon = showTimeline
+    ? <Ionicons name="caret-down" size={24} color={Colors.expandTimeline} />
+    : <Ionicons name="caret-up" size={24} color={Colors.expandTimeline} />;
+
+  return (
+    <View style={styles.root}>
+      <View style={styles.dateRangeContainer}>
+        <View style={styles.iconContainer} />
+        <DateRangePicker />
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => setShowTimeline(!showTimeline)}
+        >
+          {expandIcon}
+        </TouchableOpacity>
+      </View>
+      {showTimeline && <TimelineBrowser />}
+    </View>
+  );
+};
 
 export default Timeline;
 
@@ -19,8 +37,17 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     flexDirection: 'column',
-    minHeight: CHART_HEIGHT + 60, // + height of date selectors
     borderColor: 'gray',
-    marginTop: 16,
+  },
+  dateRangeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  iconContainer: {
+    width: 50,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

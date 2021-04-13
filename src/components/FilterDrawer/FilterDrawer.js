@@ -57,7 +57,7 @@ const FilterDrawer = ({
   children,
 }) => {
   const renderDrawer = () => (
-    <View style={styles.drawerContainer}>
+    <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
       {Object.entries(orderedResourceTypeFilters).map(([resourceType, value]) => (
         <ResourceTypeFilter
@@ -83,22 +83,20 @@ const FilterDrawer = ({
   });
 
   return (
-    <View style={styles.container}>
-      <DrawerLayout
-        ref={drawerRef}
-        drawerWidth={wp('60%')}
-        keyboardDismissMode="on-drag"
-        drawerPosition={DrawerLayout.positions.Left}
-        drawerType="front"
-        drawerBackgroundColor="white"
-        renderNavigationView={renderDrawer}
-        edgeWidth={-wp('100%')}
-      >
-        <View style={styles.childrenContainer}>
-          {childrenWithProps}
-        </View>
-      </DrawerLayout>
-    </View>
+    <DrawerLayout
+      ref={drawerRef}
+      drawerWidth={wp('60%')}
+      keyboardDismissMode="on-drag"
+      drawerPosition={DrawerLayout.positions.Left}
+      drawerType="front"
+      drawerBackgroundColor="white"
+      renderNavigationView={renderDrawer}
+      edgeWidth={-wp('100%')}
+    >
+      <View style={styles.childrenContainer}>
+        {childrenWithProps}
+      </View>
+    </DrawerLayout>
   );
 };
 
@@ -119,13 +117,6 @@ const mapDispatchToProps = {
 export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  drawerContainer: {
-    flex: 1,
-    paddingTop: 10,
-  },
   drawerTitle: {
     marginTop: 10,
     marginBottom: 20,
@@ -133,7 +124,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   childrenContainer: {
-    width: '100%',
+    flex: 1,
   },
   categoryRow: {
     flexDirection: 'row',

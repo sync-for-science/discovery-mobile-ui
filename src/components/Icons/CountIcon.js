@@ -4,8 +4,6 @@ import {
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-import Colors from '../../constants/Colors';
-
 const CountIcon = ({
   count,
 }) => (
@@ -25,12 +23,15 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   base: {
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
-    marginRight: 10,
-    backgroundColor: Colors.countIcon,
+
+    // disabled icon background per request
+    // client said they might revert change so keeping for reference
+    // marginRight: 10,
+    // backgroundColor: Colors.countIcon,
   },
 });

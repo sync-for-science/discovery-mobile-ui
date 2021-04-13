@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape } from 'prop-types';
+import { string, shape, number } from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -13,19 +13,15 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import BaseDivider from '../Generic/BaseDivider';
 import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import {
   patientSelector,
   patientAgeAtResourcesSelector,
-  collectionResourceIdsSelector,
 } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
-import Colors from '../../constants/Colors';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
-import AddRemoveButton from './AddRemoveButton';
 
 const selectCardBody = (resource, patientAgeAtResource) => {
   switch (resource.type) {
@@ -74,14 +70,15 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   collectionId,
-  collectionResourceIds,
+  index,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
   const resourceDate = getResourceDate(resource);
+  const firstCardStyle = index === 0 ? styles.firstCard : {};
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, firstCardStyle]}>
       <View style={styles.header}>
         <BaseText variant="header">{resourceType}</BaseText>
         <View style={styles.rightIconsContainer}>
@@ -106,14 +103,6 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource, patientAgeAtResources[resourceId])}
       </View>
-      <BaseDivider />
-      <View style={styles.buttonContainer}>
-        <AddRemoveButton
-          inCollection={!!collectionResourceIds[resourceId]}
-          collectionId={collectionId}
-          resourceId={resourceId}
-        />
-      </View>
     </View>
   );
 };
@@ -123,30 +112,26 @@ ResourceCard.propTypes = {
   resources: shape({}).isRequired,
   patientAgeAtResources: shape({}).isRequired,
   collectionId: string.isRequired,
-  collectionResourceIds: shape({}),
-};
-
-ResourceCard.defaultProps = {
-  collectionResourceIds: {},
+  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
   patientResource: patientSelector(state),
   patientAgeAtResources: patientAgeAtResourcesSelector(state),
-  collectionResourceIds: collectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
 
 const styles = StyleSheet.create({
   root: {
-    marginVertical: 10,
     backgroundColor: 'white',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderTopColor: Colors.lightgrey,
-    borderBottomColor: Colors.lightgrey,
+    marginBottom: 10,
+    marginHorizontal: 10,
+    borderRadius: 10,
+  },
+  firstCard: {
+    marginTop: 10,
   },
   header: {
     flexDirection: 'row',
@@ -158,14 +143,6 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 10,
     paddingBottom: 15,
-  },
-  buttonContainer: {
-    padding: 5,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  removeButton: {
-    color: 'red',
   },
   iconContainer: {
     marginLeft: 10,

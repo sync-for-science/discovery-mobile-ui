@@ -55,11 +55,9 @@ const CatalogScreen = ({ collection }) => (
     >
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
-        <View>
-          <Timeline />
-          <ResourceTypeSelector />
-        </View>
-        <ScrollView>
+        <Timeline />
+        <ResourceTypeSelector />
+        <ScrollView style={styles.scrollView}>
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
@@ -84,6 +82,7 @@ export default connect(mapStateToProps, null)(CatalogScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   screen: {
     flex: 1,
@@ -91,11 +90,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header: {
-    backgroundColor: Colors.backgroundColor,
+    backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
   },
   drawerIcon: {
     paddingLeft: 10,
+  },
+  scrollView: {
+    flex: 1,
   },
 });

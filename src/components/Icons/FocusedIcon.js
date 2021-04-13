@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   base: {
-    height: 20,
-    width: 20,
+    height: 15,
+    width: 15,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5,

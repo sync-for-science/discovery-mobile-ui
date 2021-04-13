@@ -15,13 +15,14 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)
         .sort(sortEntriesBySubType)
-        .map(([subType, values]) => {
+        .map(([subType, values], index) => {
           if (values.length === 0) {
             return null;
           }
           return (
             <SubTypeAccordion
               key={subType}
+              index={index}
               subType={subType}
               resourceIds={values.resourceIds}
               subTypeCount={values.subTypeCount}
@@ -45,7 +46,6 @@ export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    marginVertical: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },

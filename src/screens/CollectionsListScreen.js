@@ -55,7 +55,7 @@ const CollectionsListScreen = ({
           </TouchableOpacity>
         </Left>
         <Body>
-          <Title>Collections</Title>
+          <Title style={styles.headerText}>Collections</Title>
         </Body>
         <Right>
           <TouchableOpacity onPress={handleNewCollectionPress}>
@@ -102,12 +102,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScree
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   collectionRowContainer: {
     alignItems: 'center',
   },
   header: {
-    backgroundColor: Colors.screenBackground,
+    backgroundColor: 'white',
+  },
+  headerText: {
+    color: 'black',
   },
   logoutContainer: {
     marginLeft: 5,

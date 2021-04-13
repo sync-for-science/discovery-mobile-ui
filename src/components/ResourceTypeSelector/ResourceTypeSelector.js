@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  StyleSheet, Text,
+  StyleSheet, Text, View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { Button } from 'native-base';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   func, shape, string, bool,
 } from 'prop-types';
@@ -20,9 +19,9 @@ const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) =>
   const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
 
   return (
-    <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
+    <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
       <Text style={buttonTextStyle}>{categoryDisplay}</Text>
-    </Button>
+    </TouchableOpacity>
   );
 };
 
@@ -40,21 +39,27 @@ const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
 }) => (
-  <ScrollView style={styles.root} horizontal showsHorizontalScrollIndicator={false}>
-    {Object.entries(resourceTypeFilters).map(([resourceType, filterOpen]) => {
-      if (filterOpen) {
-        return (
-          <CategoryButton
-            key={resourceType}
-            resourceType={resourceType}
-            isActive={selectedResourceType === resourceType}
-            selectResourceTypeAction={selectResourceTypeAction}
-          />
-        );
+  <View>
+    <ScrollView
+      style={styles.root}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
+    >
+      {
+        Object.entries(resourceTypeFilters)
+          .filter(([, isVisible]) => isVisible === true)
+          .map(([resourceType]) => (
+            <CategoryButton
+              key={resourceType}
+              resourceType={resourceType}
+              isActive={selectedResourceType === resourceType}
+              selectResourceTypeAction={selectResourceTypeAction}
+            />
+          ))
       }
-      return null;
-    })}
-  </ScrollView>
+    </ScrollView>
+  </View>
 );
 
 ResourceTypeSelector.propTypes = {
@@ -80,26 +85,39 @@ export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: Colors.mediumgrey,
+    backgroundColor: Colors.lightgrey2,
     borderColor: 'gray',
-    marginTop: 20,
     flexDirection: 'row',
-    padding: 10,
+    paddingHorizontal: 5,
   },
   button: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginHorizontal: 5,
     backgroundColor: 'white',
+    borderRadius: 20,
+    borderColor: Colors.mediumgrey,
+    borderWidth: 2,
   },
   buttonSelected: {
-    paddingHorizontal: 10,
-    marginHorizontal: 10,
-    backgroundColor: Colors.primary,
+    backgroundColor: 'white',
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    marginHorizontal: 5,
+    borderRadius: 20,
+    borderColor: Colors.darkgrey,
+    borderWidth: 2,
   },
   buttonSelectedText: {
-    color: 'white',
+    color: 'black',
+    fontWeight: '700',
   },
   buttonText: {
     color: 'black',
+  },
+  contentContainerStyle: {
+    flexDirection: 'row',
+    height: 45,
+    alignItems: 'center',
   },
 });

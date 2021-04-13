@@ -24,10 +24,12 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
+  index,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
+  const firstHeaderStyle = index === 0 ? styles.firstHeader : {};
   const renderHeader = (item) => (
-    <View style={styles.header}>
+    <View style={[styles.header, firstHeaderStyle]}>
       <View style={styles.headerTextContainer}>
         <CountIcon count={subTypeCount} />
         <BaseText style={styles.headerText}>
@@ -56,9 +58,10 @@ const SubTypeAccordion = ({
   );
 
   const renderContent = (item) => item.content.map(
-    (resourceId) => (
+    (resourceId, cardIndex) => (
       <ResourceCard
         key={resourceId}
+        index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
       />
@@ -66,11 +69,9 @@ const SubTypeAccordion = ({
   );
 
   return (
-    <View style={{ marginBottom: 10 }}>
+    <View style={styles.accordionContainer}>
       <Accordion
         dataArray={dataArray}
-        icon="add"
-        iconStyle={{ color: 'green' }}
         expanded={[]}
         renderHeader={renderHeader}
         renderContent={renderContent}
@@ -84,6 +85,7 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
+  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -95,14 +97,16 @@ export default connect(mapStateToProps, null)(SubTypeAccordion);
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderTopColor: Colors.lightgrey,
-    borderTopWidth: 1,
     borderBottomColor: Colors.lightgrey,
     borderBottomWidth: 1,
+  },
+  firstHeader: {
+    borderTopColor: Colors.lightgrey,
+    borderTopWidth: 1,
   },
   headerTextContainer: {
     flexDirection: 'row',
@@ -117,5 +121,8 @@ const styles = StyleSheet.create({
   rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  accordionContainer: {
+    backgroundColor: Colors.resourceCardBorder,
   },
 });
