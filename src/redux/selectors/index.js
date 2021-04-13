@@ -33,7 +33,7 @@ export const collectionSelector = createSelector(
   (collections, activeCollectionId) => collections[activeCollectionId],
 );
 
-export const selectedResourceTypeSelector = createSelector(
+export const activeCollectionResourceTypeSelector = createSelector(
   [collectionSelector],
   (activeCollection) => activeCollection.selectedResourceType,
 );
@@ -398,7 +398,7 @@ export const timelineIntervalsSelector = createSelector(
 export const accordionsContainerDataSelector = createSelector(
   [
     filteredResourceTypesSelector,
-    selectedResourceTypeSelector,
+    activeCollectionResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
     (_, ownProps) => ownProps,
