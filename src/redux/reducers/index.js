@@ -1,5 +1,6 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { produce } from 'immer';
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
@@ -152,29 +153,18 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       const { collectionId, resourceType } = action.payload;
-      const collection = state[collectionId];
-      return {
-        ...state,
-        [collectionId]: {
-          ...collection,
-          selectedResourceType: resourceType,
-        },
-      };
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].selectedResourceType = resourceType;
+      });
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const { collectionId, resourceType } = action.payload;
-      const collection = state[collectionId];
-      const { resourceTypeFilters } = collection;
-      return {
-        ...state,
-        [collectionId]: {
-          ...collection,
-          resourceTypeFilters: {
-            ...resourceTypeFilters,
-            [resourceType]: !resourceTypeFilters[resourceType],
-          },
-        },
-      };
+      return produce(state, (draft) => {
+        const prevValue = draft[collectionId].resourceTypeFilters[resourceType];
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].resourceTypeFilters[resourceType] = !prevValue;
+      });
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
