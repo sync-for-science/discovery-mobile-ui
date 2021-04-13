@@ -128,9 +128,9 @@ const styles = StyleSheet.create({
   base: {
     borderColor: 'transparent',
     borderWidth: 0.5,
-    borderRadius: 30,
-    height: 30,
-    width: 30,
+    borderRadius: 25,
+    height: 25,
+    width: 25,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,

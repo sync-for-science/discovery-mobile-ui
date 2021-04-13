@@ -97,7 +97,7 @@ export default connect(mapStateToProps, null)(SubTypeAccordion);
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    padding: 10,
+    padding: 5,
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
