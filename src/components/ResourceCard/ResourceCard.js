@@ -70,7 +70,7 @@ const ResourceCard = ({
   resources,
   patientAgeAtResources,
   collectionId,
-  index
+  index,
 }) => {
   const resource = resources[resourceId];
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];

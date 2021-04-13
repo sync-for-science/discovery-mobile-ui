@@ -55,11 +55,11 @@ const CatalogScreen = ({ collection }) => (
     >
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
-          <Timeline />
-          <ResourceTypeSelector />
-          <ScrollView style={styles.scrollView}>
-            <SubTypeAccordionsContainer />
-          </ScrollView>
+        <Timeline />
+        <ResourceTypeSelector />
+        <ScrollView style={styles.scrollView}>
+          <SubTypeAccordionsContainer />
+        </ScrollView>
       </FilterDrawer>
       <ContentPanel />
     </Swiper>
