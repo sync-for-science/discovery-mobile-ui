@@ -10,7 +10,7 @@ import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 import {
   activeCollectionIdSelector,
-  collectionMarkedResourcesSelector,
+  activeCollectionMarkedResourcesSelector,
 } from '../../redux/selectors';
 import { MARKED, FOCUSED } from '../../constants/marked-status';
 
@@ -81,7 +81,7 @@ FocusedIcon.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  markedResources: collectionMarkedResourcesSelector(state),
+  markedResources: activeCollectionMarkedResourcesSelector(state),
   collectionId: activeCollectionIdSelector(state),
 });
 

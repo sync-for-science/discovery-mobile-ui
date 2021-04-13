@@ -20,8 +20,6 @@ const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByTy
 
 export const dateRangeFilterFiltersSelector = (state) => state.dateRangeFilter;
 
-const resourceTypeFiltersSelector = (state) => state.resourceTypeFilters;
-
 const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
@@ -30,19 +28,24 @@ const showCollectionOnlySelector = (state) => state.showCollectionOnly;
 
 const showMarkedOnlySelector = (state) => state.showMarkedOnly;
 
-export const collectionSelector = createSelector(
+export const activeCollectionSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId],
 );
 
-export const selectedResourceTypeSelector = createSelector(
-  [collectionSelector],
+export const activeCollectionResourceTypeSelector = createSelector(
+  [activeCollectionSelector],
   (activeCollection) => activeCollection.selectedResourceType,
 );
 
-export const collectionMarkedResourcesSelector = createSelector(
-  [collectionSelector],
-  (collection) => collection.markedResources,
+export const activeCollectionResourceTypeFiltersSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.resourceTypeFilters,
+);
+
+export const activeCollectionMarkedResourcesSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection.markedResources,
 );
 
 export const patientSelector = createSelector(
@@ -131,7 +134,7 @@ const timelineRangeSelector = createSelector(
 );
 
 const timelineItemsInRangeSelector = createSelector(
-  [sortedTimelineItemsSelector, timelineRangeSelector, resourceTypeFiltersSelector],
+  [sortedTimelineItemsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
@@ -171,7 +174,7 @@ export const patientAgeAtResourcesSelector = createSelector(
 );
 
 export const orderedResourceTypeFiltersSelector = createSelector(
-  [resourceTypeFiltersSelector],
+  [activeCollectionResourceTypeFiltersSelector],
   (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
     .reduce((acc, resourceType) => {
       acc[resourceType] = resourceTypeFilters[resourceType];
@@ -203,7 +206,7 @@ const subTypeResourceIdsSelector = createSelector(
 const filteredResourceTypesSelector = createSelector(
   [
     collectionResourceIdsSelector,
-    collectionMarkedResourcesSelector,
+    activeCollectionMarkedResourcesSelector,
     timelineItemsInRangeSelector,
     subTypeResourceIdsSelector,
   ],
@@ -283,7 +286,7 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, collectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+  [timelineItemsInRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
   (timelineItemsInRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
     let intervals = [];
     let intervalLength = 0;
@@ -395,7 +398,7 @@ export const timelineIntervalsSelector = createSelector(
 export const accordionsContainerDataSelector = createSelector(
   [
     filteredResourceTypesSelector,
-    selectedResourceTypeSelector,
+    activeCollectionResourceTypeSelector,
     showCollectionOnlySelector,
     showMarkedOnlySelector,
     (_, ownProps) => ownProps,

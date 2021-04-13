@@ -5,20 +5,19 @@ import {
 import { ScrollView } from 'react-native-gesture-handler';
 import { Button } from 'native-base';
 import {
-  func, shape, string,
+  func, shape, string, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { selectedResourceTypeSelector } from '../../redux/selectors';
+import { activeCollectionResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
 
-const CategoryButton = ({ resourceType, selectedResourceType, selectResourceTypeAction }) => {
+const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
-  const buttonStyle = selectedResourceType === resourceType ? styles.buttonSelected : styles.button;
-  const buttonTextStyle = selectedResourceType
-    === resourceType ? styles.buttonSelectedText : styles.buttonText;
+  const buttonStyle = isActive ? styles.buttonSelected : styles.button;
+  const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
 
   return (
     <Button rounded style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
@@ -29,12 +28,11 @@ const CategoryButton = ({ resourceType, selectedResourceType, selectResourceType
 
 CategoryButton.propTypes = {
   resourceType: string.isRequired,
-  selectedResourceType: string,
+  isActive: bool.isRequired,
   selectResourceTypeAction: func.isRequired,
 };
 
 CategoryButton.defaultProps = {
-  selectedResourceType: null,
 };
 
 const ResourceTypeSelector = ({
@@ -49,7 +47,7 @@ const ResourceTypeSelector = ({
           <CategoryButton
             key={resourceType}
             resourceType={resourceType}
-            selectedResourceType={selectedResourceType}
+            isActive={selectedResourceType === resourceType}
             selectResourceTypeAction={selectResourceTypeAction}
           />
         );
@@ -70,8 +68,8 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: state.resourceTypeFilters,
-  selectedResourceType: selectedResourceTypeSelector(state),
+  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
+  selectedResourceType: activeCollectionResourceTypeSelector(state),
 });
 
 const mapDispatchToProps = {
