@@ -78,18 +78,6 @@ export const resourceTypeFiltersReducer = (state = preloadResourceTypeFilters, a
 };
 
 const preloadSelectedResourceType = null;
-export const selectedResourceTypeReducer = (state = preloadSelectedResourceType, action) => {
-  switch (action.type) {
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadSelectedResourceType;
-    }
-    case actionTypes.SELECT_RESOURCE_TYPE: {
-      return action.payload;
-    }
-    default:
-      return state;
-  }
-};
 
 const preloadSelectedTimelineRange = {
   dateRangeStart: undefined,
