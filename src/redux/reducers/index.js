@@ -148,6 +148,7 @@ const createCollection = (
       created: timeCreated,
       lastUpdated: timeCreated,
       label,
+      selectedResourceType: preloadSelectedResourceType,
       resourceIds,
       lastAddedResourceId,
       markedResources: defaultMarkedResources,
@@ -178,6 +179,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
+    }
+    case actionTypes.SELECT_RESOURCE_TYPE: {
+      const { selectedCollection, resourceType } = action.payload;
+      const collection = state[selectedCollection];
+      return {
+        ...state,
+        [selectedCollection]: {
+          ...collection,
+          selectedResourceType: resourceType,
+        },
+      };
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;

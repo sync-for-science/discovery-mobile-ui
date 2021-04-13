@@ -17,7 +17,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import ContentPanel from '../components/ContentPanel/ContentPanel';
-import { collectionSelector } from '../redux/selectors';
+import { collectionSelector, selectedResourceTypeSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -83,7 +83,7 @@ CatalogScreen.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  selectedResourceType: state.selectedResourceType,
+  selectedResourceType: selectedResourceTypeSelector(state),
   collection: collectionSelector(state),
 });
 
