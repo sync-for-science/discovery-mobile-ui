@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   },
   buttonSelectedText: {
     color: 'black',
-    fontWeight: "700",
+    fontWeight: '700',
   },
   buttonText: {
     color: 'black',

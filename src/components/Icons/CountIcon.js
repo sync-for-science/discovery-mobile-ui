@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5,
- 
+
     // disabled icon background per request
     // client said they might revert change so keeping for reference
     // marginRight: 10,
