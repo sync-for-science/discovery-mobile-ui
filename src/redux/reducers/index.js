@@ -255,15 +255,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
       const { collectionId, showCollectionOnly } = action.payload;
-      const updatedCollection = { ...state[collectionId] };
-      updatedCollection.showCollectionOnly = showCollectionOnly;
-      return { ...state, [collectionId]: updatedCollection };
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].showCollectionOnly = showCollectionOnly;
+      });
     }
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
       const { collectionId, showMarkedOnly } = action.payload;
-      const updatedCollection = { ...state[collectionId] };
-      updatedCollection.showMarkedOnly = showMarkedOnly;
-      return { ...state, [collectionId]: updatedCollection };
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].showMarkedOnly = showMarkedOnly;
+      });
     }
     default:
       return state;
