@@ -130,7 +130,6 @@ export const filteredRecordsSelector = createSelector(
   },
 );
 
-
 export const allValidTimelinePropsSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
   (items) => {
@@ -317,8 +316,9 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
-  (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
+  [
+    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+  (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, collectionIds) => { // eslint-disable-line max-len
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
