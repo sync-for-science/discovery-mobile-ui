@@ -10,7 +10,7 @@ import { format } from 'date-fns';
 import {
   getPatientName,
 } from '../../resources/fhirReader';
-import { patientSelector, timelinePropsSelector } from '../../redux/selectors';
+import { patientSelector, allValidTimelinePropsSelector } from '../../redux/selectors';
 
 const UI_DATE_FORMAT = 'MMM d, Y';
 
@@ -56,7 +56,7 @@ UserInfo.defaultProps = {
 
 const mapStateToProps = (state) => ({
   patientResource: patientSelector(state),
-  timelineProps: timelinePropsSelector(state),
+  timelineProps: allValidTimelinePropsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(UserInfo);
