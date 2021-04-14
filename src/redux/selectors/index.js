@@ -112,6 +112,16 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .sort(sortByDate),
 );
 
+export const filteredRecordsSelector = createSelector(
+  [allValidRecordsSortedByDateSelector, activeCollectionSelector],
+  (items, activeCollection) => items
+    .filter(({ type }) => activeCollection.resourceTypeFilters[type])
+    // activeCollection.resourceIds, aka: "saved to collection"
+    .filter(({ id }) => activeCollection.showCollectionOnly && activeCollection.resourceIds[id])
+    // eslint-disable-next-line max-len
+    .filter(({ id }) => activeCollection.showMarkedOnly && activeCollection.markedResources.marked[id]),
+);
+
 export const timelinePropsSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
   (items) => {
@@ -138,6 +148,7 @@ const timelineRangeSelector = createSelector(
 );
 
 const timelineItemsInRangeSelector = createSelector(
+  // eslint-disable-next-line max-len
   [allValidRecordsSortedByDateSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
