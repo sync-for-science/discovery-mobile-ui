@@ -99,26 +99,21 @@ export const supportedResourcesSelector = createSelector(
     }, []),
 );
 
-const timelineResourcesSelector = createSelector(
-  [resourcesSelector],
-  (resources) => values(resources)
-    .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
-    .filter((r) => r.timelineDate), // must have timelineDate
-);
-
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
-export const sortedTimelineItemsSelector = createSelector(
-  [timelineResourcesSelector],
-  (resources) => resources
+export const allValidRecordsSortedByDateSelector = createSelector(
+  [resourcesSelector],
+  (resources) => values(resources)
+    .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
+    .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
 );
 
 export const timelinePropsSelector = createSelector(
-  [sortedTimelineItemsSelector],
+  [allValidRecordsSortedByDateSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
@@ -143,7 +138,7 @@ const timelineRangeSelector = createSelector(
 );
 
 const timelineItemsInRangeSelector = createSelector(
-  [sortedTimelineItemsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
+  [allValidRecordsSortedByDateSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
@@ -161,7 +156,7 @@ const timelineItemsInRangeSelector = createSelector(
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, sortedTimelineItemsSelector],
+  [patientSelector, allValidRecordsSortedByDateSelector],
   (patient, timelineItems) => {
     if (!patient) {
       return {};
