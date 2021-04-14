@@ -112,22 +112,26 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .sort(sortByDate),
 );
 
-export const filteredRecordsSelector = createSelector(
+export const recordsWithShowOnlyFiltersSelector = createSelector(
   [allValidRecordsSortedByDateSelector, activeCollectionSelector],
   (items, activeCollection) => {
     const {
-      resourceTypeFilters,
       showCollectionOnly,
       showMarkedOnly,
       resourceIds,
       markedResources,
     } = activeCollection;
     return items
-      .filter(({ type }) => resourceTypeFilters[type])
       // activeCollection.resourceIds, aka: "saved to collection"
       .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && resourceIds[id]))
       .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
   },
+);
+
+export const filteredRecordsSelector = createSelector(
+  [recordsWithShowOnlyFiltersSelector, activeCollectionSelector],
+  (items, activeCollection) => items
+    .filter(({ type }) => activeCollection.resourceTypeFilters[type]),
 );
 
 export const dateRangeForAllRecordsSelector = createSelector(
@@ -208,13 +212,25 @@ export const patientAgeAtResourcesSelector = createSelector(
   },
 );
 
-export const orderedResourceTypeFiltersSelector = createSelector(
-  [activeCollectionResourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
-    .reduce((acc, resourceType) => {
-      acc[resourceType] = resourceTypeFilters[resourceType];
-      return acc;
-    }, {}),
+export const resourceTypeFiltersSelector = createSelector(
+  [activeCollectionResourceTypeFiltersSelector, recordsWithShowOnlyFiltersSelector],
+  (resourceTypeFilters, records) => {
+    const filteredResourceTypeFilters = records
+      .reduce((acc, { type }) => {
+        if (acc[type] === undefined) {
+          acc[type] = resourceTypeFilters[type];
+        }
+        return acc;
+      }, {});
+
+    // sorting
+    return Object.keys(filteredResourceTypeFilters)
+      .sort()
+      .reduce((acc, type) => {
+        acc[type] = resourceTypeFilters[type];
+        return acc;
+      }, {});
+  },
 );
 
 export const activeCollectionResourceIdsSelector = createSelector(
