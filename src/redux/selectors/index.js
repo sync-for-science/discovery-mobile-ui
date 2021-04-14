@@ -157,7 +157,7 @@ const timelineRangeSelector = createSelector(
 
 const timelineItemsInRangeSelector = createSelector(
   // eslint-disable-next-line max-len
-  [allValidRecordsSortedByDateSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
+  [filteredRecordsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
