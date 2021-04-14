@@ -191,11 +191,6 @@ export const orderedResourceTypeFiltersSelector = createSelector(
     }, {}),
 );
 
-export const lastAddedResourceIdSelector = createSelector(
-  [collectionsSelector, activeCollectionIdSelector],
-  (collections, activeCollectionId) => collections[activeCollectionId].lastAddedResourceId,
-);
-
 export const collectionResourceIdsSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId]?.resourceIds,
