@@ -117,13 +117,13 @@ export const filteredRecordsSelector = createSelector(
   (items, activeCollection) => items
     .filter(({ type }) => activeCollection.resourceTypeFilters[type])
     // activeCollection.resourceIds, aka: "saved to collection"
-    .filter(({ id }) => activeCollection.showCollectionOnly && activeCollection.resourceIds[id])
+    .filter(({ id }) => !activeCollection.showCollectionOnly || (activeCollection.showCollectionOnly && activeCollection.resourceIds[id]))
     // eslint-disable-next-line max-len
-    .filter(({ id }) => activeCollection.showMarkedOnly && activeCollection.markedResources.marked[id]),
+    .filter(({ id }) => !activeCollection.showMarkedOnly || (activeCollection.showMarkedOnly && activeCollection.markedResources.marked[id])),
 );
 
 export const timelinePropsSelector = createSelector(
-  [allValidRecordsSortedByDateSelector],
+  [filteredRecordsSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
