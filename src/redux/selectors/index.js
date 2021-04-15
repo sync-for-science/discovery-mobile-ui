@@ -130,7 +130,7 @@ export const filteredRecordsSelector = createSelector(
   },
 );
 
-export const allValidTimelinePropsSelector = createSelector(
+export const dateRangeForAllRecordsSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
@@ -142,7 +142,7 @@ export const allValidTimelinePropsSelector = createSelector(
   },
 );
 
-export const filteredTimelinePropsSelector = createSelector(
+export const dateRangeForFilteredRecordsSelector = createSelector(
   [filteredRecordsSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
@@ -156,7 +156,7 @@ export const filteredTimelinePropsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [activeCollectionDateRangeFilterSelector, filteredTimelinePropsSelector],
+  [activeCollectionDateRangeFilterSelector, dateRangeForFilteredRecordsSelector],
   (dateRangeFilterFilters, timelineProps) => {
     const { minimumDate, maximumDate } = timelineProps;
     const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
