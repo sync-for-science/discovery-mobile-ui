@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
@@ -35,6 +35,8 @@ const CollectionSegmentControl = ({
 };
 
 CollectionSegmentControl.propTypes = {
+  hasResourceIds: bool.isRequired,
+  showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
 };
 

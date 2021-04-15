@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
   buttonDisabled: {
     fontSize: 18,
-    color: Colors.disabled
+    color: Colors.disabled,
   },
   title: {
     fontWeight: '700',
