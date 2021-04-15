@@ -158,7 +158,7 @@ const TimelineItems = ({
           <Bar
             x={0}
             width={BAR_WIDTH}
-            height={Math.max(collectionItems.length * tickUnits, 4)}
+            height={Math.max(Math.min(collectionItems.length, maxCount1SD) * tickUnits, 4)}
             color={Colors.collectionIcon}
           />
         )}
