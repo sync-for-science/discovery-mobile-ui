@@ -190,6 +190,25 @@ const filteredItemsInDateRangeSelector = createSelector(
   },
 );
 
+const filteredItemsInDateRangeAndShowOnlySelector = createSelector(
+  // eslint-disable-next-line max-len
+  [recordsWithShowOnlyFiltersSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
+  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
+    if (!dateRangeStart || !dateRangeEnd) {
+      return [];
+    }
+    return sortedTimelineItems
+      .filter(({ type }) => resourceTypeFilters[type])
+      .filter(({ timelineDate }) => isWithinInterval(
+        timelineDate,
+        {
+          start: dateRangeStart,
+          end: dateRangeEnd,
+        },
+      ));
+  },
+);
+
 export const patientAgeAtResourcesSelector = createSelector(
   [patientSelector, allValidRecordsSortedByDateSelector],
   (patient, timelineItems) => {
@@ -213,7 +232,7 @@ export const patientAgeAtResourcesSelector = createSelector(
 );
 
 export const resourceTypeFiltersSelector = createSelector(
-  [activeCollectionResourceTypeFiltersSelector, recordsWithShowOnlyFiltersSelector],
+  [activeCollectionResourceTypeFiltersSelector, filteredItemsInDateRangeAndShowOnlySelector],
   (resourceTypeFilters, records) => {
     const filteredResourceTypeFilters = records
       .reduce((acc, { type }) => {
