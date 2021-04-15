@@ -318,7 +318,7 @@ const MAX_INTERVAL_COUNT = 25;
 export const timelineIntervalsSelector = createSelector(
   [
     filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, activeCollectionResourceIdsSelector], // eslint-disable-line max-len
-  (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, collectionIds) => { // eslint-disable-line max-len
+  (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, activeCollectionIds) => { // eslint-disable-line max-len
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -405,7 +405,7 @@ export const timelineIntervalsSelector = createSelector(
           }));
 
         // eslint-disable-next-line no-param-reassign
-        interval.collectionItems = interval.items.filter((id) => collectionIds[id]);
+        interval.collectionItems = interval.items.filter((id) => activeCollectionIds[id]);
       });
     }
 
