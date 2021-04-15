@@ -9,7 +9,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { func, shape } from 'prop-types';
+import { func, shape, string } from 'prop-types';
 
 import Timeline from '../components/Timeline';
 import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
@@ -20,7 +20,7 @@ import ContentPanel from '../components/ContentPanel/ContentPanel';
 import { activeCollectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
-const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
+const CatalogScreenHeader = ({ collectionName, handleOpenDrawer }) => (
   <Header style={styles.header}>
     <Left>
       <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
@@ -28,20 +28,21 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
       </TouchableOpacity>
     </Left>
     <View>
-      <Title style={{ color: 'black' }}>{collection?.label}</Title>
+      <Title style={{ color: 'black' }}>{collectionName}</Title>
     </View>
     <Right>
-      <CatalogModal collectionId={collection.id} />
+      <CatalogModal />
     </Right>
   </Header>
 );
 
 CatalogScreenHeader.propTypes = {
-  collection: shape({}).isRequired,
+  collectionName: string,
   handleOpenDrawer: func,
 };
 
 CatalogScreenHeader.defaultProps = {
+  collectionName: 'Untitled',
   handleOpenDrawer: null,
 };
 
@@ -54,7 +55,7 @@ const CatalogScreen = ({ collection }) => (
       index={0}
     >
       <FilterDrawer>
-        <CatalogScreenHeader collection={collection} />
+        <CatalogScreenHeader collectionName={collection?.label} />
         <Timeline />
         <ResourceTypeSelector />
         <ScrollView style={styles.scrollView}>

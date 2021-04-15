@@ -5,7 +5,7 @@ import {
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { func, string } from 'prop-types';
+import { func } from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
@@ -13,7 +13,6 @@ import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
 
 const CatalogModal = ({
-  collectionId,
   clearCollectionAction,
   clearMarkedResourcesAction,
 }) => {
@@ -21,7 +20,7 @@ const CatalogModal = ({
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
-      clearCollectionAction(collectionId);
+      clearCollectionAction();
       setModalVisible(false);
     };
 
@@ -45,7 +44,7 @@ const CatalogModal = ({
 
   const handleClearMarked = () => {
     const clearAndCloseModal = () => {
-      clearMarkedResourcesAction(collectionId);
+      clearMarkedResourcesAction();
       setModalVisible(false);
     };
 
@@ -110,7 +109,6 @@ const CatalogModal = ({
 };
 
 CatalogModal.propTypes = {
-  collectionId: string.isRequired,
   clearCollectionAction: func.isRequired,
   clearMarkedResourcesAction: func.isRequired,
 };
