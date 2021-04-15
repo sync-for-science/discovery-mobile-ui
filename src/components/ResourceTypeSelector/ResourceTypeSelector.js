@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { selectResourceType, clearCollection } from '../../redux/action-creators';
+import { selectResourceType, clearCollection, clearMarkedResources } from '../../redux/action-creators';
 import { resourceTypeFiltersSelector, activeCollectionSelectedResourceTypeSelector, activeCollectionSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
 
@@ -42,6 +42,7 @@ const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
   clearCollectionAction,
+  clearMarkedResourcesAction
 }) => {
   const hasResourceIds = Object.keys(collection.resourceIds).length > 0
   const hasMarkedResources = Object.keys(collection.markedResources.marked).length > 0
@@ -64,6 +65,25 @@ const ResourceTypeSelector = ({
       ],
     );
   }
+
+  const handleClearMarked = () => {
+    Alert.alert(
+      'Clear Highlighted Events',
+      'Are you sure you want to clear the highlighted records?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Clear',
+          onPress: () => clearMarkedResourcesAction(true),
+          style: 'destructive',
+        },
+      ],
+    );
+  };
 
   return (
     <View>
@@ -94,7 +114,10 @@ const ResourceTypeSelector = ({
             Clear Collection
           </BaseText>
         </TouchableOpacity>
-        <TouchableOpacity disabled={!hasMarkedResources}>
+        <TouchableOpacity 
+          onPress={handleClearMarked}
+          disabled={!hasMarkedResources}
+        >
           <BaseText 
             variant={hasMarkedResources ? "button" : "buttonDisabled"}
           >
@@ -124,7 +147,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
-  clearCollectionAction: clearCollection
+  clearCollectionAction: clearCollection,
+  clearMarkedResourcesAction: clearMarkedResources
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
@@ -173,6 +197,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row', 
     paddingVertical: 7, 
     justifyContent: 'space-around',
-    backgroundColor: Colors.lightgrey2
+    backgroundColor: Colors.lightgrey3
   }
 });

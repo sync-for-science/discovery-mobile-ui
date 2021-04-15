@@ -24,6 +24,7 @@ export default {
   secondary: blue4,
   lightgrey: gray1,
   lightgrey2: gray5,
+  lightgrey3: gray4,
   mediumgrey: gray2,
   darkgrey: gray3,
   darkgrey2: gray6,

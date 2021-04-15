@@ -69,7 +69,7 @@ export const renameCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearCollection = (clearSelectedResourceType) => (dispatch, getState) => {
+export const clearCollection = (selectedResourceTypeOnly) => (dispatch, getState) => {
   const { resources, activeCollectionId, collections } = getState();
 
   return dispatch({
@@ -78,7 +78,7 @@ export const clearCollection = (clearSelectedResourceType) => (dispatch, getStat
       collectionId: activeCollectionId,
       resources,
       selectedResourceType: collections[activeCollectionId].selectedResourceType,
-      clearSelectedResourceType,
+      selectedResourceTypeOnly,
     },
   });
 };
@@ -88,11 +88,17 @@ export const duplicateCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearMarkedResources = () => (dispatch, getState) => {
-  const { activeCollectionId } = getState();
+export const clearMarkedResources = (selectedResourceTypeOnly) => (dispatch, getState) => {
+  const { resources, activeCollectionId, collections } = getState();
+  
   return dispatch({
     type: actionTypes.CLEAR_MARKED_RESOURCES,
-    payload: activeCollectionId,
+    payload: { 
+      collectionId: activeCollectionId,
+      resources,
+      selectedResourceType: collections[activeCollectionId].selectedResourceType,
+      selectedResourceTypeOnly,
+    },
   });
 };
 
