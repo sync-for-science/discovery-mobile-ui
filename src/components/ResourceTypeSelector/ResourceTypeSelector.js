@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType, clearCollection } from '../../redux/action-creators';
-import { resourceTypeFiltersSelector, activeCollectionSelectedResourceTypeSelector } from '../../redux/selectors';
+import { resourceTypeFiltersSelector, activeCollectionSelectedResourceTypeSelector, activeCollectionSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
 
 const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
@@ -37,11 +37,15 @@ CategoryButton.defaultProps = {
 };
 
 const ResourceTypeSelector = ({
+  collection,
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
   clearCollectionAction,
 }) => {
+  const hasResourceIds = Object.keys(collection.resourceIds).length > 0
+  const hasMarkedResources = Object.keys(collection.markedResources.marked).length > 0
+
   const handleClearCollection = () => {
     Alert.alert(
       'Clear Collection',
@@ -83,11 +87,15 @@ const ResourceTypeSelector = ({
         }
       </ScrollView>
       <View style={styles.clearButtonsContainer} >
-        <TouchableOpacity onPress={handleClearCollection}>
+        <TouchableOpacity onPress={handleClearCollection} disabled={!hasResourceIds}>
           <BaseText variant="button">Clear Collection</BaseText>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <BaseText variant="button">Clear Highlighted</BaseText>
+        <TouchableOpacity disabled={!hasMarkedResources}>
+          <BaseText 
+            variant={hasMarkedResources ? "button" : "buttonDisabled"}
+          >
+            Clear Highlighted
+          </BaseText>
         </TouchableOpacity>
       </View>
     </View>
@@ -105,6 +113,7 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  collection: activeCollectionSelector(state),
   resourceTypeFilters: resourceTypeFiltersSelector(state),
   selectedResourceType: activeCollectionSelectedResourceTypeSelector(state),
 });
