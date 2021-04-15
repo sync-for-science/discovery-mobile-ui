@@ -1,20 +1,22 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { bool, func } from 'prop-types';
+import { func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
+import { activeCollectionSelector } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const collectionRecordsDescription = 'Only displays records saved to the collection.';
 
 const CollectionSegmentControl = ({
-  showCollectionOnly,
+  collection,
   toggleShowCollectionOnlyAction,
 }) => {
+  const { resourceIds, showCollectionOnly } = collection
+  const hasResourceIds = Object.keys(resourceIds).length > 0
   const segControlIndex = showCollectionOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
@@ -27,6 +29,7 @@ const CollectionSegmentControl = ({
         values={['All Records', 'Collection Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
+        enabled={hasResourceIds}
       />
       <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
@@ -34,12 +37,11 @@ const CollectionSegmentControl = ({
 };
 
 CollectionSegmentControl.propTypes = {
-  showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  showCollectionOnly: activeCollectionShowCollectionOnlySelector(state),
+  collection: activeCollectionSelector(state),
 });
 
 const mapDispatchToProps = {
