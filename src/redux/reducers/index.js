@@ -235,11 +235,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const updatedCollection = { ...state[action.payload] };
+      const { collectionId, resources, selectedResourceType } = action.payload
+
+      // let selectedResourcesTypeResourceIds = null
+      // if (true) {
+      //   selectedResourcesTypeResourceIds = Object.values(resources)
+      //     .filter(({type}) => type === selectedResourceType)
+      //     .reduce((acc, {id}) => {acc.push(id); return acc}, [])
+      // }
+
+      console.log('action.payload', action.payload)
+      const updatedCollection = { ...state[collectionId] };
       updatedCollection.resourceIds = {};
       updatedCollection.lastAddedResourceId = null;
       updatedCollection.showCollectionOnly = false;
-      return { ...state, [action.payload]: updatedCollection };
+      return { ...state, [collectionId]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
       const dupCollection = { ...state[action.payload.collectionId] };
