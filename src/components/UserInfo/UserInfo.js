@@ -10,19 +10,19 @@ import { format } from 'date-fns';
 import {
   getPatientName,
 } from '../../resources/fhirReader';
-import { patientSelector, timelinePropsSelector } from '../../redux/selectors';
+import { patientSelector, dateRangeForAllRecordsSelector } from '../../redux/selectors';
 
 const UI_DATE_FORMAT = 'MMM d, Y';
+
+const formatDate = (d) => format(d, UI_DATE_FORMAT);
 
 const UserInfo = ({
   patientResource, timelineProps,
 }) => {
-  if (!patientResource) {
-    return <View />;
-  }
-
   const name = getPatientName(patientResource);
   const { minimumDate, maximumDate } = timelineProps;
+  const dateRangeLabel = !(minimumDate && maximumDate) ? '' : 'Data range';
+  const dateRange = !(minimumDate && maximumDate) ? '' : `${formatDate(minimumDate)} - ${formatDate(maximumDate)}`;
 
   return (
     <View>
@@ -33,9 +33,9 @@ const UserInfo = ({
         </Text>
       </View>
       <View style={styles.dataRange}>
-        <Text style={styles.dataRangeLabel}>Data range</Text>
+        <Text style={styles.dataRangeLabel}>{dateRangeLabel}</Text>
         <Text style={styles.dataRangeValue}>
-          {`${format(minimumDate, UI_DATE_FORMAT)} - ${format(maximumDate, UI_DATE_FORMAT)}`}
+          {dateRange}
         </Text>
       </View>
     </View>
@@ -56,7 +56,7 @@ UserInfo.defaultProps = {
 
 const mapStateToProps = (state) => ({
   patientResource: patientSelector(state),
-  timelineProps: timelinePropsSelector(state),
+  timelineProps: dateRangeForAllRecordsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(UserInfo);

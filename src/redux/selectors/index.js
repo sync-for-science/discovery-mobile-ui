@@ -99,26 +99,51 @@ export const supportedResourcesSelector = createSelector(
     }, []),
 );
 
-const timelineResourcesSelector = createSelector(
-  [resourcesSelector],
-  (resources) => values(resources)
-    .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
-    .filter((r) => r.timelineDate), // must have timelineDate
-);
-
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
-export const sortedTimelineItemsSelector = createSelector(
-  [timelineResourcesSelector],
-  (resources) => resources
+export const allValidRecordsSortedByDateSelector = createSelector(
+  [resourcesSelector],
+  (resources) => values(resources)
+    .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
+    .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
 );
 
-export const timelinePropsSelector = createSelector(
-  [sortedTimelineItemsSelector],
+export const filteredRecordsSelector = createSelector(
+  [allValidRecordsSortedByDateSelector, activeCollectionSelector],
+  (items, activeCollection) => {
+    const {
+      resourceTypeFilters,
+      showCollectionOnly,
+      showMarkedOnly,
+      resourceIds,
+      markedResources,
+    } = activeCollection;
+    return items
+      .filter(({ type }) => resourceTypeFilters[type])
+      // activeCollection.resourceIds, aka: "saved to collection"
+      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && resourceIds[id]))
+      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
+  },
+);
+
+export const dateRangeForAllRecordsSelector = createSelector(
+  [allValidRecordsSortedByDateSelector],
+  (items) => {
+    const r1 = items[0]; // might be same as r2
+    const r2 = items[items.length - 1];
+    return ({
+      minimumDate: r1 && startOfDay(r1.timelineDate),
+      maximumDate: r2 && endOfDay(r2.timelineDate),
+    });
+  },
+);
+
+export const dateRangeForFilteredRecordsSelector = createSelector(
+  [filteredRecordsSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
@@ -131,7 +156,7 @@ export const timelinePropsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [activeCollectionDateRangeFilterSelector, timelinePropsSelector],
+  [activeCollectionDateRangeFilterSelector, dateRangeForFilteredRecordsSelector],
   (dateRangeFilterFilters, timelineProps) => {
     const { minimumDate, maximumDate } = timelineProps;
     const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
@@ -142,8 +167,9 @@ const timelineRangeSelector = createSelector(
   },
 );
 
-const timelineItemsInRangeSelector = createSelector(
-  [sortedTimelineItemsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
+const filteredItemsInDateRangeSelector = createSelector(
+  // eslint-disable-next-line max-len
+  [filteredRecordsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
   (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
     if (!dateRangeStart || !dateRangeEnd) {
       return [];
@@ -161,7 +187,7 @@ const timelineItemsInRangeSelector = createSelector(
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, sortedTimelineItemsSelector],
+  [patientSelector, allValidRecordsSortedByDateSelector],
   (patient, timelineItems) => {
     if (!patient) {
       return {};
@@ -191,14 +217,9 @@ export const orderedResourceTypeFiltersSelector = createSelector(
     }, {}),
 );
 
-export const lastAddedResourceIdSelector = createSelector(
-  [collectionsSelector, activeCollectionIdSelector],
-  (collections, activeCollectionId) => collections[activeCollectionId].lastAddedResourceId,
-);
-
-export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, activeCollectionIdSelector],
-  (collections, activeCollectionId) => collections[activeCollectionId]?.resourceIds,
+export const activeCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection?.resourceIds,
 );
 
 const subTypeResourceIdsSelector = createSelector(
@@ -214,15 +235,15 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
-    collectionResourceIdsSelector,
+    activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
-    timelineItemsInRangeSelector,
+    filteredItemsInDateRangeSelector,
     subTypeResourceIdsSelector,
   ],
   (
     collectionResourceIdsObjects,
     collectionMarkedResources,
-    timelineItemsInRange,
+    filteredItemsInDateRange,
     subTypeResourceIds,
   ) => {
     if (!collectionResourceIdsObjects) {
@@ -230,7 +251,7 @@ const filteredResourceTypesSelector = createSelector(
     }
     const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
     const markedResourceIds = Object.keys(collectionMarkedResources.marked);
-    return [...timelineItemsInRange].reverse().reduce((acc, { id, type, subType }) => {
+    return [...filteredItemsInDateRange].reverse().reduce((acc, { id, type, subType }) => {
       if (!acc[type]) {
         acc[type] = {};
       }
@@ -295,8 +316,11 @@ const sortMarkedItemsBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLower
 const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
-  [timelineItemsInRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
-  (timelineItemsInRange, timelineRange, collectionMarkedResources, resources, collectionIds) => {
+  [
+    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
+  (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
+    const { markedResources, resourceIds } = activeCollection;
+
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -308,17 +332,17 @@ export const timelineIntervalsSelector = createSelector(
 
     const { dateRangeStart: minDate, dateRangeEnd: maxDate } = timelineRange;
     // alternatively:
-    // const minDate = timelineItemsInRange[0]?.timelineDate;
-    // const maxDate = timelineItemsInRange[timelineItemsInRange.length - 1]?.timelineDate;
+    // const minDate = filteredItemsInDateRange[0]?.timelineDate;
+    // const maxDate = filteredItemsInDateRange[filteredItemsInDateRange.length - 1]?.timelineDate;
 
-    if (minDate && maxDate && timelineItemsInRange.length) {
+    if (minDate && maxDate && filteredItemsInDateRange.length) {
       const numDays = Math.max(differenceInDays(maxDate, minDate), 1);
       const intervalCount = Math.min(numDays, MAX_INTERVAL_COUNT); // cannot be 0
 
       const intervalMap = createIntervalMap(minDate, maxDate, intervalCount);
       const getNextIntervalForDate = generateNextIntervalFunc(intervalMap, intervalCount);
 
-      timelineItemsInRange.forEach(({ id, timelineDate }) => {
+      filteredItemsInDateRange.forEach(({ id, timelineDate }) => {
         const currentInterval = getNextIntervalForDate(timelineDate);
         if (currentInterval) {
           currentInterval.items.push(id); // < mutates intervalMap
@@ -363,7 +387,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => collectionMarkedResources.marked[id]) // either MARKED or FOCUSED
+          .filter((id) => markedResources.marked[id]) // either MARKED or FOCUSED
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -379,11 +403,11 @@ export const timelineIntervalsSelector = createSelector(
           .map(([subType, items]) => ({
             subType,
             marked: items,
-            focused: items.filter((id) => collectionMarkedResources.marked[id] === FOCUSED),
+            focused: items.filter((id) => markedResources.marked[id] === FOCUSED),
           }));
 
         // eslint-disable-next-line no-param-reassign
-        interval.collectionItems = interval.items.filter((id) => collectionIds[id]);
+        interval.collectionItems = interval.items.filter((id) => resourceIds[id]);
       });
     }
 
@@ -396,7 +420,7 @@ export const timelineIntervalsSelector = createSelector(
       maxCount,
       maxCount1SD,
       maxCount2SD,
-      recordCount: timelineItemsInRange.length,
+      recordCount: filteredItemsInDateRange.length,
       recordCount1SD,
       recordCount2SD,
       recordCount2SDplus,

@@ -158,7 +158,7 @@ const TimelineItems = ({
           <Bar
             x={0}
             width={BAR_WIDTH}
-            height={Math.max(collectionItems.length * tickUnits, 4)}
+            height={Math.max(Math.min(collectionItems.length, maxCount1SD) * tickUnits, 4)}
             color={Colors.collectionIcon}
           />
         )}
@@ -339,7 +339,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
-  const noResultsMessage = recordCount ? '' : 'No results found for date and type filters.';
+  // TODO: a full, multi-line description of applied filters?
+  const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
 
   return (
     <View
