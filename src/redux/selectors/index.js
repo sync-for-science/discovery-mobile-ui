@@ -112,7 +112,7 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .sort(sortByDate),
 );
 
-export const recordsWithShowOnlyFiltersSelector = createSelector(
+const recordsWithShowOnlyFiltersSelector = createSelector(
   [allValidRecordsSortedByDateSelector, activeCollectionSelector],
   (items, activeCollection) => {
     const {
@@ -128,7 +128,7 @@ export const recordsWithShowOnlyFiltersSelector = createSelector(
   },
 );
 
-export const filteredRecordsSelector = createSelector(
+const filteredRecordsSelector = createSelector(
   [recordsWithShowOnlyFiltersSelector, activeCollectionSelector],
   (items, activeCollection) => items
     .filter(({ type }) => activeCollection.resourceTypeFilters[type]),
