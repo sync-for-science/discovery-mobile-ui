@@ -217,9 +217,9 @@ export const orderedResourceTypeFiltersSelector = createSelector(
     }, {}),
 );
 
-export const collectionResourceIdsSelector = createSelector(
-  [collectionsSelector, activeCollectionIdSelector],
-  (collections, activeCollectionId) => collections[activeCollectionId]?.resourceIds,
+export const activeCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => activeCollection?.resourceIds,
 );
 
 const subTypeResourceIdsSelector = createSelector(
@@ -235,7 +235,7 @@ const subTypeResourceIdsSelector = createSelector(
 
 const filteredResourceTypesSelector = createSelector(
   [
-    collectionResourceIdsSelector,
+    activeCollectionResourceIdsSelector,
     activeCollectionMarkedResourcesSelector,
     filteredItemsInDateRangeSelector,
     subTypeResourceIdsSelector,
@@ -317,7 +317,7 @@ const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
   [
-    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, collectionResourceIdsSelector], // eslint-disable-line max-len
+    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, activeCollectionResourceIdsSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, collectionIds) => { // eslint-disable-line max-len
     let intervals = [];
     let intervalLength = 0;
