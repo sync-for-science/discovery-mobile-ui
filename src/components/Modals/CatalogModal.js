@@ -71,6 +71,8 @@ const CatalogModal = ({
     );
   };
 
+  const getButtonStyle = (hasIds) => hasIds ? "buttonDestructive" : "buttonDisabled"
+
   return (
     <View style={styles.root}>
       <Modal
@@ -103,14 +105,14 @@ const CatalogModal = ({
                 onPress={handleClearCollection} 
                 disabled={!hasResourceIds}
               >
-                <BaseText variant="buttonDestructive">Clear Collection</BaseText>
+                <BaseText variant={getButtonStyle(hasResourceIds)}>Clear Collection</BaseText>
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.button} 
                 onPress={handleClearMarked} 
                 disabled={!hasMarkedResources}
               >
-                <BaseText variant="buttonDestructive">Clear Highlighted Records</BaseText>
+                <BaseText variant={getButtonStyle(hasMarkedResources)}>Clear Highlighted Records</BaseText>
               </TouchableOpacity>
             </View>
           </View>
