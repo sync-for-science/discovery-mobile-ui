@@ -38,11 +38,9 @@ const styles = StyleSheet.create({
     color: Colors.primary,
   },
   buttonDestructive: {
-    fontSize: 18,
     color: Colors.destructive,
   },
   buttonDisabled: {
-    fontSize: 18,
     color: Colors.disabled,
   },
   title: {

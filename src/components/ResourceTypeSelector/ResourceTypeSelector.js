@@ -88,7 +88,11 @@ const ResourceTypeSelector = ({
       </ScrollView>
       <View style={styles.clearButtonsContainer} >
         <TouchableOpacity onPress={handleClearCollection} disabled={!hasResourceIds}>
-          <BaseText variant="button">Clear Collection</BaseText>
+          <BaseText 
+            variant={hasResourceIds ? "button" : "buttonDisabled"}
+          >
+            Clear Collection
+          </BaseText>
         </TouchableOpacity>
         <TouchableOpacity disabled={!hasMarkedResources}>
           <BaseText 
