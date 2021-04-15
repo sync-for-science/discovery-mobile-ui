@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Alert,
   StyleSheet, Text, View,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -10,8 +11,9 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { selectResourceType } from '../../redux/action-creators';
+import { selectResourceType, clearCollection } from '../../redux/action-creators';
 import { resourceTypeFiltersSelector, activeCollectionSelectedResourceTypeSelector } from '../../redux/selectors';
+import BaseText from '../Generic/BaseText';
 
 const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
@@ -38,29 +40,59 @@ const ResourceTypeSelector = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
-}) => (
-  <View>
-    <ScrollView
-      style={styles.root}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainerStyle}
-    >
-      {
-        Object.entries(resourceTypeFilters)
-          .filter(([, isVisible]) => isVisible === true)
-          .map(([resourceType]) => (
-            <CategoryButton
-              key={resourceType}
-              resourceType={resourceType}
-              isActive={selectedResourceType === resourceType}
-              selectResourceTypeAction={selectResourceTypeAction}
-            />
-          ))
-      }
-    </ScrollView>
-  </View>
-);
+  clearCollectionAction,
+}) => {
+  const handleClearCollection = () => {
+    Alert.alert(
+      'Clear Collection',
+      'Are you sure you want to clear the records saved to this collection?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Clear',
+          onPress: () => clearCollectionAction(true),
+          style: 'destructive',
+        },
+      ],
+    );
+  }
+
+  return (
+    <View>
+      <ScrollView
+        style={styles.scrollView}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}
+      >
+        {
+          Object.entries(resourceTypeFilters)
+            .filter(([, isVisible]) => isVisible === true)
+            .map(([resourceType]) => (
+              <CategoryButton
+                key={resourceType}
+                resourceType={resourceType}
+                isActive={selectedResourceType === resourceType}
+                selectResourceTypeAction={selectResourceTypeAction}
+              />
+            ))
+        }
+      </ScrollView>
+      <View style={styles.clearButtonsContainer} >
+        <TouchableOpacity onPress={handleClearCollection}>
+          <BaseText variant="button">Clear Collection</BaseText>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <BaseText variant="button">Clear Highlighted</BaseText>
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+};
 
 ResourceTypeSelector.propTypes = {
   resourceTypeFilters: shape({}).isRequired,
@@ -79,16 +111,19 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
+  clearCollectionAction: clearCollection
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
 
 const styles = StyleSheet.create({
-  root: {
+  scrollView: {
     backgroundColor: Colors.lightgrey2,
     borderColor: 'gray',
     flexDirection: 'row',
     paddingHorizontal: 5,
+    borderBottomColor: Colors.lightgrey,
+    borderBottomWidth: 1,
   },
   button: {
     paddingVertical: 5,
@@ -120,4 +155,11 @@ const styles = StyleSheet.create({
     height: 45,
     alignItems: 'center',
   },
+  clearButtonsContainer: {
+    width: "100%", 
+    flexDirection: 'row', 
+    paddingVertical: 7, 
+    justifyContent: 'space-around',
+    backgroundColor: Colors.lightgrey2
+  }
 });
