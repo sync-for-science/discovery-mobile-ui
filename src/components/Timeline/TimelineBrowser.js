@@ -339,7 +339,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
-  const noResultsMessage = recordCount ? '' : 'No results found for date and type filters.';
+  // TODO: a full, multi-line description of applied filters?
+  const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
 
   return (
     <View
