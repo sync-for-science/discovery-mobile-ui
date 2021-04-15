@@ -2,11 +2,11 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import {
-  arrayOf, func, number, string,
+  arrayOf, bool, func, number, string,
 } from 'prop-types';
 
 const BaseSegmentControl = ({
-  values, selectedIndex, onChange, activeColor,
+  values, selectedIndex, onChange, activeColor, enabled
 }) => {
   const tintColor = activeColor || 'lightblue';
   return (
@@ -19,6 +19,7 @@ const BaseSegmentControl = ({
       fontStyle={styles.scFontStyle}
       activeFontStyle={styles.scActiveFontStyle}
       tintColor={tintColor}
+      enabled={enabled}
     />
   );
 };
@@ -28,6 +29,7 @@ BaseSegmentControl.propTypes = {
   selectedIndex: number.isRequired,
   onChange: func.isRequired,
   activeColor: string,
+  enabled: bool.isRequired
 };
 
 BaseSegmentControl.defaultProps = {
