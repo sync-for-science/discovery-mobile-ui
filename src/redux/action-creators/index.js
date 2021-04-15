@@ -69,17 +69,16 @@ export const renameCollection = (collectionId, collectionName) => ({
   payload: { collectionId, collectionName },
 });
 
-export const clearCollection = (selectedResourceTypeOnly) => (dispatch, getState) => {
+export const clearCollection = (clearSelectedResourceType) => (dispatch, getState) => {
   const { resources, activeCollectionId, collections } = getState();
-  
 
   return dispatch({
     type: actionTypes.CLEAR_COLLECTION,
     payload: { 
       collectionId: activeCollectionId,
       resources,
-      selectedResourceType: collections[collectionId].selectedResourceType,
-      selectedResourceTypeOnly,
+      selectedResourceType: collections[activeCollectionId].selectedResourceType,
+      clearSelectedResourceType,
     },
   });
 };
