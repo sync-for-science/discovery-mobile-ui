@@ -11,7 +11,7 @@ import {
 
 import { actionTypes } from '../action-types';
 import FhirClient from '../middleware/fhir-client';
-import { MOCK_AUTH } from '../../components/Login/SkipLoginButton';
+import { MOCK_AUTH, MOCK_BUNDLE } from '../../components/Login/SkipLoginButton';
 
 const handleError = (error, message, type) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
@@ -24,16 +24,16 @@ const handleError = (error, message, type) => {
 
 const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.SET_AUTH),
-  // delay(2000), // e.g.: for debugging
+  // delay(5000), // e.g.: for debugging -- import delay from rxjs/operators
   switchMap(({ payload }) => {
     const { accessToken, additionalParameters: { patient: patientId } } = payload.authResult;
-
     // For "Skip Login", an instance is needed to resolve mock-data contained resources:
     fhirClient.initialize(payload.baseUrl, accessToken);
 
     if (payload === MOCK_AUTH) {
       return Promise.resolve({
-        type: 'SET_MOCK_PATIENT_DATA', // must emit an action or stream of actions
+        type: actionTypes.FHIR_FETCH_SUCCESS,
+        payload: MOCK_BUNDLE,
       });
     }
 
