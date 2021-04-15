@@ -217,7 +217,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const collectionId = action.payload;
       const updatedCollection = { ...state[collectionId] };
       updatedCollection.markedResources = defaultMarkedResources;
-      updatedCollection.showMarkedOnly = false
+      updatedCollection.showMarkedOnly = false;
       return { ...state, [collectionId]: updatedCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
@@ -238,7 +238,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const updatedCollection = { ...state[action.payload] };
       updatedCollection.resourceIds = {};
       updatedCollection.lastAddedResourceId = null;
-      updatedCollection.showCollectionOnly = false
+      updatedCollection.showCollectionOnly = false;
       return { ...state, [action.payload]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {

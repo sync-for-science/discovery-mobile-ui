@@ -36,6 +36,7 @@ const MarkedSegmentControl = ({
 
 MarkedSegmentControl.propTypes = {
   hasMarkedResources: bool.isRequired,
+  showMarkedOnly: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
 };
 

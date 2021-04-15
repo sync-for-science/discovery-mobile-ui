@@ -11,7 +11,7 @@ import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
-import { activeCollectionSelector } from '../../redux/selectors'
+import { activeCollectionSelector } from '../../redux/selectors';
 
 const CatalogModal = ({
   collection,
@@ -19,9 +19,11 @@ const CatalogModal = ({
   clearMarkedResourcesAction,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const {resourceIds, markedResources, showCollectionOnly, showMarkedOnly } = collection
-  const hasResourceIds = Object.keys(resourceIds).length > 0
-  const hasMarkedResources = Object.keys(markedResources.marked).length > 0
+  const {
+    resourceIds, markedResources, showCollectionOnly, showMarkedOnly,
+  } = collection;
+  const hasResourceIds = Object.keys(resourceIds).length > 0;
+  const hasMarkedResources = Object.keys(markedResources.marked).length > 0;
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
@@ -71,7 +73,7 @@ const CatalogModal = ({
     );
   };
 
-  const getButtonStyle = (hasIds) => hasIds ? "buttonDestructive" : "buttonDisabled"
+  const getButtonStyle = (hasIds) => (hasIds ? 'buttonDestructive' : 'buttonDisabled');
 
   return (
     <View style={styles.root}>
@@ -92,27 +94,31 @@ const CatalogModal = ({
               </TouchableOpacity>
             </View>
             <View style={styles.controlsContainer}>
-              <CollectionSegmentControl 
+              <CollectionSegmentControl
                 hasResourceIds={hasResourceIds}
                 showCollectionOnly={showCollectionOnly}
               />
-              <MarkedSegmentControl 
-                hasMarkedResources={hasMarkedResources} 
+              <MarkedSegmentControl
+                hasMarkedResources={hasMarkedResources}
                 showMarkedOnly={showMarkedOnly}
               />
-              <TouchableOpacity 
-                style={styles.button} 
-                onPress={handleClearCollection} 
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleClearCollection}
                 disabled={!hasResourceIds}
               >
                 <BaseText variant={getButtonStyle(hasResourceIds)}>Clear Collection</BaseText>
               </TouchableOpacity>
-              <TouchableOpacity 
-                style={styles.button} 
-                onPress={handleClearMarked} 
+              <TouchableOpacity
+                style={styles.button}
+                onPress={handleClearMarked}
                 disabled={!hasMarkedResources}
               >
-                <BaseText variant={getButtonStyle(hasMarkedResources)}>Clear Highlighted Records</BaseText>
+                <BaseText
+                  variant={getButtonStyle(hasMarkedResources)}
+                >
+                  Clear Highlighted Records
+                </BaseText>
               </TouchableOpacity>
             </View>
           </View>
@@ -136,8 +142,8 @@ CatalogModal.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  collection: activeCollectionSelector(state)
-})
+  collection: activeCollectionSelector(state),
+});
 
 const mapDispatchToProps = {
   clearCollectionAction: clearCollection,
