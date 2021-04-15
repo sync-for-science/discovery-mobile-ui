@@ -28,7 +28,7 @@ const CatalogScreenHeader = ({ collectionName, handleOpenDrawer }) => (
       </TouchableOpacity>
     </Left>
     <View>
-      <Title style={{ color: 'black' }}>{collectionName}</Title>
+      <Title style={styles.headerTitleText}>{collectionName}</Title>
     </View>
     <Right>
       <CatalogModal />
@@ -101,4 +101,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  headerTitleText: {
+    color: 'black'
+  }
 });
