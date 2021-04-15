@@ -317,8 +317,10 @@ const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
   [
-    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionMarkedResourcesSelector, resourcesSelector, activeCollectionResourceIdsSelector], // eslint-disable-line max-len
-  (filteredItemsInDateRange, timelineRange, collectionMarkedResources, resources, activeCollectionIds) => { // eslint-disable-line max-len
+    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
+  (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
+    const { markedResources, resourceIds } = activeCollection;
+
     let intervals = [];
     let intervalLength = 0;
     let maxCount1SD = 0; // up to mean + 1 SD
@@ -385,7 +387,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => collectionMarkedResources.marked[id]) // either MARKED or FOCUSED
+          .filter((id) => markedResources.marked[id]) // either MARKED or FOCUSED
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -401,11 +403,11 @@ export const timelineIntervalsSelector = createSelector(
           .map(([subType, items]) => ({
             subType,
             marked: items,
-            focused: items.filter((id) => collectionMarkedResources.marked[id] === FOCUSED),
+            focused: items.filter((id) => markedResources.marked[id] === FOCUSED),
           }));
 
         // eslint-disable-next-line no-param-reassign
-        interval.collectionItems = interval.items.filter((id) => activeCollectionIds[id]);
+        interval.collectionItems = interval.items.filter((id) => resourceIds[id]);
       });
     }
 
