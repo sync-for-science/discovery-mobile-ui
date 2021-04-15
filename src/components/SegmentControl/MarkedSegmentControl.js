@@ -1,22 +1,20 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { func, shape } from 'prop-types';
+import { bool, func } from 'prop-types';
 
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionSelector } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const highlightedRecordsDescription = 'Only displays highlighted records.';
 
 const MarkedSegmentControl = ({
-  collection,
+  hasMarkedResources,
+  showMarkedOnly,
   toggleShowMarkedOnlyAction,
 }) => {
-  const { markedResources, showMarkedOnly } = collection
-  const hasMarkedResources = Object.keys(markedResources.marked).length > 0
   const segControlIndex = showMarkedOnly ? 1 : 0;
   const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
@@ -37,19 +35,15 @@ const MarkedSegmentControl = ({
 };
 
 MarkedSegmentControl.propTypes = {
-  collection: shape({}).isRequired,
+  hasMarkedResources: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
 };
-
-const mapStateToProps = (state) => ({
-  collection: activeCollectionSelector(state)
-});
 
 const mapDispatchToProps = {
   toggleShowMarkedOnlyAction: toggleShowMarkedOnly,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl);
+export default connect(null, mapDispatchToProps)(MarkedSegmentControl);
 
 const styles = StyleSheet.create({
   root: {
