@@ -42,10 +42,10 @@ const ResourceTypeSelector = ({
   selectResourceTypeAction,
   selectedResourceType,
   clearCollectionAction,
-  clearMarkedResourcesAction
+  clearMarkedResourcesAction,
 }) => {
-  const hasResourceIds = Object.keys(collection.resourceIds).length > 0
-  const hasMarkedResources = Object.keys(collection.markedResources.marked).length > 0
+  const hasResourceIds = Object.keys(collection.resourceIds).length > 0;
+  const hasMarkedResources = Object.keys(collection.markedResources.marked).length > 0;
 
   const handleClearCollection = () => {
     Alert.alert(
@@ -64,7 +64,7 @@ const ResourceTypeSelector = ({
         },
       ],
     );
-  }
+  };
 
   const handleClearMarked = () => {
     Alert.alert(
@@ -106,27 +106,27 @@ const ResourceTypeSelector = ({
             ))
         }
       </ScrollView>
-      <View style={styles.clearButtonsContainer} >
+      <View style={styles.clearButtonsContainer}>
         <TouchableOpacity onPress={handleClearCollection} disabled={!hasResourceIds}>
-          <BaseText 
-            variant={hasResourceIds ? "button" : "buttonDisabled"}
+          <BaseText
+            variant={hasResourceIds ? 'button' : 'buttonDisabled'}
           >
             Clear Collection
           </BaseText>
         </TouchableOpacity>
-        <TouchableOpacity 
+        <TouchableOpacity
           onPress={handleClearMarked}
           disabled={!hasMarkedResources}
         >
-          <BaseText 
-            variant={hasMarkedResources ? "button" : "buttonDisabled"}
+          <BaseText
+            variant={hasMarkedResources ? 'button' : 'buttonDisabled'}
           >
             Clear Highlighted
           </BaseText>
         </TouchableOpacity>
       </View>
     </View>
-  )
+  );
 };
 
 ResourceTypeSelector.propTypes = {
@@ -148,7 +148,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
   clearCollectionAction: clearCollection,
-  clearMarkedResourcesAction: clearMarkedResources
+  clearMarkedResourcesAction: clearMarkedResources,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
@@ -193,10 +193,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   clearButtonsContainer: {
-    width: "100%", 
-    flexDirection: 'row', 
-    paddingVertical: 7, 
+    width: '100%',
+    flexDirection: 'row',
+    paddingVertical: 7,
     justifyContent: 'space-around',
-    backgroundColor: Colors.lightgrey3
-  }
+    backgroundColor: Colors.lightgrey3,
+  },
 });

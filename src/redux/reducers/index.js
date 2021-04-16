@@ -214,50 +214,41 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
-      const { 
-        collectionId, 
-        resources, 
-        selectedResourceType, 
-        selectedResourceTypeOnly 
-      } = action.payload
+      const {
+        collectionId,
+        resources,
+        selectedResourceType,
+        selectedResourceTypeOnly,
+      } = action.payload;
 
       const updatedCollection = { ...state[collectionId] };
 
       if (selectedResourceTypeOnly) {
         const remainingResourceIds = Object.values(resources)
-        .filter(({type}) => type !== selectedResourceType)
-        .reduce((acc, {id}) => {acc[id] = true; return acc}, {})
+          .filter(({ type }) => type !== selectedResourceType)
+          .reduce((acc, { id }) => { acc[id] = true; return acc; }, {});
 
-        const remainingCollectionMarkedResources = Object.keys(updatedCollection.markedResources.marked)
+        const remainingMarked = Object.keys(updatedCollection.markedResources.marked)
           .reduce((acc, id) => {
-            if (!acc.marked) {
-              acc.marked = {}
-            }
             if (remainingResourceIds[id]) {
-              acc.marked[id] = true
+              acc[id] = true;
             }
-            return acc
-          }, {})
+            return acc;
+          }, {});
 
-        console.log('remainingCollectionMarkedResources', remainingCollectionMarkedResources)
-        
-        //   updatedCollection.markedResources = remainingCollectionMarkedResources
+        updatedCollection.markedResources = {
+          focusedSubtype: '',
+          marked: remainingMarked
+        }
 
-        // const lastAddedResourceId = updatedCollection.lastAddedResourceId
-        // updatedCollection.lastAddedResourceId = remainingCollectionResourceIds[lastAddedResourceId] ? lastAddedResourceId : null
-        
-        // const showCollectionOnly = updatedCollection.showCollectionOnly
-        // updatedCollection.showCollectionOnly = Object.keys(remainingCollectionResourceIds).length > 0 ? showCollectionOnly : false
+        const { showMarkedOnly } = updatedCollection;
+        updatedCollection.showMarkedOnly = Object.keys(remainingMarked).length > 0 ? showMarkedOnly : false;
+
       } else {
-        updatedCollection.resourceIds = {};
-        updatedCollection.lastAddedResourceId = null;
-        updatedCollection.showCollectionOnly = false;
+        updatedCollection.markedResources = defaultMarkedResources;
+        updatedCollection.showMarkedOnly = false;
       }
 
-
-
-      updatedCollection.markedResources = defaultMarkedResources;
-      updatedCollection.showMarkedOnly = false;
       return { ...state, [collectionId]: updatedCollection };
     }
     case actionTypes.CREATE_COLLECTION: {
@@ -275,32 +266,32 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const { 
-        collectionId, 
-        resources, 
-        selectedResourceType, 
-        selectedResourceTypeOnly 
-      } = action.payload
+      const {
+        collectionId,
+        resources,
+        selectedResourceType,
+        selectedResourceTypeOnly,
+      } = action.payload;
 
       const updatedCollection = { ...state[collectionId] };
 
       if (selectedResourceTypeOnly) {
         const remainingResourceIds = Object.values(resources)
-        .filter(({type}) => type !== selectedResourceType)
-        .reduce((acc, {id}) => {acc[id] = true; return acc}, {})
+          .filter(({ type }) => type !== selectedResourceType)
+          .reduce((acc, { id }) => { acc[id] = true; return acc; }, {});
         const remainingCollectionResourceIds = Object.keys(updatedCollection.resourceIds).reduce((acc, id) => {
-            if (remainingResourceIds[id]) {
-              acc[id] = true
-            }
-            return acc
-          }, {})
-          updatedCollection.resourceIds = remainingCollectionResourceIds
+          if (remainingResourceIds[id]) {
+            acc[id] = true;
+          }
+          return acc;
+        }, {});
+        updatedCollection.resourceIds = remainingCollectionResourceIds;
 
-        const lastAddedResourceId = updatedCollection.lastAddedResourceId
-        updatedCollection.lastAddedResourceId = remainingCollectionResourceIds[lastAddedResourceId] ? lastAddedResourceId : null
-        
-        const showCollectionOnly = updatedCollection.showCollectionOnly
-        updatedCollection.showCollectionOnly = Object.keys(remainingCollectionResourceIds).length > 0 ? showCollectionOnly : false
+        const { lastAddedResourceId } = updatedCollection;
+        updatedCollection.lastAddedResourceId = remainingCollectionResourceIds[lastAddedResourceId] ? lastAddedResourceId : null;
+
+        const { showCollectionOnly } = updatedCollection;
+        updatedCollection.showCollectionOnly = Object.keys(remainingCollectionResourceIds).length > 0 ? showCollectionOnly : false;
       } else {
         updatedCollection.resourceIds = {};
         updatedCollection.lastAddedResourceId = null;

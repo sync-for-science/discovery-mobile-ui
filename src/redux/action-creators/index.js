@@ -74,7 +74,7 @@ export const clearCollection = (selectedResourceTypeOnly) => (dispatch, getState
 
   return dispatch({
     type: actionTypes.CLEAR_COLLECTION,
-    payload: { 
+    payload: {
       collectionId: activeCollectionId,
       resources,
       selectedResourceType: collections[activeCollectionId].selectedResourceType,
@@ -90,10 +90,10 @@ export const duplicateCollection = (collectionId, collectionName) => ({
 
 export const clearMarkedResources = (selectedResourceTypeOnly) => (dispatch, getState) => {
   const { resources, activeCollectionId, collections } = getState();
-  
+
   return dispatch({
     type: actionTypes.CLEAR_MARKED_RESOURCES,
-    payload: { 
+    payload: {
       collectionId: activeCollectionId,
       resources,
       selectedResourceType: collections[activeCollectionId].selectedResourceType,
