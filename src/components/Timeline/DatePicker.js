@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   picker: {
-    width: 125,
+    width: 130,
   },
   androidPicker: {
     paddingHorizontal: 10,
