@@ -49,7 +49,7 @@ const ResourceTypePicker = ({
     >
       {
         resourceTypeFilters
-          .filter(({ typeIsEnabled }) => typeIsEnabled === true)
+          .filter(({ typeIsEnabled, count }) => typeIsEnabled === true && count)
           .map(({ type, label }) => (
             <CategoryButton
               key={type}

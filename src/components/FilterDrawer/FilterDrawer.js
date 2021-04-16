@@ -60,17 +60,17 @@ const FilterDrawer = ({
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {orderedResourceTypeFilters.map(({
-        type, typeIsEnabled, label,
-      }) => (
-        <ResourceTypeFilter
-          key={type}
-          resourceType={type}
-          label={label}
-          filterOpen={typeIsEnabled}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-        />
-      ))}
+      {orderedResourceTypeFilters
+        .filter(({ count }) => count)
+        .map(({ type, typeIsEnabled, label }) => (
+          <ResourceTypeFilter
+            key={type}
+            resourceType={type}
+            label={label}
+            filterOpen={typeIsEnabled}
+            toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          />
+        ))}
     </View>
   );
 
