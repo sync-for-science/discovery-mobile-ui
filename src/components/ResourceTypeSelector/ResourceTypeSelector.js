@@ -9,24 +9,25 @@ import {
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
 import { orderedResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
 
-const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
-  const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
+const CategoryButton = ({
+  resourceType, label, isActive, selectResourceTypeAction,
+}) => {
   const buttonStyle = isActive ? styles.buttonSelected : styles.button;
   const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-      <Text style={buttonTextStyle}>{categoryDisplay}</Text>
+      <Text style={buttonTextStyle}>{label}</Text>
     </TouchableOpacity>
   );
 };
 
 CategoryButton.propTypes = {
   resourceType: string.isRequired,
+  label: string.isRequired,
   isActive: bool.isRequired,
   selectResourceTypeAction: func.isRequired,
 };
@@ -49,10 +50,11 @@ const ResourceTypeSelector = ({
       {
         resourceTypeFilters
           .filter(({ typeIsEnabled }) => typeIsEnabled === true)
-          .map(({ type }) => (
+          .map(({ type, label }) => (
             <CategoryButton
               key={type}
               resourceType={type}
+              label={label}
               isActive={selectedResourceType === type}
               selectResourceTypeAction={selectResourceTypeAction}
             />
@@ -66,6 +68,7 @@ ResourceTypeSelector.propTypes = {
   resourceTypeFilters: arrayOf(shape({
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
+    label: string.isRequired,
   })).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
