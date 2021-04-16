@@ -210,11 +210,11 @@ export const patientAgeAtResourcesSelector = createSelector(
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
-    .reduce((acc, resourceType) => {
-      acc[resourceType] = resourceTypeFilters[resourceType];
-      return acc;
-    }, {}),
+  (activeCollectionTypeFilters) => Object.entries(activeCollectionTypeFilters)
+    .map(([type, typeIsEnabled]) => ({
+      type,
+      typeIsEnabled,
+    })),
 );
 
 export const activeCollectionResourceIdsSelector = createSelector(

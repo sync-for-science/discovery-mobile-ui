@@ -4,14 +4,14 @@ import {
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
-  func, shape, string, bool,
+  arrayOf, func, shape, string, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { activeCollectionResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
+import { orderedResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
 
 const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
   const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
@@ -47,13 +47,13 @@ const ResourceTypeSelector = ({
       contentContainerStyle={styles.contentContainerStyle}
     >
       {
-        Object.entries(resourceTypeFilters)
-          .filter(([, isVisible]) => isVisible === true)
-          .map(([resourceType]) => (
+        resourceTypeFilters
+          .filter(({ typeIsEnabled }) => typeIsEnabled === true)
+          .map(({ type }) => (
             <CategoryButton
-              key={resourceType}
-              resourceType={resourceType}
-              isActive={selectedResourceType === resourceType}
+              key={type}
+              resourceType={type}
+              isActive={selectedResourceType === type}
               selectResourceTypeAction={selectResourceTypeAction}
             />
           ))
@@ -63,7 +63,10 @@ const ResourceTypeSelector = ({
 );
 
 ResourceTypeSelector.propTypes = {
-  resourceTypeFilters: shape({}).isRequired,
+  resourceTypeFilters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+  })).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
 };
@@ -73,7 +76,7 @@ ResourceTypeSelector.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
+  resourceTypeFilters: orderedResourceTypeFiltersSelector(state),
   selectedResourceType: activeCollectionResourceTypeSelector(state),
 });
 

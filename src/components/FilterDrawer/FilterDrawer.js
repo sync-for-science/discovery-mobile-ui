@@ -2,6 +2,7 @@ import React, {
   useRef, cloneElement, isValidElement, Children,
 } from 'react';
 import {
+  arrayOf,
   bool, func, node, shape, string,
 } from 'prop-types';
 import {
@@ -59,11 +60,11 @@ const FilterDrawer = ({
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(orderedResourceTypeFilters).map(([resourceType, value]) => (
+      {orderedResourceTypeFilters.map(({ type, typeIsEnabled }) => (
         <ResourceTypeFilter
-          key={resourceType}
-          resourceType={resourceType}
-          filterOpen={value}
+          key={type}
+          resourceType={type}
+          filterOpen={typeIsEnabled}
           toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
         />
       ))}
@@ -101,7 +102,10 @@ const FilterDrawer = ({
 };
 
 FilterDrawer.propTypes = {
-  orderedResourceTypeFilters: shape({}).isRequired,
+  orderedResourceTypeFilters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+  })).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
