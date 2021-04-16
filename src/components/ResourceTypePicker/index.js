@@ -35,7 +35,7 @@ CategoryButton.propTypes = {
 CategoryButton.defaultProps = {
 };
 
-const ResourceTypeSelector = ({
+const ResourceTypePicker = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
@@ -64,7 +64,7 @@ const ResourceTypeSelector = ({
   </View>
 );
 
-ResourceTypeSelector.propTypes = {
+ResourceTypePicker.propTypes = {
   resourceTypeFilters: arrayOf(shape({
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
@@ -74,7 +74,7 @@ ResourceTypeSelector.propTypes = {
   selectResourceTypeAction: func.isRequired,
 };
 
-ResourceTypeSelector.defaultProps = {
+ResourceTypePicker.defaultProps = {
   selectedResourceType: null,
 };
 
@@ -87,7 +87,7 @@ const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypePicker);
 
 const styles = StyleSheet.create({
   root: {

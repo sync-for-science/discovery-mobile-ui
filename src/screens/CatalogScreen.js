@@ -12,7 +12,7 @@ import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import
 import { func, shape } from 'prop-types';
 
 import Timeline from '../components/Timeline';
-import ResourceTypeSelector from '../components/ResourceTypeSelector/ResourceTypeSelector';
+import ResourceTypePicker from '../components/ResourceTypePicker';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
@@ -56,7 +56,7 @@ const CatalogScreen = ({ collection }) => (
       <FilterDrawer>
         <CatalogScreenHeader collection={collection} />
         <Timeline />
-        <ResourceTypeSelector />
+        <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
           <SubTypeAccordionsContainer />
         </ScrollView>
