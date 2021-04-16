@@ -17,7 +17,7 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
-import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
+import { orderedResourceTypeFiltersSelector, activeCollectionSelector } from '../../redux/selectors';
 
 const ResourceTypeFilter = ({
   resourceType, label, filterOpen, toggleResourceTypeFilterAction,
@@ -55,8 +55,11 @@ ResourceTypeFilter.propTypes = {
 const FilterDrawer = ({
   toggleResourceTypeFilterAction,
   orderedResourceTypeFilters,
+  activeCollection,
   children,
 }) => {
+  console.info('orderedResourceTypeFilters : ', JSON.stringify(orderedResourceTypeFilters, null, 2));
+  const { showCollectionOnly, showMarkedOnly } = activeCollection;
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
@@ -117,6 +120,7 @@ FilterDrawer.propTypes = {
 
 const mapStateToProps = (state) => ({
   orderedResourceTypeFilters: orderedResourceTypeFiltersSelector(state),
+  activeCollection: activeCollectionSelector(state),
 });
 
 const mapDispatchToProps = {

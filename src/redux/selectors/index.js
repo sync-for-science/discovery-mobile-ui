@@ -123,7 +123,11 @@ export const filteredRecordsSelector = createSelector(
       markedResources,
     } = activeCollection;
     return items
-      .filter(({ type }) => resourceTypeFilters[type])
+      // .filter(({ type }) => resourceTypeFilters[type])
+      .map((item) => ({
+        ...item,
+        isTypeEnabled: resourceTypeFilters[item.type],
+      }))
       // activeCollection.resourceIds, aka: "saved to collection"
       .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && resourceIds[id]))
       .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
@@ -175,7 +179,8 @@ const filteredItemsInDateRangeSelector = createSelector(
       return [];
     }
     return sortedTimelineItems
-      .filter(({ type }) => resourceTypeFilters[type])
+      // TODO: eliminate?
+      // .filter(({ type }) => resourceTypeFilters[type])
       .filter(({ timelineDate }) => isWithinInterval(
         timelineDate,
         {
