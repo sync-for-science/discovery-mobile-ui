@@ -171,42 +171,32 @@ const timelineRangeSelector = createSelector(
   },
 );
 
+// eslint-disable-next-line max-len
+const filteredItemsInDateRangeCombiner = (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
+  if (!dateRangeStart || !dateRangeEnd) {
+    return [];
+  }
+  return sortedTimelineItems
+    .filter(({ type }) => resourceTypeFilters[type])
+    .filter(({ timelineDate }) => isWithinInterval(
+      timelineDate,
+      {
+        start: dateRangeStart,
+        end: dateRangeEnd,
+      },
+    ));
+};
+
 const filteredItemsInDateRangeSelector = createSelector(
   // eslint-disable-next-line max-len
   [filteredRecordsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
-  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
-    if (!dateRangeStart || !dateRangeEnd) {
-      return [];
-    }
-    return sortedTimelineItems
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ timelineDate }) => isWithinInterval(
-        timelineDate,
-        {
-          start: dateRangeStart,
-          end: dateRangeEnd,
-        },
-      ));
-  },
+  filteredItemsInDateRangeCombiner,
 );
 
 const filteredItemsInDateRangeAndShowOnlySelector = createSelector(
   // eslint-disable-next-line max-len
   [recordsWithShowOnlyFiltersSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
-  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
-    if (!dateRangeStart || !dateRangeEnd) {
-      return [];
-    }
-    return sortedTimelineItems
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ timelineDate }) => isWithinInterval(
-        timelineDate,
-        {
-          start: dateRangeStart,
-          end: dateRangeEnd,
-        },
-      ));
-  },
+  filteredItemsInDateRangeCombiner,
 );
 
 export const patientAgeAtResourcesSelector = createSelector(
