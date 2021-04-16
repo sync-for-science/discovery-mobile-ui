@@ -214,7 +214,9 @@ export const orderedResourceTypeFiltersSelector = createSelector(
     .map(([type, typeIsEnabled]) => ({
       type,
       typeIsEnabled,
-    })),
+      label: PLURAL_RESOURCE_TYPES[type],
+    }))
+    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1)),
 );
 
 export const activeCollectionResourceIdsSelector = createSelector(
