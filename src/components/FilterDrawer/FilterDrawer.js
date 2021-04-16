@@ -2,6 +2,7 @@ import React, {
   useRef, cloneElement, isValidElement, Children,
 } from 'react';
 import {
+  arrayOf,
   bool, func, node, shape, string,
 } from 'prop-types';
 import {
@@ -15,13 +16,13 @@ import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { connect } from 'react-redux';
 
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import Colors from '../../constants/Colors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
 import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 
-const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilterAction }) => {
-  const label = PLURAL_RESOURCE_TYPES[resourceType];
+const ResourceTypeFilter = ({
+  resourceType, label, filterOpen, toggleResourceTypeFilterAction,
+}) => {
   let thumbColor;
   if (filterOpen) {
     thumbColor = Platform.OS === 'ios' ? 'white' : Colors.primary;
@@ -47,6 +48,7 @@ const ResourceTypeFilter = ({ resourceType, filterOpen, toggleResourceTypeFilter
 
 ResourceTypeFilter.propTypes = {
   resourceType: string.isRequired,
+  label: string.isRequired,
   filterOpen: bool.isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
 };
@@ -59,11 +61,12 @@ const FilterDrawer = ({
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {Object.entries(orderedResourceTypeFilters).map(([resourceType, value]) => (
+      {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
         <ResourceTypeFilter
-          key={resourceType}
-          resourceType={resourceType}
-          filterOpen={value}
+          key={type}
+          resourceType={type}
+          label={label}
+          filterOpen={typeIsEnabled}
           toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
         />
       ))}
@@ -101,7 +104,11 @@ const FilterDrawer = ({
 };
 
 FilterDrawer.propTypes = {
-  orderedResourceTypeFilters: shape({}).isRequired,
+  orderedResourceTypeFilters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+    label: string.isRequired,
+  })).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };

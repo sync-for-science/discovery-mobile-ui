@@ -4,29 +4,30 @@ import {
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
-  func, shape, string, bool,
+  arrayOf, func, shape, string, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { selectResourceType } from '../../redux/action-creators';
-import { activeCollectionResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
+import { orderedResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
 
-const CategoryButton = ({ resourceType, isActive, selectResourceTypeAction }) => {
-  const categoryDisplay = PLURAL_RESOURCE_TYPES[resourceType];
+const CategoryButton = ({
+  resourceType, label, isActive, selectResourceTypeAction,
+}) => {
   const buttonStyle = isActive ? styles.buttonSelected : styles.button;
   const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-      <Text style={buttonTextStyle}>{categoryDisplay}</Text>
+      <Text style={buttonTextStyle}>{label}</Text>
     </TouchableOpacity>
   );
 };
 
 CategoryButton.propTypes = {
   resourceType: string.isRequired,
+  label: string.isRequired,
   isActive: bool.isRequired,
   selectResourceTypeAction: func.isRequired,
 };
@@ -34,7 +35,7 @@ CategoryButton.propTypes = {
 CategoryButton.defaultProps = {
 };
 
-const ResourceTypeSelector = ({
+const ResourceTypePicker = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
@@ -47,13 +48,14 @@ const ResourceTypeSelector = ({
       contentContainerStyle={styles.contentContainerStyle}
     >
       {
-        Object.entries(resourceTypeFilters)
-          .filter(([, isVisible]) => isVisible === true)
-          .map(([resourceType]) => (
+        resourceTypeFilters
+          .filter(({ typeIsEnabled }) => typeIsEnabled === true)
+          .map(({ type, label }) => (
             <CategoryButton
-              key={resourceType}
-              resourceType={resourceType}
-              isActive={selectedResourceType === resourceType}
+              key={type}
+              resourceType={type}
+              label={label}
+              isActive={selectedResourceType === type}
               selectResourceTypeAction={selectResourceTypeAction}
             />
           ))
@@ -62,18 +64,22 @@ const ResourceTypeSelector = ({
   </View>
 );
 
-ResourceTypeSelector.propTypes = {
-  resourceTypeFilters: shape({}).isRequired,
+ResourceTypePicker.propTypes = {
+  resourceTypeFilters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+    label: string.isRequired,
+  })).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
 };
 
-ResourceTypeSelector.defaultProps = {
+ResourceTypePicker.defaultProps = {
   selectedResourceType: null,
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: activeCollectionResourceTypeFiltersSelector(state),
+  resourceTypeFilters: orderedResourceTypeFiltersSelector(state),
   selectedResourceType: activeCollectionResourceTypeSelector(state),
 });
 
@@ -81,7 +87,7 @@ const mapDispatchToProps = {
   selectResourceTypeAction: selectResourceType,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypeSelector);
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypePicker);
 
 const styles = StyleSheet.create({
   root: {

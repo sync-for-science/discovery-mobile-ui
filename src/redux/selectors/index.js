@@ -210,11 +210,13 @@ export const patientAgeAtResourcesSelector = createSelector(
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],
-  (resourceTypeFilters) => Object.keys(resourceTypeFilters).sort()
-    .reduce((acc, resourceType) => {
-      acc[resourceType] = resourceTypeFilters[resourceType];
-      return acc;
-    }, {}),
+  (activeCollectionTypeFilters) => Object.entries(activeCollectionTypeFilters)
+    .map(([type, typeIsEnabled]) => ({
+      type,
+      typeIsEnabled,
+      label: PLURAL_RESOURCE_TYPES[type],
+    }))
+    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1)),
 );
 
 export const activeCollectionResourceIdsSelector = createSelector(
