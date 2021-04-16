@@ -130,9 +130,12 @@ const ResourceTypeSelector = ({
 };
 
 ResourceTypeSelector.propTypes = {
+  collection: shape({}).isRequired,
   resourceTypeFilters: shape({}).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,
+  clearCollectionAction: func.isRequired,
+  clearMarkedResourcesAction: func.isRequired,
 };
 
 ResourceTypeSelector.defaultProps = {

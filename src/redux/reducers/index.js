@@ -238,12 +238,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 
         updatedCollection.markedResources = {
           focusedSubtype: '',
-          marked: remainingMarked
-        }
+          marked: remainingMarked,
+        };
 
         const { showMarkedOnly } = updatedCollection;
-        updatedCollection.showMarkedOnly = Object.keys(remainingMarked).length > 0 ? showMarkedOnly : false;
-
+        updatedCollection.showMarkedOnly = Object.keys(remainingMarked).length > 0
+          ? showMarkedOnly : false;
       } else {
         updatedCollection.markedResources = defaultMarkedResources;
         updatedCollection.showMarkedOnly = false;
@@ -279,19 +279,22 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const remainingResourceIds = Object.values(resources)
           .filter(({ type }) => type !== selectedResourceType)
           .reduce((acc, { id }) => { acc[id] = true; return acc; }, {});
-        const remainingCollectionResourceIds = Object.keys(updatedCollection.resourceIds).reduce((acc, id) => {
-          if (remainingResourceIds[id]) {
-            acc[id] = true;
-          }
-          return acc;
-        }, {});
-        updatedCollection.resourceIds = remainingCollectionResourceIds;
+        const remainingCollectionResources = Object.keys(updatedCollection.resourceIds)
+          .reduce((acc, id) => {
+            if (remainingResourceIds[id]) {
+              acc[id] = true;
+            }
+            return acc;
+          }, {});
+        updatedCollection.resourceIds = remainingCollectionResources;
 
         const { lastAddedResourceId } = updatedCollection;
-        updatedCollection.lastAddedResourceId = remainingCollectionResourceIds[lastAddedResourceId] ? lastAddedResourceId : null;
+        updatedCollection.lastAddedResourceId = remainingCollectionResources[lastAddedResourceId]
+          ? lastAddedResourceId : null;
 
         const { showCollectionOnly } = updatedCollection;
-        updatedCollection.showCollectionOnly = Object.keys(remainingCollectionResourceIds).length > 0 ? showCollectionOnly : false;
+        updatedCollection.showCollectionOnly = Object.keys(remainingCollectionResources).length > 0
+          ? showCollectionOnly : false;
       } else {
         updatedCollection.resourceIds = {};
         updatedCollection.lastAddedResourceId = null;
