@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
-  arrayOf, func, shape, string, bool,
+  arrayOf, func, shape, string, bool, number,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -69,6 +69,7 @@ ResourceTypePicker.propTypes = {
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
     label: string.isRequired,
+    count: number.isRequired,
   })).isRequired,
   selectedResourceType: string,
   selectResourceTypeAction: func.isRequired,

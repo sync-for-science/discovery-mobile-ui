@@ -2,8 +2,7 @@ import React, {
   useRef, cloneElement, isValidElement, Children,
 } from 'react';
 import {
-  arrayOf,
-  bool, func, node, shape, string,
+  arrayOf, bool, func, node, shape, string, number,
 } from 'prop-types';
 import {
   StyleSheet,
@@ -61,7 +60,9 @@ const FilterDrawer = ({
   const renderDrawer = () => (
     <View>
       <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
+      {orderedResourceTypeFilters.map(({
+        type, typeIsEnabled, label,
+      }) => (
         <ResourceTypeFilter
           key={type}
           resourceType={type}
@@ -108,6 +109,7 @@ FilterDrawer.propTypes = {
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
     label: string.isRequired,
+    count: number.isRequired,
   })).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,

@@ -208,13 +208,30 @@ export const patientAgeAtResourcesSelector = createSelector(
   },
 );
 
+const countsForTypesSelector = createSelector(
+  [filteredRecordsSelector],
+  (filteredRecords) => {
+    const defaultCount = Object.keys(PLURAL_RESOURCE_TYPES)
+      .reduce((acc, type) => ({
+        ...acc,
+        [type]: 0,
+      }), {});
+
+    return filteredRecords.reduce((acc, r) => ({
+      ...acc,
+      [r.type]: acc[r.type] + 1,
+    }), defaultCount);
+  },
+);
+
 export const orderedResourceTypeFiltersSelector = createSelector(
-  [activeCollectionResourceTypeFiltersSelector],
-  (activeCollectionTypeFilters) => Object.entries(activeCollectionTypeFilters)
+  [activeCollectionResourceTypeFiltersSelector, countsForTypesSelector],
+  (activeCollectionTypeFilters, countsForTypes) => Object.entries(activeCollectionTypeFilters)
     .map(([type, typeIsEnabled]) => ({
       type,
       typeIsEnabled,
       label: PLURAL_RESOURCE_TYPES[type],
+      count: countsForTypes[type],
     }))
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1)),
 );
