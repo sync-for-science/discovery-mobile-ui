@@ -45,14 +45,17 @@ const CollectionsListScreen = ({
     }, []),
   );
 
+  console.log('DEV', __DEV__);
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
         <Left style={styles.logoutContainer}>
+          {__DEV__ && (
           <TouchableOpacity onPress={handleLogout}>
             <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
           </TouchableOpacity>
+          )}
         </Left>
         <Body>
           <Title style={styles.headerText}>Collections</Title>

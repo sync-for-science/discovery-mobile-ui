@@ -101,6 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   collectionLabel: {
-    color: 'black'
-  }
+    color: 'black',
+  },
 });
