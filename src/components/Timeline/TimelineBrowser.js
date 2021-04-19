@@ -358,8 +358,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
-  const countForMaxBarHeight = (maxCount <= MIN_COUNT_FOR_SD ? maxCount : maxCount1SD);
-  const showVariance = maxCount1SD > countForMaxBarHeight;
+  const countForMaxBarHeight = Math.min(maxCount1SD, MIN_COUNT_FOR_SD);
+  const showVariance = maxCount1SD > MIN_COUNT_FOR_SD;
 
   return (
     <View
