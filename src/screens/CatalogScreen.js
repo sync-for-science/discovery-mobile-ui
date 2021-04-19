@@ -45,7 +45,7 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({ collection }) => (
+const CatalogScreen = ({ navigation, collection }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -61,12 +61,13 @@ const CatalogScreen = ({ collection }) => (
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
-      <DetailsPanel collection={collection} />
+      <DetailsPanel navigation={navigation} collection={collection} />
     </Swiper>
   </SafeAreaView>
 );
 
 CatalogScreen.propTypes = {
+  navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
 };
 

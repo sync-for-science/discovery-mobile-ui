@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
+import CollectionNotesScreen from '../screens/CollectionNotesScreen';
 import Colors from '../constants/Colors';
 
 const HomeTab = createBottomTabNavigator();
@@ -47,6 +48,10 @@ const CollectionStackScreen = () => (
     <CollectionsStack.Screen
       name="Catalog"
       component={CatalogScreen}
+    />
+    <CollectionsStack.Screen
+      name="CollectionNotes"
+      component={CollectionNotesScreen}
     />
   </CollectionsStack.Navigator>
 );
