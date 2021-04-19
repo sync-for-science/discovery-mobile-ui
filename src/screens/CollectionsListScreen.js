@@ -51,7 +51,7 @@ const CollectionsListScreen = ({
       <Header style={styles.header}>
         <Left style={styles.logoutContainer}>
           <TouchableOpacity onPress={handleLogout}>
-            <FontAwesome name="sign-out" size={24} color={Colors.darkgrey} style={styles.logoutIcon} />
+            <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
           </TouchableOpacity>
         </Left>
         <Body>

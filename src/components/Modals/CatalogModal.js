@@ -103,7 +103,7 @@ const CatalogModal = ({
           setModalVisible(true);
         }}
       >
-        <Entypo name="dots-three-vertical" size={20} color={Colors.darkgrey} />
+        <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
     </View>
   );

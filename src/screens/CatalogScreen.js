@@ -24,7 +24,7 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
     <Left>
       <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
-        <MaterialCommunityIcons name="filter-outline" size={24} color={Colors.darkgrey} />
+        <MaterialCommunityIcons name="filter-outline" size={24} color={Colors.headerIcon} />
       </TouchableOpacity>
     </Left>
     <View>

@@ -99,7 +99,7 @@ const CollectionRowActionIcon = ({
   return (
     <View>
       <TouchableOpacity onPress={handlePress}>
-        <Entypo name="dots-three-vertical" size={20} color={Colors.darkgrey} />
+        <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
     </View>
   );

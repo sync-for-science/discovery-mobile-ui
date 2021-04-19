@@ -11,8 +11,8 @@ import Colors from '../../constants/Colors';
 const Timeline = () => {
   const [showTimeline, setShowTimeline] = useState(true);
   const expandIcon = showTimeline
-    ? <Ionicons name="caret-down" size={20} color={Colors.expandTimeline} />
-    : <Ionicons name="caret-up" size={20} color={Colors.expandTimeline} />;
+    ? <Ionicons name="chevron-down" size={24} color={Colors.expandTimeline} />
+    : <Ionicons name="chevron-up" size={24} color={Colors.expandTimeline} />;
 
   return (
     <View style={styles.root}>
