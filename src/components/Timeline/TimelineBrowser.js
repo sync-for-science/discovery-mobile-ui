@@ -359,6 +359,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
   const countForMaxBarHeight = (maxCount <= MIN_COUNT_FOR_SD ? maxCount : maxCount1SD);
+  const showVariance = maxCount1SD > countForMaxBarHeight;
 
   return (
     <View
@@ -403,12 +404,14 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             availableWidth={availableWidth}
             countForMaxBarHeight={countForMaxBarHeight}
           />
+          {showVariance && (
           <VarianceLegend
             maxCount={maxCount}
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
             recordCount2SDplus={recordCount2SDplus}
           />
+          )}
           <Metrics
             availableWidth={availableWidth}
             intervalLength={intervalLength}
