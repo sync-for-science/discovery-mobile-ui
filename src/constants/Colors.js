@@ -44,4 +44,5 @@ export default {
   expandTimeline: gray6,
   dash: gray6,
   headerIcon: gray6,
+  accordionChevronIcon: gray6,
 };
