@@ -61,7 +61,7 @@ const CatalogScreen = ({ collection }) => (
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
-      <DetailsPanel />
+      <DetailsPanel collection={collection} />
     </Swiper>
   </SafeAreaView>
 );
