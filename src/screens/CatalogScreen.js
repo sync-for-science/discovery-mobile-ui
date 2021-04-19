@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { func, shape } from 'prop-types';
 
 import Timeline from '../components/Timeline';
@@ -24,11 +24,11 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
     <Left>
       <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
-        <FontAwesome5 name="filter" size={24} color={Colors.darkgrey} />
+        <MaterialCommunityIcons name="filter-outline" size={24} color={Colors.darkgrey} />
       </TouchableOpacity>
     </Left>
     <View>
-      <Title style={{ color: 'black' }}>{collection?.label}</Title>
+      <Title style={styles.collectionLabel}>{collection?.label}</Title>
     </View>
     <Right>
       <CatalogModal collectionId={collection.id} />
@@ -100,4 +100,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
+  collectionLabel: {
+    color: 'black'
+  }
 });
