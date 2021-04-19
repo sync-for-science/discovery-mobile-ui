@@ -45,7 +45,6 @@ const CollectionsListScreen = ({
     }, []),
   );
 
-  console.log('DEV', __DEV__);
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />

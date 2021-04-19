@@ -80,7 +80,7 @@ const ResourceCard = ({
   return (
     <View style={[styles.root, firstCardStyle]}>
       <View style={styles.header}>
-        <BaseText variant="header">{resourceType}</BaseText>
+        <BaseText variant="title">{resourceType}</BaseText>
         <View style={styles.rightIconsContainer}>
           <BaseText>{resourceDate}</BaseText>
           <FocusedIcon
