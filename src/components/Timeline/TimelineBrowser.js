@@ -128,12 +128,12 @@ MarkedIndicators.propTypes = {
 };
 
 const TimelineItems = ({
-  availableWidth, maxCount1SD, intervals,
+  availableWidth, countForMaxBarHeight, intervals,
 }) => {
-  if (!maxCount1SD) {
+  if (!countForMaxBarHeight) {
     return null;
   }
-  const tickUnits = BAR_HEIGHT / maxCount1SD;
+  const tickUnits = BAR_HEIGHT / countForMaxBarHeight;
 
   return intervals
     .filter(({ items }) => !!items.length)
@@ -152,14 +152,14 @@ const TimelineItems = ({
         <Bar
           x={0}
           width={BAR_WIDTH}
-          height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
+          height={Math.max(Math.min(items.length, countForMaxBarHeight) * tickUnits, 4)}
           color={BAR_COLOR}
         />
         {!collectionItems.length ? null : (
           <Bar
             x={0}
             width={BAR_WIDTH}
-            height={Math.max(Math.min(collectionItems.length, maxCount1SD) * tickUnits, 4)}
+            height={Math.max(Math.min(collectionItems.length, countForMaxBarHeight) * tickUnits, 4)}
             color={Colors.collectionIcon}
           />
         )}
@@ -172,7 +172,7 @@ const TimelineItems = ({
 
 TimelineItems.propTypes = {
   availableWidth: number.isRequired,
-  maxCount1SD: number.isRequired,
+  countForMaxBarHeight: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
 };
 
@@ -393,8 +393,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <TimelineItems
             availableWidth={availableWidth}
-            maxCount1SD={maxCount1SD}
-            maxCount2SD={maxCount2SD}
+            countForMaxBarHeight={countForMaxBarHeight}
             intervals={intervals}
           />
           <VerticalBound
