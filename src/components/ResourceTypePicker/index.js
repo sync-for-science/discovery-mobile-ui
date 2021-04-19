@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
@@ -39,30 +39,37 @@ const ResourceTypePicker = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
-}) => (
-  <View>
-    <ScrollView
-      style={styles.root}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainerStyle}
-    >
-      {
-        resourceTypeFilters
-          .filter(({ typeIsEnabled }) => typeIsEnabled === true)
-          .map(({ type, label }) => (
-            <CategoryButton
-              key={type}
-              resourceType={type}
-              label={label}
-              isActive={selectedResourceType === type}
-              selectResourceTypeAction={selectResourceTypeAction}
-            />
-          ))
-      }
-    </ScrollView>
-  </View>
-);
+}) => {
+  // select first resourceType on initial load
+  useEffect(() => {
+    selectResourceTypeAction(resourceTypeFilters[0].type);
+  }, []);
+
+  return (
+    <View>
+      <ScrollView
+        style={styles.root}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}
+      >
+        {
+          resourceTypeFilters
+            .filter(({ typeIsEnabled }) => typeIsEnabled === true)
+            .map(({ type, label }) => (
+              <CategoryButton
+                key={type}
+                resourceType={type}
+                label={label}
+                isActive={selectedResourceType === type}
+                selectResourceTypeAction={selectResourceTypeAction}
+              />
+            ))
+        }
+      </ScrollView>
+    </View>
+  );
+};
 
 ResourceTypePicker.propTypes = {
   resourceTypeFilters: arrayOf(shape({
