@@ -16,6 +16,8 @@ export const authSelector = (state) => state.auth.authResult;
 
 const resourcesSelector = (state) => state.resources;
 
+export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
+
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
 const collectionsSelector = (state) => state.collections;

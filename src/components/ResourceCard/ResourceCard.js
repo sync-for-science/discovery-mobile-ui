@@ -13,9 +13,7 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import {
-  patientSelector,
-} from '../../redux/selectors';
+import { resourceByIdSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
@@ -64,11 +62,10 @@ const selectCardBody = (resource) => {
 
 const ResourceCard = ({
   resourceId,
-  resources,
+  resource,
   collectionId,
   index,
 }) => {
-  const resource = resources[resourceId];
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
@@ -103,14 +100,13 @@ const ResourceCard = ({
 
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
-  resources: shape({}).isRequired,
+  resource: shape({}).isRequired,
   collectionId: string.isRequired,
   index: number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  resources: state.resources,
-  patientResource: patientSelector(state),
+const mapStateToProps = (state, ownProps) => ({
+  resource: resourceByIdSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
