@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: 'white',
     borderRadius: 20,
-    borderColor: Colors.mediumgrey,
+    borderColor: 'white',
     borderWidth: 2,
   },
   buttonSelected: {
