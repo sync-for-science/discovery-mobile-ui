@@ -9,7 +9,7 @@ import {
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const EncounterCardBody = ({ resource }) => {
+const EncounterCardBody = ({ resource, serviceProvider }) => {
   const { type, subType } = resource;
 
   return (
@@ -33,7 +33,7 @@ const EncounterCardBody = ({ resource }) => {
       />
       <CardBodyField
         label={CARD_BODY_LABEL.provider}
-        value={null}
+        value={serviceProvider?.name}
       />
     </>
   );
@@ -41,6 +41,7 @@ const EncounterCardBody = ({ resource }) => {
 
 EncounterCardBody.propTypes = {
   resource: shape({}).isRequired,
+  serviceProvider: shape({}).isRequired,
 };
 
 export default EncounterCardBody;

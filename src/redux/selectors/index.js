@@ -71,6 +71,22 @@ export const patientSelector = createSelector(
   },
 );
 
+export const serviceProviderSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const ref = resource?.serviceProvider?.reference;
+    if (ref) {
+      const resourceId = ref.match(/(?<=[#|/]).*/);
+      const serviceProvider = allResources[resourceId];
+      if (serviceProvider) {
+        return serviceProvider;
+      }
+      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
+    }
+    return null;
+  },
+);
+
 export const providersSelector = createSelector(
   [resourcesSelector, resourceIdsGroupedByTypeSelector],
   (resources, resourceIdsGroupedByType) => {
