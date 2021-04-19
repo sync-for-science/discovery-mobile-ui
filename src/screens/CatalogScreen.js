@@ -16,7 +16,7 @@ import ResourceTypePicker from '../components/ResourceTypePicker';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
-import ContentPanel from '../components/ContentPanel/ContentPanel';
+import DetailsPanel from '../components/DetailsPanel';
 import { activeCollectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
@@ -61,7 +61,7 @@ const CatalogScreen = ({ collection }) => (
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
-      <ContentPanel />
+      <DetailsPanel />
     </Swiper>
   </SafeAreaView>
 );

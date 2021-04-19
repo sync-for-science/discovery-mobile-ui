@@ -6,16 +6,16 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
-const ContentPanel = () => (
+const DetailsPanel = () => (
   <ScrollView>
     <View>
       <Text style={styles.title}>Details Panel</Text>
     </View>
-    <SubTypeAccordionsContainer fromContentPanel />
+    <SubTypeAccordionsContainer fromDetailsPanel />
   </ScrollView>
 );
 
-export default ContentPanel;
+export default DetailsPanel;
 
 const styles = StyleSheet.create({
   title: {

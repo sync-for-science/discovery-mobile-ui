@@ -445,14 +445,14 @@ export const accordionsContainerDataSelector = createSelector(
     showMarkedOnly,
     ownProps,
   ) => {
-    const { fromContentPanel } = ownProps;
+    const { fromDetailsPanel } = ownProps;
     if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
       return {};
     }
 
     const subTypeData = {};
 
-    if (fromContentPanel) {
+    if (fromDetailsPanel) {
       // creates object of subType: subTypeValues regardless of selectedResourceType
       Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
         Object.entries(resourceTypeValues).forEach(([subType, subTypeValues]) => {
