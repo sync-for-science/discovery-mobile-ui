@@ -221,6 +221,9 @@ XAxis.propTypes = {
 const VerticalBound = ({
   availableWidth, countForMaxBarHeight,
 }) => {
+  if (!countForMaxBarHeight) {
+    return null;
+  }
   const verticalBoundLabel = `${countForMaxBarHeight}`;
   return (
     <>
