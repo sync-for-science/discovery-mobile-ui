@@ -128,7 +128,7 @@ MarkedIndicators.propTypes = {
 };
 
 const TimelineItems = ({
-  availableWidth, countForMaxBarHeight, intervals,
+  availableWidth, countForMaxBarHeight, intervals, showVariance,
 }) => {
   if (!countForMaxBarHeight) {
     return null;
@@ -144,11 +144,13 @@ const TimelineItems = ({
         key={key}
         x={position * availableWidth}
       >
+        {showVariance && (
         <Variance
           x={0}
           y={-4}
           zScore={zScore}
         />
+        )}
         <Bar
           x={0}
           width={BAR_WIDTH}
@@ -174,6 +176,7 @@ TimelineItems.propTypes = {
   availableWidth: number.isRequired,
   countForMaxBarHeight: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
+  showVariance: bool.isRequired,
 };
 
 const XAxis = ({ availableWidth, startLabel, endLabel }) => (
@@ -399,6 +402,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             availableWidth={availableWidth}
             countForMaxBarHeight={countForMaxBarHeight}
             intervals={intervals}
+            showVariance={showVariance}
           />
           <VerticalBound
             availableWidth={availableWidth}
