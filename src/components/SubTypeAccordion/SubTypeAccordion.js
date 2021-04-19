@@ -24,12 +24,10 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
-  index,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const firstHeaderStyle = index === 0 ? styles.firstHeader : {};
   const renderHeader = (item) => (
-    <View style={[styles.header, firstHeaderStyle]}>
+    <View style={styles.header}>
       <View style={styles.headerTextContainer}>
         <CountIcon count={subTypeCount} />
         <BaseText style={styles.headerText}>
@@ -71,6 +69,7 @@ const SubTypeAccordion = ({
   return (
     <View style={styles.accordionContainer}>
       <Accordion
+        style={styles.accordion}
         dataArray={dataArray}
         expanded={[]}
         renderHeader={renderHeader}
@@ -85,7 +84,6 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
-  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -101,12 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderBottomColor: Colors.lightgrey,
-    borderBottomWidth: 1,
-  },
-  firstHeader: {
-    borderTopColor: Colors.lightgrey,
-    borderTopWidth: 1,
   },
   headerTextContainer: {
     flexDirection: 'row',
@@ -124,5 +116,8 @@ const styles = StyleSheet.create({
   },
   accordionContainer: {
     backgroundColor: Colors.resourceCardBorder,
+  },
+  accordion: {
+    borderWidth: 0,
   },
 });
