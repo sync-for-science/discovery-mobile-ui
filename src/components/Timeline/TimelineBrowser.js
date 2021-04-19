@@ -217,11 +217,49 @@ XAxis.propTypes = {
   endLabel: string.isRequired,
 };
 
-const LegendAndBound = ({
-  availableWidth, maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
+const VerticalBound = ({
+  availableWidth, maxCount, maxCount1SD,
 }) => {
   if (maxCount > maxCount1SD) {
     const within1SDLineLabel = `${maxCount1SD}`;
+    return (
+      <>
+        <Line
+          x1={0}
+          y1={-2}
+          x2={availableWidth}
+          y2={-2}
+          stroke={BOUNDARY_LINE_COLOR}
+          strokeDasharray="2 2"
+          strokeWidth="1"
+          vectorEffect="non-scaling-stroke"
+        />
+        <SvgText
+          fill={LABEL_COLOR}
+          stroke="none"
+          fontSize={LABEL_FONT_SIZE}
+          x={-4}
+          y={0}
+          textAnchor="end"
+        >
+          {within1SDLineLabel}
+        </SvgText>
+      </>
+    );
+  }
+  return null;
+};
+
+VerticalBound.propTypes = {
+  availableWidth: number.isRequired,
+  maxCount: number.isRequired,
+  maxCount1SD: number.isRequired,
+};
+
+const VarianceLegend = ({
+  maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
+}) => {
+  if (maxCount > maxCount1SD) {
     const between1and2SDlabel = `between ${maxCount1SD} and ${maxCount2SD}`;
     let above2SD = null;
 
@@ -265,35 +303,14 @@ const LegendAndBound = ({
         >
           {between1and2SDlabel}
         </SvgText>
-        <Line
-          x1={0}
-          y1={-2}
-          x2={availableWidth}
-          y2={-2}
-          stroke={BOUNDARY_LINE_COLOR}
-          strokeDasharray="2 2"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
         {above2SD}
-        <SvgText
-          fill={LABEL_COLOR}
-          stroke="none"
-          fontSize={LABEL_FONT_SIZE}
-          x={-4}
-          y={0}
-          textAnchor="end"
-        >
-          {within1SDLineLabel}
-        </SvgText>
       </>
     );
   }
   return null;
 };
 
-LegendAndBound.propTypes = {
-  availableWidth: number.isRequired,
+VarianceLegend.propTypes = {
   maxCount: number.isRequired,
   maxCount1SD: number.isRequired,
   maxCount2SD: number.isRequired,
@@ -382,8 +399,12 @@ const TimelineBrowser = ({ timelineIntervals }) => {
             maxCount2SD={maxCount2SD}
             intervals={intervals}
           />
-          <LegendAndBound
+          <VerticalBound
             availableWidth={availableWidth}
+            maxCount={maxCount}
+            maxCount1SD={maxCount1SD}
+          />
+          <VarianceLegend
             maxCount={maxCount}
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
