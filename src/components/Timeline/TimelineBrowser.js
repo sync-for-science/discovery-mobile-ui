@@ -13,6 +13,7 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
+const MIN_COUNT_FOR_SD = 30;
 const BAR_COLOR = '#ccc';
 const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
@@ -218,42 +219,38 @@ XAxis.propTypes = {
 };
 
 const VerticalBound = ({
-  availableWidth, maxCount, maxCount1SD,
+  availableWidth, countForMaxBarHeight,
 }) => {
-  if (maxCount > maxCount1SD) {
-    const within1SDLineLabel = `${maxCount1SD}`;
-    return (
-      <>
-        <Line
-          x1={0}
-          y1={-2}
-          x2={availableWidth}
-          y2={-2}
-          stroke={BOUNDARY_LINE_COLOR}
-          strokeDasharray="2 2"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
-        <SvgText
-          fill={LABEL_COLOR}
-          stroke="none"
-          fontSize={LABEL_FONT_SIZE}
-          x={-4}
-          y={0}
-          textAnchor="end"
-        >
-          {within1SDLineLabel}
-        </SvgText>
-      </>
-    );
-  }
-  return null;
+  const verticalBoundLabel = `${countForMaxBarHeight}`;
+  return (
+    <>
+      <Line
+        x1={0}
+        y1={-2}
+        x2={availableWidth}
+        y2={-2}
+        stroke={BOUNDARY_LINE_COLOR}
+        strokeDasharray="2 2"
+        strokeWidth="1"
+        vectorEffect="non-scaling-stroke"
+      />
+      <SvgText
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize={LABEL_FONT_SIZE}
+        x={-4}
+        y={0}
+        textAnchor="end"
+      >
+        {verticalBoundLabel}
+      </SvgText>
+    </>
+  );
 };
 
 VerticalBound.propTypes = {
   availableWidth: number.isRequired,
-  maxCount: number.isRequired,
-  maxCount1SD: number.isRequired,
+  countForMaxBarHeight: number.isRequired,
 };
 
 const VarianceLegend = ({
@@ -358,6 +355,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
+  const countForMaxBarHeight = (maxCount <= MIN_COUNT_FOR_SD ? maxCount : maxCount1SD);
 
   return (
     <View
@@ -401,8 +399,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <VerticalBound
             availableWidth={availableWidth}
-            maxCount={maxCount}
-            maxCount1SD={maxCount1SD}
+            countForMaxBarHeight={countForMaxBarHeight}
           />
           <VarianceLegend
             maxCount={maxCount}
