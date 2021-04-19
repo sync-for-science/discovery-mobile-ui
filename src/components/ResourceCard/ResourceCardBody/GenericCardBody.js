@@ -3,7 +3,6 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResource,
   getReason,
   getOnsetDateTime,
   getAbatementDateTime,
@@ -15,15 +14,11 @@ import {
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const GenericCardBody = ({ resource, patientAgeAtResource }) => {
+const GenericCardBody = ({ resource }) => {
   const { type, subType } = resource;
 
   return (
     <>
-      <CardBodyField
-        label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResource(patientAgeAtResource)}
-      />
       <CardBodyField
         label={CARD_BODY_LABEL[type]}
         value={subType}
@@ -71,7 +66,6 @@ const GenericCardBody = ({ resource, patientAgeAtResource }) => {
 
 GenericCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default GenericCardBody;

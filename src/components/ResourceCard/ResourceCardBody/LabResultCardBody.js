@@ -3,7 +3,6 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResource,
   getValueRatio,
   getRefRangeLabel,
   getRefRange,
@@ -12,15 +11,11 @@ import {
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const LabResultCardBody = ({ resource, patientAgeAtResource }) => {
+const LabResultCardBody = ({ resource }) => {
   const { subType } = resource;
 
   return (
     <>
-      <CardBodyField
-        label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResource(patientAgeAtResource)}
-      />
       <CardBodyField
         label={CARD_BODY_LABEL.measure}
         value={subType}
@@ -53,7 +48,6 @@ const LabResultCardBody = ({ resource, patientAgeAtResource }) => {
 
 LabResultCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default LabResultCardBody;

@@ -4,7 +4,7 @@ import {
 } from 'ramda';
 import {
   startOfDay, endOfDay, differenceInDays,
-  compareAsc, format, parse, intervalToDuration, isWithinInterval,
+  compareAsc, isWithinInterval,
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
@@ -183,28 +183,6 @@ const filteredItemsInDateRangeSelector = createSelector(
           end: dateRangeEnd,
         },
       ));
-  },
-);
-
-export const patientAgeAtResourcesSelector = createSelector(
-  [patientSelector, allValidRecordsSortedByDateSelector],
-  (patient, timelineItems) => {
-    if (!patient) {
-      return {};
-    }
-    const birthDate = parse(patient?.birthDate, 'yyyy-MM-dd', new Date());
-    const patientAgeAtResources = {};
-    timelineItems.forEach(({ id, timelineDate }) => {
-      const resourceDate = format(new Date(timelineDate), 'yyyy-MM-dd');
-      const ageAtResourceDate = intervalToDuration({
-        start: birthDate,
-        end: parse(resourceDate, 'yyyy-MM-dd', new Date()),
-      });
-      if (!patientAgeAtResources[id]) {
-        patientAgeAtResources[id] = ageAtResourceDate;
-      }
-    });
-    return patientAgeAtResources;
   },
 );
 
