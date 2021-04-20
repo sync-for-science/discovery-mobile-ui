@@ -10,6 +10,7 @@ import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
+import CollectionIcon from '../Icons/CollectionIcon';
 
 const DateAccordion = ({
   label, resourceIds, activeCollectionId, fromDetailsPanel,
@@ -30,6 +31,11 @@ const DateAccordion = ({
             {item.title}
           </BaseText>
         </View>
+        <CollectionIcon
+          collectionId={activeCollectionId}
+          resourceIds={resourceIds}
+          showCount
+        />
       </View>
     );
   };

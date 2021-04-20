@@ -43,26 +43,29 @@ const SubTypeAccordion = ({
             {item.title}
           </BaseText>
         </View>
-        {!fromDetailsPanel && (
+
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            isAccordion
-          />
-          <MarkedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            subTypeCount={subTypeCount}
-            isAccordion
-          />
+          {!fromDetailsPanel && (
+            <>
+              <FocusedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                isAccordion
+              />
+              <MarkedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                subTypeCount={subTypeCount}
+                isAccordion
+              />
+            </>
+          )}
           <CollectionIcon
             collectionId={activeCollectionId}
             resourceIds={resourceIds}
             showCount
           />
         </View>
-        )}
       </View>
     );
   };
