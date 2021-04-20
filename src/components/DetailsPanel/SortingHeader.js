@@ -5,23 +5,20 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import BaseText from '../Generic/BaseText'
 
 const SortingHeader = ({sortingIndex, setSortingIndex}) => {
-  const recordTypeVariant = sortingIndex === 0 ? "title" : ""
-  const recordDateVariant = sortingIndex === 1 ? "title" : ""
-  const timeSavedVariant = sortingIndex === 2 ? "title" : ""
+  const buttonNames = ["Record Type", "Record Date", "Time Saved"]
+
   return (
     <View style={styles.root}>
-      <TouchableOpacity style={styles.button} onPress={() => setSortingIndex(0)}>
-        <BaseText variant={recordTypeVariant}>Record Type</BaseText>
-        {sortingIndex === 0 && <Ionicons name="arrow-down" size={20} color="black" />}
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => setSortingIndex(1)}>
-        <BaseText variant={recordDateVariant}>Record Date</BaseText>
-        {sortingIndex === 1 && <Ionicons name="arrow-down" size={20} color="black" />}
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => setSortingIndex(2)}> 
-        <BaseText variant={timeSavedVariant}>Time Saved</BaseText>
-        {sortingIndex === 2 && <Ionicons name="arrow-down" size={20} color="black" />}
-      </TouchableOpacity> 
+      {buttonNames.map((buttonName, index) => {
+        const isSelected = sortingIndex === index
+        const textStyle = isSelected ? "title" : ""
+        return (
+          <TouchableOpacity style={styles.button} onPress={() => setSortingIndex(index)}>
+            <BaseText variant={textStyle}>{buttonName}</BaseText>
+            {isSelected && <Ionicons name="arrow-down" size={20} color="black" />}
+          </TouchableOpacity>
+        )
+      })}
     </View>
   )
 }
