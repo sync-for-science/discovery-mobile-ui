@@ -5,11 +5,11 @@ import {
 import { produce } from 'immer';
 import {
   startOfDay, endOfDay, differenceInDays,
-  compareAsc, isWithinInterval,
+  compareAsc, isWithinInterval
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
-
+import { formatDate } from '../../resources/fhirReader'
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { FOCUSED } from '../../constants/marked-status';
 
@@ -494,5 +494,44 @@ export const accordionsContainerDataSelector = createSelector(
         }
       });
     return subTypeData;
+  },
+);
+
+export const dateSortedCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector],
+  (collection) => {
+    const { resourceIds } = collection;
+    const shortDateFormatted = Object.entries(resourceIds).reduce((acc, [id, date], index) => {
+      if (index === 0) {
+        const fakeDate = formatDate(new Date("4-2-1990"))
+        if (!acc[fakeDate]) {
+          acc[fakeDate] = {}
+        }
+        acc[fakeDate][id] = new Date("4-2-1990")
+      } else if (index === 1) {
+        const fakeDate = formatDate(new Date("8-2-1992"))
+        if (!acc[fakeDate]) {
+          acc[fakeDate] = {}
+        }
+        acc[fakeDate][id] = new Date("8-2-1992")
+      } else {
+        const shortDate = formatDate(date)
+        if (!acc[shortDate]) {
+          acc[shortDate] = {}
+        }
+        acc[shortDate][id] = date
+      }
+      return acc
+    }, {})
+
+    return Object.entries(shortDateFormatted)
+      .reduce((acc, [date, resourceIds]) => {
+        const sortedResourceIds = Object.entries(resourceIds)
+          .sort(([, aDate], [, bDate]) => (aDate > bDate ? -1 : 1))
+          .reduce((acc, [id]) => { acc.push(id); return acc; }, []);
+        
+        acc[date] = sortedResourceIds
+        return acc
+      }, {})
   },
 );

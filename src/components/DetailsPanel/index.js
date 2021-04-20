@@ -7,10 +7,14 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { Entypo, SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { shape } from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import DateAccordionContainer from '../DateAccordion/DateAccordionContainer'
+
+const DetailsPanel = ({ navigation, collection }) => {
+  const [showByDate, setShowByDate] = useState(false);
 
 const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {
@@ -35,6 +39,13 @@ const DetailsPanel = ({ navigation, collection }) => {
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
+
+  const formattedResources = showByDate
+    ? (
+      <DateAccordionContainer />
+    ) : (
+      <SubTypeAccordionsContainer fromDetailsPanel />
+    );
   return (
     <ScrollView>
       <Header style={styles.header}>
