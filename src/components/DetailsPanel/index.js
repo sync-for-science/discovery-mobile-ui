@@ -14,7 +14,7 @@ import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsCon
 import DateAccordionContainer from '../DateAccordion/DateAccordionContainer'
 
 const DetailsPanel = ({ navigation, collection }) => {
-  const [showByDate, setShowByDate] = useState(false);
+  const [showByDate, setShowByDate] = useState(true);
 
 const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {

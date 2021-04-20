@@ -22,7 +22,7 @@ const DateAccordion = ({label, resourceIds, activeCollectionId}) => {
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
           {chevronIcon}
-          <CountIcon count={0} />
+          <CountIcon count={resourceIds.length} />
           <BaseText style={styles.headerText}>
             {item.title}
           </BaseText>
