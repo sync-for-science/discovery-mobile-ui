@@ -32,7 +32,11 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
         const textStyle = values.isPicked ? 'title' : '';
         const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up';
         return (
-          <TouchableOpacity style={styles.button} onPress={() => handlePress(buttonLabel)}>
+          <TouchableOpacity
+            key={buttonLabel}
+            style={styles.button}
+            onPress={() => handlePress(buttonLabel)}
+          >
             <BaseText variant={textStyle}>{BUTTON_LABELS[buttonLabel]}</BaseText>
             {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
           </TouchableOpacity>
