@@ -12,7 +12,7 @@ const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase
 
 const SubTypeAccordionsContainer = ({
   accordionsContainerData,
-  sortingState,
+  isDescending,
   fromDetailsPanel,
 }) => (
   <View style={styles.root}>
@@ -23,7 +23,6 @@ const SubTypeAccordionsContainer = ({
           if (values.length === 0) {
             return null;
           }
-          const isDescending = sortingState?.['record-type']?.isDescending;
           const orderedResourceIds = isDescending && fromDetailsPanel
             ? values.resourceIds : [...values.resourceIds].reverse();
           return (
@@ -42,7 +41,7 @@ const SubTypeAccordionsContainer = ({
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
-  sortingState: shape({}).isRequired,
+  isDescending: bool.isRequired,
   fromDetailsPanel: bool,
 };
 
