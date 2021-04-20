@@ -15,11 +15,11 @@ import { allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const ResourceTypeRow = ({
-  label, total, latestDate,
+  total, label, latestDate,
 }) => (
   <View style={styles.resourceTypeRow}>
-    <Text style={styles.resourceName}>{label}</Text>
     <Text style={styles.resourceCount}>{total}</Text>
+    <Text style={styles.resourceName}>{label}</Text>
     <Text style={styles.resourceLatestDate}>{format(latestDate, 'Y')}</Text>
   </View>
 );
@@ -48,8 +48,8 @@ const RecordsSummary = ({
       </View>
       <View style={styles.resourceTypeContainer}>
         <View style={styles.resourceTypeRow}>
-          <Text style={styles.resourceName} />
           <Text style={styles.resourceCountLabel}>count</Text>
+          <Text style={styles.resourceName} />
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
         {recordsByType.map(({ type, label, items }) => (
