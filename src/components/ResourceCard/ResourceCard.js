@@ -90,6 +90,7 @@ const ResourceCard = ({
             showCount={false}
             collectionId={collectionId}
             resourceIds={[resourceId]}
+            fromDetailsPanel={fromDetailsPanel}
           />
         </View>
       </>

@@ -17,6 +17,7 @@ const CollectionIcon = ({
   removeResourceFromCollectionAction,
   collectionResourceIds,
   showCollectionOnly,
+  fromDetailsPanel
 }) => {
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = collectionResourceIds[id];
@@ -28,12 +29,13 @@ const CollectionIcon = ({
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
+  const isDisabled = !fromDetailsPanel && showCollectionOnly
   // eslint-disable-next-line no-nested-ternary, max-len
   const iconStyle = resourceCount
-    ? (showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource)
+    ? (isDisabled ? styles.hasResourceDisabled : styles.hasResource)
     : null;
 
-  const textStyle = showCollectionOnly ? styles.textDisabled : styles.text;
+  const textStyle = isDisabled ? styles.textDisabled : styles.text;
 
   return (
     <TouchableOpacity
@@ -42,7 +44,7 @@ const CollectionIcon = ({
         iconStyle,
       ]}
       onPress={handlePress}
-      disabled={showCollectionOnly}
+      disabled={isDisabled}
     >
       <Text style={textStyle}>{iconCount}</Text>
     </TouchableOpacity>
