@@ -12,9 +12,11 @@ import { arrayOf, shape, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import DateAccordionContainer from '../DateAccordion/DateAccordionContainer'
+import SortingHeader from './SortingHeader';
 
 const DetailsPanel = ({ navigation, collection }) => {
   const [showByDate, setShowByDate] = useState(true);
+  const [sortingIndex, setSortingIndex] = useState(0)
 
 const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {
@@ -40,14 +42,14 @@ const DetailsPanel = ({ navigation, collection }) => {
     navigation.navigate('CollectionNotes');
   };
 
-  const formattedResources = showByDate
+  const formattedResources = sortingIndex === 2
     ? (
       <DateAccordionContainer />
     ) : (
       <SubTypeAccordionsContainer fromDetailsPanel />
     );
   return (
-    <ScrollView>
+    <View>
       <Header style={styles.header}>
         <Left />
         <View>
@@ -62,8 +64,11 @@ const DetailsPanel = ({ navigation, collection }) => {
           </TouchableOpacity>
         </Right>
       </Header>
-      <SubTypeAccordionsContainer fromDetailsPanel />
-    </ScrollView>
+      <SortingHeader sortingIndex={sortingIndex} setSortingIndex={setSortingIndex}/>
+      <ScrollView>
+        {formattedResources}
+      </ScrollView>
+    </View>
   );
 };
 
