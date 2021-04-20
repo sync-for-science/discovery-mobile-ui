@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet, View, ActionSheetIOS,
 } from 'react-native';
@@ -7,7 +7,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { Entypo, SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { arrayOf, shape, string } from 'prop-types';
+import { shape } from 'prop-types';
 
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
@@ -31,7 +31,6 @@ const DetailsPanel = ({ navigation, collection }) => {
   }
   const [sortingState, setSortingState] = useState(defaultSortingState)
 
-const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -105,4 +104,4 @@ const styles = StyleSheet.create({
   noteIcon: {
     marginRight: 15,
   },
-});
+})

@@ -94,7 +94,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const updatedResourceIds = { ...collection.resourceIds };
       resourceIds.forEach((resourceId) => {
         if (!updatedResourceIds[resourceId]) {
-          updatedResourceIds[resourceId] = true;
+          updatedResourceIds[resourceId] = new Date();
         }
       });
       const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds[0] : null;
