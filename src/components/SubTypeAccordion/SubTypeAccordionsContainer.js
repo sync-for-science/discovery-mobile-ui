@@ -23,8 +23,15 @@ const SubTypeAccordionsContainer = ({
           if (values.length === 0) {
             return null;
           }
-          const orderedResourceIds = isDescending && fromDetailsPanel
-            ? values.resourceIds : [...values.resourceIds].reverse();
+          let orderedResourceIds;
+          if (!fromDetailsPanel) {
+            orderedResourceIds = values.resourceIds;
+          } else {
+            orderedResourceIds = isDescending
+              ? values.resourceIds
+              : [...values.resourceIds].reverse();
+          }
+
           return (
             <SubTypeAccordion
               key={subType}
@@ -41,11 +48,12 @@ const SubTypeAccordionsContainer = ({
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
-  isDescending: bool.isRequired,
+  isDescending: bool,
   fromDetailsPanel: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
+  isDescending: false,
   fromDetailsPanel: false,
 };
 
