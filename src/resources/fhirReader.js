@@ -6,8 +6,6 @@ import {
 const UI_DATE_FORMAT = 'MMM d, Y';
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 
-export const getRecordsTotal = (resourceSet) => Object.keys(resourceSet).length;
-
 export const getPatientName = (patientResource) => {
   if (!patientResource) {
     return '';

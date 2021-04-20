@@ -8,10 +8,7 @@ import {
 } from 'react-native';
 import { format } from 'date-fns';
 
-import {
-  getRecordsTotal,
-} from '../../resources/fhirReader';
-import { allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { allValidRecordsSortedByDateSelector, allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const ResourceTypeRow = ({
@@ -33,43 +30,39 @@ ResourceTypeRow.propTypes = {
 };
 
 const RecordsSummary = ({
-  resources, recordsByType,
-}) => {
-  const recordsTotal = getRecordsTotal(resources);
-
-  return (
-    <View style={styles.recordSummaryContainer}>
-      <View style={styles.recordsHeader}>
-        <Text style={styles.recordsHeaderText}>
-          Records
-        </Text>
-        <Text style={styles.recordsHeaderTotal}>
-          {`${recordsTotal} Total`}
-        </Text>
-      </View>
-      <View style={styles.resourceTypeContainer}>
-        <View style={styles.resourceTypeRow}>
-          <Text style={styles.resourceCountLabel}></Text>
-          <Text style={styles.resourceName} />
-          <Text style={styles.resourceLatestDateLabel}>Oldest</Text>
-          <Text style={styles.resourceLatestDateLabel}>Latest</Text>
-        </View>
-        {recordsByType.map(({ type, label, items }) => (
-          <ResourceTypeRow
-            key={type}
-            label={label}
-            count={items.length}
-            earliestDate={items[0].timelineDate}
-            latestDate={items[items.length - 1].timelineDate}
-          />
-        ))}
-      </View>
+  allRecordsSortedByDate, recordsByType,
+}) => (
+  <View style={styles.recordSummaryContainer}>
+    <View style={styles.recordsHeader}>
+      <Text style={styles.recordsHeaderText}>
+        Records
+      </Text>
+      <Text style={styles.recordsHeaderTotal}>
+        {`${allRecordsSortedByDate.length} Total`}
+      </Text>
     </View>
-  );
-};
+    <View style={styles.resourceTypeContainer}>
+      <View style={styles.resourceTypeRow}>
+        <Text style={styles.resourceCountLabel} />
+        <Text style={styles.resourceName} />
+        <Text style={styles.resourceLatestDateLabel}>Oldest</Text>
+        <Text style={styles.resourceLatestDateLabel}>Latest</Text>
+      </View>
+      {recordsByType.map(({ type, label, items }) => (
+        <ResourceTypeRow
+          key={type}
+          label={label}
+          count={items.length}
+          earliestDate={items[0].timelineDate}
+          latestDate={items[items.length - 1].timelineDate}
+        />
+      ))}
+    </View>
+  </View>
+);
 
 RecordsSummary.propTypes = {
-  resources: shape({}),
+  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
   recordsByType: arrayOf(shape({
     type: string.isRequired,
     label: string.isRequired,
@@ -78,11 +71,10 @@ RecordsSummary.propTypes = {
 };
 
 RecordsSummary.defaultProps = {
-  resources: null,
 };
 
 const mapStateToProps = (state) => ({
-  resources: state.resources,
+  allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
   recordsByType: allValidRecordsGroupedByTypeSelector(state),
 });
 
