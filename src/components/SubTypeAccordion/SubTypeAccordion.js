@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import {
   arrayOf, number, string,
 } from 'prop-types';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import {
   activeCollectionIdSelector,
@@ -24,38 +25,44 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
-  index,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
-  const firstHeaderStyle = index === 0 ? styles.firstHeader : {};
-  const renderHeader = (item) => (
-    <View style={[styles.header, firstHeaderStyle]}>
-      <View style={styles.headerTextContainer}>
-        <CountIcon count={subTypeCount} />
-        <BaseText style={styles.headerText}>
-          {item.title}
-        </BaseText>
+
+  const renderHeader = (item, expanded) => {
+    const chevronIcon = expanded
+      ? <Ionicons name="chevron-up" size={24} color={Colors.accordionChevronIcon} />
+      : <Ionicons name="chevron-down" size={24} color={Colors.accordionChevronIcon} />;
+
+    return (
+      <View style={styles.header}>
+        <View style={styles.headerTextContainer}>
+          {chevronIcon}
+          <CountIcon count={subTypeCount} />
+          <BaseText style={styles.headerText}>
+            {item.title}
+          </BaseText>
+        </View>
+        <View style={styles.rightIconsContainer}>
+          <FocusedIcon
+            subType={subType}
+            resourceIds={resourceIds}
+            isAccordion
+          />
+          <MarkedIcon
+            subType={subType}
+            resourceIds={resourceIds}
+            subTypeCount={subTypeCount}
+            isAccordion
+          />
+          <CollectionIcon
+            collectionId={activeCollectionId}
+            resourceIds={resourceIds}
+            showCount
+          />
+        </View>
       </View>
-      <View style={styles.rightIconsContainer}>
-        <FocusedIcon
-          subType={subType}
-          resourceIds={resourceIds}
-          isAccordion
-        />
-        <MarkedIcon
-          subType={subType}
-          resourceIds={resourceIds}
-          subTypeCount={subTypeCount}
-          isAccordion
-        />
-        <CollectionIcon
-          collectionId={activeCollectionId}
-          resourceIds={resourceIds}
-          showCount
-        />
-      </View>
-    </View>
-  );
+    );
+  };
 
   const renderContent = (item) => item.content.map(
     (resourceId, cardIndex) => (
@@ -71,6 +78,7 @@ const SubTypeAccordion = ({
   return (
     <View style={styles.accordionContainer}>
       <Accordion
+        style={styles.accordion}
         dataArray={dataArray}
         expanded={[]}
         renderHeader={renderHeader}
@@ -85,7 +93,6 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
-  index: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -101,12 +108,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
-    borderBottomColor: Colors.lightgrey,
-    borderBottomWidth: 1,
-  },
-  firstHeader: {
-    borderTopColor: Colors.lightgrey,
-    borderTopWidth: 1,
   },
   headerTextContainer: {
     flexDirection: 'row',
@@ -124,5 +125,8 @@ const styles = StyleSheet.create({
   },
   accordionContainer: {
     backgroundColor: Colors.resourceCardBorder,
+  },
+  accordion: {
+    borderWidth: 0,
   },
 });

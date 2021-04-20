@@ -15,14 +15,13 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)
         .sort(sortEntriesBySubType)
-        .map(([subType, values], index) => {
+        .map(([subType, values]) => {
           if (values.length === 0) {
             return null;
           }
           return (
             <SubTypeAccordion
               key={subType}
-              index={index}
               subType={subType}
               resourceIds={values.resourceIds}
               subTypeCount={values.subTypeCount}

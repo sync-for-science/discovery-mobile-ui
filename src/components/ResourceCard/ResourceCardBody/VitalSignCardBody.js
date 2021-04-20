@@ -3,14 +3,13 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResource,
   getStatus,
   getValueQuantity,
   getBloodPressureData,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const VitalSignCardBody = ({ resource, patientAgeAtResource }) => {
+const VitalSignCardBody = ({ resource }) => {
   const { subType } = resource;
 
   let displayBloodPressureFields = null;
@@ -29,10 +28,6 @@ const VitalSignCardBody = ({ resource, patientAgeAtResource }) => {
   }
   return (
     <>
-      <CardBodyField
-        label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResource(patientAgeAtResource)}
-      />
       <CardBodyField
         label={CARD_BODY_LABEL.measure}
         value={subType}
@@ -58,7 +53,6 @@ const VitalSignCardBody = ({ resource, patientAgeAtResource }) => {
 
 VitalSignCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default VitalSignCardBody;

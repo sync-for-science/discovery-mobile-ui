@@ -13,6 +13,7 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
+const VARIANCE_THRESHOLD = 30;
 const BAR_COLOR = '#ccc';
 const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
@@ -127,12 +128,12 @@ MarkedIndicators.propTypes = {
 };
 
 const TimelineItems = ({
-  availableWidth, maxCount1SD, intervals,
+  availableWidth, countForMaxBarHeight, intervals, showVariance,
 }) => {
-  if (!maxCount1SD) {
+  if (!countForMaxBarHeight) {
     return null;
   }
-  const tickUnits = BAR_HEIGHT / maxCount1SD;
+  const tickUnits = BAR_HEIGHT / countForMaxBarHeight;
 
   return intervals
     .filter(({ items }) => !!items.length)
@@ -143,22 +144,24 @@ const TimelineItems = ({
         key={key}
         x={position * availableWidth}
       >
+        {showVariance && (
         <Variance
           x={0}
           y={-4}
           zScore={zScore}
         />
+        )}
         <Bar
           x={0}
           width={BAR_WIDTH}
-          height={Math.max(Math.min(items.length, maxCount1SD) * tickUnits, 4)}
+          height={Math.max(Math.min(items.length, countForMaxBarHeight) * tickUnits, 4)}
           color={BAR_COLOR}
         />
         {!collectionItems.length ? null : (
           <Bar
             x={0}
             width={BAR_WIDTH}
-            height={Math.max(Math.min(collectionItems.length, maxCount1SD) * tickUnits, 4)}
+            height={Math.max(Math.min(collectionItems.length, countForMaxBarHeight) * tickUnits, 4)}
             color={Colors.collectionIcon}
           />
         )}
@@ -171,8 +174,9 @@ const TimelineItems = ({
 
 TimelineItems.propTypes = {
   availableWidth: number.isRequired,
-  maxCount1SD: number.isRequired,
+  countForMaxBarHeight: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
+  showVariance: bool.isRequired,
 };
 
 const XAxis = ({ availableWidth, startLabel, endLabel }) => (
@@ -217,11 +221,48 @@ XAxis.propTypes = {
   endLabel: string.isRequired,
 };
 
-const LegendAndBound = ({
-  availableWidth, maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
+const VerticalBound = ({
+  availableWidth, countForMaxBarHeight,
+}) => {
+  if (!countForMaxBarHeight) {
+    return null;
+  }
+  const verticalBoundLabel = `${countForMaxBarHeight}`;
+  return (
+    <>
+      <Line
+        x1={0}
+        y1={-2}
+        x2={availableWidth}
+        y2={-2}
+        stroke={BOUNDARY_LINE_COLOR}
+        strokeDasharray="2 2"
+        strokeWidth="1"
+        vectorEffect="non-scaling-stroke"
+      />
+      <SvgText
+        fill={LABEL_COLOR}
+        stroke="none"
+        fontSize={LABEL_FONT_SIZE}
+        x={-4}
+        y={0}
+        textAnchor="end"
+      >
+        {verticalBoundLabel}
+      </SvgText>
+    </>
+  );
+};
+
+VerticalBound.propTypes = {
+  availableWidth: number.isRequired,
+  countForMaxBarHeight: number.isRequired,
+};
+
+const VarianceLegend = ({
+  maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
 }) => {
   if (maxCount > maxCount1SD) {
-    const within1SDLineLabel = `${maxCount1SD}`;
     const between1and2SDlabel = `between ${maxCount1SD} and ${maxCount2SD}`;
     let above2SD = null;
 
@@ -265,35 +306,14 @@ const LegendAndBound = ({
         >
           {between1and2SDlabel}
         </SvgText>
-        <Line
-          x1={0}
-          y1={-2}
-          x2={availableWidth}
-          y2={-2}
-          stroke={BOUNDARY_LINE_COLOR}
-          strokeDasharray="2 2"
-          strokeWidth="1"
-          vectorEffect="non-scaling-stroke"
-        />
         {above2SD}
-        <SvgText
-          fill={LABEL_COLOR}
-          stroke="none"
-          fontSize={LABEL_FONT_SIZE}
-          x={-4}
-          y={0}
-          textAnchor="end"
-        >
-          {within1SDLineLabel}
-        </SvgText>
       </>
     );
   }
   return null;
 };
 
-LegendAndBound.propTypes = {
-  availableWidth: number.isRequired,
+VarianceLegend.propTypes = {
   maxCount: number.isRequired,
   maxCount1SD: number.isRequired,
   maxCount2SD: number.isRequired,
@@ -341,6 +361,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
+  const showVariance = maxCount > VARIANCE_THRESHOLD;
+  const countForMaxBarHeight = showVariance ? maxCount1SD : maxCount;
 
   return (
     <View
@@ -378,17 +400,22 @@ const TimelineBrowser = ({ timelineIntervals }) => {
           />
           <TimelineItems
             availableWidth={availableWidth}
-            maxCount1SD={maxCount1SD}
-            maxCount2SD={maxCount2SD}
+            countForMaxBarHeight={countForMaxBarHeight}
             intervals={intervals}
+            showVariance={showVariance}
           />
-          <LegendAndBound
+          <VerticalBound
             availableWidth={availableWidth}
+            countForMaxBarHeight={countForMaxBarHeight}
+          />
+          {showVariance && (
+          <VarianceLegend
             maxCount={maxCount}
             maxCount1SD={maxCount1SD}
             maxCount2SD={maxCount2SD}
             recordCount2SDplus={recordCount2SDplus}
           />
+          )}
           <Metrics
             availableWidth={availableWidth}
             intervalLength={intervalLength}
