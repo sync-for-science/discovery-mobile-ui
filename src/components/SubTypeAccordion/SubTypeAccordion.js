@@ -43,7 +43,7 @@ const SubTypeAccordion = ({
             {item.title}
           </BaseText>
         </View>
-        <View style={styles.rightIconsContainer}>
+        {!fromDetailsPanel && <View style={styles.rightIconsContainer}>
           <FocusedIcon
             subType={subType}
             resourceIds={resourceIds}
@@ -60,7 +60,7 @@ const SubTypeAccordion = ({
             resourceIds={resourceIds}
             showCount
           />
-        </View>
+        </View>}
       </View>
     );
   };
