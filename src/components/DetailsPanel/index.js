@@ -16,15 +16,15 @@ import SortingHeader from './SortingHeader';
 
 const DetailsPanel = ({ navigation, collection }) => {
   const defaultSortingState = {
-    "Record Type": {
+    "record-type": {
       isPicked: true,
       isDescending: true
     },
-    "Record Date": {
+    "record-date": {
       isPicked: false,
       isDescending: true
     },
-    "Time Saved": {
+    "time-saved": {
       isPicked: false,
       isDescending: true
     },
@@ -55,12 +55,16 @@ const DetailsPanel = ({ navigation, collection }) => {
     navigation.navigate('CollectionNotes');
   };
 
-  const formattedResources = sortingState["Time Saved"].isPicked
-    ? (
-      <DateAccordionContainer />
-    ) : (
-      <SubTypeAccordionsContainer fromDetailsPanel />
-    );
+  let displayAccordions 
+  
+  if (sortingState["record-type"].isPicked) {
+    displayAccordions = <SubTypeAccordionsContainer isDescending={sortingState["record-date"].isDescending} fromDetailsPanel />
+  } else if (sortingState["record-date"].isPicked) {
+    displayAccordions = <DateAccordionContainer isDescending={sortingState["record-date"].isDescending} fromDetailsPanel/>
+  } else {
+    displayAccordions = <DateAccordionContainer isDescending={sortingState["time-saved"].isDescending} fromDetailsPanel/>
+  }
+
   return (
     <View>
       <Header style={styles.header}>
@@ -79,7 +83,7 @@ const DetailsPanel = ({ navigation, collection }) => {
       </Header>
       <SortingHeader sortingState={sortingState} setSortingState={setSortingState}/>
       <ScrollView>
-        {formattedResources}
+        {displayAccordions}
       </ScrollView>
     </View>
   );

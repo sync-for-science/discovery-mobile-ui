@@ -4,6 +4,12 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 
 import BaseText from '../Generic/BaseText'
 
+const BUTTON_LABELS = {
+  "record-type": "Record Type",
+  "record-date": "Record Date",
+  "time-saved": "Time Saved",
+}
+
 const SortingHeader = ({sortingState, setSortingState}) => {
 
   const handlePress = (buttonLabel) => {
@@ -27,7 +33,7 @@ const SortingHeader = ({sortingState, setSortingState}) => {
         const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up'
         return (
           <TouchableOpacity style={styles.button} onPress={() => handlePress(buttonLabel)}>
-            <BaseText variant={textStyle}>{buttonLabel}</BaseText>
+            <BaseText variant={textStyle}>{BUTTON_LABELS[buttonLabel]}</BaseText>
             {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
           </TouchableOpacity>
         )

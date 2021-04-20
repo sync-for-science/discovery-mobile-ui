@@ -10,7 +10,7 @@ import ResourceCard from '../ResourceCard/ResourceCard';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 
-const DateAccordion = ({label, resourceIds, activeCollectionId}) => {
+const DateAccordion = ({label, resourceIds, activeCollectionId, fromDetailsPanel}) => {
   const dataArray = [{ title: label, content: resourceIds }];
 
   const renderHeader = (item, expanded) => {
@@ -38,6 +38,7 @@ const DateAccordion = ({label, resourceIds, activeCollectionId}) => {
         index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
+        fromDetailsPanel={fromDetailsPanel}
       />
     ),
   );

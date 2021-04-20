@@ -6,9 +6,11 @@ import { dateSortedCollectionResourceIdsSelector } from '../../redux/selectors';
 import DateAccordion from './DateAccordion'
 
 
-const DateAccordionContainer = ({dateSortedResourceIds}) => {
-  const sortByLabelDate = ([t1], [t2]) => new Date(t1) > new Date(t2) ? -1 : 1
-  const sortByResourceDate = ([, t1], [, t2]) => t1 > t2 ? -1 : 1
+const DateAccordionContainer = ({dateSortedResourceIds, isDescending, fromDetailsPanel}) => {
+  const descendingSort = (t1, t2) => new Date(t1) > new Date(t2) ? -1 : 1
+  const ascendingSort = (t1, t2) => new Date(t1) < new Date(t2) ? -1 : 1
+  const sortByLabelDate = ([t1], [t2]) => isDescending ? descendingSort(t1, t2) : ascendingSort(t1, t2)
+  const sortByResourceDate = ([, t1], [, t2]) => isDescending ? descendingSort(t1, t2) : ascendingSort(t1, t2)
   
   return (
     <View style={styles.root}>
@@ -24,6 +26,7 @@ const DateAccordionContainer = ({dateSortedResourceIds}) => {
                 key={date}
                 label={date}
                 resourceIds={sortedResourceIds}
+                fromDetailsPanel={fromDetailsPanel}
               />
             )
           })
