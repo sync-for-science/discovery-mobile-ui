@@ -58,7 +58,7 @@ const DetailsPanel = ({ navigation, collection }) => {
   let displayAccordions 
   
   if (sortingState["record-type"].isPicked) {
-    displayAccordions = <SubTypeAccordionsContainer isDescending={sortingState["record-date"].isDescending} fromDetailsPanel />
+    displayAccordions = <SubTypeAccordionsContainer sortingState={sortingState} fromDetailsPanel />
   } else if (sortingState["record-date"].isPicked) {
     displayAccordions = <DateAccordionContainer isDescending={sortingState["record-date"].isDescending} fromDetailsPanel/>
   } else {

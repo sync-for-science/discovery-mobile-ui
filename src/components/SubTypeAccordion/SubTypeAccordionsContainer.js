@@ -10,7 +10,7 @@ import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ accordionsContainerData, fromDetailsPanel }) => {
+const SubTypeAccordionsContainer = ({ accordionsContainerData, sortingState, fromDetailsPanel }) => {
   return (
   <View style={styles.root}>
     <View style={styles.container}>
@@ -20,11 +20,13 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData, fromDetailsPanel 
           if (values.length === 0) {
             return null;
           }
+          const isDescending = sortingState?.["record-type"]?.isDescending
+          const orderedResourceIds = isDescending && fromDetailsPanel ? values.resourceIds : [...values.resourceIds].reverse()
           return (
             <SubTypeAccordion
               key={subType}
               subType={subType}
-              resourceIds={values.resourceIds}
+              resourceIds={orderedResourceIds}
               subTypeCount={values.subTypeCount}
             />
           );
