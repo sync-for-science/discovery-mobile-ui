@@ -1,12 +1,9 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import { dateSortedCollectionResourceIdsSelector } from '../../redux/selectors';
 import DateAccordion from './DateAccordion'
 
-
-const DateAccordionContainer = ({dateSortedResourceIds, isDescending, fromDetailsPanel}) => {
+const DateAccordionContainer = ({data, isDescending, fromDetailsPanel}) => {
   const descendingSort = (t1, t2) => new Date(t1) > new Date(t2) ? -1 : 1
   const ascendingSort = (t1, t2) => new Date(t1) < new Date(t2) ? -1 : 1
   const sortByLabelDate = ([t1], [t2]) => isDescending ? descendingSort(t1, t2) : ascendingSort(t1, t2)
@@ -15,7 +12,7 @@ const DateAccordionContainer = ({dateSortedResourceIds, isDescending, fromDetail
   return (
     <View style={styles.root}>
       <View style={styles.container}>
-        { Object.entries(dateSortedResourceIds)
+        { Object.entries(data)
           .sort(sortByLabelDate)
           .map(([date, resourceIds]) => {
             const sortedResourceIds = Object.entries(resourceIds)
@@ -36,10 +33,6 @@ const DateAccordionContainer = ({dateSortedResourceIds, isDescending, fromDetail
   )
 }
 
-const mapStateToProps = (state) => ({
-  dateSortedResourceIds: dateSortedCollectionResourceIdsSelector(state)
-})
-
-export default connect(mapStateToProps, null)(DateAccordionContainer)
+export default DateAccordionContainer
 
 const styles = StyleSheet.create({})

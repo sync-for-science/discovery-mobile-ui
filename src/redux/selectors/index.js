@@ -497,7 +497,7 @@ export const accordionsContainerDataSelector = createSelector(
   },
 );
 
-export const dateSortedCollectionResourceIdsSelector = createSelector(
+export const timeSavedSortedCollectionResourceIdsSelector = createSelector(
   [activeCollectionSelector],
   (collection) => {
     const { resourceIds } = collection;
@@ -507,6 +507,21 @@ export const dateSortedCollectionResourceIdsSelector = createSelector(
         acc[shortDate] = {}
       }
       acc[shortDate][id] = date
+      return acc
+    }, {})
+  }
+);
+
+export const recordDateSortedCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector, resourcesSelector],
+  (collection, resources) => {
+    const { resourceIds } = collection;
+    return Object.entries(resourceIds).reduce((acc, [id]) => {
+      const shortDate = formatDate(resources[id].timelineDate)
+      if (!acc[shortDate]) {
+        acc[shortDate] = {}
+      }
+      acc[shortDate][id] = resources[id].timelineDate
       return acc
     }, {})
   }
