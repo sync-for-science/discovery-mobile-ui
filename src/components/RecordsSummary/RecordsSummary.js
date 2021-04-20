@@ -12,7 +12,7 @@ import {
   getRecordsTotal,
   getDataRange,
 } from '../../resources/fhirReader';
-import { supportedResourcesSelector } from '../../redux/selectors';
+import { allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
@@ -88,7 +88,7 @@ RecordsSummary.defaultProps = {
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  sortedResourceTypes: supportedResourcesSelector(state),
+  sortedResourceTypes: allValidRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RecordsSummary);
