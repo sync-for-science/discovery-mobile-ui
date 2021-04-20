@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, View,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import Colors from '../../constants/Colors';
 import { selectResourceType } from '../../redux/action-creators';
 import { orderedResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
+import BaseText from '../Generic/BaseText';
 
 const CategoryButton = ({
   resourceType, label, isActive, selectResourceTypeAction,
@@ -20,7 +21,7 @@ const CategoryButton = ({
 
   return (
     <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-      <Text style={buttonTextStyle}>{label}</Text>
+      <BaseText style={buttonTextStyle}>{label}</BaseText>
     </TouchableOpacity>
   );
 };
@@ -39,30 +40,43 @@ const ResourceTypePicker = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
-}) => (
-  <View>
-    <ScrollView
-      style={styles.root}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={styles.contentContainerStyle}
-    >
-      {
-        resourceTypeFilters
-          .filter(({ typeIsEnabled }) => typeIsEnabled === true)
-          .map(({ type, label }) => (
-            <CategoryButton
-              key={type}
-              resourceType={type}
-              label={label}
-              isActive={selectedResourceType === type}
-              selectResourceTypeAction={selectResourceTypeAction}
-            />
-          ))
+}) => {
+  // select first resourceType on initial load
+  useEffect(() => {
+    let firstEnabledType;
+    resourceTypeFilters.forEach(({ type, typeIsEnabled }) => {
+      if (!firstEnabledType && typeIsEnabled) {
+        firstEnabledType = type;
       }
-    </ScrollView>
-  </View>
-);
+    });
+    selectResourceTypeAction(firstEnabledType);
+  }, []);
+
+  return (
+    <View>
+      <ScrollView
+        style={styles.root}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.contentContainerStyle}
+      >
+        {
+          resourceTypeFilters
+            .filter(({ typeIsEnabled }) => typeIsEnabled === true)
+            .map(({ type, label }) => (
+              <CategoryButton
+                key={type}
+                resourceType={type}
+                label={label}
+                isActive={selectedResourceType === type}
+                selectResourceTypeAction={selectResourceTypeAction}
+              />
+            ))
+        }
+      </ScrollView>
+    </View>
+  );
+};
 
 ResourceTypePicker.propTypes = {
   resourceTypeFilters: arrayOf(shape({
@@ -102,7 +116,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     backgroundColor: 'white',
     borderRadius: 20,
-    borderColor: Colors.mediumgrey,
+    borderColor: 'white',
     borderWidth: 2,
   },
   buttonSelected: {

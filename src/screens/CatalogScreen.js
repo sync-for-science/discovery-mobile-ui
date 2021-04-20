@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { FontAwesome5 } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { func, shape } from 'prop-types';
 
 import Timeline from '../components/Timeline';
@@ -16,7 +16,7 @@ import ResourceTypePicker from '../components/ResourceTypePicker';
 import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAccordionsContainer';
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
-import ContentPanel from '../components/ContentPanel/ContentPanel';
+import DetailsPanel from '../components/DetailsPanel';
 import { activeCollectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
@@ -24,11 +24,11 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
     <Left>
       <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
-        <FontAwesome5 name="filter" size={24} color={Colors.darkgrey} />
+        <MaterialCommunityIcons name="filter-outline" size={24} color={Colors.headerIcon} />
       </TouchableOpacity>
     </Left>
     <View>
-      <Title style={{ color: 'black' }}>{collection?.label}</Title>
+      <Title style={styles.collectionLabel}>{collection?.label}</Title>
     </View>
     <Right>
       <CatalogModal collectionId={collection.id} />
@@ -45,7 +45,7 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({ collection }) => (
+const CatalogScreen = ({ navigation, collection }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -61,12 +61,13 @@ const CatalogScreen = ({ collection }) => (
           <SubTypeAccordionsContainer />
         </ScrollView>
       </FilterDrawer>
-      <ContentPanel />
+      <DetailsPanel navigation={navigation} collection={collection} />
     </Swiper>
   </SafeAreaView>
 );
 
 CatalogScreen.propTypes = {
+  navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
 };
 
@@ -99,5 +100,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+  },
+  collectionLabel: {
+    color: 'black',
   },
 });

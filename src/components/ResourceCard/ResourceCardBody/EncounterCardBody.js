@@ -3,22 +3,17 @@ import React from 'react';
 import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
-  getPatientAgeAtResource,
   getEnding,
   getClass,
   getStatus,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
 
-const EncounterCardBody = ({ resource, patientAgeAtResource }) => {
+const EncounterCardBody = ({ resource }) => {
   const { type, subType } = resource;
 
   return (
     <>
-      <CardBodyField
-        label={CARD_BODY_LABEL.age}
-        value={getPatientAgeAtResource(patientAgeAtResource)}
-      />
       <CardBodyField
         label={CARD_BODY_LABEL[type]}
         value={subType}
@@ -46,7 +41,6 @@ const EncounterCardBody = ({ resource, patientAgeAtResource }) => {
 
 EncounterCardBody.propTypes = {
   resource: shape({}).isRequired,
-  patientAgeAtResource: shape({}).isRequired,
 };
 
 export default EncounterCardBody;

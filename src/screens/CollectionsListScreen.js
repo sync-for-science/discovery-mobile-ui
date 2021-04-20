@@ -7,7 +7,7 @@ import { shape, func } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { MaterialIcons, FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -50,16 +50,18 @@ const CollectionsListScreen = ({
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
         <Left style={styles.logoutContainer}>
+          {__DEV__ && (
           <TouchableOpacity onPress={handleLogout}>
-            <FontAwesome name="sign-out" size={30} color={Colors.darkgrey} style={styles.logoutIcon} />
+            <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
           </TouchableOpacity>
+          )}
         </Left>
         <Body>
           <Title style={styles.headerText}>Collections</Title>
         </Body>
         <Right>
           <TouchableOpacity onPress={handleNewCollectionPress}>
-            <MaterialIcons name="add-box" size={30} color={Colors.darkgrey} />
+            <Ionicons name="add" size={24} color={Colors.darkgrey} />
           </TouchableOpacity>
         </Right>
       </Header>

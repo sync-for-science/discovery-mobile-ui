@@ -4,13 +4,9 @@ import { Text } from 'native-base';
 import { shape, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
-const BaseText = ({ variant, style, children }) => {
-  const formattedChildren = variant === 'header' ? children?.toUpperCase() : children;
-
-  return (
-    <Text style={{ ...styles.base, ...styles[variant], ...style }}>{formattedChildren}</Text>
-  );
-};
+const BaseText = ({ variant, style, children }) => (
+  <Text style={{ ...styles.base, ...styles[variant], ...style }}>{children}</Text>
+);
 
 BaseText.propTypes = {
   variant: string,
