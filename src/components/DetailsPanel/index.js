@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, ActionSheetIOS,
+  StyleSheet, View, ActionSheetIOS, SafeAreaView,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -81,7 +81,7 @@ const DetailsPanel = ({
   }
 
   return (
-    <View>
+    <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
         <Left />
         <View>
@@ -100,7 +100,7 @@ const DetailsPanel = ({
       <ScrollView>
         {displayAccordions}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -119,6 +119,9 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, null)(DetailsPanel);
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   header: {
     backgroundColor: 'white',
     alignItems: 'center',
