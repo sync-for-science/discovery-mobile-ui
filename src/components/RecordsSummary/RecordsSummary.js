@@ -16,9 +16,9 @@ const ResourceTypeRow = ({
 }) => (
   <View style={styles.resourceTypeRow}>
     <Text style={styles.resourceCount}>{count}</Text>
-    <Text style={styles.resourceName}>{label}</Text>
-    <Text style={styles.resourceLatestDate}>{format(earliestDate, 'Y')}</Text>
-    <Text style={styles.resourceLatestDate}>{format(latestDate, 'Y')}</Text>
+    <Text style={styles.resourceLabel}>{label}</Text>
+    <Text style={styles.resourceDate}>{format(earliestDate, 'MMM d, Y')}</Text>
+    <Text style={styles.resourceDate}>{format(latestDate, 'MMM d, Y')}</Text>
   </View>
 );
 
@@ -44,9 +44,9 @@ const RecordsSummary = ({
     <View style={styles.resourceTypeContainer}>
       <View style={styles.resourceTypeRow}>
         <Text style={styles.resourceCountLabel} />
-        <Text style={styles.resourceName} />
-        <Text style={styles.resourceLatestDateLabel}>Oldest</Text>
-        <Text style={styles.resourceLatestDateLabel}>Latest</Text>
+        <Text style={styles.resourceLabel} />
+        <Text style={styles.resourceDateLabel}>Oldest</Text>
+        <Text style={styles.resourceDateLabel}>Latest</Text>
       </View>
       {recordsByType.map(({ type, label, items }) => (
         <ResourceTypeRow
@@ -119,29 +119,29 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
 
   },
-  resourceName: {
+  resourceCountLabel: {
+    color: Colors.secondary,
+    fontSize: 10,
     alignSelf: 'flex-start',
-    flex: 6,
+    flex: 1,
+  },
+  resourceDateLabel: {
+    color: Colors.secondary,
+    fontSize: 10,
+    alignSelf: 'flex-end',
+    flex: 1,
   },
   resourceCount: {
-    alignSelf: 'flex-end',
+    alignSelf: 'flex-start',
     textAlign: 'left',
     paddingRight: 10,
     flex: 1,
   },
-  resourceLatestDate: {
-    alignSelf: 'flex-end',
-    flex: 1,
+  resourceLabel: {
+    alignSelf: 'flex-start',
+    flex: 6,
   },
-  resourceCountLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
-    alignSelf: 'flex-end',
-    flex: 1,
-  },
-  resourceLatestDateLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
+  resourceDate: {
     alignSelf: 'flex-end',
     flex: 1,
   },
