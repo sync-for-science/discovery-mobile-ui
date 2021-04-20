@@ -28,6 +28,7 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData, sortingState, fro
               subType={subType}
               resourceIds={orderedResourceIds}
               subTypeCount={values.subTypeCount}
+              fromDetailsPanel={fromDetailsPanel}
             />
           );
         })}

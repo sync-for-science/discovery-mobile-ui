@@ -14,6 +14,7 @@ import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
 import { resourceByIdSelector, serviceProviderSelector } from '../../redux/selectors';
+import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
@@ -71,15 +72,18 @@ const ResourceCard = ({
   serviceProvider,
   collectionId,
   index,
+  fromDetailsPanel
 }) => {
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
+  const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
 
   return (
     <View style={[styles.root, firstCardStyle]}>
       <View style={styles.header}>
+        {fromDetailsPanel && <BaseText style={styles.typeText} variant="title">{resourceType}</BaseText>}
         <BaseText>{resourceDate}</BaseText>
-        <View style={styles.rightIconsContainer}>
+        {!fromDetailsPanel && <View style={styles.rightIconsContainer}>
           <FocusedIcon
             subType={resource.subType}
             resourceIds={[resourceId]}
@@ -95,7 +99,7 @@ const ResourceCard = ({
             collectionId={collectionId}
             resourceIds={[resourceId]}
           />
-        </View>
+        </View>}
       </View>
       <View style={styles.body}>
         {selectCardBody(resource, serviceProvider)}
@@ -151,4 +155,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  typeText: {
+    fontSize: 15,
+    textTransform: "uppercase"
+  }
 });

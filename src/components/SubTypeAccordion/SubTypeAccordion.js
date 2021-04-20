@@ -25,6 +25,7 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
+  fromDetailsPanel
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
 
@@ -71,6 +72,7 @@ const SubTypeAccordion = ({
         index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
+        fromDetailsPanel={fromDetailsPanel}
       />
     ),
   );
