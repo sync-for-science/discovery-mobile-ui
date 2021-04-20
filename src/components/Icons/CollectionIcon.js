@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 0.5,
     borderColor: Colors.collectionUnselected,
+    marginLeft: 10,
   },
   hasResource: {
     borderColor: Colors.collectionIcon,

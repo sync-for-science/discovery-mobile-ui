@@ -80,12 +80,22 @@ const ResourceCard = ({
   const firstCardStyle = index === 0 ? styles.firstCard : {};
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
 
-  return (
-    <View style={[styles.root, firstCardStyle]}>
-      <View style={styles.header}>
-        {fromDetailsPanel && <BaseText style={styles.typeText} variant="title">{resourceType}</BaseText>}
+  const header = fromDetailsPanel
+   ? (
+      <>
+        <BaseText style={styles.typeText} variant="title">{resourceType}</BaseText>
+        <View style={styles.rightIconsContainer}>
+          <BaseText>{resourceDate}</BaseText>
+          <CollectionIcon
+            showCount={false}
+            collectionId={collectionId}
+            resourceIds={[resourceId]}
+          />
+        </View>
+      </>
+   ) : (
+      <>
         <BaseText>{resourceDate}</BaseText>
-        {!fromDetailsPanel && (
         <View style={styles.rightIconsContainer}>
           <FocusedIcon
             subType={resource.subType}
@@ -103,7 +113,13 @@ const ResourceCard = ({
             resourceIds={[resourceId]}
           />
         </View>
-        )}
+      </>
+   )
+
+  return (
+    <View style={[styles.root, firstCardStyle]}>
+      <View style={styles.header}>
+        {header}
       </View>
       <View style={styles.body}>
         {selectCardBody(resource, serviceProvider)}
