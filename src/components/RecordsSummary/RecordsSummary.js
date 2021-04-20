@@ -43,10 +43,10 @@ const RecordsSummary = ({
     </View>
     <View style={styles.resourceTypeContainer}>
       <View style={styles.resourceTypeRow}>
-        <Text style={styles.resourceCountLabel} />
+        <Text style={styles.resourceCount} />
         <Text style={styles.resourceLabel} />
-        <Text style={styles.resourceDateLabel}>Oldest</Text>
-        <Text style={styles.resourceDateLabel}>Latest</Text>
+        <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
+        <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
       </View>
       {recordsByType.map(({ type, label, items }) => (
         <ResourceTypeRow
@@ -119,17 +119,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
 
   },
-  resourceCountLabel: {
+  tableHeading: {
     color: Colors.secondary,
-    fontSize: 10,
-    alignSelf: 'flex-start',
-    flex: 1,
-  },
-  resourceDateLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
+    fontSize: 12,
     alignSelf: 'flex-end',
-    flex: 1,
   },
   resourceCount: {
     alignSelf: 'flex-start',
@@ -139,10 +132,11 @@ const styles = StyleSheet.create({
   },
   resourceLabel: {
     alignSelf: 'flex-start',
-    flex: 6,
+    flex: 4,
   },
   resourceDate: {
     alignSelf: 'flex-end',
-    flex: 1,
+    fontSize: 11,
+    flex: 2,
   },
 });
