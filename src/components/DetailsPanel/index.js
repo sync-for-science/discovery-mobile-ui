@@ -15,8 +15,21 @@ import DateAccordionContainer from '../DateAccordion/DateAccordionContainer'
 import SortingHeader from './SortingHeader';
 
 const DetailsPanel = ({ navigation, collection }) => {
-  const [showByDate, setShowByDate] = useState(true);
-  const [sortingIndex, setSortingIndex] = useState(0)
+  const defaultSortingState = {
+    "Record Type": {
+      isPicked: true,
+      isDescending: true
+    },
+    "Record Date": {
+      isPicked: false,
+      isDescending: true
+    },
+    "Time Saved": {
+      isPicked: false,
+      isDescending: true
+    },
+  }
+  const [sortingState, setSortingState] = useState(defaultSortingState)
 
 const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {
@@ -42,7 +55,7 @@ const DetailsPanel = ({ navigation, collection }) => {
     navigation.navigate('CollectionNotes');
   };
 
-  const formattedResources = sortingIndex === 2
+  const formattedResources = sortingState["Time Saved"].isPicked
     ? (
       <DateAccordionContainer />
     ) : (
@@ -64,7 +77,7 @@ const DetailsPanel = ({ navigation, collection }) => {
           </TouchableOpacity>
         </Right>
       </Header>
-      <SortingHeader sortingIndex={sortingIndex} setSortingIndex={setSortingIndex}/>
+      <SortingHeader sortingState={sortingState} setSortingState={setSortingState}/>
       <ScrollView>
         {formattedResources}
       </ScrollView>

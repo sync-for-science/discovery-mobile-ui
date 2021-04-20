@@ -4,18 +4,31 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 
 import BaseText from '../Generic/BaseText'
 
-const SortingHeader = ({sortingIndex, setSortingIndex}) => {
-  const buttonNames = ["Record Type", "Record Date", "Time Saved"]
+const SortingHeader = ({sortingState, setSortingState}) => {
+
+  const handlePress = (buttonLabel) => {
+    if (sortingState[buttonLabel].isPicked) {
+      const updatedButton = {...sortingState[buttonLabel]}
+      updatedButton.isDescending = !updatedButton.isDescending
+      setSortingState({...sortingState, [buttonLabel]: updatedButton})
+    } else {
+      const updatedSortingState = {...sortingState}
+      Object.keys(sortingState).forEach(buttonName => {
+        updatedSortingState[buttonName].isPicked = buttonName === buttonLabel
+      })
+      setSortingState(updatedSortingState)
+    }
+  }
 
   return (
     <View style={styles.root}>
-      {buttonNames.map((buttonName, index) => {
-        const isSelected = sortingIndex === index
-        const textStyle = isSelected ? "title" : ""
+      {Object.entries(sortingState).map(([buttonLabel, values]) => {
+        const textStyle = values.isPicked ? "title" : ""
+        const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up'
         return (
-          <TouchableOpacity style={styles.button} onPress={() => setSortingIndex(index)}>
-            <BaseText variant={textStyle}>{buttonName}</BaseText>
-            {isSelected && <Ionicons name="arrow-down" size={20} color="black" />}
+          <TouchableOpacity style={styles.button} onPress={() => handlePress(buttonLabel)}>
+            <BaseText variant={textStyle}>{buttonLabel}</BaseText>
+            {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
           </TouchableOpacity>
         )
       })}
