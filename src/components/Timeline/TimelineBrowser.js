@@ -13,7 +13,7 @@ import Svg, {
 import { timelineIntervalsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
-const MIN_COUNT_FOR_SD = 30;
+const VARIANCE_THRESHOLD = 30;
 const BAR_COLOR = '#ccc';
 const COLOR_1SD = '#999'; // also ccc in mocks
 const COLOR_2SD = '#f00'; // also fc0 in mocks
@@ -361,8 +361,8 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   const availableWidth = screenWidth - (3 * CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
-  const countForMaxBarHeight = Math.min(maxCount1SD, MIN_COUNT_FOR_SD);
-  const showVariance = maxCount1SD > MIN_COUNT_FOR_SD;
+  const showVariance = maxCount > VARIANCE_THRESHOLD;
+  const countForMaxBarHeight = showVariance ? maxCount1SD : maxCount;
 
   return (
     <View
