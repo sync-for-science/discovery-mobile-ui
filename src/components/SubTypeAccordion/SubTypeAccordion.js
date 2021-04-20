@@ -38,7 +38,7 @@ const SubTypeAccordion = ({
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
           {chevronIcon}
-          <CountIcon count={subTypeCount} />
+          <CountIcon count={resourceIds.length} />
           <BaseText style={styles.headerText}>
             {item.title}
           </BaseText>
