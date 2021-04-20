@@ -1,25 +1,10 @@
 import {
-  format, parse, parseISO, formatDuration, intervalToDuration, compareAsc,
+  format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
-
-export const getDataRange = (resourceSet, dateFormat = UI_DATE_FORMAT) => {
-  const timestamps = Object.values(resourceSet).reduce((acc, cur) => {
-    // TODO: this should consider the actual time the event happened,
-    // instead of the last resource update date, for the resources that support this
-    const date = cur.meta?.lastUpdated;
-    return acc.concat(date ? parseISO(date) : []);
-  }, [])
-    .sort(compareAsc);
-
-  return [
-    format(timestamps[0], dateFormat),
-    format(timestamps[timestamps.length - 1], dateFormat),
-  ];
-};
 
 export const getRecordsTotal = (resourceSet) => Object.keys(resourceSet).length;
 

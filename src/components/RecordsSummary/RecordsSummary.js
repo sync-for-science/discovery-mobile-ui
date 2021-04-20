@@ -1,49 +1,38 @@
 import React from 'react';
 import {
-  shape, string, arrayOf, number,
+  shape, arrayOf, instanceOf, string, number,
 } from 'prop-types';
-import { pick } from 'ramda';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { format } from 'date-fns';
 
 import {
   getRecordsTotal,
-  getDataRange,
 } from '../../resources/fhirReader';
 import { allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
-  resourceType, total, resources, subTypes,
-}) => {
-  const consolidatedIds = Object.values(subTypes)
-    .reduce((acc, cur) => {
-      acc.push(...cur);
-      return acc;
-    }, []);
-  const inflatedObjects = pick(consolidatedIds, resources);
-  const [, latestDate] = getDataRange(inflatedObjects, 'Y');
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text style={styles.resourceName}>{PLURAL_RESOURCE_TYPES[resourceType]}</Text>
-      <Text style={styles.resourceCount}>{total}</Text>
-      <Text style={styles.resourceLatestDate}>{latestDate}</Text>
-    </View>
-  );
-};
+  label, total, latestDate,
+}) => (
+  <View style={styles.resourceTypeRow}>
+    <Text style={styles.resourceName}>{label}</Text>
+    <Text style={styles.resourceCount}>{total}</Text>
+    <Text style={styles.resourceLatestDate}>{format(latestDate, 'Y')}</Text>
+  </View>
+);
 
 ResourceTypeRow.propTypes = {
-  resourceType: string.isRequired,
-  resources: shape({}).isRequired,
-  subTypes: shape({}).isRequired,
+  label: string.isRequired,
   total: number.isRequired,
+  // earliestDate: instanceOf(Date).isRequired,
+  latestDate: instanceOf(Date).isRequired,
 };
 
 const RecordsSummary = ({
-  resources, sortedResourceTypes,
+  resources, recordsByType,
 }) => {
   const recordsTotal = getRecordsTotal(resources);
 
@@ -63,13 +52,13 @@ const RecordsSummary = ({
           <Text style={styles.resourceCountLabel}>count</Text>
           <Text style={styles.resourceLatestDateLabel}>newest</Text>
         </View>
-        {sortedResourceTypes.map(({ resourceType, totalCount, subTypes }) => (
+        {recordsByType.map(({ type, label, items }) => (
           <ResourceTypeRow
-            key={resourceType}
-            resourceType={resourceType}
-            total={totalCount}
-            subTypes={subTypes}
-            resources={resources}
+            key={type}
+            label={label}
+            total={items.length}
+            earliestDate={items[0].timelineDate}
+            latestDate={items[items.length - 1].timelineDate}
           />
         ))}
       </View>
@@ -79,7 +68,11 @@ const RecordsSummary = ({
 
 RecordsSummary.propTypes = {
   resources: shape({}),
-  sortedResourceTypes: arrayOf(shape({})).isRequired,
+  recordsByType: arrayOf(shape({
+    type: string.isRequired,
+    label: string.isRequired,
+    items: arrayOf(string.isRequired).isRequired,
+  })).isRequired,
 };
 
 RecordsSummary.defaultProps = {
@@ -88,7 +81,7 @@ RecordsSummary.defaultProps = {
 
 const mapStateToProps = (state) => ({
   resources: state.resources,
-  sortedResourceTypes: allValidRecordsGroupedByTypeSelector(state),
+  recordsByType: allValidRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RecordsSummary);

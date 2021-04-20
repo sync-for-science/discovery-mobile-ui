@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import {
   pick, values,
 } from 'ramda';
+import { produce } from 'immer';
 import {
   startOfDay, endOfDay, differenceInDays,
   compareAsc, isWithinInterval,
@@ -98,25 +99,6 @@ export const providersSelector = createSelector(
   },
 );
 
-// eslint-disable-next-line max-len
-const sortEntriesByResourceType = ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
-
-export const allValidRecordsGroupedByTypeSelector = createSelector(
-  [resourceIdsGroupedByTypeSelector],
-  (resourceIdsGroupedByType) => Object.entries(resourceIdsGroupedByType)
-    // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([type]) => !!PLURAL_RESOURCE_TYPES[type]) // derived "type" includes: lab/vitals
-    .sort(sortEntriesByResourceType)
-    .reduce((acc, [resourceType, subTypes]) => {
-      const totalCount = values(subTypes).reduce((count, idSet) => count + idSet.size, 0);
-      return acc.concat({
-        resourceType,
-        totalCount,
-        subTypes,
-      });
-    }, []),
-);
-
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
@@ -128,6 +110,31 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
+);
+
+// eslint-disable-next-line max-len
+const sortEntriesByResourceType = ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
+
+export const allValidRecordsGroupedByTypeSelector = createSelector(
+  [allValidRecordsSortedByDateSelector],
+  (allItems) => {
+    const typeMap = allItems
+      .reduce((acc, item) => {
+        const { type } = item;
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[type] = draft[type] ?? [];
+          draft[type].push(item);
+        });
+      }, {});
+    return Object.entries(typeMap)
+      .sort(sortEntriesByResourceType)
+      .map(([type, items]) => ({
+        type,
+        label: PLURAL_RESOURCE_TYPES[type],
+        items,
+      }));
+  },
 );
 
 export const filteredRecordsSelector = createSelector(
