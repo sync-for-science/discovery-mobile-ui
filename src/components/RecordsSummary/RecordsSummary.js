@@ -15,10 +15,10 @@ import { allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const ResourceTypeRow = ({
-  total, label, earliestDate, latestDate,
+  count, label, earliestDate, latestDate,
 }) => (
   <View style={styles.resourceTypeRow}>
-    <Text style={styles.resourceCount}>{total}</Text>
+    <Text style={styles.resourceCount}>{count}</Text>
     <Text style={styles.resourceName}>{label}</Text>
     <Text style={styles.resourceLatestDate}>{format(earliestDate, 'Y')}</Text>
     <Text style={styles.resourceLatestDate}>{format(latestDate, 'Y')}</Text>
@@ -26,8 +26,8 @@ const ResourceTypeRow = ({
 );
 
 ResourceTypeRow.propTypes = {
+  count: number.isRequired,
   label: string.isRequired,
-  total: number.isRequired,
   earliestDate: instanceOf(Date).isRequired,
   latestDate: instanceOf(Date).isRequired,
 };
@@ -49,7 +49,7 @@ const RecordsSummary = ({
       </View>
       <View style={styles.resourceTypeContainer}>
         <View style={styles.resourceTypeRow}>
-          <Text style={styles.resourceCountLabel}>count</Text>
+          <Text style={styles.resourceCountLabel}></Text>
           <Text style={styles.resourceName} />
           <Text style={styles.resourceLatestDateLabel}>Oldest</Text>
           <Text style={styles.resourceLatestDateLabel}>Latest</Text>
@@ -58,7 +58,7 @@ const RecordsSummary = ({
           <ResourceTypeRow
             key={type}
             label={label}
-            total={items.length}
+            count={items.length}
             earliestDate={items[0].timelineDate}
             latestDate={items[items.length - 1].timelineDate}
           />
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   resourceCount: {
     alignSelf: 'flex-end',
-    textAlign: 'right',
+    textAlign: 'left',
     paddingRight: 10,
     flex: 1,
   },
@@ -146,13 +146,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: 'flex-end',
     flex: 1,
-    textTransform: 'uppercase',
   },
   resourceLatestDateLabel: {
     color: Colors.secondary,
     fontSize: 10,
     alignSelf: 'flex-end',
     flex: 1,
-    textTransform: 'uppercase',
   },
 });
