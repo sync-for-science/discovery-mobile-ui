@@ -19,8 +19,6 @@ const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
 
-const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
-
 const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
@@ -61,15 +59,8 @@ export const activeCollectionShowMarkedOnlySelector = createSelector(
 );
 
 export const patientSelector = createSelector(
-  [resourcesSelector, resourceIdsGroupedByTypeSelector],
-  (resources, resourceIdsGroupedByType) => {
-    const patient = resourceIdsGroupedByType?.Patient;
-    if (!patient) {
-      return null;
-    }
-    const patientId = Array.from(patient?.Other)[0];
-    return resources[patientId];
-  },
+  [resourcesSelector],
+  (resources) => values(resources).find((r) => r.type === 'Patient'),
 );
 
 export const serviceProviderSelector = createSelector(
@@ -89,14 +80,8 @@ export const serviceProviderSelector = createSelector(
 );
 
 export const providersSelector = createSelector(
-  [resourcesSelector, resourceIdsGroupedByTypeSelector],
-  (resources, resourceIdsGroupedByType) => {
-    const serviceProviders = resourceIdsGroupedByType?.Organization?.Other;
-    if (serviceProviders) {
-      return Array.from(serviceProviders).map((id) => resources[id]);
-    }
-    return [];
-  },
+  [resourcesSelector],
+  (resources) => values(resources).filter((r) => r.type === 'Organization'),
 );
 
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);

@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
-  resourceTypesReducer,
   collectionsReducer,
   activeCollectionIdReducer,
 } from './reducers';
@@ -13,7 +12,6 @@ import epicMiddleware, { rootEpic } from './epics';
 const rootReducer = combineReducers({
   auth: authReducer,
   resources: flattenedResourcesReducer,
-  resourceIdsGroupedByType: resourceTypesReducer,
   collections: collectionsReducer,
   activeCollectionId: activeCollectionIdReducer,
 });
