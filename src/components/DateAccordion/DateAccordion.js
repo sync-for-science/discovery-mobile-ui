@@ -1,16 +1,19 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
 import { Accordion } from 'native-base';
-import { activeCollectionIdSelector } from '../../redux/selectors'
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { string, arrayOf, bool } from 'prop-types';
+import { activeCollectionIdSelector } from '../../redux/selectors';
 
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
 import BaseText from '../Generic/BaseText';
 import CountIcon from '../Icons/CountIcon';
 
-const DateAccordion = ({label, resourceIds, activeCollectionId, fromDetailsPanel}) => {
+const DateAccordion = ({
+  label, resourceIds, activeCollectionId, fromDetailsPanel,
+}) => {
   const dataArray = [{ title: label, content: resourceIds }];
 
   const renderHeader = (item, expanded) => {
@@ -54,13 +57,24 @@ const DateAccordion = ({label, resourceIds, activeCollectionId, fromDetailsPanel
       />
     </View>
   );
-}
+};
+
+DateAccordion.propTypes = {
+  label: string.isRequired,
+  resourceIds: arrayOf(string.isRequired).isRequired,
+  activeCollectionId: string.isRequired,
+  fromDetailsPanel: bool,
+};
+
+DateAccordion.defaultProps = {
+  fromDetailsPanel: false,
+};
 
 const mapStateToProps = (state) => ({
-  activeCollectionId: activeCollectionIdSelector(state)
-})
+  activeCollectionId: activeCollectionIdSelector(state),
+});
 
-export default connect(mapStateToProps, null)(DateAccordion)
+export default connect(mapStateToProps, null)(DateAccordion);
 
 const styles = StyleSheet.create({
   header: {

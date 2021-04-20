@@ -2,7 +2,9 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape, number } from 'prop-types';
+import {
+  string, shape, number, bool,
+} from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -72,7 +74,7 @@ const ResourceCard = ({
   serviceProvider,
   collectionId,
   index,
-  fromDetailsPanel
+  fromDetailsPanel,
 }) => {
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
@@ -83,7 +85,8 @@ const ResourceCard = ({
       <View style={styles.header}>
         {fromDetailsPanel && <BaseText style={styles.typeText} variant="title">{resourceType}</BaseText>}
         <BaseText>{resourceDate}</BaseText>
-        {!fromDetailsPanel && <View style={styles.rightIconsContainer}>
+        {!fromDetailsPanel && (
+        <View style={styles.rightIconsContainer}>
           <FocusedIcon
             subType={resource.subType}
             resourceIds={[resourceId]}
@@ -99,7 +102,8 @@ const ResourceCard = ({
             collectionId={collectionId}
             resourceIds={[resourceId]}
           />
-        </View>}
+        </View>
+        )}
       </View>
       <View style={styles.body}>
         {selectCardBody(resource, serviceProvider)}
@@ -114,6 +118,11 @@ ResourceCard.propTypes = {
   serviceProvider: shape({}),
   collectionId: string.isRequired,
   index: number.isRequired,
+  fromDetailsPanel: bool,
+};
+
+ResourceCard.defaultProps = {
+  fromDetailsPanel: false,
 };
 
 ResourceCard.defaultProps = {
@@ -157,6 +166,6 @@ const styles = StyleSheet.create({
   },
   typeText: {
     fontSize: 15,
-    textTransform: "uppercase"
-  }
+    textTransform: 'uppercase',
+  },
 });

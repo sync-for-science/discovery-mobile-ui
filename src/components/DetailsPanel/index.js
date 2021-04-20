@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, View, ActionSheetIOS,
 } from 'react-native';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
@@ -13,25 +13,27 @@ import { shape } from 'prop-types';
 import { timeSavedSortedCollectionResourceIdsSelector, recordDateSortedCollectionResourceIdsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
-import DateAccordionContainer from '../DateAccordion/DateAccordionContainer'
+import DateAccordionContainer from '../DateAccordion/DateAccordionContainer';
 import SortingHeader from './SortingHeader';
 
-const DetailsPanel = ({ navigation, collection, recordDateResourceIds, timeSavedResourceIds }) => {
+const DetailsPanel = ({
+  navigation, collection, recordDateResourceIds, timeSavedResourceIds,
+}) => {
   const defaultSortingState = {
-    "record-type": {
+    'record-type': {
       isPicked: true,
-      isDescending: true
+      isDescending: true,
     },
-    "record-date": {
+    'record-date': {
       isPicked: false,
-      isDescending: true
+      isDescending: true,
     },
-    "time-saved": {
+    'time-saved': {
       isPicked: false,
-      isDescending: true
+      isDescending: true,
     },
-  }
-  const [sortingState, setSortingState] = useState(defaultSortingState)
+  };
+  const [sortingState, setSortingState] = useState(defaultSortingState);
 
   const handlePressSortIcon = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -56,26 +58,26 @@ const DetailsPanel = ({ navigation, collection, recordDateResourceIds, timeSaved
     navigation.navigate('CollectionNotes');
   };
 
-  let displayAccordions 
-  
-  if (sortingState["record-type"].isPicked) {
-    displayAccordions = <SubTypeAccordionsContainer sortingState={sortingState} fromDetailsPanel />
-  } else if (sortingState["record-date"].isPicked) {
+  let displayAccordions;
+
+  if (sortingState['record-type'].isPicked) {
+    displayAccordions = <SubTypeAccordionsContainer sortingState={sortingState} fromDetailsPanel />;
+  } else if (sortingState['record-date'].isPicked) {
     displayAccordions = (
-      <DateAccordionContainer 
-        isDescending={sortingState["record-date"].isDescending} 
+      <DateAccordionContainer
+        isDescending={sortingState['record-date'].isDescending}
         data={recordDateResourceIds}
         fromDetailsPanel
       />
-    )
+    );
   } else {
     displayAccordions = (
-      <DateAccordionContainer 
-        isDescending={sortingState["time-saved"].isDescending} 
+      <DateAccordionContainer
+        isDescending={sortingState['time-saved'].isDescending}
         data={timeSavedResourceIds}
         fromDetailsPanel
       />
-    )
+    );
   }
 
   return (
@@ -94,7 +96,7 @@ const DetailsPanel = ({ navigation, collection, recordDateResourceIds, timeSaved
           </TouchableOpacity>
         </Right>
       </Header>
-      <SortingHeader sortingState={sortingState} setSortingState={setSortingState}/>
+      <SortingHeader sortingState={sortingState} setSortingState={setSortingState} />
       <ScrollView>
         {displayAccordions}
       </ScrollView>
@@ -105,12 +107,14 @@ const DetailsPanel = ({ navigation, collection, recordDateResourceIds, timeSaved
 DetailsPanel.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
+  timeSavedResourceIds: shape({}).isRequired,
+  recordDateResourceIds: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   timeSavedResourceIds: timeSavedSortedCollectionResourceIdsSelector(state),
-  recordDateResourceIds: recordDateSortedCollectionResourceIdsSelector(state)
-})
+  recordDateResourceIds: recordDateSortedCollectionResourceIdsSelector(state),
+});
 
 export default connect(mapStateToProps, null)(DetailsPanel);
 
@@ -123,4 +127,4 @@ const styles = StyleSheet.create({
   noteIcon: {
     marginRight: 15,
   },
-})
+});

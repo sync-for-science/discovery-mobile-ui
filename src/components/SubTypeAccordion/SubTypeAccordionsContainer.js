@@ -3,15 +3,18 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shape } from 'prop-types';
+import { shape, bool } from 'prop-types';
 import { accordionsContainerDataSelector } from '../../redux/selectors';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ accordionsContainerData, sortingState, fromDetailsPanel }) => {
-  return (
+const SubTypeAccordionsContainer = ({
+  accordionsContainerData,
+  sortingState,
+  fromDetailsPanel,
+}) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)
@@ -20,8 +23,9 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData, sortingState, fro
           if (values.length === 0) {
             return null;
           }
-          const isDescending = sortingState?.["record-type"]?.isDescending
-          const orderedResourceIds = isDescending && fromDetailsPanel ? values.resourceIds : [...values.resourceIds].reverse()
+          const isDescending = sortingState?.['record-type']?.isDescending;
+          const orderedResourceIds = isDescending && fromDetailsPanel
+            ? values.resourceIds : [...values.resourceIds].reverse();
           return (
             <SubTypeAccordion
               key={subType}
@@ -34,10 +38,16 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData, sortingState, fro
         })}
     </View>
   </View>
-)};
+);
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
+  sortingState: shape({}).isRequired,
+  fromDetailsPanel: bool,
+};
+
+SubTypeAccordionsContainer.defaultProps = {
+  fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({

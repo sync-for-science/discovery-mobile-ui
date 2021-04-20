@@ -1,14 +1,17 @@
-import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { bool, shape } from 'prop-types';
 
-import DateAccordion from './DateAccordion'
+import DateAccordion from './DateAccordion';
 
-const DateAccordionContainer = ({data, isDescending, fromDetailsPanel}) => {
-  const descendingSort = (t1, t2) => new Date(t1) > new Date(t2) ? -1 : 1
-  const ascendingSort = (t1, t2) => new Date(t1) < new Date(t2) ? -1 : 1
-  const sortByLabelDate = ([t1], [t2]) => isDescending ? descendingSort(t1, t2) : ascendingSort(t1, t2)
-  const sortByResourceDate = ([, t1], [, t2]) => isDescending ? descendingSort(t1, t2) : ascendingSort(t1, t2)
-  
+const DateAccordionContainer = ({ data, isDescending, fromDetailsPanel }) => {
+  const descendingSort = (t1, t2) => (new Date(t1) > new Date(t2) ? -1 : 1);
+  const ascendingSort = (t1, t2) => (new Date(t1) < new Date(t2) ? -1 : 1);
+  const sortByLabelDate = ([t1], [t2]) => (isDescending
+    ? descendingSort(t1, t2) : ascendingSort(t1, t2));
+  const sortByResourceDate = ([, t1], [, t2]) => (isDescending
+    ? descendingSort(t1, t2) : ascendingSort(t1, t2));
+
   return (
     <View style={styles.root}>
       <View style={styles.container}>
@@ -17,22 +20,27 @@ const DateAccordionContainer = ({data, isDescending, fromDetailsPanel}) => {
           .map(([date, resourceIds]) => {
             const sortedResourceIds = Object.entries(resourceIds)
               .sort(sortByResourceDate)
-              .reduce((acc, [id]) => {acc.push(id); return acc }, [])
+              .reduce((acc, [id]) => { acc.push(id); return acc; }, []);
             return (
-              <DateAccordion 
+              <DateAccordion
                 key={date}
                 label={date}
                 resourceIds={sortedResourceIds}
                 fromDetailsPanel={fromDetailsPanel}
               />
-            )
-          })
-        }
+            );
+          })}
       </View>
     </View>
-  )
-}
+  );
+};
 
-export default DateAccordionContainer
+DateAccordionContainer.propTypes = {
+  data: shape({}).isRequired,
+  isDescending: bool.isRequired,
+  fromDetailsPanel: bool.isRequired,
+};
 
-const styles = StyleSheet.create({})
+export default DateAccordionContainer;
+
+const styles = StyleSheet.create({});

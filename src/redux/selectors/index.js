@@ -5,11 +5,11 @@ import {
 import { produce } from 'immer';
 import {
   startOfDay, endOfDay, differenceInDays,
-  compareAsc, isWithinInterval
+  compareAsc, isWithinInterval,
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
-import { formatDate } from '../../resources/fhirReader'
+import { formatDate } from '../../resources/fhirReader';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { FOCUSED } from '../../constants/marked-status';
 
@@ -502,14 +502,14 @@ export const timeSavedSortedCollectionResourceIdsSelector = createSelector(
   (collection) => {
     const { resourceIds } = collection;
     return Object.entries(resourceIds).reduce((acc, [id, date]) => {
-      const shortDate = formatDate(date)
+      const shortDate = formatDate(date);
       if (!acc[shortDate]) {
-        acc[shortDate] = {}
+        acc[shortDate] = {};
       }
-      acc[shortDate][id] = date
-      return acc
-    }, {})
-  }
+      acc[shortDate][id] = date;
+      return acc;
+    }, {});
+  },
 );
 
 export const recordDateSortedCollectionResourceIdsSelector = createSelector(
@@ -517,12 +517,12 @@ export const recordDateSortedCollectionResourceIdsSelector = createSelector(
   (collection, resources) => {
     const { resourceIds } = collection;
     return Object.entries(resourceIds).reduce((acc, [id]) => {
-      const shortDate = formatDate(resources[id].timelineDate)
+      const shortDate = formatDate(resources[id].timelineDate);
       if (!acc[shortDate]) {
-        acc[shortDate] = {}
+        acc[shortDate] = {};
       }
-      acc[shortDate][id] = resources[id].timelineDate
-      return acc
-    }, {})
-  }
+      acc[shortDate][id] = resources[id].timelineDate;
+      return acc;
+    }, {});
+  },
 );
