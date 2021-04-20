@@ -81,7 +81,7 @@ const ResourceCard = ({
   const resourceType = SINGULAR_RESOURCE_TYPES[resource?.type];
 
   const header = fromDetailsPanel
-   ? (
+    ? (
       <>
         <BaseText style={styles.typeText} variant="title">{resourceType}</BaseText>
         <View style={styles.rightIconsContainer}>
@@ -94,7 +94,7 @@ const ResourceCard = ({
           />
         </View>
       </>
-   ) : (
+    ) : (
       <>
         <BaseText>{resourceDate}</BaseText>
         <View style={styles.rightIconsContainer}>
@@ -115,7 +115,7 @@ const ResourceCard = ({
           />
         </View>
       </>
-   )
+    );
 
   return (
     <View style={[styles.root, firstCardStyle]}>

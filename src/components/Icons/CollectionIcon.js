@@ -17,7 +17,7 @@ const CollectionIcon = ({
   removeResourceFromCollectionAction,
   collectionResourceIds,
   showCollectionOnly,
-  fromDetailsPanel
+  fromDetailsPanel,
 }) => {
   const resourceCount = resourceIds.reduce((acc, id) => {
     const inCollection = collectionResourceIds[id];
@@ -29,7 +29,7 @@ const CollectionIcon = ({
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
-  const isDisabled = !fromDetailsPanel && showCollectionOnly
+  const isDisabled = !fromDetailsPanel && showCollectionOnly;
   // eslint-disable-next-line no-nested-ternary, max-len
   const iconStyle = resourceCount
     ? (isDisabled ? styles.hasResourceDisabled : styles.hasResource)
@@ -59,6 +59,11 @@ CollectionIcon.propTypes = {
   removeResourceFromCollectionAction: func.isRequired,
   collectionResourceIds: shape({}).isRequired,
   showCollectionOnly: bool.isRequired,
+  fromDetailsPanel: bool,
+};
+
+CollectionIcon.defaultProps = {
+  fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state) => ({
