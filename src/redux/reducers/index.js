@@ -79,9 +79,7 @@ const createNewCollectionRecord = () => ({
   highlight: UNMARKED,
 });
 
-// this same uuid recycled across logins -- which is only development?
 const defaultCollection = createCollection();
-const defaultCollectionId = defaultCollection.id;
 
 const preloadCollections = {
   [defaultCollection.id]: defaultCollection,
@@ -233,13 +231,16 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-export const activeCollectionIdReducer = (state = defaultCollectionId, action) => {
+export const activeCollectionIdReducer = (state = null, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return defaultCollectionId;
+      return null;
     }
     case actionTypes.SELECT_COLLECTION: {
       return action.payload;
+    }
+    case actionTypes.DELETE_COLLECTION: {
+      return null;
     }
     default:
       return state;
