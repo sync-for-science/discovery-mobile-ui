@@ -19,8 +19,8 @@ const DateAccordion = ({
 
   const renderHeader = (item, expanded) => {
     const chevronIcon = expanded
-      ? <Ionicons name="chevron-down" size={24} color={Colors.accordionChevronIcon} />
-      : <Ionicons name="chevron-up" size={24} color={Colors.accordionChevronIcon} />;
+      ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
+      : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
 
     return (
       <View style={styles.header}>

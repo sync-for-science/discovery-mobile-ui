@@ -45,12 +45,12 @@ const ResourceTypePicker = ({
   useEffect(() => {
     let firstEnabledType;
     resourceTypeFilters.forEach(({ type, typeIsEnabled }) => {
-      if (!firstEnabledType && typeIsEnabled) {
+      if (!firstEnabledType && typeIsEnabled && !resourceTypeFilters[selectResourceType]) {
         firstEnabledType = type;
       }
     });
     selectResourceTypeAction(firstEnabledType);
-  }, []);
+  }, [resourceTypeFilters]);
 
   return (
     <View>
