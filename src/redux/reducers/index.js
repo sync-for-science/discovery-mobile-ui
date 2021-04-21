@@ -206,8 +206,9 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.DUPLICATE_COLLECTION: {
       const { collectionId } = action.payload;
       const originalCollection = state[collectionId];
-      const newCollection = createCollection(action.payload.collectionName);
-      newCollection.records = clone(originalCollection.records);
+      const newCollection = clone(originalCollection);
+      newCollection.id = uuidv4();
+      newCollection.label = action.payload.collectionName;
       return {
         ...state,
         [newCollection.id]: newCollection,
