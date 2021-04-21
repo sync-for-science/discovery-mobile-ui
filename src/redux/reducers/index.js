@@ -1,6 +1,8 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
+import { clone } from 'ramda';
+
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
@@ -36,9 +38,6 @@ const preloadSelectedTimelineRange = {
   dateRangeEnd: undefined,
 };
 
-// this same uuid recycled across logins -- which is only development?
-const defaultCollectionId = uuidv4();
-
 // prune items whose values are 0, null, undefined, or empty string:
 const pruneEmpty = ((o) => Object.entries(o)
   .filter(([, v]) => v)
@@ -54,28 +53,24 @@ const defaultMarkedResources = {
 };
 const createCollection = (
   name = null,
-  duplicateResourceIds = null,
 ) => {
   const timeCreated = new Date();
   const label = name || 'Untitled Collection';
-  const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
-  const resourceIds = duplicateResourceIds || {};
+  const collectionId = uuidv4();
 
   return {
-    [collectionId]: {
-      id: collectionId,
-      created: timeCreated,
-      lastUpdated: timeCreated,
-      label,
-      selectedResourceType: preloadSelectedResourceType,
-      resourceTypeFilters: preloadResourceTypeFilters,
-      dateRangeFilter: preloadSelectedTimelineRange,
-      showCollectionOnly: false,
-      showMarkedOnly: false,
-      records: {},
-      resourceIds,
-      markedResources: defaultMarkedResources,
-    },
+    id: collectionId,
+    created: timeCreated,
+    lastUpdated: timeCreated,
+    label,
+    selectedResourceType: preloadSelectedResourceType,
+    resourceTypeFilters: preloadResourceTypeFilters,
+    dateRangeFilter: preloadSelectedTimelineRange,
+    showCollectionOnly: false,
+    showMarkedOnly: false,
+    records: {},
+    resourceIds: {},
+    markedResources: defaultMarkedResources,
   };
 };
 
@@ -85,12 +80,21 @@ const createNewCollectionRecord = () => ({
   highlight: UNMARKED,
 });
 
-const preloadCollections = createCollection();
+// this same uuid recycled across logins -- which is only development?
+const defaultCollection = createCollection();
+const defaultCollectionId = defaultCollection.id;
+
+const preloadCollections = {
+  [defaultCollection.id]: defaultCollection,
+};
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return createCollection();
+      const newDefaultCollection = createCollection();
+      return {
+        [newDefaultCollection.id]: newDefaultCollection,
+      };
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -180,7 +184,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
-      return { ...state, ...newCollection };
+      return {
+        ...state,
+        [newCollection.id]: newCollection,
+      };
     }
     case actionTypes.DELETE_COLLECTION: {
       const newState = { ...state };
@@ -198,12 +205,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const dupCollection = { ...state[action.payload.collectionId] };
-      const newCollection = createCollection(
-        action.payload.collectionName,
-        dupCollection.resourceIds,
-      );
-      return { ...state, ...newCollection };
+      const { collectionId } = action.payload;
+      const originalCollection = state[collectionId];
+      const newCollection = createCollection(action.payload.collectionName);
+      newCollection.records = clone(originalCollection.records);
+      return {
+        ...state,
+        [newCollection.id]: newCollection,
+      };
     }
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
       const { collectionId, showCollectionOnly } = action.payload;
