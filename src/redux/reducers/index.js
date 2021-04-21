@@ -23,36 +23,6 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
   }
 };
 
-const preloadedResourceIdsGroupedByType = {};
-
-export const resourceTypesReducer = (state = preloadedResourceIdsGroupedByType, action) => {
-  switch (action.type) {
-    case actionTypes.CLEAR_PATIENT_DATA: {
-      return preloadedResourceIdsGroupedByType;
-    }
-    case actionTypes.GROUP_BY_TYPE: {
-      const { payload } = action;
-      return Object.entries(payload).reduce((acc, [id, resource]) => {
-        const { type: resourceType, subType } = resource;
-        if (!acc[resourceType]) {
-          acc[resourceType] = {};
-        }
-        if (!acc[resourceType][subType]) {
-          acc[resourceType][subType] = new Set();
-        }
-        if (acc[resourceType][subType].has(resource.id)) {
-          console.warn(`${resourceType}--${subType} already contains ${id}`); // eslint-disable-line no-console
-        } else {
-          acc[resourceType][subType].add(resource.id);
-        }
-        return acc;
-      }, {});
-    }
-    default:
-      return state;
-  }
-};
-
 const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
   .reduce((acc, resourceType) => ({
     ...acc,

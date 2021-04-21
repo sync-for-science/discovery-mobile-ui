@@ -1,94 +1,86 @@
 import React from 'react';
 import {
-  shape, string, arrayOf, number,
+  shape, arrayOf, instanceOf, string, number,
 } from 'prop-types';
-import { pick } from 'ramda';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { format } from 'date-fns';
 
-import {
-  getRecordsTotal,
-  getDataRange,
-} from '../../resources/fhirReader';
-import { supportedResourcesSelector } from '../../redux/selectors';
+import { allValidRecordsSortedByDateSelector, allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
 
 const ResourceTypeRow = ({
-  resourceType, total, resources, subTypes,
-}) => {
-  const consolidatedIds = Object.values(subTypes)
-    .reduce((acc, cur) => {
-      acc.push(...cur);
-      return acc;
-    }, []);
-  const inflatedObjects = pick(consolidatedIds, resources);
-  const [, latestDate] = getDataRange(inflatedObjects, 'Y');
-  return (
-    <View style={styles.resourceTypeRow}>
-      <Text style={styles.resourceName}>{PLURAL_RESOURCE_TYPES[resourceType]}</Text>
-      <Text style={styles.resourceCount}>{total}</Text>
-      <Text style={styles.resourceLatestDate}>{latestDate}</Text>
-    </View>
-  );
-};
+  count, label, earliestDate, latestDate,
+}) => (
+  <View style={styles.resourceTypeRow}>
+    <Text style={styles.resourceCount}>{count}</Text>
+    <Text style={styles.resourceLabel}>{label}</Text>
+    <Text style={styles.resourceDate}>{format(earliestDate, 'MMM d, Y')}</Text>
+    <Text style={styles.resourceDate}>{format(latestDate, 'MMM d, Y')}</Text>
+  </View>
+);
 
 ResourceTypeRow.propTypes = {
-  resourceType: string.isRequired,
-  resources: shape({}).isRequired,
-  subTypes: shape({}).isRequired,
-  total: number.isRequired,
+  count: number.isRequired,
+  label: string.isRequired,
+  earliestDate: instanceOf(Date).isRequired,
+  latestDate: instanceOf(Date).isRequired,
 };
 
 const RecordsSummary = ({
-  resources, sortedResourceTypes,
-}) => {
-  const recordsTotal = getRecordsTotal(resources);
-
-  return (
-    <View style={styles.recordSummaryContainer}>
-      <View style={styles.recordsHeader}>
-        <Text style={styles.recordsHeaderText}>
-          Records
-        </Text>
-        <Text style={styles.recordsHeaderTotal}>
-          {`${recordsTotal} Total`}
-        </Text>
-      </View>
-      <View style={styles.resourceTypeContainer}>
-        <View style={styles.resourceTypeRow}>
-          <Text style={styles.resourceName} />
-          <Text style={styles.resourceCountLabel}>count</Text>
-          <Text style={styles.resourceLatestDateLabel}>newest</Text>
-        </View>
-        {sortedResourceTypes.map(({ resourceType, totalCount, subTypes }) => (
-          <ResourceTypeRow
-            key={resourceType}
-            resourceType={resourceType}
-            total={totalCount}
-            subTypes={subTypes}
-            resources={resources}
-          />
-        ))}
-      </View>
+  allRecordsSortedByDate, recordsByType,
+}) => (
+  <View style={styles.recordSummaryContainer}>
+    <View style={styles.recordsHeader}>
+      <Text style={styles.recordsHeaderText}>
+        Records
+      </Text>
+      <Text style={styles.recordsHeaderTotal}>
+        {`${allRecordsSortedByDate.length} Total`}
+      </Text>
     </View>
-  );
-};
+    <View style={styles.resourceTypeContainer}>
+      <View style={styles.resourceTypeRow}>
+        <Text style={styles.resourceCount} />
+        <Text style={styles.resourceLabel} />
+        <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
+        <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+      </View>
+      {recordsByType.map(({ type, label, items }) => (
+        <ResourceTypeRow
+          key={type}
+          label={label}
+          count={items.length}
+          earliestDate={items[0].timelineDate}
+          latestDate={items[items.length - 1].timelineDate}
+        />
+      ))}
+    </View>
+  </View>
+);
 
 RecordsSummary.propTypes = {
-  resources: shape({}),
-  sortedResourceTypes: arrayOf(shape({})).isRequired,
+  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
+  recordsByType: arrayOf(shape({
+    type: string.isRequired,
+    label: string.isRequired,
+    items: arrayOf(shape({
+      id: string.isRequired,
+      type: string.isRequired,
+      subType: string.isRequired,
+      timelineDate: instanceOf(Date).isRequired,
+    })).isRequired,
+  })).isRequired,
 };
 
 RecordsSummary.defaultProps = {
-  resources: null,
 };
 
 const mapStateToProps = (state) => ({
-  resources: state.resources,
-  sortedResourceTypes: supportedResourcesSelector(state),
+  allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
+  recordsByType: allValidRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RecordsSummary);
@@ -132,32 +124,24 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
 
   },
-  resourceName: {
-    alignSelf: 'flex-start',
-    flex: 6,
+  tableHeading: {
+    color: Colors.secondary,
+    fontSize: 12,
+    alignSelf: 'flex-end',
   },
   resourceCount: {
-    alignSelf: 'flex-end',
-    textAlign: 'right',
+    alignSelf: 'flex-start',
+    textAlign: 'left',
     paddingRight: 10,
     flex: 1,
   },
-  resourceLatestDate: {
-    alignSelf: 'flex-end',
-    flex: 1,
+  resourceLabel: {
+    alignSelf: 'flex-start',
+    flex: 4,
   },
-  resourceCountLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
+  resourceDate: {
     alignSelf: 'flex-end',
-    flex: 1,
-    textTransform: 'uppercase',
-  },
-  resourceLatestDateLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
-    alignSelf: 'flex-end',
-    flex: 1,
-    textTransform: 'uppercase',
+    fontSize: 11,
+    flex: 2,
   },
 });

@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import {
   pick, values,
 } from 'ramda';
+import { produce } from 'immer';
 import {
   startOfDay, endOfDay, differenceInDays,
   compareAsc, isWithinInterval,
@@ -17,8 +18,6 @@ export const authSelector = (state) => state.auth.authResult;
 const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
-
-const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
 const collectionsSelector = (state) => state.collections;
 
@@ -60,15 +59,8 @@ export const activeCollectionShowMarkedOnlySelector = createSelector(
 );
 
 export const patientSelector = createSelector(
-  [resourcesSelector, resourceIdsGroupedByTypeSelector],
-  (resources, resourceIdsGroupedByType) => {
-    const patient = resourceIdsGroupedByType?.Patient;
-    if (!patient) {
-      return null;
-    }
-    const patientId = Array.from(patient?.Other)[0];
-    return resources[patientId];
-  },
+  [resourcesSelector],
+  (resources) => values(resources).find((r) => r.type === 'Patient'),
 );
 
 export const serviceProviderSelector = createSelector(
@@ -88,33 +80,8 @@ export const serviceProviderSelector = createSelector(
 );
 
 export const providersSelector = createSelector(
-  [resourcesSelector, resourceIdsGroupedByTypeSelector],
-  (resources, resourceIdsGroupedByType) => {
-    const serviceProviders = resourceIdsGroupedByType?.Organization?.Other;
-    if (serviceProviders) {
-      return Array.from(serviceProviders).map((id) => resources[id]);
-    }
-    return [];
-  },
-);
-
-// eslint-disable-next-line max-len
-const sortEntriesByResourceType = ([t1], [t2]) => ((PLURAL_RESOURCE_TYPES[t1].toLowerCase() < PLURAL_RESOURCE_TYPES[t2].toLowerCase()) ? -1 : 1);
-
-export const supportedResourcesSelector = createSelector(
-  [resourceIdsGroupedByTypeSelector],
-  (resourceIdsGroupedByType) => Object.entries(resourceIdsGroupedByType)
-    // do not include Patient, Observation, or unknown/unsupported:
-    .filter(([type]) => !!PLURAL_RESOURCE_TYPES[type]) // derived "type" includes: lab/vitals
-    .sort(sortEntriesByResourceType)
-    .reduce((acc, [resourceType, subTypes]) => {
-      const totalCount = values(subTypes).reduce((count, idSet) => count + idSet.size, 0);
-      return acc.concat({
-        resourceType,
-        totalCount,
-        subTypes,
-      });
-    }, []),
+  [resourcesSelector],
+  (resources) => values(resources).filter((r) => r.type === 'Organization'),
 );
 
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
@@ -128,6 +95,28 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
+);
+
+export const allValidRecordsGroupedByTypeSelector = createSelector(
+  [allValidRecordsSortedByDateSelector],
+  (allItems) => {
+    const typeMap = allItems
+      .reduce((acc, item) => {
+        const { type } = item;
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[type] = draft[type] ?? [];
+          draft[type].push(item);
+        });
+      }, {});
+    return Object.entries(typeMap)
+      .map(([type, items]) => ({
+        type,
+        label: PLURAL_RESOURCE_TYPES[type],
+        items,
+      }))
+      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+  },
 );
 
 export const filteredRecordsSelector = createSelector(
