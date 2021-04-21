@@ -127,13 +127,12 @@ export const filteredRecordsSelector = createSelector(
       resourceTypeFilters,
       showCollectionOnly,
       showMarkedOnly,
-      resourceIds,
+      records,
       markedResources,
     } = activeCollection;
     return items
       .filter(({ type }) => resourceTypeFilters[type])
-      // activeCollection.resourceIds, aka: "saved to collection"
-      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && resourceIds[id]))
+      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && records[id]?.saved))
       .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
   },
 );
@@ -309,7 +308,7 @@ export const timelineIntervalsSelector = createSelector(
   [
     filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
-    const { markedResources, resourceIds } = activeCollection;
+    const { markedResources, records } = activeCollection;
 
     let intervals = [];
     let intervalLength = 0;
@@ -397,7 +396,7 @@ export const timelineIntervalsSelector = createSelector(
           }));
 
         // eslint-disable-next-line no-param-reassign
-        interval.collectionItems = interval.items.filter((id) => resourceIds[id]);
+        interval.collectionItems = interval.items.filter((id) => records[id]?.saved);
       });
     }
 
