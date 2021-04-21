@@ -55,13 +55,11 @@ const defaultMarkedResources = {
 const createCollection = (
   name = null,
   duplicateResourceIds = null,
-  duplicateLastAddedResourceId = null,
 ) => {
   const timeCreated = new Date();
   const label = name || 'Untitled Collection';
   const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
   const resourceIds = duplicateResourceIds || {};
-  const lastAddedResourceId = duplicateLastAddedResourceId || null;
 
   return {
     [collectionId]: {
@@ -73,7 +71,6 @@ const createCollection = (
       resourceTypeFilters: preloadResourceTypeFilters,
       dateRangeFilter: preloadSelectedTimelineRange,
       resourceIds,
-      lastAddedResourceId,
       markedResources: defaultMarkedResources,
       showCollectionOnly: false,
       showMarkedOnly: false,
@@ -97,11 +94,9 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           updatedResourceIds[resourceId] = true;
         }
       });
-      const updatedLastAddedResourceId = resourceIds.length === 1 ? resourceIds[0] : null;
       const newCollection = {
         ...collection,
         resourceIds: updatedResourceIds,
-        lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
     }
@@ -137,19 +132,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const { collectionId, resourceIds } = action.payload;
       const collection = state[collectionId];
       const updatedResourceIds = { ...collection.resourceIds };
-      let updatedLastAddedResourceId = collection.lastAddedResourceId;
       resourceIds.forEach((resourceId) => {
         if (updatedResourceIds[resourceId]) {
           delete updatedResourceIds[resourceId];
-        }
-        if (collection.lastAddedResourceId === resourceId) {
-          updatedLastAddedResourceId = null;
         }
       });
       const newCollection = {
         ...collection,
         resourceIds: updatedResourceIds,
-        lastAddedResourceId: updatedLastAddedResourceId,
       };
       return { ...state, [collectionId]: newCollection };
     }
@@ -206,7 +196,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.CLEAR_COLLECTION: {
       const updatedCollection = { ...state[action.payload] };
       updatedCollection.resourceIds = {};
-      updatedCollection.lastAddedResourceId = null;
       return { ...state, [action.payload]: updatedCollection };
     }
     case actionTypes.DUPLICATE_COLLECTION: {
@@ -214,7 +203,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const newCollection = createCollection(
         action.payload.collectionName,
         dupCollection.resourceIds,
-        dupCollection.lastAddedResourceId,
       );
       return { ...state, ...newCollection };
     }
