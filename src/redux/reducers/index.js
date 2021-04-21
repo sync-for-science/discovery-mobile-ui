@@ -68,7 +68,6 @@ const createCollection = (
     showCollectionOnly: false,
     showMarkedOnly: false,
     records: {},
-    resourceIds: {},
     markedResources: defaultMarkedResources,
   };
 };
