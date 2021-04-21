@@ -207,7 +207,9 @@ export const orderedResourceTypeFiltersSelector = createSelector(
 
 export const activeCollectionResourceIdsSelector = createSelector(
   [activeCollectionSelector],
-  (activeCollection) => activeCollection?.resourceIds,
+  (activeCollection) => Object.entries(activeCollection.records)
+    .filter(([, record]) => record.saved === true)
+    .reduce((acc, [id]) => ({ ...acc, [id]: true }), {}),
 );
 
 const subTypeResourceIdsSelector = createSelector(
