@@ -66,7 +66,12 @@ RecordsSummary.propTypes = {
   recordsByType: arrayOf(shape({
     type: string.isRequired,
     label: string.isRequired,
-    items: arrayOf(string.isRequired).isRequired,
+    items: arrayOf(shape({
+      id: string.isRequired,
+      type: string.isRequired,
+      subType: string.isRequired,
+      timelineDate: instanceOf(Date).isRequired,
+    })).isRequired,
   })).isRequired,
 };
 
