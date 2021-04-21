@@ -197,9 +197,13 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const updatedCollection = { ...state[action.payload] };
-      updatedCollection.resourceIds = {};
-      return { ...state, [action.payload]: updatedCollection };
+      const collectionId = action.payload;
+      return produce(state, (draft) => {
+        Object.values(draft[collectionId].records).forEach((attributes) => {
+          attributes.saved = false; // eslint-disable-line no-param-reassign
+          attributes.addedDate = null; // eslint-disable-line no-param-reassign
+        });
+      });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
       const { collectionId } = action.payload;
