@@ -13,15 +13,13 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import {
-  patientSelector,
-} from '../../redux/selectors';
+import { resourceByIdSelector, serviceProviderSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
-const selectCardBody = (resource) => {
+const selectCardBody = (resource, serviceProvider) => {
   switch (resource.type) {
     case 'Condition':
     case 'Procedure':
@@ -37,7 +35,12 @@ const selectCardBody = (resource) => {
     // case 'Claims':
     //   return <ClaimCardBody fieldsData={fieldsData} />;
     case 'Encounter':
-      return <EncounterCardBody resource={resource} />;
+      return (
+        <EncounterCardBody
+          resource={resource}
+          serviceProvider={serviceProvider}
+        />
+      );
     case 'Immunization':
       return (
         <ImmunizationCardBody
@@ -64,11 +67,11 @@ const selectCardBody = (resource) => {
 
 const ResourceCard = ({
   resourceId,
-  resources,
+  resource,
+  serviceProvider,
   collectionId,
   index,
 }) => {
-  const resource = resources[resourceId];
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
@@ -95,7 +98,7 @@ const ResourceCard = ({
         </View>
       </View>
       <View style={styles.body}>
-        {selectCardBody(resource)}
+        {selectCardBody(resource, serviceProvider)}
       </View>
     </View>
   );
@@ -103,14 +106,19 @@ const ResourceCard = ({
 
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
-  resources: shape({}).isRequired,
+  resource: shape({}).isRequired,
+  serviceProvider: shape({}),
   collectionId: string.isRequired,
   index: number.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  resources: state.resources,
-  patientResource: patientSelector(state),
+ResourceCard.defaultProps = {
+  serviceProvider: null,
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  resource: resourceByIdSelector(state, ownProps),
+  serviceProvider: serviceProviderSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

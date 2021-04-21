@@ -16,6 +16,8 @@ export const authSelector = (state) => state.auth.authResult;
 
 const resourcesSelector = (state) => state.resources;
 
+export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
+
 const resourceIdsGroupedByTypeSelector = (state) => state.resourceIdsGroupedByType;
 
 const collectionsSelector = (state) => state.collections;
@@ -66,6 +68,22 @@ export const patientSelector = createSelector(
     }
     const patientId = Array.from(patient?.Other)[0];
     return resources[patientId];
+  },
+);
+
+export const serviceProviderSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const ref = resource?.serviceProvider?.reference;
+    if (ref) {
+      const resourceId = ref.match(/(?<=[#|/]).*/);
+      const serviceProvider = allResources[resourceId];
+      if (serviceProvider) {
+        return serviceProvider;
+      }
+      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
+    }
+    return null;
   },
 );
 
