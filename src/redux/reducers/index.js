@@ -70,10 +70,11 @@ const createCollection = (
       selectedResourceType: preloadSelectedResourceType,
       resourceTypeFilters: preloadResourceTypeFilters,
       dateRangeFilter: preloadSelectedTimelineRange,
-      resourceIds,
-      markedResources: defaultMarkedResources,
       showCollectionOnly: false,
       showMarkedOnly: false,
+      records: {},
+      resourceIds,
+      markedResources: defaultMarkedResources,
     },
   };
 };
@@ -87,18 +88,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
-      const collection = state[collectionId];
-      const updatedResourceIds = { ...collection.resourceIds };
-      resourceIds.forEach((resourceId) => {
-        if (!updatedResourceIds[resourceId]) {
-          updatedResourceIds[resourceId] = true;
-        }
+      return produce(state, (draft) => {
+        resourceIds.forEach((id) => {
+          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
+          records[id] = records[id] ?? {};
+          records[id].saved = true;
+          records[id].addedDate = new Date();
+        });
       });
-      const newCollection = {
-        ...collection,
-        resourceIds: updatedResourceIds,
-      };
-      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       const { collectionId, resourceType } = action.payload;
