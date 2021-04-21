@@ -56,10 +56,9 @@ const createCollection = (
 ) => {
   const timeCreated = new Date();
   const label = name || 'Untitled Collection';
-  const collectionId = uuidv4();
 
   return {
-    id: collectionId,
+    id: uuidv4(),
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
