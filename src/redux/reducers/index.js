@@ -245,12 +245,6 @@ export const activeCollectionIdReducer = (state = defaultCollectionId, action) =
     case actionTypes.SELECT_COLLECTION: {
       return action.payload;
     }
-    case actionTypes.DELETE_COLLECTION: {
-      if (action.payload.nextCollectionId) {
-        return action.payload.nextCollectionId;
-      }
-      return state;
-    }
     default:
       return state;
   }
