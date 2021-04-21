@@ -4,7 +4,7 @@ import { produce } from 'immer';
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { MARKED, FOCUSED } from '../../constants/marked-status';
+import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
 
@@ -79,6 +79,12 @@ const createCollection = (
   };
 };
 
+const createNewCollectionRecord = () => ({
+  saved: false,
+  addedDate: null,
+  highlight: UNMARKED,
+});
+
 const preloadCollections = createCollection();
 
 export const collectionsReducer = (state = preloadCollections, action) => {
@@ -91,7 +97,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
-          records[id] = records[id] ?? {};
+          records[id] = records[id] ?? createNewCollectionRecord();
           records[id].saved = true;
           records[id].addedDate = new Date();
         });
@@ -127,18 +133,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
-      const collection = state[collectionId];
-      const updatedResourceIds = { ...collection.resourceIds };
-      resourceIds.forEach((resourceId) => {
-        if (updatedResourceIds[resourceId]) {
-          delete updatedResourceIds[resourceId];
-        }
+      return produce(state, (draft) => {
+        resourceIds.forEach((id) => {
+          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
+          records[id] = records[id] ?? {};
+          records[id].saved = false;
+          records[id].addedDate = null;
+        });
       });
-      const newCollection = {
-        ...collection,
-        resourceIds: updatedResourceIds,
-      };
-      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
       const { subType, resourceIdsMap, collectionId } = action.payload;
