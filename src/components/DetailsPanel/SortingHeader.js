@@ -11,6 +11,13 @@ const BUTTON_LABELS = {
   'time-saved': 'Time Saved',
 };
 
+const RECORD_TYPE_ASC_DESCRIPTION = 'Sorted by Record Type in ascending order.';
+const RECORD_TYPE_DSC_DESCRIPTION = 'Sorted by Record Type in descending order.';
+const RECORD_DATE_ASC_DESCRIPTION = 'Sorted by Record Date in ascending order.';
+const RECORD_DATE_DSC_DESCRIPTION = 'Sorted by Record Date in descending order.';
+const TIME_SAVED_ASC_DESCRIPTION = 'Sorted by Time Saved in ascending order.';
+const TIME_SAVED_DSC_DESCRIPTION = 'Sorted by Time Saved in descending order.';
+
 const SortingHeader = ({ sortingState, setSortingState }) => {
   const handlePress = (buttonLabel) => {
     if (sortingState[buttonLabel].isPicked) {
@@ -26,23 +33,57 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
     }
   };
 
+  let selectedButton;
+  let isDescending;
+  const sortingButtons = Object.entries(sortingState).map(([buttonLabel, values]) => {
+    if (values.isPicked) {
+      selectedButton = buttonLabel;
+      isDescending = values.isDescending;
+    }
+    const textStyle = values.isPicked ? 'title' : '';
+    const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up';
+    return (
+      <TouchableOpacity
+        key={buttonLabel}
+        style={styles.button}
+        onPress={() => handlePress(buttonLabel)}
+      >
+        <BaseText variant={textStyle}>{BUTTON_LABELS[buttonLabel]}</BaseText>
+        {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
+      </TouchableOpacity>
+    );
+  });
+
+  const descriptionText = () => {
+    if (selectedButton === 'record-type' && !isDescending) {
+      return RECORD_TYPE_ASC_DESCRIPTION;
+    }
+    if (selectedButton === 'record-type' && isDescending) {
+      return RECORD_TYPE_DSC_DESCRIPTION;
+    }
+    if (selectedButton === 'record-date' && !isDescending) {
+      return RECORD_DATE_ASC_DESCRIPTION;
+    }
+    if (selectedButton === 'record-date' && isDescending) {
+      return RECORD_DATE_DSC_DESCRIPTION;
+    }
+    if (selectedButton === 'time-saved' && !isDescending) {
+      return TIME_SAVED_ASC_DESCRIPTION;
+    }
+    return TIME_SAVED_DSC_DESCRIPTION;
+  };
+
   return (
     <View style={styles.root}>
-      {Object.entries(sortingState).map(([buttonLabel, values]) => {
-        const textStyle = values.isPicked ? 'title' : '';
-        const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up';
-        return (
-          <TouchableOpacity
-            key={buttonLabel}
-            style={styles.button}
-            onPress={() => handlePress(buttonLabel)}
-          >
-            <BaseText variant={textStyle}>{BUTTON_LABELS[buttonLabel]}</BaseText>
-            {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
-          </TouchableOpacity>
-        );
-      })}
+
+      <View style={styles.buttonContainer}>
+        {sortingButtons}
+      </View>
+      <View style={styles.descriptionContainer}>
+        <BaseText style={styles.descriptionText}>{descriptionText()}</BaseText>
+      </View>
     </View>
+
   );
 };
 
@@ -56,13 +97,24 @@ export default SortingHeader;
 const styles = StyleSheet.create({
   root: {
     width: '100%',
+  },
+  buttonContainer: {
+    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical: 20,
+    marginTop: 20,
+    marginBottom: 10,
   },
   button: {
     flexDirection: 'row',
     alignItems: 'center',
     width: 100,
+  },
+  descriptionContainer: {
+    marginBottom: 10,
+    alignItems: 'center',
+  },
+  descriptionText: {
+    fontStyle: 'italic',
   },
 });
