@@ -68,7 +68,8 @@ export const serviceProviderSelector = createSelector(
   (resource, allResources) => {
     const ref = resource?.serviceProvider?.reference;
     if (ref) {
-      const resourceId = ref.match(/(?<=[#|/]).*/);
+      const matches = ref.match(/(#|\/)(.+)/);
+      const resourceId = matches.pop();
       const serviceProvider = allResources[resourceId];
       if (serviceProvider) {
         return serviceProvider;
