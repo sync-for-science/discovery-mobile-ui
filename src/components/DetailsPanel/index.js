@@ -1,36 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-  StyleSheet, View, ActionSheetIOS, Text,
+  StyleSheet, View, Text,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { Entypo, SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
 
 import Colors from '../../constants/Colors';
+import SortingHeader from './SortingHeader';
 
 const DetailsPanel = ({ navigation, collection }) => {
-  const handlePressSortIcon = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['Cancel', 'Sort Records By Category', 'Sort Records By Date Saved'],
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          // cancel action
-        } else if (buttonIndex === 1) {
-          // Sort Records By Category;
-        } else if (buttonIndex === 2) {
-          // Sort Records By Date Saved;
-        }
-      },
-    );
+  const defaultSortingState = {
+    'record-type': {
+      isPicked: true,
+      isDescending: true,
+    },
+    'record-date': {
+      isPicked: false,
+      isDescending: true,
+    },
+    'time-saved': {
+      isPicked: false,
+      isDescending: true,
+    },
   };
-
+  const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
@@ -45,11 +42,9 @@ const DetailsPanel = ({ navigation, collection }) => {
           <TouchableOpacity style={styles.noteIcon} onPress={handlePressNoteIcon}>
             <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={handlePressSortIcon}>
-            <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
-          </TouchableOpacity>
         </Right>
       </Header>
+      <SortingHeader sortingState={sortingState} setSortingState={setSortingState}/>
       <Text>SubTypeAccordion Coming</Text>
     </ScrollView>
   );
