@@ -445,7 +445,7 @@ export const accordionsContainerDataSelector = createSelector(
             const tempObject = {}
             tempObject.resourceIds = subTypeValues.collectionDateFilteredResourceIds;
             tempObject.subTypeCount = subTypeValues.dateFilteredCount;
-            subTypeData[resourceType] = {}
+            subTypeData[resourceType] = subTypeData[resourceType] ?? {}
             subTypeData[resourceType][subType] = tempObject
           }
         });
