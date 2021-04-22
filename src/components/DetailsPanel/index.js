@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, View, Text,
 } from 'react-native';
@@ -44,7 +44,7 @@ const DetailsPanel = ({ navigation, collection }) => {
           </TouchableOpacity>
         </Right>
       </Header>
-      <SortingHeader sortingState={sortingState} setSortingState={setSortingState}/>
+      <SortingHeader sortingState={sortingState} setSortingState={setSortingState} />
       <Text>SubTypeAccordion Coming</Text>
     </ScrollView>
   );
