@@ -237,12 +237,16 @@ const sortedGroupedRecordsByType = (records) => {
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
   }
 
-export const selectedRecordsGroupedByTypeSelector = createSelector(
+export const selectedRecordsGroupedBySubTypesSelector = createSelector(
   [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
+    if (!selectedResourceType) {
+      return []
+    }
     const groupedRecords = sortedGroupedRecordsByType(items)
 
-    return groupedRecords.filter((group) => group.type === selectedResourceType);
+    return groupedRecords
+      .filter((group) => group.type === selectedResourceType)[0].subTypes;
   },
 );
 
