@@ -121,7 +121,6 @@ export const allValidRecordsGroupedByTypeSelector = createSelector(
           draft[type].push(item);
         });
       }, {});
-    console.log('typeMap', typeMap)
     return Object.entries(typeMap)
       .map(([type, items]) => ({
         type,
@@ -213,29 +212,31 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
         return produce(acc, (draft) => {
           // eslint-disable-next-line no-param-reassign
           draft[type] = draft[type] ?? {};
-          draft[type][subType] = draft[type][subType] ?? []
-          draft[type][subType].push(item.id)
+          // eslint-disable-next-line no-param-reassign
+          draft[type][subType] = draft[type][subType] ?? [];
+          draft[type][subType].push(item.id);
         });
       }, {});
 
     const sortedGroupedResources = Object.entries(typeMap).reduce((acc, [type, subTypes]) => {
       const subTypesArray = Object.entries(subTypes)
-        .map(([subType, items]) => ({subType, recordIds: items}))
-        .sort(({subType: s1}, {subType: s2}) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1));
+        .map(([subType, recordIds]) => ({ subType, recordIds }))
+        .sort(({ subType: s1 }, { subType: s2 }) => (
+          (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1));
 
-      const typeObject = {}
-      typeObject.type = type
-      typeObject.label = SINGULAR_RESOURCE_TYPES[type]
-      typeObject.subTypes = subTypesArray
+      const typeObject = {};
+      typeObject.type = type;
+      typeObject.label = SINGULAR_RESOURCE_TYPES[type];
+      typeObject.subTypes = subTypesArray;
 
-      acc.push(typeObject) 
-      return acc
+      acc.push(typeObject);
+      return acc;
     }, [])
-    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
 
-    return sortedGroupedResources.filter(group => group.type === selectedResourceType)
-  }
-)
+    return sortedGroupedResources.filter((group) => group.type === selectedResourceType);
+  },
+);
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],

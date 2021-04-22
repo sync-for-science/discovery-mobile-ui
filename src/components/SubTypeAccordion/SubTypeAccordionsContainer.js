@@ -1,44 +1,39 @@
 import React from 'react';
 import {
-  StyleSheet, View
+  StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shape } from 'prop-types';
+import { shape, arrayOf } from 'prop-types';
 import { selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
-const SubTypeAccordionsContainer = ({ selectedRecordsGroupedByType }) => {
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        { selectedRecordsGroupedByType
-          .map((typeObject) => {
-            return (
-              <View key={typeObject.label}>
-                {typeObject.subTypes.map(({subType, recordIds}) => (
-                  <SubTypeAccordion
-                    key={subType}
-                    subType={subType}
-                    resourceIds={recordIds}
-                    subTypeCount={recordIds.length}
-                  />
-                ))}
-              </View>
-            )
-          })
-        }
-      </View>
+const SubTypeAccordionsContainer = ({ selectedRecordsGroupedByType }) => (
+  <View style={styles.root}>
+    <View style={styles.container}>
+      { selectedRecordsGroupedByType
+        .map((typeObject) => (
+          <View key={typeObject.label}>
+            {typeObject.subTypes.map(({ subType, recordIds }) => (
+              <SubTypeAccordion
+                key={subType}
+                subType={subType}
+                resourceIds={recordIds}
+                subTypeCount={recordIds.length}
+              />
+            ))}
+          </View>
+        ))}
     </View>
-  )
-}
+  </View>
+);
 
 SubTypeAccordionsContainer.propTypes = {
-  accordionsContainerData: shape({}).isRequired,
+  selectedRecordsGroupedByType: arrayOf(shape({})).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state)
+  selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);

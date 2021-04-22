@@ -31,9 +31,7 @@ ResourceTypeRow.propTypes = {
 
 const RecordsSummary = ({
   allRecordsSortedByDate, recordsByType,
-}) => {
-  // console.log('recordsByType', recordsByType)
-  return (
+}) => (
   <View style={styles.recordSummaryContainer}>
     <View style={styles.recordsHeader}>
       <Text style={styles.recordsHeaderText}>
@@ -61,7 +59,7 @@ const RecordsSummary = ({
       ))}
     </View>
   </View>
-)};
+);
 
 RecordsSummary.propTypes = {
   allRecordsSortedByDate: arrayOf(shape({})).isRequired,
