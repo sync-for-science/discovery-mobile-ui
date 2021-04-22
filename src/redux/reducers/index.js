@@ -26,16 +26,13 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
 };
 
 // prune items whose values are 0, null, undefined, or empty string:
-const pruneEmpty = ((o) => Object.entries(o)
-  .filter(([, v]) => v)
-  .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
+// const pruneEmpty = ((o) => Object.entries(o)
+//   .filter(([, v]) => v)
+//   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
 const defaultMarkedResources = {
   focusedSubtype: '', // only a single sub-type can be focused
   // "marked" -- dictionary whose keys are resource ids and values are enum:
-  // 0 -- unmarked
-  // 1 -- marked
-  // 2 -- focused
   marked: {},
 };
 const createCollection = (
@@ -61,6 +58,7 @@ const createCollection = (
     },
     showCollectionOnly: false,
     showMarkedOnly: false,
+    focusedSubtype: '',
     records: {},
     markedResources: defaultMarkedResources,
   };
@@ -70,6 +68,10 @@ const createNewCollectionRecord = () => ({
   saved: false,
   dateSaved: null,
   highlight: UNMARKED,
+  // highlight:
+  //   0 -- unmarked
+  //   1 -- marked
+  //   2 -- focused
 });
 
 const defaultCollection = createCollection();
@@ -137,34 +139,26 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const { subType, resourceIdsMap, collectionId } = action.payload;
-      const newCollection = { ...state[collectionId] };
-      const deFocus = (!subType || subType !== newCollection.markedResources.focusedSubtype);
+      const { collectionId, subType, resourceIdsMap } = action.payload;
 
-      const previousMarked = !deFocus
-        ? newCollection.markedResources.marked
-        : Object.entries(newCollection.markedResources.marked)
-          .reduce((acc, [id, prevValue]) => ({
-            ...acc,
-            [id]: (prevValue === FOCUSED ? MARKED : prevValue),
-          }), {});
-
-      const newlyMarked = Object.entries(resourceIdsMap)
-        .reduce((acc, [id, newValue]) => ({
-          ...acc,
-          // eslint-disable-next-line max-len
-          [id]: ((newValue === FOCUSED && (previousMarked[id] === MARKED)) ? FOCUSED : newValue),
-        }), {});
-
-      newCollection.markedResources = {
-        focusedSubtype: subType,
-        marked: pruneEmpty({
-          ...previousMarked,
-          ...newlyMarked,
-        }),
-      };
-
-      return { ...state, [collectionId]: newCollection };
+      return produce(state, (draft) => {
+        const collection = draft[collectionId];
+        const { records } = collection;
+        const deFocus = (!subType || subType !== collection.focusedSubtype);
+        collection.focusedSubtype = subType;
+        if (deFocus) {
+          Object.values(records).forEach((attributes) => {
+            const prevValue = attributes.highlight;
+            attributes.highlight = (prevValue === FOCUSED ? MARKED : prevValue); // eslint-disable-line max-len, no-param-reassign
+          });
+        }
+        Object.entries(resourceIdsMap)
+          .forEach(([id, next]) => {
+            records[id] = records[id] ?? createNewCollectionRecord();
+            const { highlight: prev } = records[id];
+            records[id].highlight = ((prev === MARKED && next === FOCUSED) ? FOCUSED : next);
+          });
+      });
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
       const collectionId = action.payload;
