@@ -87,6 +87,9 @@ const extractReferences = ({ context, resources }) => {
       Object.entries(referencePaths).forEach(([referenceType, getRef]) => {
         const fhirReference = getRef(resource);
         if (fhirReference) {
+          console.info(`${referenceType} fhirReference: `, fhirReference);
+        }
+        if (fhirReference) {
           const referenceUrn = fhirReference.reference;
           acc[referenceUrn] = {
             referenceUrn,
