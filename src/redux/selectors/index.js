@@ -10,7 +10,7 @@ import {
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { FOCUSED } from '../../constants/marked-status';
 
 export const authSelector = (state) => state.auth.authResult;
@@ -203,6 +203,38 @@ const filteredItemsInDateRangeSelector = createSelector(
   },
 );
 
+export const selectedRecordsGroupedByTypeSelector = createSelector(
+  [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
+  (items, selectedResourceType) => {
+    const typeMap = items
+      .reduce((acc, item) => {
+        const { type, subType } = item;
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[type] = draft[type] ?? {};
+          // eslint-disable-next-line no-param-reassign
+          draft[type][subType] = draft[type][subType] ?? [];
+          draft[type][subType].push(item.id);
+        });
+      }, {});
+
+    const sortedGroupedResources = Object
+      .entries(typeMap)
+      .reduce((acc, [type, subTypes]) => acc.concat({
+        type,
+        label: SINGULAR_RESOURCE_TYPES[type],
+        subTypes: Object
+          .entries(subTypes)
+          .map(([subType, recordIds]) => ({ subType, recordIds }))
+          .sort(({ subType: s1 }, { subType: s2 }) => (
+            (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1)),
+      }), [])
+      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+
+    return sortedGroupedResources.filter((group) => group.type === selectedResourceType);
+  },
+);
+
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],
   (activeCollectionTypeFilters) => Object.entries(activeCollectionTypeFilters)
@@ -219,89 +251,6 @@ export const activeCollectionResourceIdsSelector = createSelector(
   (activeCollection) => Object.entries(activeCollection.records)
     .filter(([, record]) => record.saved === true)
     .reduce((acc, [id]) => ({ ...acc, [id]: true }), {}),
-);
-
-const subTypeResourceIdsSelector = createSelector(
-  [resourcesSelector],
-  (resources) => Object.entries(resources).reduce((acc, [resourceId, resourceValues]) => {
-    if (!acc[resourceValues.subType]) {
-      acc[resourceValues.subType] = new Set();
-    }
-    acc[resourceValues.subType].add(resourceId);
-    return acc;
-  }, {}),
-);
-
-const filteredResourceTypesSelector = createSelector(
-  [
-    activeCollectionResourceIdsSelector,
-    activeCollectionMarkedResourcesSelector,
-    filteredItemsInDateRangeSelector,
-    subTypeResourceIdsSelector,
-  ],
-  (
-    collectionResourceIdsObjects,
-    collectionMarkedResources,
-    filteredItemsInDateRange,
-    subTypeResourceIds,
-  ) => {
-    if (!collectionResourceIdsObjects) {
-      return {};
-    }
-    const collectionResourceIds = Object.keys(collectionResourceIdsObjects);
-    const markedResourceIds = Object.keys(collectionMarkedResources.marked);
-    return [...filteredItemsInDateRange].reverse().reduce((acc, { id, type, subType }) => {
-      if (!acc[type]) {
-        acc[type] = {};
-      }
-      if (!acc[type][subType]) {
-        acc[type][subType] = {};
-        acc[type][subType].resourceIds = Array.from(subTypeResourceIds[subType]);
-        acc[type][subType].count = Array.from(subTypeResourceIds[subType]).length;
-        acc[type][subType].dateFilteredResourceIds = [];
-        acc[type][subType].dateFilteredCount = 0;
-        acc[type][subType].collectionDateFilteredResourceIds = [];
-        acc[type][subType].collectionDateFilteredCount = 0;
-        acc[type][subType].collectionDateRange = {};
-        acc[type][subType].markedDateFilteredResourceIds = [];
-        acc[type][subType].markedDateFilteredCount = 0;
-        acc[type][subType].collectionAndMarkedResourceIds = [];
-        acc[type][subType].collectionAndMarkedCount = 0;
-      }
-      acc[type][subType].dateFilteredResourceIds.push(id);
-      acc[type][subType].dateFilteredCount = (
-        acc[type][subType].dateFilteredResourceIds.length
-      );
-
-      if (collectionResourceIds.includes(id)) {
-        acc[type][subType].collectionDateFilteredResourceIds.push(id);
-        acc[type][subType].collectionDateFilteredCount = (
-          acc[type][subType].collectionDateFilteredResourceIds.length
-        );
-      }
-
-      if (markedResourceIds.includes(id)) {
-        acc[type][subType].markedDateFilteredResourceIds.push(id);
-        acc[type][subType].markedDateFilteredCount = (
-          acc[type][subType].markedDateFilteredResourceIds.length
-        );
-      }
-
-      const collectionIds = acc[type][subType].collectionDateFilteredResourceIds;
-      const markedIds = acc[type][subType].markedDateFilteredResourceIds;
-      const collectionAndMarkedIds = acc[type][subType].collectionAndMarkedResourceIds;
-
-      collectionIds.forEach((collectionId) => {
-        if (markedIds.includes(collectionId) && !collectionAndMarkedIds.includes(collectionId)) {
-          acc[type][subType].collectionAndMarkedResourceIds.push(collectionId);
-          acc[type][subType].collectionAndMarkedCount = (
-            acc[type][subType].collectionAndMarkedResourceIds.length
-          );
-        }
-      });
-      return acc;
-    }, {});
-  },
 );
 
 export const collectionsCountSelector = createSelector(
@@ -424,87 +373,5 @@ export const timelineIntervalsSelector = createSelector(
       recordCount2SD,
       recordCount2SDplus,
     };
-  },
-);
-
-export const accordionsContainerDataSelector = createSelector(
-  [
-    filteredResourceTypesSelector,
-    activeCollectionResourceTypeSelector,
-    activeCollectionShowCollectionOnlySelector,
-    activeCollectionShowMarkedOnlySelector,
-    (_, ownProps) => ownProps,
-  ],
-  (
-    filteredResourceTypes,
-    selectedResourceType,
-    showCollectionOnly,
-    showMarkedOnly,
-    ownProps,
-  ) => {
-    const { fromDetailsPanel } = ownProps;
-    if (!selectedResourceType || !filteredResourceTypes[selectedResourceType]) {
-      return {};
-    }
-
-    const subTypeData = {};
-
-    if (fromDetailsPanel) {
-      // creates object of subType: subTypeValues regardless of selectedResourceType
-      Object.entries(filteredResourceTypes).forEach(([, resourceTypeValues]) => {
-        Object.entries(resourceTypeValues).forEach(([subType, subTypeValues]) => {
-          if (subTypeValues.collectionDateFilteredCount > 0) {
-            if (!subTypeData[subType]) {
-              subTypeData[subType] = {};
-            }
-            subTypeData[subType].resourceIds = subTypeValues.collectionDateFilteredResourceIds;
-            subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
-          }
-        });
-      });
-      return subTypeData;
-    }
-
-    // data for CatalogScreen SubTypeAccordionsContainer
-    // creates object of subType: subTypeValues only within
-    // the selectedResourceType and filter settings
-    if (!selectedResourceType) {
-      return {};
-    }
-
-    let count;
-    let resourceIds;
-
-    if (!showCollectionOnly && !showMarkedOnly) {
-      resourceIds = 'dateFilteredResourceIds';
-      count = 'dateFilteredCount';
-    }
-
-    if (showCollectionOnly && !showMarkedOnly) {
-      resourceIds = 'collectionDateFilteredResourceIds';
-      count = 'collectionDateFilteredCount';
-    }
-
-    if (!showCollectionOnly && showMarkedOnly) {
-      resourceIds = 'markedDateFilteredResourceIds';
-      count = 'markedDateFilteredCount';
-    }
-
-    if (showCollectionOnly && showMarkedOnly) {
-      resourceIds = 'collectionAndMarkedResourceIds';
-      count = 'collectionAndMarkedCount';
-    }
-
-    Object.entries(filteredResourceTypes[selectedResourceType])
-      .forEach(([subType, subTypeValues]) => {
-        if (subTypeValues[count] > 0) {
-          if (!subTypeData[subType]) {
-            subTypeData[subType] = {};
-          }
-          subTypeData[subType].resourceIds = subTypeValues[resourceIds];
-          subTypeData[subType].subTypeCount = subTypeValues.dateFilteredCount;
-        }
-      });
-    return subTypeData;
   },
 );
