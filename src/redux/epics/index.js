@@ -78,7 +78,8 @@ const extractNextUrls = (() => {
 
 const referencePaths = {
   serviceProvider: (resource) => path(['serviceProvider'], resource),
-  requester: (resource) => path(['requester'], resource), // practitioner
+  requester: (resource) => path(['requester'], resource), // could be practitioner
+  participant: (resource) => path(['participant', 0, 'individual'], resource), // could be practitioner
 };
 
 const extractReferences = ({ context, resources }) => {
