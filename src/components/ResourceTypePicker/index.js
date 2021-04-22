@@ -41,16 +41,6 @@ const ResourceTypePicker = ({
   selectResourceTypeAction,
   selectedResourceType,
 }) => {
-  // select first resourceType on initial load
-  useEffect(() => {
-    let firstEnabledType;
-    resourceTypeFilters.forEach(({ type, typeIsEnabled }) => {
-      if (!firstEnabledType && typeIsEnabled && !resourceTypeFilters[selectResourceType]) {
-        firstEnabledType = type;
-      }
-    });
-    selectResourceTypeAction(firstEnabledType);
-  }, [resourceTypeFilters]);
 
   return (
     <View>
