@@ -38,7 +38,7 @@ const createCollection = (label = 'Untitled Collection') => {
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
-    selectedResourceType: null,
+    selectedResourceType: TYPES_SORTED_BY_LABEL[0],
     resourceTypeFilters: TYPES_SORTED_BY_LABEL
       .reduce((acc, resourceType) => ({
         ...acc,
