@@ -10,7 +10,7 @@ import {
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
 import { FOCUSED } from '../../constants/marked-status';
 
 export const authSelector = (state) => state.auth.authResult;
@@ -109,28 +109,27 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .sort(sortByDate),
 );
 
-const groupRecordsByType = (records) => {
-  const typeMap = records
-    .reduce((acc, item) => {
-      const { type } = item;
-      return produce(acc, (draft) => {
-        // eslint-disable-next-line no-param-reassign
-        draft[type] = draft[type] ?? [];
-        draft[type].push(item);
-      });
-    }, {});
-  return Object.entries(typeMap)
-    .map(([type, items]) => ({
-      type,
-      label: PLURAL_RESOURCE_TYPES[type],
-      items,
-    }))
-    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
-}
-
 export const allValidRecordsGroupedByTypeSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
-  (allItems) => groupRecordsByType(allItems),
+  (allItems) => {
+    const typeMap = allItems
+      .reduce((acc, item) => {
+        const { type } = item;
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[type] = draft[type] ?? [];
+          draft[type].push(item);
+        });
+      }, {});
+    console.log('typeMap', typeMap)
+    return Object.entries(typeMap)
+      .map(([type, items]) => ({
+        type,
+        label: PLURAL_RESOURCE_TYPES[type],
+        items,
+      }))
+      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+  },
 );
 
 export const filteredRecordsSelector = createSelector(
@@ -210,9 +209,33 @@ const filteredItemsInDateRangeSelector = createSelector(
 export const selectedRecordsGroupedByTypeSelector = createSelector(
   [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
-    const typeGroupedRecords = groupRecordsByType(items)
-    console.log('typeGroupedRecords', typeGroupedRecords)
-    return typeGroupedRecords.filter(group => group.type === selectedResourceType)
+    const typeMap = items
+      .reduce((acc, item) => {
+        const { type, subType } = item;
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[type] = draft[type] ?? {};
+          draft[type][subType] = draft[type][subType] ?? []
+          draft[type][subType].push(item)
+        });
+      }, {});
+
+    const sortedSubTypeObject = Object.entries(typeMap).reduce((acc, [type, subTypes]) => {
+      const subTypesArray = Object.entries(subTypes)
+        .map(([subType, items]) => ({subType, items}))
+        .sort(({subType: s1}, {subType: s2}) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1));
+
+      const typeObject = {}
+      typeObject.type = type
+      typeObject.label = SINGULAR_RESOURCE_TYPES[type]
+      typeObject.subTypes = subTypesArray
+
+      acc.push(typeObject) 
+      return acc
+    }, [])
+
+    console.log('sortedSubTypeObject', sortedSubTypeObject)
+    return null
   }
 )
 

@@ -4,13 +4,15 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape } from 'prop-types';
-import { accordionsContainerDataSelector } from '../../redux/selectors';
+import { accordionsContainerDataSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
 const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
 
-const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
+const SubTypeAccordionsContainer = ({ accordionsContainerData, selectedRecordsGroupedByType }) => {
+  console.log('selectedRecordsGroupedByType', selectedRecordsGroupedByType)
+  return (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(accordionsContainerData)
@@ -30,7 +32,7 @@ const SubTypeAccordionsContainer = ({ accordionsContainerData }) => (
         })}
     </View>
   </View>
-);
+)};
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
@@ -38,6 +40,7 @@ SubTypeAccordionsContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps) => ({
   accordionsContainerData: accordionsContainerDataSelector(state, ownProps),
+  selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state)
 });
 
 export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);
