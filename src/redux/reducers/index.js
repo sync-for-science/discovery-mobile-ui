@@ -162,9 +162,11 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
       const collectionId = action.payload;
-      const updatedCollection = { ...state[collectionId] };
-      updatedCollection.markedResources = defaultMarkedResources;
-      return { ...state, [collectionId]: updatedCollection };
+      return produce(state, (draft) => {
+        Object.values(draft[collectionId].records).forEach((attributes) => {
+          attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
+        });
+      });
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
