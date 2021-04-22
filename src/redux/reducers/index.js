@@ -40,7 +40,7 @@ const createCollection = (label = 'Untitled Collection') => {
     label,
     selectedResourceType: null,
     resourceTypeFilters: TYPES_SORTED_BY_LABEL
-      .reduce((acc, [resourceType]) => ({
+      .reduce((acc, resourceType) => ({
         ...acc,
         [resourceType]: true,
       }), {}),
