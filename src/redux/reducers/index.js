@@ -25,19 +25,6 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
   }
 };
 
-const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
-  .reduce((acc, resourceType) => ({
-    ...acc,
-    [resourceType]: true,
-  }), {});
-
-const preloadSelectedResourceType = null;
-
-const preloadSelectedTimelineRange = {
-  dateRangeStart: undefined,
-  dateRangeEnd: undefined,
-};
-
 // prune items whose values are 0, null, undefined, or empty string:
 const pruneEmpty = ((o) => Object.entries(o)
   .filter(([, v]) => v)
@@ -62,9 +49,16 @@ const createCollection = (
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
-    selectedResourceType: preloadSelectedResourceType,
-    resourceTypeFilters: preloadResourceTypeFilters,
-    dateRangeFilter: preloadSelectedTimelineRange,
+    selectedResourceType: null,
+    resourceTypeFilters: Object.keys(PLURAL_RESOURCE_TYPES)
+      .reduce((acc, resourceType) => ({
+        ...acc,
+        [resourceType]: true,
+      }), {}),
+    dateRangeFilter: {
+      dateRangeStart: undefined,
+      dateRangeEnd: undefined,
+    },
     showCollectionOnly: false,
     showMarkedOnly: false,
     records: {},
