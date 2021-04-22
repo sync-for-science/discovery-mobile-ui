@@ -100,9 +100,19 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const { collectionId, resourceType } = action.payload;
       return produce(state, (draft) => {
-        const prevValue = draft[collectionId].resourceTypeFilters[resourceType];
-        // eslint-disable-next-line no-param-reassign
-        draft[collectionId].resourceTypeFilters[resourceType] = !prevValue;
+        const collection = draft[collectionId];
+        const nextValue = !collection.resourceTypeFilters[resourceType];
+        if (!nextValue && collection.selectedResourceType === resourceType) {
+          const enabledTypes = TYPES_SORTED_BY_LABEL.filter((type) => collection.resourceTypeFilters[type]); // eslint-disable-line max-len
+          const nextType = enabledTypes.map((type, index, array) => ({
+            type,
+            next: array[(index === array.length - 1) ? 0 : index + 1],
+          })).find(({ type }) => type === resourceType)?.next;
+          if (nextType) {
+            collection.selectedResourceType = nextType;
+          }
+        }
+        collection.resourceTypeFilters[resourceType] = nextValue; // eslint-disable-line no-param-reassign, max-len
       });
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
