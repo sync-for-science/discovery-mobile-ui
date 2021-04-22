@@ -216,13 +216,13 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
           // eslint-disable-next-line no-param-reassign
           draft[type] = draft[type] ?? {};
           draft[type][subType] = draft[type][subType] ?? []
-          draft[type][subType].push(item)
+          draft[type][subType].push(item.id)
         });
       }, {});
 
-    const sortedSubTypeObject = Object.entries(typeMap).reduce((acc, [type, subTypes]) => {
+    const sortedGroupedResources = Object.entries(typeMap).reduce((acc, [type, subTypes]) => {
       const subTypesArray = Object.entries(subTypes)
-        .map(([subType, items]) => ({subType, items}))
+        .map(([subType, items]) => ({subType, recordIds: items}))
         .sort(({subType: s1}, {subType: s2}) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1));
 
       const typeObject = {}
@@ -233,9 +233,9 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
       acc.push(typeObject) 
       return acc
     }, [])
+    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
 
-    console.log('sortedSubTypeObject', sortedSubTypeObject)
-    return null
+    return sortedGroupedResources.filter(group => group.type === selectedResourceType)
   }
 )
 
