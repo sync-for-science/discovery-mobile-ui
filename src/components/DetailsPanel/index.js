@@ -13,6 +13,7 @@ import produce from 'immer';
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
+import TypeGroupContainer from '../TypeGroupContainer'
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -24,6 +25,7 @@ const defaultSortingState = {
     [TIME_SAVED]: SORT_DESC,
   },
 };
+
 
 const DetailsPanel = ({ navigation, collection }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
