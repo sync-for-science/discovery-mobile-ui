@@ -30,11 +30,6 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
 //   .filter(([, v]) => v)
 //   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
-const defaultMarkedResources = {
-  focusedSubtype: '', // only a single sub-type can be focused
-  // "marked" -- dictionary whose keys are resource ids and values are enum:
-  marked: {},
-};
 const createCollection = (
   name = null,
 ) => {
@@ -60,7 +55,6 @@ const createCollection = (
     showMarkedOnly: false,
     focusedSubtype: '',
     records: {},
-    markedResources: defaultMarkedResources,
   };
 };
 
