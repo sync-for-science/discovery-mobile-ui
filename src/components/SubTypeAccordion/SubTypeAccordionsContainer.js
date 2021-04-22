@@ -1,45 +1,43 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape } from 'prop-types';
-import { accordionsContainerDataSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
-const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1);
-
-const SubTypeAccordionsContainer = ({ accordionsContainerData, selectedRecordsGroupedByType }) => {
-  console.log('selectedRecordsGroupedByType', selectedRecordsGroupedByType)
+const SubTypeAccordionsContainer = ({ selectedRecordsGroupedByType }) => {
   return (
-  <View style={styles.root}>
-    <View style={styles.container}>
-      {Object.entries(accordionsContainerData)
-        .sort(sortEntriesBySubType)
-        .map(([subType, values]) => {
-          if (values.length === 0) {
-            return null;
-          }
-          return (
-            <SubTypeAccordion
-              key={subType}
-              subType={subType}
-              resourceIds={values.resourceIds}
-              subTypeCount={values.subTypeCount}
-            />
-          );
-        })}
+    <View style={styles.root}>
+      <View style={styles.container}>
+        { selectedRecordsGroupedByType
+          .map((typeObject) => {
+            return (
+              <View key={typeObject.label}>
+                {typeObject.subTypes.map(({subType, recordIds}) => (
+                  <SubTypeAccordion
+                    key={subType}
+                    subType={subType}
+                    resourceIds={recordIds}
+                    subTypeCount={recordIds.length}
+                  />
+                ))}
+              </View>
+            )
+          })
+        }
+      </View>
     </View>
-  </View>
-)};
+  )
+}
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  accordionsContainerData: accordionsContainerDataSelector(state, ownProps),
+const mapStateToProps = (state) => ({
   selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state)
 });
 
