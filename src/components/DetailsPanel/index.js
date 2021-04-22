@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text,
+  StyleSheet, View, Text, SafeAreaView,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -58,7 +58,7 @@ const DetailsPanel = ({ navigation, collection }) => {
   }
 
   return (
-    <ScrollView>
+    <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
         <Left />
         <View>
@@ -74,8 +74,10 @@ const DetailsPanel = ({ navigation, collection }) => {
         sortingState={sortingState}
         onChange={handleSortChange}
       />
-      <Text>SubTypeAccordion Coming</Text>
-    </ScrollView>
+      <ScrollView>
+        {displayAccordion()}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -87,6 +89,9 @@ DetailsPanel.propTypes = {
 export default DetailsPanel;
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1
+  },
   header: {
     backgroundColor: 'white',
     alignItems: 'center',
