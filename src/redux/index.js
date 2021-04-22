@@ -1,4 +1,5 @@
 import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
+import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 
 import authReducer from '../features/auth/authSlice';
@@ -7,27 +8,38 @@ import {
   collectionsReducer,
   activeCollectionIdReducer,
 } from './reducers';
-import epicMiddleware, { rootEpic } from './epics';
+import rootEpic from './epics';
+import FhirClient from './middleware/fhir-client';
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-  resources: flattenedResourcesReducer,
-  collections: collectionsReducer,
-  activeCollectionId: activeCollectionIdReducer,
-});
+const createStore = () => {
+  const epicMiddleware = createEpicMiddleware({
+    dependencies: {
+      fhirClient: new FhirClient(),
+    },
+  });
 
-const store = configureStore({
-  reducer: rootReducer,
-  middleware: compose([
-    thunk,
-    epicMiddleware,
-    // routerMiddleware(history), // < e.g.: other middleware
-  ]),
-  devTools: {
-    serialize: true, // See: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#serialize
-  },
-});
+  const rootReducer = combineReducers({
+    auth: authReducer,
+    resources: flattenedResourcesReducer,
+    activeCollectionId: activeCollectionIdReducer,
+    collections: collectionsReducer,
+  });
 
-epicMiddleware.run(rootEpic);
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: compose([
+      thunk,
+      epicMiddleware,
+      // routerMiddleware(history), // < e.g.: other middleware
+    ]),
+    devTools: {
+      serialize: true, // See: https://github.com/zalmoxisus/redux-devtools-extension/blob/master/docs/API/Arguments.md#serialize
+    },
+  });
 
-export default store;
+  epicMiddleware.run(rootEpic);
+
+  return store;
+};
+
+export default createStore;
