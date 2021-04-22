@@ -15,6 +15,7 @@ import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import DateAccordionContainer from '../DateAccordion/DateAccordionContainer';
 import SortingHeader from './SortingHeader';
+import TypeGroupedSubTypeAccordionsContainer from '../TypeGroupedSubTypeAccordionsContainer';
 
 const DetailsPanel = ({
   navigation, collection, recordDateResourceIds, timeSavedResourceIds,
@@ -61,7 +62,11 @@ const DetailsPanel = ({
   let displayAccordions;
 
   if (sortingState['record-type'].isPicked) {
-    displayAccordions = <SubTypeAccordionsContainer isDescending={sortingState['record-type'].isDescending} fromDetailsPanel />;
+    displayAccordions = (
+      <TypeGroupedSubTypeAccordionsContainer 
+        isDescending={sortingState['record-type'].isDescending} 
+        fromDetailsPanel />
+      );
   } else if (sortingState['record-date'].isPicked) {
     displayAccordions = (
       <DateAccordionContainer
@@ -98,6 +103,7 @@ const DetailsPanel = ({
       </Header>
       <SortingHeader sortingState={sortingState} setSortingState={setSortingState} />
       <ScrollView>
+        
         {displayAccordions}
       </ScrollView>
     </SafeAreaView>
