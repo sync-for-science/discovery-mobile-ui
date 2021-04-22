@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, ActionSheetIOS,
+  StyleSheet, View, ActionSheetIOS, Text
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -10,7 +10,6 @@ import { Entypo, SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-
 import { shape } from 'prop-types';
 
 import Colors from '../../constants/Colors';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
 const DetailsPanel = ({ navigation, collection }) => {
   const handlePressSortIcon = () => {
@@ -51,7 +50,7 @@ const DetailsPanel = ({ navigation, collection }) => {
           </TouchableOpacity>
         </Right>
       </Header>
-      <SubTypeAccordionsContainer fromDetailsPanel />
+      <Text>SubTypeAccordion Coming</Text>
     </ScrollView>
   );
 };
