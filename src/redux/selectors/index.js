@@ -69,6 +69,13 @@ export const activeCollectionShowMarkedOnlySelector = createSelector(
   (activeCollection) => activeCollection.showMarkedOnly,
 );
 
+export const activeCollectionResourceIdsSelector = createSelector(
+  [activeCollectionSelector],
+  (activeCollection) => Object.entries(activeCollection.records)
+    .filter(([, record]) => record.saved === true)
+    .reduce((acc, [id]) => ({ ...acc, [id]: true }), {}),
+);
+
 export const patientSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources).find((r) => r.type === 'Patient'),
@@ -203,37 +210,54 @@ const filteredItemsInDateRangeSelector = createSelector(
   },
 );
 
+const sortedGroupedRecordsByType = (records) => {
+  const typeMap = records
+    .reduce((acc, record) => {
+      const { type, subType } = record;
+      return produce(acc, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[type] = draft[type] ?? {};
+        // eslint-disable-next-line no-param-reassign
+        draft[type][subType] = draft[type][subType] ?? [];
+        draft[type][subType].push(record.id);
+      });
+    }, {});
+
+  return Object
+    .entries(typeMap)
+    .reduce((acc, [type, subTypes]) => acc.concat({
+      type,
+      label: SINGULAR_RESOURCE_TYPES[type],
+      subTypes: Object
+        .entries(subTypes)
+        .map(([subType, recordIds]) => ({ subType, recordIds }))
+        .sort(({ subType: s1 }, { subType: s2 }) => (
+          (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1)),
+    }), [])
+    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+  }
+
 export const selectedRecordsGroupedByTypeSelector = createSelector(
   [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
-    const typeMap = items
-      .reduce((acc, item) => {
-        const { type, subType } = item;
-        return produce(acc, (draft) => {
-          // eslint-disable-next-line no-param-reassign
-          draft[type] = draft[type] ?? {};
-          // eslint-disable-next-line no-param-reassign
-          draft[type][subType] = draft[type][subType] ?? [];
-          draft[type][subType].push(item.id);
-        });
-      }, {});
+    const groupedRecords = sortedGroupedRecordsByType(items)
 
-    const sortedGroupedResources = Object
-      .entries(typeMap)
-      .reduce((acc, [type, subTypes]) => acc.concat({
-        type,
-        label: SINGULAR_RESOURCE_TYPES[type],
-        subTypes: Object
-          .entries(subTypes)
-          .map(([subType, recordIds]) => ({ subType, recordIds }))
-          .sort(({ subType: s1 }, { subType: s2 }) => (
-            (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1)),
-      }), [])
-      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
-
-    return sortedGroupedResources.filter((group) => group.type === selectedResourceType);
+    return groupedRecords.filter((group) => group.type === selectedResourceType);
   },
 );
+
+const collectionItemsSelector = createSelector(
+  [resourcesSelector, activeCollectionResourceIdsSelector], 
+  (resources, saved) => values(resources)
+    .filter(({id}) => saved[id])
+    .map(pickTimelineFields)
+    .sort(sortByDate)
+)
+
+export const collectionRecordsGroupedByTypeSelector = createSelector(
+  [collectionItemsSelector],
+  (collectionItems) => sortedGroupedRecordsByType(collectionItems)
+)
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],
@@ -244,13 +268,6 @@ export const orderedResourceTypeFiltersSelector = createSelector(
       label: PLURAL_RESOURCE_TYPES[type],
     }))
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1)),
-);
-
-export const activeCollectionResourceIdsSelector = createSelector(
-  [activeCollectionSelector],
-  (activeCollection) => Object.entries(activeCollection.records)
-    .filter(([, record]) => record.saved === true)
-    .reduce((acc, [id]) => ({ ...acc, [id]: true }), {}),
 );
 
 export const collectionsCountSelector = createSelector(
