@@ -139,12 +139,11 @@ export const filteredRecordsSelector = createSelector(
       showCollectionOnly,
       showMarkedOnly,
       records,
-      markedResources,
     } = activeCollection;
     return items
       .filter(({ type }) => resourceTypeFilters[type])
       .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && records[id]?.saved))
-      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
+      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && records[id]?.highlight));
   },
 );
 
@@ -319,7 +318,7 @@ export const timelineIntervalsSelector = createSelector(
   [
     filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
-    const { markedResources, records } = activeCollection;
+    const { records } = activeCollection;
 
     let intervals = [];
     let intervalLength = 0;
@@ -387,7 +386,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => markedResources.marked[id]) // either MARKED or FOCUSED
+          .filter((id) => records[id]?.highlight) // either MARKED or FOCUSED
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -403,7 +402,7 @@ export const timelineIntervalsSelector = createSelector(
           .map(([subType, items]) => ({
             subType,
             marked: items,
-            focused: items.filter((id) => markedResources.marked[id] === FOCUSED),
+            focused: items.filter((id) => records[id]?.highlight === FOCUSED),
           }));
 
         // eslint-disable-next-line no-param-reassign
