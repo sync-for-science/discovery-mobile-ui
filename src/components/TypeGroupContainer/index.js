@@ -7,10 +7,8 @@ import BaseText from '../Generic/BaseText';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
 const TypeGroupContainer = ({ collectionRecords, isDescending, fromDetailsPanel }) => {
-  console.log('collectionRecords', collectionRecords)
   return (
     collectionRecords.map(({type, label, subTypes}, index) => {
-      console.log('type', type)
       const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
       return (
         <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
@@ -19,11 +17,11 @@ const TypeGroupContainer = ({ collectionRecords, isDescending, fromDetailsPanel 
               {label}
             </BaseText>
           </View>
-          {/* <SubTypeAccordionsContainer
+          <SubTypeAccordionsContainer
             data={subTypes}
             isDescending={isDescending}
             fromDetailsPanel={fromDetailsPanel}
-          /> */}
+          />
         </View>
       );
     })
