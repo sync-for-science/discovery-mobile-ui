@@ -211,7 +211,8 @@ const filteredItemsInDateRangeSelector = createSelector(
 );
 
 const sortedGroupedRecordsByType = (records) => {
-  const typeMap = records
+  const typeMap = [...records]
+    .reverse() // reverse chronological
     .reduce((acc, record) => {
       const { type, subType } = record;
       return produce(acc, (draft) => {
