@@ -102,6 +102,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         const collection = draft[collectionId];
         const nextValue = !collection.resourceTypeFilters[resourceType];
+        const currentSelectedTypeisEnabled = collection.resourceTypeFilters[collection.selectedResourceType]; // eslint-disable-line max-len
+        if (nextValue && !currentSelectedTypeisEnabled) {
+          collection.selectedResourceType = resourceType;
+        }
         if (!nextValue && collection.selectedResourceType === resourceType) {
           const enabledTypes = TYPES_SORTED_BY_LABEL.filter((type) => collection.resourceTypeFilters[type]); // eslint-disable-line max-len
           const nextType = enabledTypes.map((type, index, array) => ({
