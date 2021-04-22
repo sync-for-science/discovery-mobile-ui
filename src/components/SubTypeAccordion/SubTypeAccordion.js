@@ -25,6 +25,7 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
+  fromDetailsPanel
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
 
@@ -43,17 +44,21 @@ const SubTypeAccordion = ({
           </BaseText>
         </View>
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            isAccordion
-          />
-          <MarkedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            subTypeCount={subTypeCount}
-            isAccordion
-          />
+          { !fromDetailsPanel && 
+            <>
+              <FocusedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                isAccordion
+              />
+              <MarkedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                subTypeCount={subTypeCount}
+                isAccordion
+              />
+            </>
+          }
           <CollectionIcon
             collectionId={activeCollectionId}
             resourceIds={resourceIds}
@@ -71,6 +76,7 @@ const SubTypeAccordion = ({
         index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
+        fromDetailsPanel={fromDetailsPanel}
       />
     ),
   );

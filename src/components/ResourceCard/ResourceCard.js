@@ -71,6 +71,7 @@ const ResourceCard = ({
   serviceProvider,
   collectionId,
   index,
+  fromDetailsPanel
 }) => {
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
@@ -80,16 +81,20 @@ const ResourceCard = ({
       <View style={styles.header}>
         <BaseText>{resourceDate}</BaseText>
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
-          <MarkedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
+          { !fromDetailsPanel && 
+            <>
+              <FocusedIcon
+                subType={resource.subType}
+                resourceIds={[resourceId]}
+                isAccordion={false}
+              />
+              <MarkedIcon
+                subType={resource.subType}
+                resourceIds={[resourceId]}
+                isAccordion={false}
+              />
+            </>
+          }
           <CollectionIcon
             showCount={false}
             collectionId={collectionId}
