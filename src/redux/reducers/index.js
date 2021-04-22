@@ -5,7 +5,7 @@ import { clone } from 'ramda';
 
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};

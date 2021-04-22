@@ -10,7 +10,7 @@ import {
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
-import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import { FOCUSED } from '../../constants/marked-status';
 
 export const authSelector = (state) => state.auth.authResult;
