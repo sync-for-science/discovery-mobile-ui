@@ -45,7 +45,18 @@ export const activeCollectionDateRangeFilterSelector = createSelector(
 
 export const activeCollectionMarkedResourcesSelector = createSelector(
   [activeCollectionSelector],
-  (activeCollection) => activeCollection.markedResources,
+  (activeCollection) => Object.entries(activeCollection.records)
+    .filter(([, attributes]) => attributes?.highlight)
+    .reduce((acc, [id, attributes]) => ({
+      ...acc,
+      marked: {
+        ...acc.marked,
+        [id]: attributes.highlight,
+      },
+    }), {
+      focusedSubtype: activeCollection.focusedSubtype,
+      marked: {},
+    }),
 );
 
 export const activeCollectionShowCollectionOnlySelector = createSelector(
