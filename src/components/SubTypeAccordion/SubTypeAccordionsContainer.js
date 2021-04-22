@@ -36,7 +36,6 @@ const SubTypeAccordionsContainer = ({
               subType={subType}
               resourceIds={orderedResourceIds}
               subTypeCount={values.subTypeCount}
-              fromDetailsPanel={fromDetailsPanel}
             />
           );
         })}
