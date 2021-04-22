@@ -5,7 +5,7 @@ import { clone } from 'ramda';
 
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
-import { PLURAL_RESOURCE_TYPES } from '../../constants/resource-types';
+import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
@@ -39,8 +39,8 @@ const createCollection = (label = 'Untitled Collection') => {
     lastUpdated: timeCreated,
     label,
     selectedResourceType: null,
-    resourceTypeFilters: Object.keys(PLURAL_RESOURCE_TYPES)
-      .reduce((acc, resourceType) => ({
+    resourceTypeFilters: TYPES_SORTED_BY_LABEL
+      .reduce((acc, [resourceType]) => ({
         ...acc,
         [resourceType]: true,
       }), {}),
