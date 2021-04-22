@@ -78,6 +78,7 @@ const extractNextUrls = (() => {
 
 const referencePaths = {
   serviceProvider: (resource) => path(['serviceProvider'], resource),
+  requester: (resource) => path(['requester'], resource), // practitioner
 };
 
 const extractReferences = ({ context, resources }) => {
