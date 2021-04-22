@@ -30,11 +30,8 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
 //   .filter(([, v]) => v)
 //   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
-const createCollection = (
-  name = null,
-) => {
+const createCollection = (label = 'Untitled Collection') => {
   const timeCreated = new Date();
-  const label = name || 'Untitled Collection';
 
   return {
     id: uuidv4(),
