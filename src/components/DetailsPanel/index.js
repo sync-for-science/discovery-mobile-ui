@@ -12,10 +12,9 @@ import { shape } from 'prop-types';
 
 import { timeSavedSortedCollectionResourceIdsSelector, recordDateSortedCollectionResourceIdsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import DateAccordionContainer from '../DateAccordion/DateAccordionContainer';
 import SortingHeader from './SortingHeader';
-import TypeGroupedSubTypeAccordionsContainer from '../TypeGroupedSubTypeAccordionsContainer';
+import TypeGroupContainer from '../TypeGroupContainer';
 
 const DetailsPanel = ({
   navigation, collection, recordDateResourceIds, timeSavedResourceIds,
@@ -63,7 +62,7 @@ const DetailsPanel = ({
 
   if (sortingState['record-type'].isPicked) {
     displayAccordions = (
-      <TypeGroupedSubTypeAccordionsContainer 
+      <TypeGroupContainer 
         isDescending={sortingState['record-type'].isDescending} 
         fromDetailsPanel />
       );

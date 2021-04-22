@@ -14,10 +14,14 @@ const SubTypeAccordionsContainer = ({
   accordionsContainerData,
   isDescending,
   fromDetailsPanel,
-}) => (
+  data
+}) => {
+  console.log('data', data)
+  const newData = data ?? accordionsContainerData
+  return (
   <View style={styles.root}>
     <View style={styles.container}>
-      {Object.entries(accordionsContainerData)
+      {Object.entries(newData)
         .sort(sortEntriesBySubType)
         .map(([subType, values]) => {
           if (values.length === 0) {
@@ -44,7 +48,7 @@ const SubTypeAccordionsContainer = ({
         })}
     </View>
   </View>
-);
+)};
 
 SubTypeAccordionsContainer.propTypes = {
   accordionsContainerData: shape({}).isRequired,
