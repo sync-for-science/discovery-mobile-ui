@@ -7,7 +7,7 @@ import { SINGULAR_RESOURCE_TYPES } from '../../resources/resourceTypes'
 import BaseText from '../Generic/BaseText'
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer'
 
-const TypeGroupContainer = ({accordionsContainerData}) => {
+const TypeGroupContainer = ({accordionsContainerData, isDescending, fromDetailsPanel}) => {
   const sortTypes = (type1, type2) => type1 < type2 ? -1 : 1 
   return (
     Object.entries(accordionsContainerData).sort(sortTypes).map(([type, typeValues], index) => {
@@ -19,7 +19,11 @@ const TypeGroupContainer = ({accordionsContainerData}) => {
             {SINGULAR_RESOURCE_TYPES[type]}
           </BaseText>
         </View>
-        <SubTypeAccordionsContainer data={typeValues} />
+        <SubTypeAccordionsContainer 
+          data={typeValues} 
+          isDescending={isDescending}
+          fromDetailsPanel={fromDetailsPanel}
+        />
       </View>
     )})
   )

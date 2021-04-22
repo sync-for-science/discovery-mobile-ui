@@ -19,6 +19,7 @@ import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import DetailsPanel from '../components/DetailsPanel';
 import { activeCollectionSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
+import { accordionsContainerDataSelector } from '../redux/selectors';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
@@ -45,7 +46,7 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({ navigation, collection }) => (
+const CatalogScreen = ({ navigation, collection, accordionsContainerData }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -58,7 +59,7 @@ const CatalogScreen = ({ navigation, collection }) => (
         <Timeline />
         <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer />
+          <SubTypeAccordionsContainer data={accordionsContainerData}/>
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
@@ -74,8 +75,9 @@ CatalogScreen.propTypes = {
 CatalogScreen.defaultProps = {
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state, ownProps) => ({
   collection: activeCollectionSelector(state),
+  accordionsContainerData: accordionsContainerDataSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
