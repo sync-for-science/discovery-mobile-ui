@@ -17,9 +17,8 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import DetailsPanel from '../components/DetailsPanel';
-import { activeCollectionSelector } from '../redux/selectors';
+import { activeCollectionSelector, accordionsContainerDataSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
-import { accordionsContainerDataSelector } from '../redux/selectors';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
@@ -59,7 +58,7 @@ const CatalogScreen = ({ navigation, collection, accordionsContainerData }) => (
         <Timeline />
         <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer data={accordionsContainerData}/>
+          <SubTypeAccordionsContainer data={accordionsContainerData} />
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
@@ -70,6 +69,7 @@ const CatalogScreen = ({ navigation, collection, accordionsContainerData }) => (
 CatalogScreen.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
+  accordionsContainerData: shape({}).isRequired,
 };
 
 CatalogScreen.defaultProps = {

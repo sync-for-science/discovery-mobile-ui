@@ -62,10 +62,11 @@ const DetailsPanel = ({
 
   if (sortingState['record-type'].isPicked) {
     displayAccordions = (
-      <TypeGroupContainer 
-        isDescending={sortingState['record-type'].isDescending} 
-        fromDetailsPanel />
-      );
+      <TypeGroupContainer
+        isDescending={sortingState['record-type'].isDescending}
+        fromDetailsPanel
+      />
+    );
   } else if (sortingState['record-date'].isPicked) {
     displayAccordions = (
       <DateAccordionContainer
@@ -102,7 +103,7 @@ const DetailsPanel = ({
       </Header>
       <SortingHeader sortingState={sortingState} setSortingState={setSortingState} />
       <ScrollView>
-        
+
         {displayAccordions}
       </ScrollView>
     </SafeAreaView>

@@ -11,9 +11,8 @@ const sortEntriesBySubType = ([s1], [s2]) => ((s1.toLowerCase() < s2.toLowerCase
 const SubTypeAccordionsContainer = ({
   isDescending,
   fromDetailsPanel,
-  data
-}) => {
-  return (
+  data,
+}) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {Object.entries(data)
@@ -43,10 +42,10 @@ const SubTypeAccordionsContainer = ({
         })}
     </View>
   </View>
-)};
+);
 
 SubTypeAccordionsContainer.propTypes = {
-  accordionsContainerData: shape({}).isRequired,
+  data: shape({}).isRequired,
   isDescending: bool,
   fromDetailsPanel: bool,
 };

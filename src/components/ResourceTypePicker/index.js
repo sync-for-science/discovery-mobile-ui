@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
@@ -40,17 +40,15 @@ const ResourceTypePicker = ({
   resourceTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
-}) => {
-
-  return (
-    <View>
-      <ScrollView
-        style={styles.root}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.contentContainerStyle}
-      >
-        {
+}) => (
+  <View>
+    <ScrollView
+      style={styles.root}
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={styles.contentContainerStyle}
+    >
+      {
           resourceTypeFilters
             .filter(({ typeIsEnabled }) => typeIsEnabled === true)
             .map(({ type, label }) => (
@@ -63,10 +61,9 @@ const ResourceTypePicker = ({
               />
             ))
         }
-      </ScrollView>
-    </View>
-  );
-};
+    </ScrollView>
+  </View>
+);
 
 ResourceTypePicker.propTypes = {
   resourceTypeFilters: arrayOf(shape({
