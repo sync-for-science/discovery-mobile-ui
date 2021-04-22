@@ -5,7 +5,7 @@ import {
 import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
 import {
-  arrayOf, number, string,
+  arrayOf, bool, number, string,
 } from 'prop-types';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -25,7 +25,7 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
-  fromDetailsPanel
+  fromDetailsPanel,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
 
@@ -44,7 +44,8 @@ const SubTypeAccordion = ({
           </BaseText>
         </View>
         <View style={styles.rightIconsContainer}>
-          { !fromDetailsPanel && 
+          { !fromDetailsPanel
+            && (
             <>
               <FocusedIcon
                 subType={subType}
@@ -58,7 +59,7 @@ const SubTypeAccordion = ({
                 isAccordion
               />
             </>
-          }
+            )}
           <CollectionIcon
             collectionId={activeCollectionId}
             resourceIds={resourceIds}
@@ -99,6 +100,11 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
+  fromDetailsPanel: bool,
+};
+
+SubTypeAccordion.defaultProps = {
+  fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state) => ({

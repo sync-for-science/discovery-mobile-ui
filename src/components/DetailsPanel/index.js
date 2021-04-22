@@ -46,16 +46,16 @@ const DetailsPanel = ({ navigation, collection }) => {
   const displayAccordion = () => {
     if (sortingState['record-type'].isPicked) {
       return (
-        <TypeGroupContainer 
+        <TypeGroupContainer
           isDescending={sortingState['record-type'].isDescending}
           fromDetailsPanel
         />
-      )
-    } else if (sortingState['record-date'].isPicked) {
-      return <Text>RecordDate</Text>
+      );
+    } if (sortingState['record-date'].isPicked) {
+      return <Text>RecordDate</Text>;
     }
-    return <Text>TimeSaved</Text>
-  }
+    return <Text>TimeSaved</Text>;
+  };
 
   return (
     <SafeAreaView style={styles.root}>
@@ -90,7 +90,7 @@ export default DetailsPanel;
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1
+    flex: 1,
   },
   header: {
     backgroundColor: 'white',

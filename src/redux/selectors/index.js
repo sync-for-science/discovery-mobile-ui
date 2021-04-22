@@ -236,15 +236,15 @@ const sortedGroupedRecordsByType = (records) => {
           (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1)),
     }), [])
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
-  }
+};
 
 export const selectedRecordsGroupedBySubTypesSelector = createSelector(
   [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
     if (!selectedResourceType) {
-      return []
+      return [];
     }
-    const groupedRecords = sortedGroupedRecordsByType(items)
+    const groupedRecords = sortedGroupedRecordsByType(items);
 
     return groupedRecords
       .filter((group) => group.type === selectedResourceType)[0].subTypes;
@@ -252,17 +252,17 @@ export const selectedRecordsGroupedBySubTypesSelector = createSelector(
 );
 
 const collectionItemsSelector = createSelector(
-  [resourcesSelector, activeCollectionResourceIdsSelector], 
+  [resourcesSelector, activeCollectionResourceIdsSelector],
   (resources, saved) => values(resources)
-    .filter(({id}) => saved[id])
+    .filter(({ id }) => saved[id])
     .map(pickTimelineFields)
-    .sort(sortByDate)
-)
+    .sort(sortByDate),
+);
 
 export const collectionRecordsGroupedByTypeSelector = createSelector(
   [collectionItemsSelector],
-  (collectionItems) => sortedGroupedRecordsByType(collectionItems)
-)
+  (collectionItems) => sortedGroupedRecordsByType(collectionItems),
+);
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],

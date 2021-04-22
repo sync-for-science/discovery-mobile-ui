@@ -45,10 +45,10 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({ 
-  navigation, 
-  collection, 
-  selectedRecordsGroupedBySubType 
+const CatalogScreen = ({
+  navigation,
+  collection,
+  selectedRecordsGroupedBySubType,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -62,7 +62,7 @@ const CatalogScreen = ({
         <Timeline />
         <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer data={selectedRecordsGroupedBySubType}/>
+          <SubTypeAccordionsContainer data={selectedRecordsGroupedBySubType} />
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
@@ -73,7 +73,7 @@ const CatalogScreen = ({
 CatalogScreen.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
-  selectedRecordsGroupedBySubType: arrayOf(shape({}).isRequired).isRequired
+  selectedRecordsGroupedBySubType: arrayOf(shape({}).isRequired).isRequired,
 };
 
 CatalogScreen.defaultProps = {
@@ -81,7 +81,7 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
-  selectedRecordsGroupedBySubType: selectedRecordsGroupedBySubTypesSelector(state)
+  selectedRecordsGroupedBySubType: selectedRecordsGroupedBySubTypesSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
