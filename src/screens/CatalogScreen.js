@@ -9,7 +9,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { func, shape } from 'prop-types';
+import { arrayOf, func, shape } from 'prop-types';
 
 import Timeline from '../components/Timeline';
 import ResourceTypePicker from '../components/ResourceTypePicker';
@@ -17,7 +17,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import DetailsPanel from '../components/DetailsPanel';
-import { activeCollectionSelector } from '../redux/selectors';
+import { activeCollectionSelector, selectedRecordsGroupedBySubTypesSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -45,7 +45,11 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const CatalogScreen = ({ navigation, collection }) => (
+const CatalogScreen = ({ 
+  navigation, 
+  collection, 
+  selectedRecordsGroupedBySubType 
+}) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -58,7 +62,7 @@ const CatalogScreen = ({ navigation, collection }) => (
         <Timeline />
         <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer />
+          <SubTypeAccordionsContainer data={selectedRecordsGroupedBySubType}/>
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
@@ -69,6 +73,7 @@ const CatalogScreen = ({ navigation, collection }) => (
 CatalogScreen.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
+  selectedRecordsGroupedBySubType: arrayOf(shape({}).isRequired).isRequired
 };
 
 CatalogScreen.defaultProps = {
@@ -76,6 +81,7 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
+  selectedRecordsGroupedBySubType: selectedRecordsGroupedBySubTypesSelector(state)
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);
