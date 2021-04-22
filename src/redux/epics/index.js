@@ -76,21 +76,25 @@ const extractNextUrls = (() => {
   };
 })();
 
-const getServiceProvider = (entry) => path(['serviceProvider'], entry);
+const referencePaths = {
+  serviceProvider: (resource) => path(['serviceProvider'], resource),
+};
 
 const extractReferences = ({ context, resources }) => {
   const urnContextMap = Object.values(resources)
     .reduce((acc, resource) => {
-      const fhirReference = getServiceProvider(resource);
-      if (fhirReference) {
-        const referenceUrn = fhirReference?.reference;
-        acc[referenceUrn] = {
-          referenceUrn,
-          context: context.get(resource.id),
-          referenceType: 'serviceProvider', // TODO: memoize by referenceType
-          parentType: resource.resourceType,
-        };
-      }
+      Object.entries(referencePaths).forEach(([referenceType, getRef]) => {
+        const fhirReference = getRef(resource);
+        if (fhirReference) {
+          const referenceUrn = fhirReference.reference;
+          acc[referenceUrn] = {
+            referenceUrn,
+            context: context.get(resource.id),
+            referenceType, // TODO: memoize by referenceType
+            parentType: resource.resourceType,
+          };
+        }
+      });
       return acc;
     }, {});
 
