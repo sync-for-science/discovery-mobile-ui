@@ -43,6 +43,20 @@ const DetailsPanel = ({ navigation, collection }) => {
     }));
   };
 
+  const displayAccordion = () => {
+    if (sortingState['record-type'].isPicked) {
+      return (
+        <TypeGroupContainer 
+          isDescending={sortingState['record-type'].isDescending}
+          fromDetailsPanel
+        />
+      )
+    } else if (sortingState['record-date'].isPicked) {
+      return <Text>RecordDate</Text>
+    }
+    return <Text>TimeSaved</Text>
+  }
+
   return (
     <ScrollView>
       <Header style={styles.header}>
