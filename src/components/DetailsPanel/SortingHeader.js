@@ -5,18 +5,23 @@ import { func, shape } from 'prop-types';
 
 import BaseText from '../Generic/BaseText';
 
-const BUTTON_LABELS = {
-  'record-type': 'Record Type',
-  'record-date': 'Record Date',
-  'time-saved': 'Time Saved',
+const SORTING_TEXT = {
+  'record-type': {
+    label: 'Record Type',
+    asc: 'Sorted by Record Type in ascending order.',
+    desc: 'Sorted by Record Type in descending order.',
+  },
+  'record-date': {
+    label: 'Record Date',
+    asc: 'Sorted by Record Date in ascending order.',
+    desc: 'Sorted by Record Date in descending order.',
+  },
+  'time-saved': {
+    label: 'Time Saved',
+    asc: 'Sorted by Time Saved in ascending order.',
+    desc: 'Sorted by Time Saved in descending order.',
+  },
 };
-
-const RECORD_TYPE_ASC_DESCRIPTION = 'Sorted by Record Type in ascending order.';
-const RECORD_TYPE_DSC_DESCRIPTION = 'Sorted by Record Type in descending order.';
-const RECORD_DATE_ASC_DESCRIPTION = 'Sorted by Record Date in ascending order.';
-const RECORD_DATE_DSC_DESCRIPTION = 'Sorted by Record Date in descending order.';
-const TIME_SAVED_ASC_DESCRIPTION = 'Sorted by Time Saved in ascending order.';
-const TIME_SAVED_DSC_DESCRIPTION = 'Sorted by Time Saved in descending order.';
 
 const SortingHeader = ({ sortingState, setSortingState }) => {
   const handlePress = (buttonLabel) => {
@@ -48,30 +53,11 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
         style={styles.button}
         onPress={() => handlePress(buttonLabel)}
       >
-        <BaseText variant={textStyle}>{BUTTON_LABELS[buttonLabel]}</BaseText>
+        <BaseText variant={textStyle}>{SORTING_TEXT[buttonLabel].label}</BaseText>
         {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
       </TouchableOpacity>
     );
   });
-
-  const descriptionText = () => {
-    if (selectedButton === 'record-type' && !isDescending) {
-      return RECORD_TYPE_ASC_DESCRIPTION;
-    }
-    if (selectedButton === 'record-type' && isDescending) {
-      return RECORD_TYPE_DSC_DESCRIPTION;
-    }
-    if (selectedButton === 'record-date' && !isDescending) {
-      return RECORD_DATE_ASC_DESCRIPTION;
-    }
-    if (selectedButton === 'record-date' && isDescending) {
-      return RECORD_DATE_DSC_DESCRIPTION;
-    }
-    if (selectedButton === 'time-saved' && !isDescending) {
-      return TIME_SAVED_ASC_DESCRIPTION;
-    }
-    return TIME_SAVED_DSC_DESCRIPTION;
-  };
 
   return (
     <View style={styles.root}>
@@ -80,7 +66,9 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
         {sortingButtons}
       </View>
       <View style={styles.descriptionContainer}>
-        <BaseText style={styles.descriptionText}>{descriptionText()}</BaseText>
+        <BaseText style={styles.descriptionText}>
+          {isDescending ? SORTING_TEXT[selectedButton].desc : SORTING_TEXT[selectedButton].asc}
+        </BaseText>
       </View>
     </View>
 
