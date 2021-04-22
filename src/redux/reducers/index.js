@@ -68,7 +68,7 @@ const createCollection = (
 
 const createNewCollectionRecord = () => ({
   saved: false,
-  addedDate: null,
+  dateSaved: null,
   highlight: UNMARKED,
 });
 
@@ -93,7 +93,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
           records[id] = records[id] ?? createNewCollectionRecord();
           records[id].saved = true;
-          records[id].addedDate = new Date();
+          records[id].dateSaved = new Date();
         });
       });
     }
@@ -132,7 +132,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
           records[id] = records[id] ?? {};
           records[id].saved = false;
-          records[id].addedDate = null;
+          records[id].dateSaved = null;
         });
       });
     }
@@ -194,7 +194,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.saved = false; // eslint-disable-line no-param-reassign
-          attributes.addedDate = null; // eslint-disable-line no-param-reassign
+          attributes.dateSaved = null; // eslint-disable-line no-param-reassign
         });
       });
     }
