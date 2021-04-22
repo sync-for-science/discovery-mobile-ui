@@ -23,15 +23,8 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   base: {
-    height: 25,
-    width: 25,
+    marginLeft: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 5,
-
-    // disabled icon background per request
-    // client said they might revert change so keeping for reference
-    // marginRight: 10,
-    // backgroundColor: Colors.countIcon,
   },
 });
