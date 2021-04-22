@@ -109,26 +109,28 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .sort(sortByDate),
 );
 
+const groupRecordsByType = (records) => {
+  const typeMap = records
+    .reduce((acc, item) => {
+      const { type } = item;
+      return produce(acc, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[type] = draft[type] ?? [];
+        draft[type].push(item);
+      });
+    }, {});
+  return Object.entries(typeMap)
+    .map(([type, items]) => ({
+      type,
+      label: PLURAL_RESOURCE_TYPES[type],
+      items,
+    }))
+    .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
+}
+
 export const allValidRecordsGroupedByTypeSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
-  (allItems) => {
-    const typeMap = allItems
-      .reduce((acc, item) => {
-        const { type } = item;
-        return produce(acc, (draft) => {
-          // eslint-disable-next-line no-param-reassign
-          draft[type] = draft[type] ?? [];
-          draft[type].push(item);
-        });
-      }, {});
-    return Object.entries(typeMap)
-      .map(([type, items]) => ({
-        type,
-        label: PLURAL_RESOURCE_TYPES[type],
-        items,
-      }))
-      .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
-  },
+  (allItems) => groupRecordsByType(allItems),
 );
 
 export const filteredRecordsSelector = createSelector(
@@ -202,6 +204,20 @@ const filteredItemsInDateRangeSelector = createSelector(
       ));
   },
 );
+
+///////////
+///////////
+export const selectedRecordsGroupedByTypeSelector = createSelector(
+  [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
+  (items, selectedResourceType) => {
+    const typeGroupedRecords = groupRecordsByType(items)
+    console.log('typeGroupedRecords', typeGroupedRecords)
+    return typeGroupedRecords.filter(group => group.type === selectedResourceType)
+  }
+)
+
+///////////
+///////////
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],
