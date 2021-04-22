@@ -12,8 +12,8 @@ import epicMiddleware, { rootEpic } from './epics';
 const rootReducer = combineReducers({
   auth: authReducer,
   resources: flattenedResourcesReducer,
-  collections: collectionsReducer,
   activeCollectionId: activeCollectionIdReducer,
+  collections: collectionsReducer,
 });
 
 const store = configureStore({
