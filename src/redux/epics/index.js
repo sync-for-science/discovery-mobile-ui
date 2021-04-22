@@ -1,7 +1,5 @@
 import { from, of } from 'rxjs';
-import {
-  createEpicMiddleware, combineEpics, ofType,
-} from 'redux-observable';
+import { combineEpics, ofType } from 'redux-observable';
 import {
   catchError, map, concatMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
@@ -10,7 +8,6 @@ import {
 } from 'ramda';
 
 import { actionTypes } from '../action-types';
-import FhirClient from '../middleware/fhir-client';
 import { MOCK_AUTH, MOCK_BUNDLE } from '../../components/Login/SkipLoginButton';
 
 const handleError = (error, message, type) => {
@@ -134,15 +131,11 @@ const requestReferences = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestReferences concatMap')),
 );
 
-export const rootEpic = combineEpics(
+const rootEpic = combineEpics(
   initializeFhirClient,
   groupByType,
   requestNextItems,
   requestReferences,
 );
 
-export default createEpicMiddleware({
-  dependencies: {
-    fhirClient: new FhirClient(),
-  },
-});
+export default rootEpic;

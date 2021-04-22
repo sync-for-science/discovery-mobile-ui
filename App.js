@@ -5,7 +5,7 @@ import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-d
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import Roboto from 'native-base/Fonts/Roboto.ttf';
 import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf'; // eslint-disable-line camelcase
-import store from './src/redux';
+import createStore from './src/redux';
 import RootNavigator from './src/navigation/RootNavigator';
 
 LogBox.ignoreLogs(['VirtualizedLists']);
@@ -31,7 +31,7 @@ export default function App() {
   }
 
   return (
-    <Provider store={store}>
+    <Provider store={createStore()}>
       <RootNavigator />
     </Provider>
   );
