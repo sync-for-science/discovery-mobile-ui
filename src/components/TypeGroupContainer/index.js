@@ -10,14 +10,18 @@ import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsCon
 const TypeGroupContainer = ({accordionsContainerData}) => {
   const sortTypes = (type1, type2) => type1 < type2 ? -1 : 1 
   return (
-    Object.entries(accordionsContainerData).sort(sortTypes).map(([type, typeValues]) => (
-      <View key={type}>
-        <View>
-          <BaseText>{SINGULAR_RESOURCE_TYPES[type]}</BaseText>
+    Object.entries(accordionsContainerData).sort(sortTypes).map(([type, typeValues], index) => {
+      const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {}
+      return (
+      <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
+        <View style={styles.typeTextContainer}>
+          <BaseText variant="title" style={styles.typeText}>
+            {SINGULAR_RESOURCE_TYPES[type]}
+          </BaseText>
         </View>
         <SubTypeAccordionsContainer data={typeValues} />
       </View>
-    ))
+    )})
   )
 }
 
@@ -27,4 +31,17 @@ const mapStateToProps = (state, ownProps) => ({
 
 export default connect(mapStateToProps, null)(TypeGroupContainer);
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  groupContainer: {
+    marginTop: 20
+  },
+  firstGroupContainer: {
+    marginTop: 0
+  },
+  typeTextContainer: {
+    marginLeft: 5,
+  },
+  typeText: {
+    textTransform: 'uppercase'
+  }
+})
