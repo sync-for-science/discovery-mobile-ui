@@ -218,20 +218,17 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
         });
       }, {});
 
-    const sortedGroupedResources = Object.entries(typeMap).reduce((acc, [type, subTypes]) => {
-      const subTypesArray = Object.entries(subTypes)
-        .map(([subType, recordIds]) => ({ subType, recordIds }))
-        .sort(({ subType: s1 }, { subType: s2 }) => (
-          (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1));
-
-      const typeObject = {};
-      typeObject.type = type;
-      typeObject.label = SINGULAR_RESOURCE_TYPES[type];
-      typeObject.subTypes = subTypesArray;
-
-      acc.push(typeObject);
-      return acc;
-    }, [])
+    const sortedGroupedResources = Object
+      .entries(typeMap)
+      .reduce((acc, [type, subTypes]) => acc.concat({
+        type,
+        label: SINGULAR_RESOURCE_TYPES[type],
+        subTypes: Object
+          .entries(subTypes)
+          .map(([subType, recordIds]) => ({ subType, recordIds }))
+          .sort(({ subType: s1 }, { subType: s2 }) => (
+            (s1.toLowerCase() < s2.toLowerCase()) ? -1 : 1)),
+      }), [])
       .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
 
     return sortedGroupedResources.filter((group) => group.type === selectedResourceType);
