@@ -1,10 +1,12 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
+import { clone } from 'ramda';
+
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
 import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
-import { MARKED, FOCUSED } from '../../constants/marked-status';
+import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
 
@@ -23,82 +25,70 @@ export const flattenedResourcesReducer = (state = preloadedResources, action) =>
   }
 };
 
-const preloadResourceTypeFilters = Object.keys(PLURAL_RESOURCE_TYPES)
-  .reduce((acc, resourceType) => ({
-    ...acc,
-    [resourceType]: true,
-  }), {});
-
-const preloadSelectedResourceType = null;
-
-const preloadSelectedTimelineRange = {
-  dateRangeStart: undefined,
-  dateRangeEnd: undefined,
-};
-
-// this same uuid recycled across logins -- which is only development?
-const defaultCollectionId = uuidv4();
-
 // prune items whose values are 0, null, undefined, or empty string:
-const pruneEmpty = ((o) => Object.entries(o)
-  .filter(([, v]) => v)
-  .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
+// const pruneEmpty = ((o) => Object.entries(o)
+//   .filter(([, v]) => v)
+//   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
-const defaultMarkedResources = {
-  focusedSubtype: '', // only a single sub-type can be focused
-  // "marked" -- dictionary whose keys are resource ids and values are enum:
-  // 0 -- unmarked
-  // 1 -- marked
-  // 2 -- focused
-  marked: {},
-};
-const createCollection = (
-  name = null,
-  duplicateResourceIds = null,
-) => {
+const createCollection = (label = 'Untitled Collection') => {
   const timeCreated = new Date();
-  const label = name || 'Untitled Collection';
-  const collectionId = (name || name === '') ? uuidv4() : defaultCollectionId;
-  const resourceIds = duplicateResourceIds || {};
 
   return {
-    [collectionId]: {
-      id: collectionId,
-      created: timeCreated,
-      lastUpdated: timeCreated,
-      label,
-      selectedResourceType: preloadSelectedResourceType,
-      resourceTypeFilters: preloadResourceTypeFilters,
-      dateRangeFilter: preloadSelectedTimelineRange,
-      resourceIds,
-      markedResources: defaultMarkedResources,
-      showCollectionOnly: false,
-      showMarkedOnly: false,
+    id: uuidv4(),
+    created: timeCreated,
+    lastUpdated: timeCreated,
+    label,
+    selectedResourceType: null,
+    resourceTypeFilters: Object.keys(PLURAL_RESOURCE_TYPES)
+      .reduce((acc, resourceType) => ({
+        ...acc,
+        [resourceType]: true,
+      }), {}),
+    dateRangeFilter: {
+      dateRangeStart: undefined,
+      dateRangeEnd: undefined,
     },
+    showCollectionOnly: false,
+    showMarkedOnly: false,
+    focusedSubtype: '',
+    records: {},
   };
 };
 
-const preloadCollections = createCollection();
+const createNewCollectionRecord = () => ({
+  saved: false,
+  dateSaved: null,
+  highlight: UNMARKED,
+  // highlight:
+  //   0 -- unmarked
+  //   1 -- marked
+  //   2 -- focused
+});
+
+const defaultCollection = createCollection();
+
+const preloadCollections = {
+  [defaultCollection.id]: defaultCollection,
+};
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return createCollection();
+      const newDefaultCollection = createCollection();
+      return {
+        [newDefaultCollection.id]: newDefaultCollection,
+      };
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
-      const collection = state[collectionId];
-      const updatedResourceIds = { ...collection.resourceIds };
-      resourceIds.forEach((resourceId) => {
-        if (!updatedResourceIds[resourceId]) {
-          updatedResourceIds[resourceId] = true;
-        }
+      return produce(state, (draft) => {
+        resourceIds.forEach((id) => {
+          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
+          records[id] = records[id] ?? createNewCollectionRecord();
+          records[id].saved = true;
+          records[id].dateSaved = new Date();
+        });
       });
-      const newCollection = {
-        ...collection,
-        resourceIds: updatedResourceIds,
-      };
-      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
       const { collectionId, resourceType } = action.payload;
@@ -130,58 +120,51 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
-      const collection = state[collectionId];
-      const updatedResourceIds = { ...collection.resourceIds };
-      resourceIds.forEach((resourceId) => {
-        if (updatedResourceIds[resourceId]) {
-          delete updatedResourceIds[resourceId];
-        }
+      return produce(state, (draft) => {
+        resourceIds.forEach((id) => {
+          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
+          records[id] = records[id] ?? {};
+          records[id].saved = false;
+          records[id].dateSaved = null;
+        });
       });
-      const newCollection = {
-        ...collection,
-        resourceIds: updatedResourceIds,
-      };
-      return { ...state, [collectionId]: newCollection };
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const { subType, resourceIdsMap, collectionId } = action.payload;
-      const newCollection = { ...state[collectionId] };
-      const deFocus = (!subType || subType !== newCollection.markedResources.focusedSubtype);
+      const { collectionId, subType, resourceIdsMap } = action.payload;
 
-      const previousMarked = !deFocus
-        ? newCollection.markedResources.marked
-        : Object.entries(newCollection.markedResources.marked)
-          .reduce((acc, [id, prevValue]) => ({
-            ...acc,
-            [id]: (prevValue === FOCUSED ? MARKED : prevValue),
-          }), {});
-
-      const newlyMarked = Object.entries(resourceIdsMap)
-        .reduce((acc, [id, newValue]) => ({
-          ...acc,
-          // eslint-disable-next-line max-len
-          [id]: ((newValue === FOCUSED && (previousMarked[id] === MARKED)) ? FOCUSED : newValue),
-        }), {});
-
-      newCollection.markedResources = {
-        focusedSubtype: subType,
-        marked: pruneEmpty({
-          ...previousMarked,
-          ...newlyMarked,
-        }),
-      };
-
-      return { ...state, [collectionId]: newCollection };
+      return produce(state, (draft) => {
+        const collection = draft[collectionId];
+        const { records } = collection;
+        const deFocus = (!subType || subType !== collection.focusedSubtype);
+        collection.focusedSubtype = subType;
+        if (deFocus) {
+          Object.values(records).forEach((attributes) => {
+            const prevValue = attributes.highlight;
+            attributes.highlight = (prevValue === FOCUSED ? MARKED : prevValue); // eslint-disable-line max-len, no-param-reassign
+          });
+        }
+        Object.entries(resourceIdsMap)
+          .forEach(([id, next]) => {
+            records[id] = records[id] ?? createNewCollectionRecord();
+            const { highlight: prev } = records[id];
+            records[id].highlight = ((prev === MARKED && next === FOCUSED) ? FOCUSED : next);
+          });
+      });
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
       const collectionId = action.payload;
-      const updatedCollection = { ...state[collectionId] };
-      updatedCollection.markedResources = defaultMarkedResources;
-      return { ...state, [collectionId]: updatedCollection };
+      return produce(state, (draft) => {
+        Object.values(draft[collectionId].records).forEach((attributes) => {
+          attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
+        });
+      });
     }
     case actionTypes.CREATE_COLLECTION: {
       const newCollection = createCollection(action.payload);
-      return { ...state, ...newCollection };
+      return {
+        ...state,
+        [newCollection.id]: newCollection,
+      };
     }
     case actionTypes.DELETE_COLLECTION: {
       const newState = { ...state };
@@ -194,17 +177,24 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const updatedCollection = { ...state[action.payload] };
-      updatedCollection.resourceIds = {};
-      return { ...state, [action.payload]: updatedCollection };
+      const collectionId = action.payload;
+      return produce(state, (draft) => {
+        Object.values(draft[collectionId].records).forEach((attributes) => {
+          attributes.saved = false; // eslint-disable-line no-param-reassign
+          attributes.dateSaved = null; // eslint-disable-line no-param-reassign
+        });
+      });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const dupCollection = { ...state[action.payload.collectionId] };
-      const newCollection = createCollection(
-        action.payload.collectionName,
-        dupCollection.resourceIds,
-      );
-      return { ...state, ...newCollection };
+      const { collectionId, collectionName } = action.payload;
+      const originalCollection = state[collectionId];
+      const newCollection = clone(originalCollection);
+      newCollection.id = uuidv4();
+      newCollection.label = collectionName;
+      return {
+        ...state,
+        [newCollection.id]: newCollection,
+      };
     }
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
       const { collectionId, showCollectionOnly } = action.payload;
@@ -225,13 +215,16 @@ export const collectionsReducer = (state = preloadCollections, action) => {
   }
 };
 
-export const activeCollectionIdReducer = (state = defaultCollectionId, action) => {
+export const activeCollectionIdReducer = (state = null, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return defaultCollectionId;
+      return null;
     }
     case actionTypes.SELECT_COLLECTION: {
       return action.payload;
+    }
+    case actionTypes.DELETE_COLLECTION: {
+      return null;
     }
     default:
       return state;

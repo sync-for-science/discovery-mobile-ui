@@ -45,7 +45,18 @@ export const activeCollectionDateRangeFilterSelector = createSelector(
 
 export const activeCollectionMarkedResourcesSelector = createSelector(
   [activeCollectionSelector],
-  (activeCollection) => activeCollection.markedResources,
+  (activeCollection) => Object.entries(activeCollection.records)
+    .filter(([, attributes]) => attributes?.highlight)
+    .reduce((acc, [id, attributes]) => ({
+      ...acc,
+      marked: {
+        ...acc.marked,
+        [id]: attributes.highlight,
+      },
+    }), {
+      focusedSubtype: activeCollection.focusedSubtype,
+      marked: {},
+    }),
 );
 
 export const activeCollectionShowCollectionOnlySelector = createSelector(
@@ -127,14 +138,12 @@ export const filteredRecordsSelector = createSelector(
       resourceTypeFilters,
       showCollectionOnly,
       showMarkedOnly,
-      resourceIds,
-      markedResources,
+      records,
     } = activeCollection;
     return items
       .filter(({ type }) => resourceTypeFilters[type])
-      // activeCollection.resourceIds, aka: "saved to collection"
-      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && resourceIds[id]))
-      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && markedResources.marked[id]));
+      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && records[id]?.saved))
+      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && records[id]?.highlight));
   },
 );
 
@@ -207,7 +216,9 @@ export const orderedResourceTypeFiltersSelector = createSelector(
 
 export const activeCollectionResourceIdsSelector = createSelector(
   [activeCollectionSelector],
-  (activeCollection) => activeCollection?.resourceIds,
+  (activeCollection) => Object.entries(activeCollection.records)
+    .filter(([, record]) => record.saved === true)
+    .reduce((acc, [id]) => ({ ...acc, [id]: true }), {}),
 );
 
 const subTypeResourceIdsSelector = createSelector(
@@ -307,7 +318,7 @@ export const timelineIntervalsSelector = createSelector(
   [
     filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
-    const { markedResources, resourceIds } = activeCollection;
+    const { records } = activeCollection;
 
     let intervals = [];
     let intervalLength = 0;
@@ -375,7 +386,7 @@ export const timelineIntervalsSelector = createSelector(
 
         // temporary dictionary to group items by type:
         const markedItemsDictionaryByType = interval.items
-          .filter((id) => markedResources.marked[id]) // either MARKED or FOCUSED
+          .filter((id) => records[id]?.highlight) // either MARKED or FOCUSED
           .reduce((acc, id) => {
             const { subType } = resources[id];
             const idsByType = acc[subType] ?? [];
@@ -391,11 +402,11 @@ export const timelineIntervalsSelector = createSelector(
           .map(([subType, items]) => ({
             subType,
             marked: items,
-            focused: items.filter((id) => markedResources.marked[id] === FOCUSED),
+            focused: items.filter((id) => records[id]?.highlight === FOCUSED),
           }));
 
         // eslint-disable-next-line no-param-reassign
-        interval.collectionItems = interval.items.filter((id) => resourceIds[id]);
+        interval.collectionItems = interval.items.filter((id) => records[id]?.saved);
       });
     }
 
