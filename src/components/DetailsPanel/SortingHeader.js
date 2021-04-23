@@ -1,23 +1,25 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { func, shape, string } from 'prop-types';
+import { oneOf, func, shape } from 'prop-types';
 
 import BaseText from '../Generic/BaseText';
-import { SORT_DESC } from '../../constants/sorting';
+import { SORT_DESC, sortFields } from '../../constants/sorting';
+
+const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
 const SORTING_TEXT = {
-  'record-type': {
+  [RECORD_TYPE]: {
     label: 'Record Type',
     asc: 'Sorted by Record Type in ascending order.',
     desc: 'Sorted by Record Type in descending order.',
   },
-  'record-date': {
+  [RECORD_DATE]: {
     label: 'Record Date',
     asc: 'Sorted by Record Date in ascending order.',
     desc: 'Sorted by Record Date in descending order.',
   },
-  'time-saved': {
+  [TIME_SAVED]: {
     label: 'Time Saved',
     asc: 'Sorted by Time Saved in ascending order.',
     desc: 'Sorted by Time Saved in descending order.',
@@ -65,7 +67,7 @@ const SortingHeader = ({ sortingState, onChange }) => {
 
 SortingHeader.propTypes = {
   sortingState: shape({
-    activeSortField: string.isRequired,
+    activeSortField: oneOf(Object.values(sortFields)).isRequired,
     sortDirections: shape({}).isRequired,
   }).isRequired,
   onChange: func.isRequired,

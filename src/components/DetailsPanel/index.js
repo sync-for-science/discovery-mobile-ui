@@ -12,17 +12,20 @@ import produce from 'immer';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
-import { SORT_ASC, SORT_DESC } from '../../constants/sorting';
+import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
+
+const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+
+const defaultSortingState = {
+  activeSortField: 'record-type',
+  sortDirections: {
+    [RECORD_TYPE]: SORT_DESC,
+    [RECORD_DATE]: SORT_DESC,
+    [TIME_SAVED]: SORT_DESC,
+  },
+};
 
 const DetailsPanel = ({ navigation, collection }) => {
-  const defaultSortingState = {
-    activeSortField: 'record-type',
-    sortDirections: {
-      'record-type': SORT_DESC,
-      'record-date': SORT_DESC,
-      'time-saved': SORT_DESC,
-    },
-  };
   const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
