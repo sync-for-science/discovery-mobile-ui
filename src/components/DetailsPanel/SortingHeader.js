@@ -27,40 +27,35 @@ const SORTING_TEXT = {
 const SortingHeader = ({ sortingState, onChange }) => {
   const { activeSortField, sortDirections } = sortingState;
 
-  const description = SORTING_TEXT[activeSortField][sortDirections[activeSortField]];
-
   const sortConfig = Object.entries(sortDirections).map(([sortType, sortDir]) => ({
     sortType,
     sortDir,
     isPicked: activeSortField === sortType,
-    label: SORTING_TEXT[sortType].label,
-    arrowType: sortDir === SORT_DESC ? 'arrow-down' : 'arrow-up',
   }));
 
   return (
     <View style={styles.root}>
       <View style={styles.buttonContainer}>
-        {
-          sortConfig.map(({
-            sortType,
-            isPicked,
-            label,
-            arrowType,
-          }) => (
-            <TouchableOpacity
-              key={sortType}
-              style={styles.button}
-              onPress={() => onChange(sortType)}
-            >
-              <BaseText variant={isPicked ? 'title' : ''}>{label}</BaseText>
-              {isPicked && <Ionicons name={arrowType} size={20} color="black" />}
-            </TouchableOpacity>
-          ))
-        }
+        { sortConfig.map(({ sortType, sortDir, isPicked }) => (
+          <TouchableOpacity
+            key={sortType}
+            style={styles.button}
+            onPress={() => onChange(sortType)}
+          >
+            <BaseText variant={isPicked ? 'title' : ''}>{SORTING_TEXT[sortType].label}</BaseText>
+            {isPicked && (
+              <Ionicons
+                name={sortDir === SORT_DESC ? 'arrow-down' : 'arrow-up'}
+                size={20}
+                color="black"
+              />
+            )}
+          </TouchableOpacity>
+        ))}
       </View>
       <View style={styles.descriptionContainer}>
         <BaseText style={styles.descriptionText}>
-          {description}
+          {SORTING_TEXT[activeSortField][sortDirections[activeSortField]]}
         </BaseText>
       </View>
     </View>
