@@ -24,15 +24,15 @@ const SORTING_TEXT = {
 };
 
 const SortingHeader = ({ sortingState, setSortingState }) => {
-  const handlePress = (buttonLabel) => {
-    if (sortingState[buttonLabel].isPicked) {
-      const updatedButton = { ...sortingState[buttonLabel] };
+  const handlePress = (sortType) => {
+    if (sortingState[sortType].isPicked) {
+      const updatedButton = { ...sortingState[sortType] };
       updatedButton.isDescending = !updatedButton.isDescending;
-      setSortingState({ ...sortingState, [buttonLabel]: updatedButton });
+      setSortingState({ ...sortingState, [sortType]: updatedButton });
     } else {
       const updatedSortingState = { ...sortingState };
       Object.keys(sortingState).forEach((buttonName) => {
-        updatedSortingState[buttonName].isPicked = buttonName === buttonLabel;
+        updatedSortingState[buttonName].isPicked = buttonName === sortType;
       });
       setSortingState(updatedSortingState);
     }
@@ -41,17 +41,17 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
   let selectedButton;
   let isDescending;
 
-  const sortConfig = Object.entries(sortingState).map(([buttonLabel, values]) => {
+  const sortConfig = Object.entries(sortingState).map(([sortType, values]) => {
     if (values.isPicked) {
-      selectedButton = buttonLabel;
+      selectedButton = sortType;
       isDescending = values.isDescending;
     }
     return ({
-      buttonLabel,
-      label: SORTING_TEXT[buttonLabel],
+      sortType,
+      label: SORTING_TEXT[sortType],
       values,
       textVariant: values.isPicked ? 'title' : '',
-      arrowType: sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up',
+      arrowType: sortingState[sortType].isDescending ? 'arrow-down' : 'arrow-up',
     });
   });
 
@@ -60,16 +60,16 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
       <View style={styles.buttonContainer}>
         {
           sortConfig.map(({
-            buttonLabel,
+            sortType,
             label,
             values,
             textVariant,
             arrowType,
           }) => (
             <TouchableOpacity
-              key={buttonLabel}
+              key={sortType}
               style={styles.button}
-              onPress={() => handlePress(buttonLabel)}
+              onPress={() => handlePress(sortType)}
             >
               <BaseText variant={textVariant}>{label}</BaseText>
               {values.isPicked && <Ionicons name={arrowType} size={20} color="black" />}
