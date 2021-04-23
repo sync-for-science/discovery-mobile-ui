@@ -14,7 +14,7 @@ import flattenResources from './process-resources';
 const handleError = (error, message, type) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
   return of({
-    type: type ?? 'ERROR',
+    type: type ?? actionTypes.ERROR,
     error: true,
     payload: { message, error },
   });
@@ -130,18 +130,20 @@ const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
     .pipe(
       concatMap(({
         referenceUrn, context, // referenceType, parentType,
-      }) => from(fhirClient.resolve({ reference: referenceUrn, context }))),
+      }) => from(fhirClient.resolve({ reference: referenceUrn, context })).pipe(
+        catchError((error) => handleError(error, `Error in resolveReferences fhirClient.resolve urn:\n ${referenceUrn}`)),
+      )),
     )
     .pipe(
       map((result) => ({
         type: actionTypes.FHIR_FETCH_SUCCESS,
         payload: result,
       })),
-      catchError((error) => handleError(error, 'Error in resolveReferences references$.pipe')),
+      catchError((error) => handleError(error, 'Error in resolveReferences references$.pipe[1] map')),
     )),
   takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
   repeat(),
-  catchError((error) => handleError(error, 'Error in resolveReferences concatMap')),
+  catchError((error) => handleError(error, 'Error in resolveReferences')),
 );
 
 const rootEpic = combineEpics(

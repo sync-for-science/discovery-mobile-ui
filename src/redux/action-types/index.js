@@ -1,4 +1,5 @@
 export const actionTypes = { // eslint-disable-line import/prefer-default-export
+  ERROR: 'ERROR',
   SET_AUTH: 'auth/setAuth', // implicitly derived from src/features/auth/authSlice.js
   CLEAR_PATIENT_DATA: 'CLEAR_PATIENT_DATA',
   FHIR_FETCH_SUCCESS: 'FHIR_FETCH_SUCCESS',
