@@ -71,7 +71,7 @@ export const getResourceDate = (resource) => (
   resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
 );
 
-const formatDate = (date, includeTime = false) => {
+export const formatDate = (date, includeTime = false) => {
   const dateFormat = includeTime ? UI_DATE_FORMAT_LONG : UI_DATE_FORMAT;
   return date ? format(new Date(date), dateFormat) : null;
 };

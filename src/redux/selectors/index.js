@@ -11,6 +11,7 @@ import {
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
+import { formatDate } from '../../resources/fhirReader'
 import { FOCUSED } from '../../constants/marked-status';
 
 export const authSelector = (state) => state.auth.authResult;
@@ -266,6 +267,34 @@ export const collectionRecordsGroupedByTypeSelector = createSelector(
     return sortedGroupedRecordsByType(collectionItems, isDescending);
   },
 );
+
+
+const sortedRecordsByRecordDate = (records) => {
+  const typeMap = [...records]
+    .reverse() // reverse chronological
+    .reduce((acc, record) => {
+      const { timelineDate, subType } = record;
+      const formattedDay = formatDate(timelineDate)
+      return produce(acc, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[formattedDay] = draft[formattedDay] ?? {};
+        // eslint-disable-next-line no-param-reassign
+        draft[formattedDay][subType] = draft[formattedDay][subType] ?? [];
+        draft[formattedDay][subType].push(record.id);
+      });
+    }, {});
+
+  console.log('typeMap', typeMap)
+  return null
+}
+
+export const savedRecordsByRecordDateSelector = createSelector(
+  [collectionItemsSelector],
+  (items) => {
+    sortedRecordsByRecordDate(items)
+    return null
+  }
+)
 
 export const orderedResourceTypeFiltersSelector = createSelector(
   [activeCollectionResourceTypeFiltersSelector],

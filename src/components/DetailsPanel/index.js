@@ -9,7 +9,9 @@ import {
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
 import produce from 'immer';
+import { connect } from 'react-redux'
 
+import { savedRecordsByRecordDateSelector} from '../../redux/selectors'
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
@@ -90,7 +92,11 @@ DetailsPanel.propTypes = {
   collection: shape({}).isRequired,
 };
 
-export default DetailsPanel;
+const mapStateToProps = (state) => ({
+  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state)
+})
+
+export default connect(mapStateToProps, null)(DetailsPanel);
 
 const styles = StyleSheet.create({
   root: {
