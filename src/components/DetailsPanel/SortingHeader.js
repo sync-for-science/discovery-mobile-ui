@@ -40,30 +40,42 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
 
   let selectedButton;
   let isDescending;
-  const sortingButtons = Object.entries(sortingState).map(([buttonLabel, values]) => {
+
+  const sortConfig = Object.entries(sortingState).map(([buttonLabel, values]) => {
     if (values.isPicked) {
       selectedButton = buttonLabel;
       isDescending = values.isDescending;
     }
-    const textStyle = values.isPicked ? 'title' : '';
-    const arrowDirection = sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up';
-    return (
-      <TouchableOpacity
-        key={buttonLabel}
-        style={styles.button}
-        onPress={() => handlePress(buttonLabel)}
-      >
-        <BaseText variant={textStyle}>{SORTING_TEXT[buttonLabel].label}</BaseText>
-        {values.isPicked && <Ionicons name={arrowDirection} size={20} color="black" />}
-      </TouchableOpacity>
-    );
+    return ({
+      buttonLabel,
+      label: SORTING_TEXT[buttonLabel],
+      values,
+      textVariant: values.isPicked ? 'title' : '',
+      arrowType: sortingState[buttonLabel].isDescending ? 'arrow-down' : 'arrow-up',
+    });
   });
 
   return (
     <View style={styles.root}>
-
       <View style={styles.buttonContainer}>
-        {sortingButtons}
+        {
+          sortConfig.map(({
+            buttonLabel,
+            label,
+            values,
+            textVariant,
+            arrowType,
+          }) => (
+            <TouchableOpacity
+              key={buttonLabel}
+              style={styles.button}
+              onPress={() => handlePress(buttonLabel)}
+            >
+              <BaseText variant={textVariant}>{label}</BaseText>
+              {values.isPicked && <Ionicons name={arrowType} size={20} color="black" />}
+            </TouchableOpacity>
+          ))
+        }
       </View>
       <View style={styles.descriptionContainer}>
         <BaseText style={styles.descriptionText}>
