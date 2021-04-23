@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { func, shape } from 'prop-types';
+import { func, shape, string } from 'prop-types';
 
 import BaseText from '../Generic/BaseText';
 import { SORT_DESC } from '../../constants/sorting';
@@ -24,37 +24,18 @@ const SORTING_TEXT = {
   },
 };
 
-const SortingHeader = ({ sortingState, setSortingState }) => {
-  const handlePress = (sortType) => {
-    if (sortingState[sortType].isPicked) {
-      const updatedButton = { ...sortingState[sortType] };
-      updatedButton.isDescending = !updatedButton.isDescending;
-      setSortingState({ ...sortingState, [sortType]: updatedButton });
-    } else {
-      const updatedSortingState = { ...sortingState };
-      Object.keys(sortingState).forEach((buttonName) => {
-        updatedSortingState[buttonName].isPicked = buttonName === sortType;
-      });
-      setSortingState(updatedSortingState);
-    }
-  };
+const SortingHeader = ({ sortingState, onChange }) => {
+  const { activeSortField, sortDirections } = sortingState;
 
-  let selectedButton;
-  let isDescending;
+  const description = SORTING_TEXT[activeSortField][sortDirections[activeSortField]];
 
-  const sortConfig = Object.entries(sortingState).map(([sortType, values]) => {
-    if (values.isPicked) {
-      selectedButton = sortType;
-      isDescending = values.isDescending;
-    }
-    return ({
-      sortType,
-      label: SORTING_TEXT[sortType],
-      values,
-      textVariant: values.isPicked ? 'title' : '',
-      arrowType: sortingState[sortType].isDescending ? 'arrow-down' : 'arrow-up',
-    });
-  });
+  const sortConfig = Object.entries(sortDirections).map(([sortType, sortDir]) => ({
+    sortType,
+    sortDir,
+    isPicked: activeSortField === sortType,
+    label: SORTING_TEXT[sortType].label,
+    arrowType: sortDir === SORT_DESC ? 'arrow-down' : 'arrow-up',
+  }));
 
   return (
     <View style={styles.root}>
@@ -62,25 +43,24 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
         {
           sortConfig.map(({
             sortType,
+            isPicked,
             label,
-            values,
-            textVariant,
             arrowType,
           }) => (
             <TouchableOpacity
               key={sortType}
               style={styles.button}
-              onPress={() => handlePress(sortType)}
+              onPress={() => onChange(sortType)}
             >
-              <BaseText variant={textVariant}>{label}</BaseText>
-              {values.isPicked && <Ionicons name={arrowType} size={20} color="black" />}
+              <BaseText variant={isPicked ? 'title' : ''}>{label}</BaseText>
+              {isPicked && <Ionicons name={arrowType} size={20} color="black" />}
             </TouchableOpacity>
           ))
         }
       </View>
       <View style={styles.descriptionContainer}>
         <BaseText style={styles.descriptionText}>
-          {isDescending ? SORTING_TEXT[selectedButton].desc : SORTING_TEXT[selectedButton].asc}
+          {description}
         </BaseText>
       </View>
     </View>
@@ -89,8 +69,11 @@ const SortingHeader = ({ sortingState, setSortingState }) => {
 };
 
 SortingHeader.propTypes = {
-  sortingState: shape({}).isRequired,
-  setSortingState: func.isRequired,
+  sortingState: shape({
+    activeSortField: string.isRequired,
+    sortDirections: shape({}).isRequired,
+  }).isRequired,
+  onChange: func.isRequired,
 };
 
 export default SortingHeader;

@@ -8,6 +8,7 @@ import {
 } from 'native-base';
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
+import produce from 'immer';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
@@ -15,23 +16,28 @@ import { SORT_ASC, SORT_DESC } from '../../constants/sorting';
 
 const DetailsPanel = ({ navigation, collection }) => {
   const defaultSortingState = {
-    'record-type': {
-      isPicked: true,
-      isDescending: true,
-    },
-    'record-date': {
-      isPicked: false,
-      isDescending: true,
-    },
-    'time-saved': {
-      isPicked: false,
-      isDescending: true,
+    activeSortField: 'record-type',
+    sortDirections: {
+      'record-type': SORT_DESC,
+      'record-date': SORT_DESC,
+      'time-saved': SORT_DESC,
     },
   };
   const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
+  const handleSortChange = (sortType) => {
+    setSortingState((state) => produce(state, (draft) => {
+      if (state.activeSortField === sortType) {
+        const prevDir = state.sortDirections[sortType];
+        // eslint-disable-next-line no-param-reassign
+        draft.sortDirections[sortType] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
+      }
+      draft.activeSortField = sortType; // eslint-disable-line no-param-reassign
+    }));
+  };
+
   return (
     <ScrollView>
       <Header style={styles.header}>
@@ -47,7 +53,7 @@ const DetailsPanel = ({ navigation, collection }) => {
       </Header>
       <SortingHeader
         sortingState={sortingState}
-        setSortingState={setSortingState}
+        onChange={handleSortChange}
       />
       <Text>SubTypeAccordion Coming</Text>
     </ScrollView>
