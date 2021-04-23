@@ -71,6 +71,14 @@ const preloadCollections = {
   [defaultCollection.id]: defaultCollection,
 };
 
+const getNextEnabledType = (resourceType, enabledTypes) => enabledTypes
+  .map((type, index, array) => ({
+    type,
+    next: array[(index === array.length - 1) ? 0 : index + 1],
+  }))
+  .find(({ type }) => type === resourceType)
+  ?.next;
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -101,19 +109,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const { collectionId, resourceType } = action.payload;
       return produce(state, (draft) => {
         const collection = draft[collectionId];
-        const nextValue = !collection.resourceTypeFilters[resourceType];
-        const currentSelectedTypeisEnabled = collection.resourceTypeFilters[collection.selectedResourceType]; // eslint-disable-line max-len
-        if (nextValue && !currentSelectedTypeisEnabled) {
+        const { selectedResourceType, resourceTypeFilters } = collection;
+        const filterIsEnabled = resourceTypeFilters[resourceType];
+        const nextValue = !filterIsEnabled;
+        if (nextValue && !resourceTypeFilters[selectedResourceType]) { // eg: all types were off
           collection.selectedResourceType = resourceType;
         }
-        if (!nextValue && collection.selectedResourceType === resourceType) {
-          const enabledTypes = TYPES_SORTED_BY_LABEL.filter((type) => collection.resourceTypeFilters[type]); // eslint-disable-line max-len
-          const nextType = enabledTypes.map((type, index, array) => ({
-            type,
-            next: array[(index === array.length - 1) ? 0 : index + 1],
-          })).find(({ type }) => type === resourceType)?.next;
-          if (nextType) {
-            collection.selectedResourceType = nextType;
+        if (!nextValue && selectedResourceType === resourceType) { // toggling off the active type
+          const enabledTypes = TYPES_SORTED_BY_LABEL.filter((type) => resourceTypeFilters[type]);
+          const nextEnabledType = getNextEnabledType(resourceType, enabledTypes);
+          if (nextEnabledType) {
+            collection.selectedResourceType = nextEnabledType;
           }
         }
         collection.resourceTypeFilters[resourceType] = nextValue; // eslint-disable-line no-param-reassign, max-len
