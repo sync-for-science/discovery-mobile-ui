@@ -27,22 +27,22 @@ const SORTING_TEXT = {
 const SortingHeader = ({ sortingState, onChange }) => {
   const { activeSortField, sortDirections } = sortingState;
 
-  const sortConfig = Object.entries(sortDirections).map(([sortType, sortDir]) => ({
-    sortType,
+  const sortConfig = Object.entries(sortDirections).map(([sortField, sortDir]) => ({
+    sortField,
     sortDir,
-    isPicked: activeSortField === sortType,
+    isPicked: activeSortField === sortField,
   }));
 
   return (
     <View style={styles.root}>
       <View style={styles.buttonContainer}>
-        { sortConfig.map(({ sortType, sortDir, isPicked }) => (
+        { sortConfig.map(({ sortField, sortDir, isPicked }) => (
           <TouchableOpacity
-            key={sortType}
+            key={sortField}
             style={styles.button}
-            onPress={() => onChange(sortType)}
+            onPress={() => onChange(sortField)}
           >
-            <BaseText variant={isPicked ? 'title' : ''}>{SORTING_TEXT[sortType].label}</BaseText>
+            <BaseText variant={isPicked ? 'title' : ''}>{SORTING_TEXT[sortField].label}</BaseText>
             {isPicked && (
               <Ionicons
                 name={sortDir === SORT_DESC ? 'arrow-down' : 'arrow-up'}

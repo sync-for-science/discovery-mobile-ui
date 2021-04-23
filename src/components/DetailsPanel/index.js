@@ -27,14 +27,14 @@ const DetailsPanel = ({ navigation, collection }) => {
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
-  const handleSortChange = (sortType) => {
+  const handleSortChange = (sortField) => {
     setSortingState((state) => produce(state, (draft) => {
-      if (state.activeSortField === sortType) {
-        const prevDir = state.sortDirections[sortType];
+      if (state.activeSortField === sortField) {
+        const prevDir = state.sortDirections[sortField];
         // eslint-disable-next-line no-param-reassign
-        draft.sortDirections[sortType] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
+        draft.sortDirections[sortField] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
       }
-      draft.activeSortField = sortType; // eslint-disable-line no-param-reassign
+      draft.activeSortField = sortField; // eslint-disable-line no-param-reassign
     }));
   };
 
