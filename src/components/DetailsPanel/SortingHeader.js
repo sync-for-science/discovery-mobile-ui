@@ -4,6 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import { func, shape } from 'prop-types';
 
 import BaseText from '../Generic/BaseText';
+import { SORT_DESC } from '../../constants/sorting';
 
 const SORTING_TEXT = {
   'record-type': {

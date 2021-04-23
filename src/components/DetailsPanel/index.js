@@ -11,6 +11,7 @@ import { shape } from 'prop-types';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
+import { SORT_ASC, SORT_DESC } from '../../constants/sorting';
 
 const DetailsPanel = ({ navigation, collection }) => {
   const defaultSortingState = {
