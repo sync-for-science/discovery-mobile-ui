@@ -44,17 +44,22 @@ const DetailsPanel = ({ navigation, collection }) => {
   };
 
   const displayAccordion = () => {
-    if (sortingState['record-type'].isPicked) {
-      return (
-        <TypeGroupContainer
-          isDescending={sortingState['record-type'].isDescending}
-          fromDetailsPanel
-        />
-      );
-    } if (sortingState['record-date'].isPicked) {
-      return <Text>RecordDate</Text>;
+    switch (sortingState.activeSortField) {
+      case RECORD_TYPE:
+        return (
+          <TypeGroupContainer
+            isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
+            fromDetailsPanel
+          />
+        );
+      case RECORD_DATE:
+        return <Text>RecordDate</Text>;
+      case TIME_SAVED:
+        return <Text>TimeSaved</Text>;
+      default:
+        console.warn('No activeSortField in DetailsPanel')
+        return null;
     }
-    return <Text>TimeSaved</Text>;
   };
 
   return (
