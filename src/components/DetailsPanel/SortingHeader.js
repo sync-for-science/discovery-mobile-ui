@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import { oneOf, func, shape } from 'prop-types';
 
 import BaseText from '../Generic/BaseText';
-import { SORT_DESC, sortFields } from '../../constants/sorting';
+import { SORT_DESC, sortFields, orderedSortFields } from '../../constants/sorting';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -29,9 +29,9 @@ const SORTING_TEXT = {
 const SortingHeader = ({ sortingState, onChange }) => {
   const { activeSortField, sortDirections } = sortingState;
 
-  const sortConfig = Object.entries(sortDirections).map(([sortField, sortDir]) => ({
+  const sortConfig = orderedSortFields.map((sortField) => ({
     sortField,
-    sortDir,
+    sortDir: sortDirections[sortField],
     isPicked: activeSortField === sortField,
   }));
 
