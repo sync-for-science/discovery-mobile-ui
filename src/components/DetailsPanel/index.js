@@ -39,7 +39,7 @@ const DetailsPanel = ({ navigation, collection }) => {
           <Title>{collection?.label}</Title>
         </View>
         <Right>
-          <TouchableOpacity style={styles.noteIcon} onPress={handlePressNoteIcon}>
+          <TouchableOpacity onPress={handlePressNoteIcon}>
             <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Right>
@@ -62,8 +62,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
-  },
-  noteIcon: {
-    marginRight: 15,
   },
 });
