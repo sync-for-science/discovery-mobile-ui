@@ -13,7 +13,7 @@ import produce from 'immer';
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
-import TypeGroupContainer from '../TypeGroupContainer'
+import TypeGroupContainer from '../TypeGroupContainer';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -25,7 +25,6 @@ const defaultSortingState = {
     [TIME_SAVED]: SORT_DESC,
   },
 };
-
 
 const DetailsPanel = ({ navigation, collection }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
@@ -57,7 +56,7 @@ const DetailsPanel = ({ navigation, collection }) => {
       case TIME_SAVED:
         return <Text>TimeSaved</Text>;
       default:
-        console.warn('No activeSortField in DetailsPanel')
+        console.warn('No activeSortField in DetailsPanel'); // eslint-disable-line no-console
         return null;
     }
   };
