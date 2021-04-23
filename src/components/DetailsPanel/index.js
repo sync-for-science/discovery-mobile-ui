@@ -1,39 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, View, ActionSheetIOS, Text,
+  StyleSheet, View, Text,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { Entypo, SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
+import produce from 'immer';
 
 import Colors from '../../constants/Colors';
+import SortingHeader from './SortingHeader';
+import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
+
+const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+
+const defaultSortingState = {
+  activeSortField: 'record-type',
+  sortDirections: {
+    [RECORD_TYPE]: SORT_DESC,
+    [RECORD_DATE]: SORT_DESC,
+    [TIME_SAVED]: SORT_DESC,
+  },
+};
 
 const DetailsPanel = ({ navigation, collection }) => {
-  const handlePressSortIcon = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
-        options: ['Cancel', 'Sort Records By Category', 'Sort Records By Date Saved'],
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          // cancel action
-        } else if (buttonIndex === 1) {
-          // Sort Records By Category;
-        } else if (buttonIndex === 2) {
-          // Sort Records By Date Saved;
-        }
-      },
-    );
-  };
-
+  const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
+  const handleSortChange = (sortField) => {
+    setSortingState((state) => produce(state, (draft) => {
+      if (state.activeSortField === sortField) {
+        const prevDir = state.sortDirections[sortField];
+        // eslint-disable-next-line no-param-reassign
+        draft.sortDirections[sortField] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
+      }
+      draft.activeSortField = sortField; // eslint-disable-line no-param-reassign
+    }));
+  };
+
   return (
     <ScrollView>
       <Header style={styles.header}>
@@ -42,14 +49,15 @@ const DetailsPanel = ({ navigation, collection }) => {
           <Title>{collection?.label}</Title>
         </View>
         <Right>
-          <TouchableOpacity style={styles.noteIcon} onPress={handlePressNoteIcon}>
+          <TouchableOpacity onPress={handlePressNoteIcon}>
             <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handlePressSortIcon}>
-            <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Right>
       </Header>
+      <SortingHeader
+        sortingState={sortingState}
+        onChange={handleSortChange}
+      />
       <Text>SubTypeAccordion Coming</Text>
     </ScrollView>
   );
@@ -67,8 +75,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
-  },
-  noteIcon: {
-    marginRight: 15,
   },
 });
