@@ -1,7 +1,7 @@
 import { from, of } from 'rxjs';
 import { combineEpics, ofType } from 'redux-observable';
 import {
-  catchError, map, concatMap, switchMap, takeUntil, repeat,
+  catchError, map, concatMap, mergeMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
 import {
   path, pathEq, flatten,
@@ -128,18 +128,16 @@ const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
   // delay(1000), // e.g.: for debugging
   concatMap(({ payload }) => from(extractReferences(payload))
     .pipe(
-      concatMap(({
+      mergeMap(({
         referenceUrn, context, // referenceType, parentType,
       }) => from(fhirClient.resolve({ reference: referenceUrn, context })).pipe(
+        // tap(() => console.log('Silent success referenceUrn', referenceUrn)),
+        map((result) => ({
+          type: actionTypes.FHIR_FETCH_SUCCESS,
+          payload: result,
+        })),
         catchError((error) => handleError(error, `Error in resolveReferences fhirClient.resolve urn:\n ${referenceUrn}`)),
       )),
-    )
-    .pipe(
-      map((result) => ({
-        type: actionTypes.FHIR_FETCH_SUCCESS,
-        payload: result,
-      })),
-      catchError((error) => handleError(error, 'Error in resolveReferences references$.pipe[1] map')),
     )),
   takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
   repeat(),
