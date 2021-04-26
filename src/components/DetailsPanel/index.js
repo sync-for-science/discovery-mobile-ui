@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, SafeAreaView,
+  StyleSheet, View, SafeAreaView,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -45,10 +45,10 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
         );
       case TIME_SAVED:
         return (
-          <TimeSavedAccordionsContainer 
+          <TimeSavedAccordionsContainer
             isDescending={sortingState.sortDirections[TIME_SAVED] === SORT_DESC}
             fromDetailsPanel
-          />  
+          />
         );
       default:
         console.warn('No activeSortField in DetailsPanel'); // eslint-disable-line no-console
