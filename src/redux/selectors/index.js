@@ -211,7 +211,7 @@ const filteredItemsInDateRangeSelector = createSelector(
 );
 
 const sortedGroupedRecordsByType = (records, isDescending) => {
-  const sortedRecords = isDescending ? [...records].reverse() : records
+  const sortedRecords = isDescending ? [...records].reverse() : records;
   const typeMap = sortedRecords
     .reduce((acc, record) => {
       const { type, subType } = record;
@@ -262,8 +262,9 @@ const collectionItemsSelector = createSelector(
 export const collectionRecordsGroupedByTypeSelector = createSelector(
   [collectionItemsSelector, (_, ownProps) => ownProps],
   (collectionItems, ownProps) => {
-    const { isDescending } = ownProps
-    return sortedGroupedRecordsByType(collectionItems, isDescending)},
+    const { isDescending } = ownProps;
+    return sortedGroupedRecordsByType(collectionItems, isDescending);
+  },
 );
 
 export const orderedResourceTypeFiltersSelector = createSelector(
