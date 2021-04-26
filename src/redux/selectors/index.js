@@ -245,10 +245,9 @@ export const selectedRecordsGroupedBySubTypesSelector = createSelector(
     if (!selectedResourceType) {
       return [];
     }
-    const groupedRecords = sortedGroupedRecordsByType(items);
-
-    return groupedRecords
-      .filter((group) => group.type === selectedResourceType)[0].subTypes;
+    
+    return sortedGroupedRecordsByType(items)
+      .filter((group) => group.type === selectedResourceType);
   },
 );
 
