@@ -269,30 +269,54 @@ export const collectionRecordsGroupedByTypeSelector = createSelector(
 );
 
 
-const sortedRecordsByRecordDate = (records) => {
-  const typeMap = [...records]
-    .reverse() // reverse chronological
+const sortedRecordsByRecordDate = (records, isDescending) => {
+  const sortedRecords = isDescending ? [...records].reverse() : records
+  const typeMap = sortedRecords
     .reduce((acc, record) => {
-      const { timelineDate, subType } = record;
+      const { timelineDate, subType, type } = record;
       const formattedDay = formatDate(timelineDate)
       return produce(acc, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[formattedDay] = draft[formattedDay] ?? {};
+        draft[formattedDay][type] = draft[formattedDay][type] ?? {};
+        draft[formattedDay][type][subType] = draft[formattedDay][type][subType] ?? [];
         // eslint-disable-next-line no-param-reassign
-        draft[formattedDay][subType] = draft[formattedDay][subType] ?? [];
-        draft[formattedDay][subType].push(record.id);
+        draft[formattedDay][type][subType].push(record.id);
       });
     }, {});
 
-  console.log('typeMap', typeMap)
-  return null
+  return Object
+    .entries(typeMap)
+    .reduce((acc1, [ date, typeValues]) => {
+      const typeData = Object
+        .entries(typeValues)
+        .reduce((acc2, [type, subTypeValues]) => {
+          const subTypeData = Object
+            .entries(subTypeValues)
+            .reduce((acc3, [subType, recordIds]) => {
+              return acc3.concat({
+                subType,
+                recordIds
+              })
+            }, [])
+          return acc2.concat({
+            type,
+            label: SINGULAR_RESOURCE_TYPES[type],
+            subTypes: subTypeData
+          })
+        }, [])
+      return acc1.concat({
+        date,
+        types: typeData
+      })
+    }, [])
 }
 
 export const savedRecordsByRecordDateSelector = createSelector(
-  [collectionItemsSelector],
-  (items) => {
-    sortedRecordsByRecordDate(items)
-    return null
+  [collectionItemsSelector, (_, ownProps) => ownProps],
+  (items, ownProps) => {
+    const { isDescending } = ownProps
+    return sortedRecordsByRecordDate(items, isDescending)
   }
 )
 
