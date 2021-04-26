@@ -213,7 +213,11 @@ const filteredItemsInDateRangeSelector = createSelector(
 );
 
 const sortedGroupedRecordsByType = (records, isDescending) => {
-  const sortedRecords = isDescending ? [...records].reverse() : records;
+  // eslint-disable-next-line no-nested-ternary
+  const sortedRecords = isDescending === undefined
+    ? [...records].reverse()
+    : (isDescending ? [...records].reverse() : records);
+
   const typeMap = sortedRecords
     .reduce((acc, record) => {
       const { type, subType } = record;
