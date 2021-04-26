@@ -17,7 +17,7 @@ const DateAccordion = ({date, types, fromDetailsPanel}) => {
     return (
       <View style={styles.header}>
         {chevronIcon}
-        <BaseText>
+        <BaseText variant="title" style={styles.headerText}>
           {item.title}
         </BaseText>
       </View>
@@ -25,10 +25,12 @@ const DateAccordion = ({date, types, fromDetailsPanel}) => {
   }
 
   const renderContent = (item) => (
-    <SubTypeAccordionsContainer 
-      data={item.content} 
-      fromDetailsPanel={fromDetailsPanel}
-    />
+    <View style={styles.content}>
+      <SubTypeAccordionsContainer 
+        data={item.content} 
+        fromDetailsPanel={fromDetailsPanel}
+      />
+    </View>
   )
 
   return (
@@ -53,6 +55,12 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row', 
     padding: 5, 
-    alignItems: 'flex-start'
+    alignItems: 'center'
+  },
+  headerText: {
+    textTransform: 'uppercase'
+  },
+  content: {
+    marginLeft: 30
   }
 })

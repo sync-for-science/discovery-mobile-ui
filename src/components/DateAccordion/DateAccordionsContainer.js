@@ -6,7 +6,6 @@ import DateAccordion from './DateAccordion'
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors'
 
 const DateAccordionsContainer = ({savedRecordsByRecordDate, fromDetailsPanel}) => {
-  console.log('savedRecordsByRecordDate', savedRecordsByRecordDate)
   return (
     <View>
       {
