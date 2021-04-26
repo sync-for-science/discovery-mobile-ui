@@ -2,7 +2,9 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { string, shape, number } from 'prop-types';
+import {
+  string, shape, number, bool,
+} from 'prop-types';
 import { connect } from 'react-redux';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
@@ -71,6 +73,7 @@ const ResourceCard = ({
   serviceProvider,
   collectionId,
   index,
+  fromDetailsPanel,
 }) => {
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
@@ -80,16 +83,21 @@ const ResourceCard = ({
       <View style={styles.header}>
         <BaseText>{resourceDate}</BaseText>
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
-          <MarkedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
+          { !fromDetailsPanel
+            && (
+            <>
+              <FocusedIcon
+                subType={resource.subType}
+                resourceIds={[resourceId]}
+                isAccordion={false}
+              />
+              <MarkedIcon
+                subType={resource.subType}
+                resourceIds={[resourceId]}
+                isAccordion={false}
+              />
+            </>
+            )}
           <CollectionIcon
             showCount={false}
             collectionId={collectionId}
@@ -110,10 +118,12 @@ ResourceCard.propTypes = {
   serviceProvider: shape({}),
   collectionId: string.isRequired,
   index: number.isRequired,
+  fromDetailsPanel: bool,
 };
 
 ResourceCard.defaultProps = {
   serviceProvider: null,
+  fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({

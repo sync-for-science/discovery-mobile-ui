@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text,
+  StyleSheet, View, Text, SafeAreaView,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -13,6 +13,7 @@ import produce from 'immer';
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
+import TypeGroupContainer from '../TypeGroupContainer';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -41,8 +42,27 @@ const DetailsPanel = ({ navigation, collection }) => {
     }));
   };
 
+  const displayAccordion = () => {
+    switch (sortingState.activeSortField) {
+      case RECORD_TYPE:
+        return (
+          <TypeGroupContainer
+            isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
+            fromDetailsPanel
+          />
+        );
+      case RECORD_DATE:
+        return <Text>RecordDate</Text>;
+      case TIME_SAVED:
+        return <Text>TimeSaved</Text>;
+      default:
+        console.warn('No activeSortField in DetailsPanel'); // eslint-disable-line no-console
+        return null;
+    }
+  };
+
   return (
-    <ScrollView>
+    <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
         <Left />
         <View>
@@ -58,8 +78,10 @@ const DetailsPanel = ({ navigation, collection }) => {
         sortingState={sortingState}
         onChange={handleSortChange}
       />
-      <Text>SubTypeAccordion Coming</Text>
-    </ScrollView>
+      <ScrollView>
+        {displayAccordion()}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -71,6 +93,9 @@ DetailsPanel.propTypes = {
 export default DetailsPanel;
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   header: {
     backgroundColor: 'white',
     alignItems: 'center',

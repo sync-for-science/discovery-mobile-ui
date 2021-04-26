@@ -2,41 +2,36 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { connect } from 'react-redux';
-import { shape, arrayOf } from 'prop-types';
-import { selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { shape, arrayOf, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
-const SubTypeAccordionsContainer = ({ selectedRecordsGroupedByType }) => (
+const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
   <View style={styles.root}>
     <View style={styles.container}>
-      { selectedRecordsGroupedByType
-        .map((typeObject) => (
-          <View key={typeObject.label}>
-            {typeObject.subTypes.map(({ subType, recordIds }) => (
-              <SubTypeAccordion
-                key={subType}
-                subType={subType}
-                resourceIds={recordIds}
-                subTypeCount={recordIds.length}
-              />
-            ))}
-          </View>
-        ))}
+      {data.map(({ subType, recordIds }) => (
+        <SubTypeAccordion
+          key={subType}
+          subType={subType}
+          resourceIds={recordIds}
+          subTypeCount={recordIds.length}
+          fromDetailsPanel={fromDetailsPanel}
+        />
+      ))}
     </View>
   </View>
 );
 
 SubTypeAccordionsContainer.propTypes = {
-  selectedRecordsGroupedByType: arrayOf(shape({})).isRequired,
+  data: arrayOf(shape({})).isRequired,
+  fromDetailsPanel: bool,
 };
 
-const mapStateToProps = (state) => ({
-  selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state),
-});
+SubTypeAccordionsContainer.defaultProps = {
+  fromDetailsPanel: false,
+};
 
-export default connect(mapStateToProps, null)(SubTypeAccordionsContainer);
+export default SubTypeAccordionsContainer;
 
 const styles = StyleSheet.create({
   root: {

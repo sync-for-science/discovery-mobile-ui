@@ -5,7 +5,7 @@ import {
 import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
 import {
-  arrayOf, number, string,
+  arrayOf, bool, number, string,
 } from 'prop-types';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -25,13 +25,14 @@ const SubTypeAccordion = ({
   resourceIds,
   activeCollectionId,
   subType,
+  fromDetailsPanel,
 }) => {
   const dataArray = [{ title: subType, content: resourceIds }];
 
   const renderHeader = (item, expanded) => {
     const chevronIcon = expanded
-      ? <Ionicons name="chevron-up" size={24} color={Colors.accordionChevronIcon} />
-      : <Ionicons name="chevron-down" size={24} color={Colors.accordionChevronIcon} />;
+      ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
+      : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
 
     return (
       <View style={styles.header}>
@@ -43,17 +44,22 @@ const SubTypeAccordion = ({
           </BaseText>
         </View>
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            isAccordion
-          />
-          <MarkedIcon
-            subType={subType}
-            resourceIds={resourceIds}
-            subTypeCount={subTypeCount}
-            isAccordion
-          />
+          { !fromDetailsPanel
+            && (
+            <>
+              <FocusedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                isAccordion
+              />
+              <MarkedIcon
+                subType={subType}
+                resourceIds={resourceIds}
+                subTypeCount={subTypeCount}
+                isAccordion
+              />
+            </>
+            )}
           <CollectionIcon
             collectionId={activeCollectionId}
             resourceIds={resourceIds}
@@ -71,6 +77,7 @@ const SubTypeAccordion = ({
         index={cardIndex}
         resourceId={resourceId}
         collectionId={activeCollectionId}
+        fromDetailsPanel={fromDetailsPanel}
       />
     ),
   );
@@ -93,6 +100,11 @@ SubTypeAccordion.propTypes = {
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   subType: string.isRequired,
+  fromDetailsPanel: bool,
+};
+
+SubTypeAccordion.defaultProps = {
+  fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state) => ({
