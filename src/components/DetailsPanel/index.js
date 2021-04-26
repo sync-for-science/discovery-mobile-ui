@@ -14,7 +14,7 @@ import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 import TypeGroupContainer from '../TypeGroupContainer';
-import DateAccordion from '../DateAccordion'
+import DateAccordionsContainer from '../DateAccordion/DateAccordionsContainer';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -54,7 +54,7 @@ const DetailsPanel = ({ navigation, collection }) => {
         );
       case RECORD_DATE:
         return (
-            <DateAccordion 
+            <DateAccordionsContainer 
               isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
             />
           )
