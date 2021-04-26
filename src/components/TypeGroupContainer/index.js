@@ -6,7 +6,7 @@ import { collectionRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
-const TypeGroupContainer = ({ collectionRecords, isDescending, fromDetailsPanel }) => (
+const TypeGroupContainer = ({ collectionRecords, fromDetailsPanel }) => (
   collectionRecords.map(({ type, label, subTypes }, index) => {
     const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
     return (
@@ -18,7 +18,6 @@ const TypeGroupContainer = ({ collectionRecords, isDescending, fromDetailsPanel 
         </View>
         <SubTypeAccordionsContainer
           data={subTypes}
-          isDescending={isDescending}
           fromDetailsPanel={fromDetailsPanel}
         />
       </View>
@@ -26,8 +25,8 @@ const TypeGroupContainer = ({ collectionRecords, isDescending, fromDetailsPanel 
   })
 );
 
-const mapStateToProps = (state) => ({
-  collectionRecords: collectionRecordsGroupedByTypeSelector(state),
+const mapStateToProps = (state, ownProps) => ({
+  collectionRecords: collectionRecordsGroupedByTypeSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(TypeGroupContainer);

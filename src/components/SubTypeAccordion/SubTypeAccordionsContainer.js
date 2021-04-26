@@ -6,20 +6,15 @@ import { shape, arrayOf, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
 
-const SubTypeAccordionsContainer = ({ data, isDescending, fromDetailsPanel }) => (
+const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
   <View style={styles.root}>
     <View style={styles.container}>
       {data.map(({ subType, recordIds }) => {
-        // eslint-disable-next-line no-nested-ternary, max-len
-        const sortedRecordIds = !fromDetailsPanel
-          ? recordIds
-          : (isDescending ? recordIds : [...recordIds].reverse());
-
         return (
           <SubTypeAccordion
             key={subType}
             subType={subType}
-            resourceIds={sortedRecordIds}
+            resourceIds={recordIds}
             subTypeCount={recordIds.length}
             fromDetailsPanel={fromDetailsPanel}
           />
@@ -31,12 +26,10 @@ const SubTypeAccordionsContainer = ({ data, isDescending, fromDetailsPanel }) =>
 
 SubTypeAccordionsContainer.propTypes = {
   data: arrayOf(shape({})).isRequired,
-  isDescending: bool,
   fromDetailsPanel: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
-  isDescending: null,
   fromDetailsPanel: false,
 };
 
