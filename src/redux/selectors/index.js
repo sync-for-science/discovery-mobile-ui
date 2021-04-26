@@ -13,6 +13,7 @@ import { createIntervalMap, generateNextIntervalFunc } from './timeline-interval
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
+import { SORT_DESC, sortFields } from '../../constants/sorting';
 
 export const authSelector = (state) => state.auth.authResult;
 
@@ -259,10 +260,13 @@ const savedItemsSelector = createSelector(
     .sort(sortByDate),
 );
 
+// used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
 export const savedRecordsGroupedByTypeSelector = createSelector(
-  [savedItemsSelector, (_, ownProps) => ownProps],
-  (savedItems, ownProps) => {
-    const { isDescending } = ownProps;
+  [savedItemsSelector, activeCollectionSelector],
+  (savedItems, collection) => {
+    const { savedRecordsSortingState: sortingState } = collection;
+    const { RECORD_TYPE } = sortFields;
+    const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC
     return sortedGroupedRecordsByType(savedItems, isDescending);
   },
 );

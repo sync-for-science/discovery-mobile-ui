@@ -79,8 +79,8 @@ DetailsPanel.propTypes = {
   savedRecords: arrayOf(shape({}).isRequired).isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  savedRecords: savedRecordsGroupedByTypeSelector(state, ownProps),
+const mapStateToProps = (state) => ({
+  savedRecords: savedRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(DetailsPanel);
