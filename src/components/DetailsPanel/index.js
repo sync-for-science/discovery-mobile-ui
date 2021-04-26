@@ -7,19 +7,18 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { shape } from 'prop-types';
-import {connect} from 'react-redux'
+import { arrayOf, shape } from 'prop-types';
+import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
-import {collectionRecordsGroupedByTypeSelector} from '../../redux/selectors'
-
+import { collectionRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
 const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
-  const { savedRecordsSortingState: sortingState } = collection
+  const { savedRecordsSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
@@ -38,11 +37,11 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
         );
       case RECORD_DATE:
         return (
-            <DateAccordionsContainer 
-              isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
-              fromDetailsPanel
-            />
-          )
+          <DateAccordionsContainer
+            isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
+            fromDetailsPanel
+          />
+        );
       case TIME_SAVED:
         return <Text>TimeSaved</Text>;
       default:
@@ -77,6 +76,7 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
 DetailsPanel.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
+  collectionRecords: arrayOf(shape({}).isRequired).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({

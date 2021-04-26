@@ -1,16 +1,18 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import React from 'react';
+import { connect } from 'react-redux';
+import { StyleSheet, View } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
-import { savedRecordsByRecordDateSelector } from '../../redux/selectors'
+import {
+  arrayOf, bool, string, shape,
+} from 'prop-types';
+import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
-import Colors from "../../constants/Colors"
+import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
-
-const DateAccordion = ({date, types, fromDetailsPanel}) => {
+const DateAccordion = ({ date, types, fromDetailsPanel }) => {
   const dataArray = [{ title: date, content: types }];
 
   const renderHeader = (item, expanded) => {
@@ -24,69 +26,75 @@ const DateAccordion = ({date, types, fromDetailsPanel}) => {
           {item.title}
         </BaseText>
       </View>
-    )
-  }
+    );
+  };
 
   const renderContent = (item) => (
     <View style={styles.content}>
-      <SubTypeAccordionsContainer 
-        data={item.content} 
+      <SubTypeAccordionsContainer
+        data={item.content}
         fromDetailsPanel={fromDetailsPanel}
       />
     </View>
-  )
+  );
 
   return (
-      <Accordion
-        style={styles.accordion}
-        dataArray={dataArray}
-        expanded={[]}
-        renderHeader={renderHeader}
-        renderContent={renderContent}
-      />
-  )
-}
+    <Accordion
+      style={styles.accordion}
+      dataArray={dataArray}
+      expanded={[]}
+      renderHeader={renderHeader}
+      renderContent={renderContent}
+    />
+  );
+};
 
-const DateAccordionsContainer = ({savedRecordsByRecordDate, fromDetailsPanel}) => {
-  return (
-    <View>
-      {
-        savedRecordsByRecordDate.map(({date, types}) => {
-          return (
-            <DateAccordion
-              key={date}
-              date={date}
-              types={types}
-              fromDetailsPanel={fromDetailsPanel}
-            />
-          )
-        })
+DateAccordion.propTypes = {
+  date: string.isRequired,
+  types: arrayOf(shape({}).isRequired).isRequired,
+  fromDetailsPanel: bool.isRequired,
+};
+
+const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => (
+  <View>
+    {
+        savedRecordsByRecordDate.map(({ date, types }) => (
+          <DateAccordion
+            key={date}
+            date={date}
+            types={types}
+            fromDetailsPanel={fromDetailsPanel}
+          />
+        ))
       }
-    </View>
-  )
-}
+  </View>
+);
+
+DateAccordionsContainer.propTypes = {
+  savedRecordsByRecordDate: arrayOf(shape({}).isRequired).isRequired,
+  fromDetailsPanel: bool.isRequired,
+};
 
 const mapStateToProps = (state, ownProps) => ({
-  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state, ownProps)
-})
+  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state, ownProps),
+});
 
-export default connect(mapStateToProps, null)(DateAccordionsContainer)
+export default connect(mapStateToProps, null)(DateAccordionsContainer);
 
 const styles = StyleSheet.create({
   accordion: {
-    width: '100%'
+    width: '100%',
   },
   header: {
-    flexDirection: 'row', 
-    padding: 5, 
-    alignItems: 'center'
+    flexDirection: 'row',
+    padding: 5,
+    alignItems: 'center',
   },
   headerText: {
     textTransform: 'uppercase',
-    marginLeft: 5
+    marginLeft: 5,
   },
   content: {
-    marginLeft: 30
-  }
-})
-
+    marginLeft: 30,
+  },
+});
