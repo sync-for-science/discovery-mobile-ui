@@ -251,7 +251,7 @@ export const selectedRecordsGroupedBySubTypesSelector = createSelector(
   },
 );
 
-const collectionItemsSelector = createSelector(
+const savedItemsSelector = createSelector(
   [resourcesSelector, activeCollectionResourceIdsSelector],
   (resources, saved) => values(resources)
     .filter(({ id }) => saved[id])
@@ -259,11 +259,11 @@ const collectionItemsSelector = createSelector(
     .sort(sortByDate),
 );
 
-export const collectionRecordsGroupedByTypeSelector = createSelector(
-  [collectionItemsSelector, (_, ownProps) => ownProps],
-  (collectionItems, ownProps) => {
+export const savedRecordsGroupedByTypeSelector = createSelector(
+  [savedItemsSelector, (_, ownProps) => ownProps],
+  (savedItems, ownProps) => {
     const { isDescending } = ownProps;
-    return sortedGroupedRecordsByType(collectionItems, isDescending);
+    return sortedGroupedRecordsByType(savedItems, isDescending);
   },
 );
 
@@ -311,7 +311,7 @@ const sortedRecordsByRecordDate = (records, isDescending) => {
 };
 
 export const savedRecordsByRecordDateSelector = createSelector(
-  [collectionItemsSelector, (_, ownProps) => ownProps],
+  [savedItemsSelector, (_, ownProps) => ownProps],
   (items, ownProps) => {
     const { isDescending } = ownProps;
     return sortedRecordsByRecordDate(items, isDescending);

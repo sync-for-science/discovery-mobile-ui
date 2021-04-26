@@ -15,9 +15,9 @@ import SortingHeader from './SortingHeader';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
-import { collectionRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
-const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
+const DetailsPanel = ({ navigation, collection, savedRecords }) => {
   const { savedRecordsSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -30,7 +30,7 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
       case RECORD_TYPE:
         return (
           <SubTypeAccordionsContainer
-            data={collectionRecords}
+            data={savedRecords}
             isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
             fromDetailsPanel
           />
@@ -76,11 +76,11 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
 DetailsPanel.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
-  collectionRecords: arrayOf(shape({}).isRequired).isRequired,
+  savedRecords: arrayOf(shape({}).isRequired).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  collectionRecords: collectionRecordsGroupedByTypeSelector(state, ownProps),
+  savedRecords: savedRecordsGroupedByTypeSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(DetailsPanel);
