@@ -9,12 +9,15 @@ import {
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
 import produce from 'immer';
+import {connect} from 'react-redux'
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
-import TypeGroupContainer from '../TypeGroupContainer';
 import DateAccordionsContainer from '../DateAccordion/DateAccordionsContainer';
+import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import {collectionRecordsGroupedByTypeSelector} from '../../redux/selectors'
+
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -27,7 +30,7 @@ const defaultSortingState = {
   },
 };
 
-const DetailsPanel = ({ navigation, collection }) => {
+const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
@@ -47,7 +50,8 @@ const DetailsPanel = ({ navigation, collection }) => {
     switch (sortingState.activeSortField) {
       case RECORD_TYPE:
         return (
-          <TypeGroupContainer
+          <SubTypeAccordionsContainer
+            data={collectionRecords}
             isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
             fromDetailsPanel
           />
@@ -95,7 +99,11 @@ DetailsPanel.propTypes = {
   collection: shape({}).isRequired,
 };
 
-export default DetailsPanel;
+const mapStateToProps = (state, ownProps) => ({
+  collectionRecords: collectionRecordsGroupedByTypeSelector(state, ownProps),
+});
+
+export default connect(mapStateToProps, null)(DetailsPanel);
 
 const styles = StyleSheet.create({
   root: {
