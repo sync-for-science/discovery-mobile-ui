@@ -16,6 +16,7 @@ import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import { activeCollectionSelector, savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer/TimeSavedAccordionsContainer'
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
   const { savedRecordsSortingState: sortingState } = collection;
@@ -43,7 +44,12 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
           />
         );
       case TIME_SAVED:
-        return <Text>TimeSaved</Text>;
+        return (
+          <TimeSavedAccordionsContainer 
+            isDescending={sortingState.sortDirections[TIME_SAVED] === SORT_DESC}
+            fromDetailsPanel
+          />  
+        );
       default:
         console.warn('No activeSortField in DetailsPanel'); // eslint-disable-line no-console
         return null;
