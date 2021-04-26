@@ -5,7 +5,7 @@ import { clone } from 'ramda';
 
 import { actionTypes } from '../action-types';
 import processResource from './process-resources';
-import { PLURAL_RESOURCE_TYPES } from '../../resources/resourceTypes';
+import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 
 const preloadedResources = {};
@@ -38,8 +38,8 @@ const createCollection = (label = 'Untitled Collection') => {
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
-    selectedResourceType: null,
-    resourceTypeFilters: Object.keys(PLURAL_RESOURCE_TYPES)
+    selectedResourceType: TYPES_SORTED_BY_LABEL[0],
+    resourceTypeFilters: TYPES_SORTED_BY_LABEL
       .reduce((acc, resourceType) => ({
         ...acc,
         [resourceType]: true,
@@ -71,6 +71,14 @@ const preloadCollections = {
   [defaultCollection.id]: defaultCollection,
 };
 
+const getNextEnabledType = (resourceType, enabledTypes) => enabledTypes
+  .map((type, index, array) => ({
+    type,
+    next: array[(index === array.length - 1) ? 0 : index + 1],
+  }))
+  .find(({ type }) => type === resourceType)
+  ?.next;
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -100,9 +108,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
       const { collectionId, resourceType } = action.payload;
       return produce(state, (draft) => {
-        const prevValue = draft[collectionId].resourceTypeFilters[resourceType];
-        // eslint-disable-next-line no-param-reassign
-        draft[collectionId].resourceTypeFilters[resourceType] = !prevValue;
+        const collection = draft[collectionId];
+        const { selectedResourceType, resourceTypeFilters } = collection;
+        const filterIsEnabled = resourceTypeFilters[resourceType];
+        const nextValue = !filterIsEnabled;
+        if (nextValue && !resourceTypeFilters[selectedResourceType]) { // eg: all types were off
+          collection.selectedResourceType = resourceType;
+        }
+        if (!nextValue && selectedResourceType === resourceType) { // toggling off the active type
+          const enabledTypes = TYPES_SORTED_BY_LABEL.filter((type) => resourceTypeFilters[type]);
+          const nextEnabledType = getNextEnabledType(resourceType, enabledTypes);
+          if (nextEnabledType) {
+            collection.selectedResourceType = nextEnabledType;
+          }
+        }
+        collection.resourceTypeFilters[resourceType] = nextValue; // eslint-disable-line no-param-reassign, max-len
       });
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
