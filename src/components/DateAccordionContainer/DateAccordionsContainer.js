@@ -1,11 +1,14 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { connect } from 'react-redux'
+import { StyleSheet, View } from 'react-native'
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import { savedRecordsByRecordDateSelector } from '../../redux/selectors'
 import BaseText from '../Generic/BaseText';
 import Colors from "../../constants/Colors"
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+
 
 const DateAccordion = ({date, types, fromDetailsPanel}) => {
   const dataArray = [{ title: date, content: types }];
@@ -34,7 +37,6 @@ const DateAccordion = ({date, types, fromDetailsPanel}) => {
   )
 
   return (
-    <View>
       <Accordion
         style={styles.accordion}
         dataArray={dataArray}
@@ -42,11 +44,33 @@ const DateAccordion = ({date, types, fromDetailsPanel}) => {
         renderHeader={renderHeader}
         renderContent={renderContent}
       />
+  )
+}
+
+const DateAccordionsContainer = ({savedRecordsByRecordDate, fromDetailsPanel}) => {
+  return (
+    <View>
+      {
+        savedRecordsByRecordDate.map(({date, types}) => {
+          return (
+            <DateAccordion
+              key={date}
+              date={date}
+              types={types}
+              fromDetailsPanel={fromDetailsPanel}
+            />
+          )
+        })
+      }
     </View>
   )
 }
 
-export default DateAccordion
+const mapStateToProps = (state, ownProps) => ({
+  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state, ownProps)
+})
+
+export default connect(mapStateToProps, null)(DateAccordionsContainer)
 
 const styles = StyleSheet.create({
   accordion: {
@@ -58,9 +82,11 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   headerText: {
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    marginLeft: 5
   },
   content: {
     marginLeft: 30
   }
 })
+

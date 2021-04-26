@@ -13,7 +13,7 @@ import {connect} from 'react-redux'
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
-import DateAccordionsContainer from '../DateAccordion/DateAccordionsContainer';
+import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import {collectionRecordsGroupedByTypeSelector} from '../../redux/selectors'
 
