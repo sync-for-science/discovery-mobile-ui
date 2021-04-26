@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, View, Text, SafeAreaView,
 } from 'react-native';
@@ -8,42 +8,22 @@ import {
 } from 'native-base';
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { shape } from 'prop-types';
-import produce from 'immer';
 import {connect} from 'react-redux'
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
-import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
+import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordion/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import {collectionRecordsGroupedByTypeSelector} from '../../redux/selectors'
 
 
-const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
-
-const defaultSortingState = {
-  activeSortField: 'record-type',
-  sortDirections: {
-    [RECORD_TYPE]: SORT_DESC,
-    [RECORD_DATE]: SORT_DESC,
-    [TIME_SAVED]: SORT_DESC,
-  },
-};
-
 const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
-  const [sortingState, setSortingState] = useState(defaultSortingState);
+  const { savedRecordsSortingState: sortingState } = collection
+  const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
-  };
-  const handleSortChange = (sortField) => {
-    setSortingState((state) => produce(state, (draft) => {
-      if (state.activeSortField === sortField) {
-        const prevDir = state.sortDirections[sortField];
-        // eslint-disable-next-line no-param-reassign
-        draft.sortDirections[sortField] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
-      }
-      draft.activeSortField = sortField; // eslint-disable-line no-param-reassign
-    }));
   };
 
   const displayAccordion = () => {
@@ -85,7 +65,6 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
       </Header>
       <SortingHeader
         sortingState={sortingState}
-        onChange={handleSortChange}
       />
       <ScrollView>
         {displayAccordion()}
