@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
 import { clone } from 'ramda';
+import { addDays } from 'date-fns';
 
 import { actionTypes } from '../action-types';
 import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
@@ -187,6 +188,25 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           }
         }
         collection.resourceTypeFilters[resourceType] = nextValue; // eslint-disable-line no-param-reassign, max-len
+      });
+    }
+    case actionTypes.SHIFT_DATE_RANGE_FILTER: {
+      const { collectionId, moveY } = action.payload;
+      const numDays = -moveY / 200;
+      const { dateRangeStart, dateRangeEnd } = state[collectionId].dateRangeFilter;
+      const newDateRangeStart = addDays(dateRangeStart, numDays); // , { unit: 'day' });
+      const newDateRangeEnd = addDays(dateRangeEnd, numDays); // , { unit: 'day' });
+      // console.info('SHIFT_DATE_RANGE_FILTER, newDateRangeStart: ', newDateRangeStart);
+      // console.info('SHIFT_DATE_RANGE_FILTER, newDateRangeEnd: ', newDateRangeEnd);
+      return produce(state, (draft) => {
+        if (dateRangeStart) {
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId].dateRangeFilter.dateRangeStart = newDateRangeStart;
+        }
+        if (dateRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId].dateRangeFilter.dateRangeEnd = newDateRangeEnd;
+        }
       });
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {

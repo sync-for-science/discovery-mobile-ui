@@ -33,6 +33,18 @@ export const updateDateRange = (fieldKey, date) => (dispatch, getState) => {
   });
 };
 
+export const shiftDateRange = ({ moveY }) => (dispatch, getState) => {
+  // console.info('shiftDateRange, moveY: ', moveY);
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.SHIFT_DATE_RANGE_FILTER,
+    payload: {
+      collectionId: activeCollectionId,
+      moveY,
+    },
+  });
+};
+
 export const addResourceToCollection = (collectionId, resourceIds) => {
   const payloadIds = Array.isArray(resourceIds) ? resourceIds : [resourceIds];
   return ({
