@@ -266,7 +266,7 @@ export const savedRecordsGroupedByTypeSelector = createSelector(
   (savedItems, collection) => {
     const { savedRecordsSortingState: sortingState } = collection;
     const { RECORD_TYPE } = sortFields;
-    const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC
+    const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC;
     return sortedGroupedRecordsByType(savedItems, isDescending);
   },
 );
