@@ -40,6 +40,7 @@ const DetailsPanel = ({ navigation, collection, collectionRecords }) => {
         return (
             <DateAccordionsContainer 
               isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
+              fromDetailsPanel
             />
           )
       case TIME_SAVED:

@@ -8,7 +8,7 @@ import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf'; // eslint-disab
 import createStore from './src/redux';
 import RootNavigator from './src/navigation/RootNavigator';
 
-LogBox.ignoreLogs(['VirtualizedLists']);
+LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
 
 export default function App() {
   const [loading, setLoading] = useState(false);

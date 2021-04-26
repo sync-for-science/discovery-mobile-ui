@@ -7,7 +7,7 @@ import BaseText from '../Generic/BaseText';
 import Colors from "../../constants/Colors"
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 
-const DateAccordion = ({date, types}) => {
+const DateAccordion = ({date, types, fromDetailsPanel}) => {
   const dataArray = [{ title: date, content: types }];
 
   const renderHeader = (item, expanded) => {
@@ -24,14 +24,11 @@ const DateAccordion = ({date, types}) => {
     )
   }
 
-  const renderContent = (item) => item.content.map(
-    ({type, label, subTypes}) => (
-      <SubTypeAccordionsContainer
-        key={type}
-        label={label}
-        subTypes={subTypes}
-      />
-    )
+  const renderContent = (item) => (
+    <SubTypeAccordionsContainer 
+      data={item.content} 
+      fromDetailsPanel={fromDetailsPanel}
+    />
   )
 
   return (
@@ -46,7 +43,6 @@ const DateAccordion = ({date, types}) => {
     </View>
   )
 }
-
 
 export default DateAccordion
 

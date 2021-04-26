@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native'
 import DateAccordion from './DateAccordion'
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors'
 
-const DateAccordionsContainer = ({savedRecordsByRecordDate}) => {
+const DateAccordionsContainer = ({savedRecordsByRecordDate, fromDetailsPanel}) => {
   console.log('savedRecordsByRecordDate', savedRecordsByRecordDate)
   return (
     <View>
@@ -13,8 +13,10 @@ const DateAccordionsContainer = ({savedRecordsByRecordDate}) => {
         savedRecordsByRecordDate.map(({date, types}) => {
           return (
             <DateAccordion
+              key={date}
               date={date}
               types={types}
+              fromDetailsPanel={fromDetailsPanel}
             />
           )
         })
