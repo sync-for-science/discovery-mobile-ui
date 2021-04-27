@@ -373,15 +373,7 @@ export const savedRecordsBySavedDaySelector = createSelector(
     const { isDescending } = ownProps;
     const sortedItems = isDescending ? [...items].reverse() : items;
     const typeMap = sortedItems
-      .reduce((acc, record, index) => {
-        if (index === 0) {
-          const formattedDay = formatDate('4-4-2010');
-          return produce(acc, (draft) => {
-          // eslint-disable-next-line no-param-reassign
-            draft[formattedDay] = draft[formattedDay] ?? [];
-            draft[formattedDay].push(record.id);
-          });
-        }
+      .reduce((acc, record) => {
         const { dateSaved } = record;
         const formattedDay = formatDate(dateSaved);
         return produce(acc, (draft) => {
