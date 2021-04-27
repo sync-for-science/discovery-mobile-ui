@@ -34,7 +34,7 @@ export const flattenedResourcesReducer = (state = preloadedResources, { type, pa
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
 const defaultDetailsPanelSortingState = {
-  activeSortField: [RECORD_TYPE],
+  activeSortField: RECORD_TYPE,
   sortDirections: {
     [RECORD_TYPE]: SORT_DESC,
     [RECORD_DATE]: SORT_DESC,
