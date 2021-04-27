@@ -20,6 +20,7 @@ import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
+import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -75,33 +76,53 @@ const ResourceCard = ({
 }) => {
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
+  const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
 
-  return (
-    <View style={[styles.root, firstCardStyle]}>
-      <View style={styles.header}>
+  const cardHeader = () => {
+    if (fromDetailsPanel) {
+      return (
+        <>
+          <BaseText style={styles.typeLabel}>{displayType}</BaseText>
+          <View style={styles.rightIconsContainer}>
+            <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
+            <CollectionIcon
+              showCount={false}
+              collectionId={collectionId}
+              resourceIds={[resourceId]}
+            />
+          </View>
+        </>
+      );
+    }
+
+    return (
+      <>
         <BaseText>{resourceDate}</BaseText>
         <View style={styles.rightIconsContainer}>
-          { !fromDetailsPanel
-            && (
-            <>
-              <FocusedIcon
-                subType={resource.subType}
-                resourceIds={[resourceId]}
-                isAccordion={false}
-              />
-              <MarkedIcon
-                subType={resource.subType}
-                resourceIds={[resourceId]}
-                isAccordion={false}
-              />
-            </>
-            )}
+          <FocusedIcon
+            subType={resource.subType}
+            resourceIds={[resourceId]}
+            isAccordion={false}
+          />
+          <MarkedIcon
+            subType={resource.subType}
+            resourceIds={[resourceId]}
+            isAccordion={false}
+          />
           <CollectionIcon
             showCount={false}
             collectionId={collectionId}
             resourceIds={[resourceId]}
           />
         </View>
+      </>
+    );
+  };
+
+  return (
+    <View style={[styles.root, firstCardStyle]}>
+      <View style={styles.header}>
+        {cardHeader()}
       </View>
       <View style={styles.body}>
         {selectCardBody(resource)}
@@ -155,5 +176,11 @@ const styles = StyleSheet.create({
   rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  resourceDate: {
+    marginRight: 10,
+  },
+  typeLabel: {
+    textTransform: 'uppercase',
   },
 });
