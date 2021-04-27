@@ -1,15 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { arrayOf, shape } from 'prop-types';
 
 import { savedRecordsBySavedDaySelector } from '../../redux/selectors';
+import SubTypeAccordion from '../SubTypeAccordion/SubTypeAccordion';
 
-const TimeSavedAccordionsContainer = ({ savedRecordsBySavedDay }) => {
-  console.log('savedRecordsBySavedDay', savedRecordsBySavedDay);
+const TimeSavedAccordionsContainer = ({ savedRecordsBySavedDay, fromDetailsPanel }) => {
   return (
     <View>
-      <Text>TimeSavedAccordionsContainer</Text>
+      {
+        savedRecordsBySavedDay.map(({date, recordIds}) => (
+          <SubTypeAccordion
+            key={date}
+            subType={date}
+            resourceIds={recordIds}
+            subTypeCount={recordIds.length}
+            fromDetailsPanel={fromDetailsPanel}
+          />
+        ))
+      }
     </View>
   );
 };
