@@ -313,7 +313,7 @@ const savedItemsSelector = createSelector(
 export const savedRecordsGroupedByTypeSelector = createSelector(
   [savedItemsSelector, activeCollectionSelector],
   (savedItems, collection) => {
-    const { savedRecordsSortingState: sortingState } = collection;
+    const { detailsPanelSortingState: sortingState } = collection;
     const { RECORD_TYPE } = sortFields;
     const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC;
     return sortedGroupedRecordsByType(savedItems, isDescending);

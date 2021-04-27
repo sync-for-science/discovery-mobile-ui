@@ -19,7 +19,7 @@ import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
-  const { savedRecordsSortingState: sortingState } = collection;
+  const { detailsPanelSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
