@@ -14,20 +14,20 @@ import {
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import ResourceCard from '../ResourceCard/ResourceCard';
-import BaseText from '../Generic/BaseText';
+import BaseText from './BaseText';
 import CountIcon from '../Icons/CountIcon';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
 const SubTypeAccordion = ({
-  subTypeCount,
+  headerCount,
   resourceIds,
   activeCollectionId,
-  subType,
+  headerLabel,
   fromDetailsPanel,
 }) => {
-  const dataArray = [{ title: subType, content: resourceIds }];
+  const dataArray = [{ title: headerLabel, content: resourceIds }];
 
   const renderHeader = (item, expanded) => {
     const chevronIcon = expanded
@@ -38,7 +38,7 @@ const SubTypeAccordion = ({
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
           {chevronIcon}
-          <CountIcon count={subTypeCount} />
+          <CountIcon count={headerCount} />
           <BaseText style={styles.headerText}>
             {item.title}
           </BaseText>
@@ -48,14 +48,14 @@ const SubTypeAccordion = ({
             && (
             <>
               <FocusedIcon
-                subType={subType}
+                subType={headerLabel}
                 resourceIds={resourceIds}
                 isAccordion
               />
               <MarkedIcon
-                subType={subType}
+                subType={headerLabel}
                 resourceIds={resourceIds}
-                subTypeCount={subTypeCount}
+                subTypeCount={headerCount}
                 isAccordion
               />
             </>

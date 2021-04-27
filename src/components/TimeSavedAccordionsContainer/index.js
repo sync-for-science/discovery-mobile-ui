@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 import { arrayOf, shape } from 'prop-types';
 
 import { savedRecordsBySavedDaySelector } from '../../redux/selectors';
-import SubTypeAccordion from '../SubTypeAccordion/SubTypeAccordion';
+import BaseAccordion from '../Generic/BaseAccordion';
 
 const TimeSavedAccordionsContainer = ({ savedRecordsBySavedDay, fromDetailsPanel }) => {
   return (
     <View>
       {
         savedRecordsBySavedDay.map(({date, recordIds}) => (
-          <SubTypeAccordion
+          <BaseAccordion
             key={date}
-            subType={date}
+            headerLabel={date}
             resourceIds={recordIds}
-            subTypeCount={recordIds.length}
+            headerCount={recordIds.length}
             fromDetailsPanel={fromDetailsPanel}
           />
         ))

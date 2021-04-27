@@ -14,9 +14,9 @@ import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import { activeCollectionSelector, savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
-import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer/TimeSavedAccordionsContainer'
+import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
+import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
   const { savedRecordsSortingState: sortingState } = collection;

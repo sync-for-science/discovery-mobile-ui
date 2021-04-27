@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { shape, arrayOf, bool } from 'prop-types';
 
-import SubTypeAccordion from './SubTypeAccordion';
+import BaseAccordion from '../Generic/BaseAccordion';
 import BaseText from '../Generic/BaseText';
 
 const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
@@ -24,11 +24,11 @@ const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
           <View style={styles.root}>
             <View style={styles.container}>
               {subTypes.map(({ subType, recordIds }) => (
-                <SubTypeAccordion
+                <BaseAccordion
                   key={subType}
-                  subType={subType}
+                  headerLabel={subType}
                   resourceIds={recordIds}
-                  subTypeCount={recordIds.length}
+                  headerCount={recordIds.length}
                   fromDetailsPanel={fromDetailsPanel}
                 />
               ))}
