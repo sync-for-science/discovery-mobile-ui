@@ -96,10 +96,10 @@ const SubTypeAccordion = ({
 };
 
 SubTypeAccordion.propTypes = {
-  subTypeCount: number.isRequired,
+  headerCount: number.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
-  subType: string.isRequired,
+  headerLabel: string.isRequired,
   fromDetailsPanel: bool,
 };
 
