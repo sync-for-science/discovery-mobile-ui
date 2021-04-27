@@ -10,9 +10,11 @@ import {
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import DateAccordionContent from './DateAccordionContent';
 
-const DateAccordion = ({ date, types, fromDetailsPanel }) => {
+const DateAccordion = ({
+  date, types, fromDetailsPanel, emptyArray,
+}) => {
   const dataArray = [{ title: date, content: types }];
 
   const renderHeader = (item, expanded) => {
@@ -29,22 +31,15 @@ const DateAccordion = ({ date, types, fromDetailsPanel }) => {
     );
   };
 
-  const renderContent = (item) => (
-    <View style={styles.content}>
-      <SubTypeAccordionsContainer
-        data={item.content}
-        fromDetailsPanel={fromDetailsPanel}
-      />
-    </View>
-  );
-
   return (
     <Accordion
       style={styles.accordion}
       dataArray={dataArray}
-      expanded={[]}
+      expanded={emptyArray}
       renderHeader={renderHeader}
-      renderContent={renderContent}
+      renderContent={(item) => (
+        <DateAccordionContent item={item} fromDetailsPanel={fromDetailsPanel} />
+      )}
     />
   );
 };
@@ -53,6 +48,11 @@ DateAccordion.propTypes = {
   date: string.isRequired,
   types: arrayOf(shape({}).isRequired).isRequired,
   fromDetailsPanel: bool.isRequired,
+  emptyArray: arrayOf(),
+};
+
+DateAccordion.defaultProps = {
+  emptyArray: [],
 };
 
 const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => (
