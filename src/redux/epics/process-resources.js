@@ -1,6 +1,6 @@
 // processResource() executes once per/resource, as paginated FHIR requests resolve.
-const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization'];
-const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization'];
+const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization', 'Practitioner'];
+const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization', 'Practitioner'];
 const KNOWN_UNSUPPORTED_OBSERVATIONS = ['survey']; // procedure ?
 
 const getType = (resource) => {
