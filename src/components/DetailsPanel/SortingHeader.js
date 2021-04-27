@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import BaseText from '../Generic/BaseText';
 import { SORT_DESC, sortFields, orderedSortFields } from '../../constants/sorting';
 import { toggleSortingState } from '../../redux/action-creators';
+import Colors from '../../constants/Colors';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20,
+    marginTop: 15,
     marginBottom: 10,
   },
   button: {
@@ -98,8 +99,10 @@ const styles = StyleSheet.create({
     width: 100,
   },
   descriptionContainer: {
-    marginBottom: 10,
+    paddingBottom: 15,
     alignItems: 'center',
+    borderBottomColor: Colors.mediumgrey,
+    borderBottomWidth: 1,
   },
   descriptionText: {
     fontStyle: 'italic',
