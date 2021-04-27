@@ -58,15 +58,15 @@ DateAccordion.defaultProps = {
 const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => (
   <View>
     {
-        savedRecordsByRecordDate.map(({ date, types }) => (
-          <DateAccordion
-            key={date}
-            date={date}
-            types={types}
-            fromDetailsPanel={fromDetailsPanel}
-          />
-        ))
-      }
+      savedRecordsByRecordDate.map(({ date, types }) => (
+        <DateAccordion
+          key={date}
+          date={date}
+          types={types}
+          fromDetailsPanel={fromDetailsPanel}
+        />
+      ))
+    }
   </View>
 );
 
@@ -93,8 +93,5 @@ const styles = StyleSheet.create({
   headerText: {
     textTransform: 'uppercase',
     marginLeft: 5,
-  },
-  content: {
-    marginLeft: 30,
   },
 });
