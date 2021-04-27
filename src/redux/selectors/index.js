@@ -371,8 +371,12 @@ export const savedRecordsBySavedDaySelector = createSelector(
   [savedItemsSelector, (_, ownProps) => ownProps],
   (items, ownProps) => {
     const { isDescending } = ownProps;
-    const sortedItems = isDescending ? [...items].reverse() : items;
-    const typeMap = sortedItems
+    const ascDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 < t2 ? -1 : 1);
+    const descDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 > t2 ? -1 : 1);
+    const dateSortingDirection = isDescending ? descDates : ascDates;
+
+    const typeMap = items
+      .sort(dateSortingDirection)
       .reduce((acc, record) => {
         const { dateSaved } = record;
         const formattedDay = formatDate(dateSaved);
@@ -383,12 +387,8 @@ export const savedRecordsBySavedDaySelector = createSelector(
         });
       }, {});
 
-    const ascDates = ([day1], [day2]) => (day1 > day2 ? -1 : 1);
-    const descDates = ([day1], [day2]) => (day1 < day2 ? -1 : 1);
-    const dateSortingDirection = isDescending ? descDates : ascDates;
     return Object
       .entries(typeMap)
-      .sort(dateSortingDirection)
       .reduce((acc, [date, recordIds]) => acc.concat({
         date,
         recordIds,
