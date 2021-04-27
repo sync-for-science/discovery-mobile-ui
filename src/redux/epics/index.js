@@ -1,10 +1,10 @@
 import { from, of } from 'rxjs';
 import { combineEpics, ofType } from 'redux-observable';
 import {
-  catchError, map, concatMap, mergeMap, switchMap, takeUntil, repeat,
+  catchError, map as rxMap, concatMap, mergeMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
 import {
-  path, pathEq, flatten,
+  compose, map, filter, propOr, hasPath, path, pathEq, flatten,
 } from 'ramda';
 
 import { actionTypes } from '../action-types';
@@ -36,7 +36,7 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
     }
 
     return from(fhirClient.queryPatient(patientId)).pipe(
-      map((result) => ({
+      rxMap((result) => ({
         type: actionTypes.FHIR_FETCH_SUCCESS,
         payload: result,
       })),
@@ -48,7 +48,7 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
 
 const flattenResponsePayload = (action$) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
-  map(({ payload }) => {
+  rxMap(({ payload }) => {
     const context = new Map();
     const resources = {};
     flattenResources({ context, resources }, payload);
@@ -76,29 +76,38 @@ const extractNextUrls = (() => {
   };
 })();
 
-const referencePaths = {
-  serviceProvider: (resource) => path(['serviceProvider'], resource),
-  requester: (resource) => path(['requester'], resource), // could be practitioner
-  participant: (resource) => path(['participant', 0, 'individual'], resource), // could be practitioner
+const referenceMap = {
+  // each key is a "type" (but not the referenced _resource_ type, eg: "Practitioner")
+  // each value operates on a FHIR resource, and returns an Array of reference Objects
+  serviceProvider: compose(
+    (result) => (result ? [result] : []),
+    path(['serviceProvider']),
+  ),
+  requester: compose(
+    (result) => (result ? [result] : []),
+    path(['requester']), // may or may not be practitioner?
+  ),
+  participant: compose(
+    map(path(['individual'])), // may or may not be practitioner?
+    filter(hasPath(['individual', 'reference'])),
+    propOr([], 'participant'),
+  ),
 };
 
 const extractReferences = ({ context, resources }) => {
   const urnContextMap = Object.values(resources)
     .reduce((acc, resource) => {
-      Object.entries(referencePaths).forEach(([referenceType, getRef]) => {
-        const fhirReference = getRef(resource);
-        if (fhirReference) {
-          console.info(`${referenceType} fhirReference: `, fhirReference);
-        }
-        if (fhirReference) {
-          const referenceUrn = fhirReference.reference;
+      Object.entries(referenceMap).forEach(([referenceType, getRefs]) => {
+        const fhirReferences = getRefs(resource);
+        fhirReferences.forEach((ref) => {
+          const referenceUrn = ref.reference;
           acc[referenceUrn] = {
             referenceUrn,
             context: context.get(resource.id),
             referenceType, // TODO: memoize by referenceType
             parentType: resource.resourceType,
           };
-        }
+        });
       });
       return acc;
     }, {});
@@ -112,7 +121,7 @@ const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   concatMap(({ payload }) => from(extractNextUrls(payload)).pipe(
     concatMap((url) => fhirClient.request(url)),
   ).pipe(
-    map((result) => ({
+    rxMap((result) => ({
       type: actionTypes.FHIR_FETCH_SUCCESS,
       payload: result,
     })),
@@ -132,7 +141,7 @@ const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
         referenceUrn, context, // referenceType, parentType,
       }) => from(fhirClient.resolve({ reference: referenceUrn, context })).pipe(
         // tap(() => console.log('Silent success referenceUrn', referenceUrn)),
-        map((result) => ({
+        rxMap((result) => ({
           type: actionTypes.FHIR_FETCH_SUCCESS,
           payload: result,
         })),
