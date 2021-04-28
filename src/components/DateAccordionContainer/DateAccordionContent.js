@@ -2,7 +2,7 @@ import React from 'react';
 import { bool, shape } from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
-import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer/';
+import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 
 const DateAccordionContent = ({ item, fromDetailsPanel }) => (
   <View style={styles.content}>
