@@ -1,6 +1,7 @@
 // processResource() executes once per/resource, as paginated FHIR requests resolve.
-const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization'];
-const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization'];
+const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization', 'Practitioner'];
+const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization', 'Practitioner'];
+const KNOWN_UNSUPPORTED_OBSERVATIONS = ['survey']; // procedure ?
 
 const getType = (resource) => {
   const { resourceType } = resource;
@@ -11,7 +12,9 @@ const getType = (resource) => {
       case 'vital-signs':
         return code;
       default: {
-        console.info(`Unsupported code type for Observation ${resource.id}: `, code); // eslint-disable-line no-console
+        if (!KNOWN_UNSUPPORTED_OBSERVATIONS.includes(code)) {
+          console.info(`Unsupported code type for Observation ${resource.id}: `, code); // eslint-disable-line no-console
+        }
         return 'UNSUPPORTED_OBSERVATION';
       }
     }
@@ -80,7 +83,7 @@ const getTimelineDate = (resource) => {
 const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 
-const processResource = (acc, resource, depth) => {
+const processResource = (result, resource, depth = 0) => {
   if (depth > MAX_DEPTH) {
     return;
   }
@@ -98,17 +101,20 @@ const processResource = (acc, resource, depth) => {
       if (!STATUSES_OK.includes(status)) {
         console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
       }
-      processResource(acc, entry.resource, depth + 1);
+      if (resource.contained && entry.resource.id) {
+        result.context.set(entry.resource.id, resource);
+      }
+      processResource(result, entry.resource, depth + 1);
     });
   } else {
     if (!id) {
       console.warn(`No id -- resource: ${JSON.stringify(resource, null, 2)}.`); // eslint-disable-line no-console
       return;
     }
-    if (acc[id]) {
+    if (result[id]) {
       console.warn(`resource ${id} already exists.`); // eslint-disable-line no-console
     }
-    acc[id] = {
+    result.resources[id] = { // eslint-disable-line no-param-reassign
       ...resource,
       // TODO: namespace these custom fields? ...or create a Map resources <==> custom fields?
       type: getType(resource),

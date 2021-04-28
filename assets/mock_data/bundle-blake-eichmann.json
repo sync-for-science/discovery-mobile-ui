@@ -1,109 +1,5 @@
 {
   "resourceType": "Bundle",
-  "contained": [
-    {
-      "resourceType": "Organization",
-      "id": "b0e04623-b02c-3f8b-92ea-943fc4db60da",
-      "meta": {
-        "versionId": "4",
-        "lastUpdated": "2021-04-06T03:01:31.375-04:00",
-        "tag": [
-          {
-            "system": "https://smarthealthit.org/tags",
-            "code": "synthea-5-2019"
-          }
-        ]
-      },
-      "identifier": [
-        {
-          "system": "https://github.com/synthetichealth/synthea",
-          "value": "b0e04623-b02c-3f8b-92ea-943fc4db60da"
-        }
-      ],
-      "active": true,
-      "type": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/organization-type",
-              "code": "prov",
-              "display": "Healthcare Provider"
-            }
-          ],
-          "text": "Healthcare Provider"
-        }
-      ],
-      "name": "LOWELL GENERAL HOSPITAL",
-      "telecom": [
-        {
-          "system": "phone",
-          "value": "9789376000"
-        }
-      ],
-      "address": [
-        {
-          "line": [
-            "295 VARNUM AVENUE"
-          ],
-          "city": "LOWELL",
-          "state": "MA",
-          "postalCode": "01854",
-          "country": "US"
-        }
-      ]
-    },
-    {
-      "resourceType": "Organization",
-      "id": "f1313c7d-3148-335b-adc3-337f15567b82",
-      "meta": {
-        "versionId": "6",
-        "lastUpdated": "2021-04-06T03:01:47.607-04:00",
-        "tag": [
-          {
-            "system": "https://smarthealthit.org/tags",
-            "code": "synthea-5-2019"
-          }
-        ]
-      },
-      "identifier": [
-        {
-          "system": "https://github.com/synthetichealth/synthea",
-          "value": "f1313c7d-3148-335b-adc3-337f15567b82"
-        }
-      ],
-      "active": true,
-      "type": [
-        {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/organization-type",
-              "code": "prov",
-              "display": "Healthcare Provider"
-            }
-          ],
-          "text": "Healthcare Provider"
-        }
-      ],
-      "name": "WINCHESTER HOSPITAL FAMILY MEDICAL CENTER",
-      "telecom": [
-        {
-          "system": "phone",
-          "value": "978-988-6105"
-        }
-      ],
-      "address": [
-        {
-          "line": [
-            "500 SALEM STREET"
-          ],
-          "city": "WILMINGTON",
-          "state": "MA",
-          "postalCode": "1887",
-          "country": "US"
-        }
-      ]
-    },
-  ],
   "id": "81121ba7-f00b-42d2-971a-580c64389947",
   "type": "batch-response",
   "link": [
@@ -643,6 +539,160 @@
             "url": "https://launch.smarthealthit.org/v/r4/fhir/Encounter?patient=86512c6f-caf6-41f4-9503-e4270b37b94f"
           }
         ],
+        "contained": [
+          {
+            "resourceType": "Organization",
+            "id": "b0e04623-b02c-3f8b-92ea-943fc4db60da",
+            "meta": {
+              "versionId": "4",
+              "lastUpdated": "2021-04-06T03:01:31.375-04:00",
+              "tag": [
+                {
+                  "system": "https://smarthealthit.org/tags",
+                  "code": "synthea-5-2019"
+                }
+              ]
+            },
+            "identifier": [
+              {
+                "system": "https://github.com/synthetichealth/synthea",
+                "value": "b0e04623-b02c-3f8b-92ea-943fc4db60da"
+              }
+            ],
+            "active": true,
+            "type": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                    "code": "prov",
+                    "display": "Healthcare Provider"
+                  }
+                ],
+                "text": "Healthcare Provider"
+              }
+            ],
+            "name": "LOWELL GENERAL HOSPITAL",
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "9789376000"
+              }
+            ],
+            "address": [
+              {
+                "line": [
+                  "295 VARNUM AVENUE"
+                ],
+                "city": "LOWELL",
+                "state": "MA",
+                "postalCode": "01854",
+                "country": "US"
+              }
+            ]
+          },
+          {
+            "resourceType": "Organization",
+            "id": "f1313c7d-3148-335b-adc3-337f15567b82",
+            "meta": {
+              "versionId": "6",
+              "lastUpdated": "2021-04-06T03:01:47.607-04:00",
+              "tag": [
+                {
+                  "system": "https://smarthealthit.org/tags",
+                  "code": "synthea-5-2019"
+                }
+              ]
+            },
+            "identifier": [
+              {
+                "system": "https://github.com/synthetichealth/synthea",
+                "value": "f1313c7d-3148-335b-adc3-337f15567b82"
+              }
+            ],
+            "active": true,
+            "type": [
+              {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/organization-type",
+                    "code": "prov",
+                    "display": "Healthcare Provider"
+                  }
+                ],
+                "text": "Healthcare Provider"
+              }
+            ],
+            "name": "WINCHESTER HOSPITAL FAMILY MEDICAL CENTER",
+            "telecom": [
+              {
+                "system": "phone",
+                "value": "978-988-6105"
+              }
+            ],
+            "address": [
+              {
+                "line": [
+                  "500 SALEM STREET"
+                ],
+                "city": "WILMINGTON",
+                "state": "MA",
+                "postalCode": "1887",
+                "country": "US"
+              }
+            ]
+          },
+          {
+            "resourceType": "Practitioner",
+            "id": "b0aca4f9-4d6a-41b9-87ed-eeb16ee40172",
+            "meta": {
+              "versionId": "5",
+              "lastUpdated": "2021-04-07T02:57:10.405-04:00",
+              "tag": [
+                {
+                  "system": "https://smarthealthit.org/tags",
+                  "code": "synthea-5-2019"
+                }
+              ]
+            },
+            "extension": [
+              {
+                "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+                "valueInteger": 15
+              }
+            ],
+            "identifier": [
+              {
+                "system": "http://hl7.org/fhir/sid/us-npi",
+                "value": "93340"
+              }
+            ],
+            "active": true,
+            "name": [
+              {
+                "family": "Wilkinson",
+                "given": [
+                  "Judson"
+                ],
+                "prefix": [
+                  "Dr."
+                ]
+              }
+            ],
+            "address": [
+              {
+                "line": [
+                  "500 SALEM STREET"
+                ],
+                "city": "WILMINGTON",
+                "state": "MA",
+                "postalCode": "1887",
+                "country": "US"
+              }
+            ],
+            "gender": "male"
+          }
+        ],
         "entry": [
           {
             "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/Encounter/1cfae9f2-e0ac-47c4-934e-62c3948d58b4",
@@ -682,7 +732,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -751,7 +801,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -820,7 +870,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -878,7 +928,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -947,7 +997,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -1005,7 +1055,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -1074,7 +1124,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -1132,7 +1182,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                    "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
                   }
                 }
               ],
@@ -1190,7 +1240,7 @@
               "participant": [
                 {
                   "individual": {
-                    "reference": "Practitioner/b0aca4f9-4d6a-41b9-87ed-eeb16ee40172"
+                    "reference": "#b0aca4f9-4d6a-41b9-87ed-eeb16ee40172"
                   }
                 }
               ],
@@ -1640,6 +1690,58 @@
             "url": "https://launch.smarthealthit.org/v/r4/fhir/MedicationRequest?patient=86512c6f-caf6-41f4-9503-e4270b37b94f"
           }
         ],
+        "contained": [
+          {
+            "resourceType": "Practitioner",
+            "id": "79a13b7d-a382-4b6a-a31a-57e763818a56",
+            "meta": {
+              "versionId": "5",
+              "lastUpdated": "2021-04-07T02:56:50.348-04:00",
+              "tag": [
+                {
+                  "system": "https://smarthealthit.org/tags",
+                  "code": "synthea-5-2019"
+                }
+              ]
+            },
+            "extension": [
+              {
+                "url": "http://synthetichealth.github.io/synthea/utilization-encounters-extension",
+                "valueInteger": 5489
+              }
+            ],
+            "identifier": [
+              {
+                "system": "http://hl7.org/fhir/sid/us-npi",
+                "value": "240"
+              }
+            ],
+            "active": true,
+            "name": [
+              {
+                "family": "Towne",
+                "given": [
+                  "Ignacio"
+                ],
+                "prefix": [
+                  "Dr."
+                ]
+              }
+            ],
+            "address": [
+              {
+                "line": [
+                  "295 VARNUM AVENUE"
+                ],
+                "city": "LOWELL",
+                "state": "MA",
+                "postalCode": "01854",
+                "country": "US"
+              }
+            ],
+            "gender": "male"
+          }
+        ],
         "entry": [
           {
             "fullUrl": "https://launch.smarthealthit.org/v/r4/fhir/MedicationRequest/612eb7fa-5376-44e4-8045-dd3984f3d9b4",
@@ -1676,7 +1778,7 @@
               },
               "authoredOn": "2014-05-11T15:22:25-04:00",
               "requester": {
-                "reference": "Practitioner/79a13b7d-a382-4b6a-a31a-57e763818a56"
+                "reference": "#79a13b7d-a382-4b6a-a31a-57e763818a56"
               },
               "reasonReference": [
                 {

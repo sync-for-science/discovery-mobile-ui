@@ -1,19 +1,20 @@
 import { from, of } from 'rxjs';
 import { combineEpics, ofType } from 'redux-observable';
 import {
-  catchError, map, concatMap, switchMap, takeUntil, repeat,
+  catchError, map as rxMap, concatMap, mergeMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
 import {
-  path, pathEq, flatten,
+  compose, map, filter, propOr, hasPath, path, pathEq, flatten,
 } from 'ramda';
 
 import { actionTypes } from '../action-types';
 import { MOCK_AUTH, MOCK_BUNDLE } from '../../components/Login/SkipLoginButton';
+import flattenResources from './process-resources';
 
 const handleError = (error, message, type) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
   return of({
-    type: type ?? 'ERROR',
+    type: type ?? actionTypes.ERROR,
     error: true,
     payload: { message, error },
   });
@@ -35,7 +36,7 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
     }
 
     return from(fhirClient.queryPatient(patientId)).pipe(
-      map((result) => ({
+      rxMap((result) => ({
         type: actionTypes.FHIR_FETCH_SUCCESS,
         payload: result,
       })),
@@ -45,13 +46,15 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in initializeFhirClient switchMap')),
 );
 
-const groupByType = (action$, state$) => action$.pipe(
+const flattenResponsePayload = (action$) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
-  map(() => {
-    const { resources } = state$.value;
+  rxMap(({ payload }) => {
+    const context = new Map();
+    const resources = {};
+    flattenResources({ context, resources }, payload);
     return ({
-      type: actionTypes.GROUP_BY_TYPE,
-      payload: resources,
+      type: actionTypes.RESOURCE_BATCH,
+      payload: { context, resources },
     });
   }),
 );
@@ -73,29 +76,44 @@ const extractNextUrls = (() => {
   };
 })();
 
-const extractReferences = (() => {
-  const getServiceProvider = (entry) => path(['resource', 'serviceProvider'], entry);
-  const dedupeReferences = (entry) => (entry || [])
-    .map(getServiceProvider)
-    .reduce((acc, serviceProvider) => {
-      if (serviceProvider?.reference) {
-        acc[serviceProvider.reference] = serviceProvider;
-      }
+const referenceMap = {
+  // each key is a "type" (but not the referenced _resource_ type, eg: "Practitioner")
+  // each value operates on a FHIR resource, and returns an Array of reference Objects
+  serviceProvider: compose(
+    (result) => (result ? [result] : []),
+    path(['serviceProvider']),
+  ),
+  requester: compose(
+    (result) => (result ? [result] : []),
+    path(['requester']), // may or may not be practitioner?
+  ),
+  participant: compose(
+    map(path(['individual'])), // may or may not be practitioner?
+    filter(hasPath(['individual', 'reference'])),
+    propOr([], 'participant'),
+  ),
+};
+
+const extractReferences = ({ context, resources }) => {
+  const urnContextMap = Object.values(resources)
+    .reduce((acc, resource) => {
+      Object.entries(referenceMap).forEach(([referenceType, getRefs]) => {
+        const fhirReferences = getRefs(resource);
+        fhirReferences.forEach((ref) => {
+          const referenceUrn = ref.reference;
+          acc[referenceUrn] = {
+            referenceUrn,
+            context: context.get(resource.id),
+            referenceType, // TODO: memoize by referenceType
+            parentType: resource.resourceType,
+          };
+        });
+      });
       return acc;
     }, {});
 
-  return ({ entry }, depth = 0) => {
-    let urns = Object.values(dedupeReferences(entry));
-    if (entry) {
-      if (depth < 2) {
-        urns = urns.concat(entry.map(({ resource }) => extractReferences(resource, depth + 1)));
-      } else {
-        console.error('extractReferences depth: ', depth, entry); // eslint-disable-line no-console
-      }
-    }
-    return flatten(urns).filter((urn) => !!urn);
-  };
-})();
+  return Object.values(urnContextMap);
+};
 
 const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.FHIR_FETCH_SUCCESS),
@@ -103,7 +121,7 @@ const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   concatMap(({ payload }) => from(extractNextUrls(payload)).pipe(
     concatMap((url) => fhirClient.request(url)),
   ).pipe(
-    map((result) => ({
+    rxMap((result) => ({
       type: actionTypes.FHIR_FETCH_SUCCESS,
       payload: result,
     })),
@@ -114,28 +132,32 @@ const requestNextItems = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in requestNextItems concatMap')),
 );
 
-const requestReferences = (action$, state$, { fhirClient }) => action$.pipe(
-  ofType(actionTypes.FHIR_FETCH_SUCCESS),
+const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
+  ofType(actionTypes.RESOURCE_BATCH),
   // delay(1000), // e.g.: for debugging
-  concatMap(({ payload }) => from(extractReferences(payload)).pipe(
-    concatMap((ref) => from(fhirClient.resolve({ reference: ref.reference, context: payload }))),
-  ).pipe(
-    map((result) => ({
-      type: actionTypes.FHIR_FETCH_SUCCESS,
-      payload: result,
-    })),
-    catchError((error) => handleError(error, 'Error in requestReferences references$.pipe')),
-  )),
+  concatMap(({ payload }) => from(extractReferences(payload))
+    .pipe(
+      mergeMap(({
+        referenceUrn, context, // referenceType, parentType,
+      }) => from(fhirClient.resolve({ reference: referenceUrn, context })).pipe(
+        // tap(() => console.log('Silent success referenceUrn', referenceUrn)),
+        rxMap((result) => ({
+          type: actionTypes.FHIR_FETCH_SUCCESS,
+          payload: result,
+        })),
+        catchError((error) => handleError(error, `Error in resolveReferences fhirClient.resolve urn:\n ${referenceUrn}`)),
+      )),
+    )),
   takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
   repeat(),
-  catchError((error) => handleError(error, 'Error in requestReferences concatMap')),
+  catchError((error) => handleError(error, 'Error in resolveReferences')),
 );
 
 const rootEpic = combineEpics(
   initializeFhirClient,
-  groupByType,
+  flattenResponsePayload,
   requestNextItems,
-  requestReferences,
+  resolveReferences,
 );
 
 export default rootEpic;
