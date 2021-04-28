@@ -45,6 +45,7 @@ const selectCardBody = (resource, serviceProvider) => {
       return (
         <EncounterCardBody
           resource={resource}
+          resourceId={resource.id}
           serviceProvider={serviceProvider}
         />
       );

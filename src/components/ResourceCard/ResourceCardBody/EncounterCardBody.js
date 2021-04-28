@@ -1,15 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { arrayOf, shape } from 'prop-types';
 
-import { shape } from 'prop-types';
 import CardBodyField from './CardBodyField';
 import {
   getEnding,
   getClass,
   getStatus,
+  formatPractitionerName,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
+import { participantsSelector } from '../../../redux/selectors';
 
-const EncounterCardBody = ({ resource, serviceProvider }) => {
+const EncounterCardBody = ({ resource, serviceProvider, participants }) => {
   const { type, subType } = resource;
 
   return (
@@ -35,6 +38,15 @@ const EncounterCardBody = ({ resource, serviceProvider }) => {
         label={CARD_BODY_LABEL.provider}
         value={serviceProvider?.name}
       />
+      {
+        participants.map((participant) => (
+          <CardBodyField
+            key={participant.id}
+            label={CARD_BODY_LABEL.practitioner}
+            value={formatPractitionerName(participant)}
+          />
+        ))
+      }
     </>
   );
 };
@@ -42,6 +54,11 @@ const EncounterCardBody = ({ resource, serviceProvider }) => {
 EncounterCardBody.propTypes = {
   resource: shape({}).isRequired,
   serviceProvider: shape({}).isRequired,
+  participants: arrayOf(shape({})).isRequired,
 };
 
-export default EncounterCardBody;
+const mapStateToProps = (state, ownProps) => ({
+  participants: participantsSelector(state, ownProps),
+});
+
+export default connect(mapStateToProps, null)(EncounterCardBody);
