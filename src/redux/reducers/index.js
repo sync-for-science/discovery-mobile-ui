@@ -6,6 +6,7 @@ import { clone } from 'ramda';
 import { actionTypes } from '../action-types';
 import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
+import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 
 const preloadedResources = {};
 
@@ -28,6 +29,17 @@ export const flattenedResourcesReducer = (state = preloadedResources, { type, pa
     default:
       return state;
   }
+};
+
+const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+
+const defaultSortingState = {
+  activeSortField: 'record-type',
+  sortDirections: {
+    [RECORD_TYPE]: SORT_DESC,
+    [RECORD_DATE]: SORT_DESC,
+    [TIME_SAVED]: SORT_DESC,
+  },
 };
 
 // prune items whose values are 0, null, undefined, or empty string:
@@ -57,6 +69,7 @@ const createCollection = (label = 'Untitled Collection') => {
     showMarkedOnly: false,
     focusedSubtype: '',
     records: {},
+    savedRecordsSortingState: defaultSortingState,
   };
 };
 
@@ -233,6 +246,22 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].showMarkedOnly = showMarkedOnly;
+      });
+    }
+    case actionTypes.TOGGLE_SORTING_STATE: {
+      const { collectionId, sortField } = action.payload;
+      return produce(state, (draft) => {
+        if (state[collectionId].savedRecordsSortingState.activeSortField === sortField) {
+          const prevDir = state[collectionId].savedRecordsSortingState.sortDirections[sortField];
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId]
+            .savedRecordsSortingState.sortDirections[sortField] = (
+              (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC
+            );
+        }
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId]
+          .savedRecordsSortingState.activeSortField = sortField;
       });
     }
     default:

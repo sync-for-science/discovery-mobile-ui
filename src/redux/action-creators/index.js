@@ -105,3 +105,14 @@ export const toggleShowMarkedOnly = (showMarkedOnly) => (dispatch, getState) => 
     },
   });
 };
+
+export const toggleSortingState = (sortField) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.TOGGLE_SORTING_STATE,
+    payload: {
+      collectionId: activeCollectionId,
+      sortField,
+    },
+  });
+};

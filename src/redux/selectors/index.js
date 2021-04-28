@@ -11,7 +11,9 @@ import {
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
 
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
+import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
+import { SORT_DESC, sortFields } from '../../constants/sorting';
 
 export const authSelector = (state) => state.auth.authResult;
 
@@ -211,7 +213,11 @@ const filteredItemsInDateRangeSelector = createSelector(
 );
 
 const sortedGroupedRecordsByType = (records, isDescending) => {
-  const sortedRecords = isDescending ? [...records].reverse() : records;
+  // eslint-disable-next-line no-nested-ternary
+  const sortedRecords = isDescending === undefined
+    ? [...records].reverse()
+    : (isDescending ? [...records].reverse() : records);
+
   const typeMap = sortedRecords
     .reduce((acc, record) => {
       const { type, subType } = record;
@@ -238,20 +244,19 @@ const sortedGroupedRecordsByType = (records, isDescending) => {
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1));
 };
 
-export const selectedRecordsGroupedBySubTypesSelector = createSelector(
+export const selectedRecordsGroupedByTypeSelector = createSelector(
   [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
     if (!selectedResourceType) {
       return [];
     }
-    const groupedRecords = sortedGroupedRecordsByType(items);
 
-    return groupedRecords
-      .filter((group) => group.type === selectedResourceType)[0].subTypes;
+    return sortedGroupedRecordsByType(items)
+      .filter((group) => group.type === selectedResourceType);
   },
 );
 
-const collectionItemsSelector = createSelector(
+const savedItemsSelector = createSelector(
   [resourcesSelector, activeCollectionResourceIdsSelector],
   (resources, saved) => values(resources)
     .filter(({ id }) => saved[id])
@@ -259,11 +264,61 @@ const collectionItemsSelector = createSelector(
     .sort(sortByDate),
 );
 
-export const collectionRecordsGroupedByTypeSelector = createSelector(
-  [collectionItemsSelector, (_, ownProps) => ownProps],
-  (collectionItems, ownProps) => {
+// used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
+export const savedRecordsGroupedByTypeSelector = createSelector(
+  [savedItemsSelector, activeCollectionSelector],
+  (savedItems, collection) => {
+    const { savedRecordsSortingState: sortingState } = collection;
+    const { RECORD_TYPE } = sortFields;
+    const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC;
+    return sortedGroupedRecordsByType(savedItems, isDescending);
+  },
+);
+
+export const savedRecordsByRecordDateSelector = createSelector(
+  [savedItemsSelector, (_, ownProps) => ownProps],
+  (items, ownProps) => {
     const { isDescending } = ownProps;
-    return sortedGroupedRecordsByType(collectionItems, isDescending);
+    const sortedRecords = isDescending ? [...items].reverse() : items;
+    const typeMap = sortedRecords
+      .reduce((acc, record) => {
+        const { timelineDate, subType, type } = record;
+        const formattedDay = formatDate(timelineDate);
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay] = draft[formattedDay] ?? {};
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type] = draft[formattedDay][type] ?? {};
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type][subType] = draft[formattedDay][type][subType] ?? [];
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type][subType].push(record.id);
+        });
+      }, {});
+
+    return Object
+      .entries(typeMap)
+      .reduce((acc1, [date, typeValues]) => {
+        const typeData = Object
+          .entries(typeValues)
+          .reduce((acc2, [type, subTypeValues]) => {
+            const subTypeData = Object
+              .entries(subTypeValues)
+              .reduce((acc3, [subType, recordIds]) => acc3.concat({
+                subType,
+                recordIds,
+              }), []);
+            return acc2.concat({
+              type,
+              label: SINGULAR_RESOURCE_TYPES[type],
+              subTypes: subTypeData,
+            });
+          }, []);
+        return acc1.concat({
+          date,
+          types: typeData,
+        });
+      }, []);
   },
 );
 

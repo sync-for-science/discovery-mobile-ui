@@ -17,7 +17,7 @@ import SubTypeAccordionsContainer from '../components/SubTypeAccordion/SubTypeAc
 import Colors from '../constants/Colors';
 import FilterDrawer from '../components/FilterDrawer/FilterDrawer';
 import DetailsPanel from '../components/DetailsPanel';
-import { activeCollectionSelector, selectedRecordsGroupedBySubTypesSelector } from '../redux/selectors';
+import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../redux/selectors';
 import CatalogModal from '../components/Modals/CatalogModal';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
@@ -48,7 +48,7 @@ CatalogScreenHeader.defaultProps = {
 const CatalogScreen = ({
   navigation,
   collection,
-  selectedRecordsGroupedBySubType,
+  selectedRecordsGroupedByType,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -62,7 +62,7 @@ const CatalogScreen = ({
         <Timeline />
         <ResourceTypePicker />
         <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer data={selectedRecordsGroupedBySubType} />
+          <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
@@ -73,7 +73,7 @@ const CatalogScreen = ({
 CatalogScreen.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
-  selectedRecordsGroupedBySubType: arrayOf(shape({}).isRequired).isRequired,
+  selectedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
 };
 
 CatalogScreen.defaultProps = {
@@ -81,7 +81,7 @@ CatalogScreen.defaultProps = {
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
-  selectedRecordsGroupedBySubType: selectedRecordsGroupedBySubTypesSelector(state),
+  selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state),
 });
 
 export default connect(mapStateToProps, null)(CatalogScreen);

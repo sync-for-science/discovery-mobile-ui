@@ -5,20 +5,38 @@ import {
 import { shape, arrayOf, bool } from 'prop-types';
 
 import SubTypeAccordion from './SubTypeAccordion';
+import BaseText from '../Generic/BaseText';
 
 const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
-  <View style={styles.root}>
-    <View style={styles.container}>
-      {data.map(({ subType, recordIds }) => (
-        <SubTypeAccordion
-          key={subType}
-          subType={subType}
-          resourceIds={recordIds}
-          subTypeCount={recordIds.length}
-          fromDetailsPanel={fromDetailsPanel}
-        />
-      ))}
-    </View>
+  <View>
+    { data.map(({ type, label, subTypes }, index) => {
+      const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
+      return (
+        <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
+          {fromDetailsPanel
+                && (
+                <View style={styles.typeTextContainer}>
+                  <BaseText variant="title" style={styles.typeText}>
+                    {label}
+                  </BaseText>
+                </View>
+                )}
+          <View style={styles.root}>
+            <View style={styles.container}>
+              {subTypes.map(({ subType, recordIds }) => (
+                <SubTypeAccordion
+                  key={subType}
+                  subType={subType}
+                  resourceIds={recordIds}
+                  subTypeCount={recordIds.length}
+                  fromDetailsPanel={fromDetailsPanel}
+                />
+              ))}
+            </View>
+          </View>
+        </View>
+      );
+    })}
   </View>
 );
 
@@ -41,5 +59,17 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
+  },
+  groupContainer: {
+    marginTop: 20,
+  },
+  firstGroupContainer: {
+    marginTop: 0,
+  },
+  typeTextContainer: {
+    marginLeft: 5,
+  },
+  typeText: {
+    textTransform: 'uppercase',
   },
 });

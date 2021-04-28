@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   StyleSheet, View, Text, SafeAreaView,
 } from 'react-native';
@@ -7,52 +7,41 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { shape } from 'prop-types';
-import produce from 'immer';
+import { arrayOf, shape } from 'prop-types';
+import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
-import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
-import TypeGroupContainer from '../TypeGroupContainer';
+import { SORT_DESC, sortFields } from '../../constants/sorting';
+import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
+import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import { savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
-const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
+  const { savedRecordsSortingState: sortingState } = collection;
+  const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
-const defaultSortingState = {
-  activeSortField: 'record-type',
-  sortDirections: {
-    [RECORD_TYPE]: SORT_DESC,
-    [RECORD_DATE]: SORT_DESC,
-    [TIME_SAVED]: SORT_DESC,
-  },
-};
-
-const DetailsPanel = ({ navigation, collection }) => {
-  const [sortingState, setSortingState] = useState(defaultSortingState);
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
-  };
-  const handleSortChange = (sortField) => {
-    setSortingState((state) => produce(state, (draft) => {
-      if (state.activeSortField === sortField) {
-        const prevDir = state.sortDirections[sortField];
-        // eslint-disable-next-line no-param-reassign
-        draft.sortDirections[sortField] = (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC;
-      }
-      draft.activeSortField = sortField; // eslint-disable-line no-param-reassign
-    }));
   };
 
   const displayAccordion = () => {
     switch (sortingState.activeSortField) {
       case RECORD_TYPE:
         return (
-          <TypeGroupContainer
+          <SubTypeAccordionsContainer
+            data={savedRecordsGroupedByType}
             isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
             fromDetailsPanel
           />
         );
       case RECORD_DATE:
-        return <Text>RecordDate</Text>;
+        return (
+          <DateAccordionsContainer
+            isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
+            fromDetailsPanel
+          />
+        );
       case TIME_SAVED:
         return <Text>TimeSaved</Text>;
       default:
@@ -76,7 +65,6 @@ const DetailsPanel = ({ navigation, collection }) => {
       </Header>
       <SortingHeader
         sortingState={sortingState}
-        onChange={handleSortChange}
       />
       <ScrollView>
         {displayAccordion()}
@@ -88,9 +76,14 @@ const DetailsPanel = ({ navigation, collection }) => {
 DetailsPanel.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
+  savedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
 };
 
-export default DetailsPanel;
+const mapStateToProps = (state) => ({
+  savedRecordsGroupedByType: savedRecordsGroupedByTypeSelector(state),
+});
+
+export default connect(mapStateToProps, null)(DetailsPanel);
 
 const styles = StyleSheet.create({
   root: {
