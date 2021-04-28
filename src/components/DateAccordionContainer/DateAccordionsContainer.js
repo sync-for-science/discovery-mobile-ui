@@ -13,7 +13,7 @@ import Colors from '../../constants/Colors';
 import DateAccordionContent from './DateAccordionContent';
 
 const DateAccordion = ({
-  date, types, fromDetailsPanel, emptyArray,
+  date, types, fromDetailsPanel, expanded,
 }) => {
   const dataArray = [{ title: date, content: types }];
 
@@ -35,7 +35,7 @@ const DateAccordion = ({
     <Accordion
       style={styles.accordion}
       dataArray={dataArray}
-      expanded={emptyArray}
+      expanded={expanded}
       renderHeader={renderHeader}
       renderContent={(item) => (
         <DateAccordionContent item={item} fromDetailsPanel={fromDetailsPanel} />
@@ -48,11 +48,11 @@ DateAccordion.propTypes = {
   date: string.isRequired,
   types: arrayOf(shape({}).isRequired).isRequired,
   fromDetailsPanel: bool.isRequired,
-  emptyArray: arrayOf(),
+  expanded: arrayOf(),
 };
 
 DateAccordion.defaultProps = {
-  emptyArray: [],
+  expanded: [],
 };
 
 const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => (
