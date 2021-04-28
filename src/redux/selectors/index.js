@@ -275,54 +275,50 @@ export const savedRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-const sortedRecordsByRecordDate = (records, isDescending) => {
-  const sortedRecords = isDescending ? [...records].reverse() : records;
-  const typeMap = sortedRecords
-    .reduce((acc, record) => {
-      const { timelineDate, subType, type } = record;
-      const formattedDay = formatDate(timelineDate);
-      return produce(acc, (draft) => {
-        // eslint-disable-next-line no-param-reassign
-        draft[formattedDay] = draft[formattedDay] ?? {};
-        // eslint-disable-next-line no-param-reassign
-        draft[formattedDay][type] = draft[formattedDay][type] ?? {};
-        // eslint-disable-next-line no-param-reassign
-        draft[formattedDay][type][subType] = draft[formattedDay][type][subType] ?? [];
-        // eslint-disable-next-line no-param-reassign
-        draft[formattedDay][type][subType].push(record.id);
-      });
-    }, {});
-
-  return Object
-    .entries(typeMap)
-    .reduce((acc1, [date, typeValues]) => {
-      const typeData = Object
-        .entries(typeValues)
-        .reduce((acc2, [type, subTypeValues]) => {
-          const subTypeData = Object
-            .entries(subTypeValues)
-            .reduce((acc3, [subType, recordIds]) => acc3.concat({
-              subType,
-              recordIds,
-            }), []);
-          return acc2.concat({
-            type,
-            label: SINGULAR_RESOURCE_TYPES[type],
-            subTypes: subTypeData,
-          });
-        }, []);
-      return acc1.concat({
-        date,
-        types: typeData,
-      });
-    }, []);
-};
-
 export const savedRecordsByRecordDateSelector = createSelector(
   [savedItemsSelector, (_, ownProps) => ownProps],
   (items, ownProps) => {
     const { isDescending } = ownProps;
-    return sortedRecordsByRecordDate(items, isDescending);
+    const sortedRecords = isDescending ? [...items].reverse() : items;
+    const typeMap = sortedRecords
+      .reduce((acc, record) => {
+        const { timelineDate, subType, type } = record;
+        const formattedDay = formatDate(timelineDate);
+        return produce(acc, (draft) => {
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay] = draft[formattedDay] ?? {};
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type] = draft[formattedDay][type] ?? {};
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type][subType] = draft[formattedDay][type][subType] ?? [];
+          // eslint-disable-next-line no-param-reassign
+          draft[formattedDay][type][subType].push(record.id);
+        });
+      }, {});
+
+    return Object
+      .entries(typeMap)
+      .reduce((acc1, [date, typeValues]) => {
+        const typeData = Object
+          .entries(typeValues)
+          .reduce((acc2, [type, subTypeValues]) => {
+            const subTypeData = Object
+              .entries(subTypeValues)
+              .reduce((acc3, [subType, recordIds]) => acc3.concat({
+                subType,
+                recordIds,
+              }), []);
+            return acc2.concat({
+              type,
+              label: SINGULAR_RESOURCE_TYPES[type],
+              subTypes: subTypeData,
+            });
+          }, []);
+        return acc1.concat({
+          date,
+          types: typeData,
+        });
+      }, []);
   },
 );
 
