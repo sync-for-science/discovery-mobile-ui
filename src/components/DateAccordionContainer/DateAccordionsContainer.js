@@ -17,8 +17,8 @@ const DateAccordion = ({
 }) => {
   const dataArray = [{ title: date, content: types }];
 
-  const renderHeader = (item, expanded) => {
-    const chevronIcon = expanded
+  const renderHeader = (item, isExpanded) => {
+    const chevronIcon = isExpanded
       ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
       : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
     return (
