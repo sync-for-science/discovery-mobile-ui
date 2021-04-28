@@ -20,6 +20,7 @@ export const authSelector = (state) => state.auth.authResult;
 const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
+const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
 
 const collectionsSelector = (state) => state.collections;
 
@@ -102,7 +103,7 @@ const resolveReference = (resource, allResources, refType) => {
 };
 
 export const serviceProviderSelector = createSelector(
-  [resourceByIdSelector, resourcesSelector],
+  [resourceFromOwnPropsSelector, resourcesSelector],
   (resource, allResources) => {
     const resources = resolveReference(resource, allResources, 'serviceProvider');
     return resources[0];
@@ -110,7 +111,7 @@ export const serviceProviderSelector = createSelector(
 );
 
 export const requesterSelector = createSelector(
-  [resourceByIdSelector, resourcesSelector],
+  [resourceFromOwnPropsSelector, resourcesSelector],
   (resource, allResources) => {
     const resources = resolveReference(resource, allResources, 'requester');
     return resources.filter(({ type }) => type === 'Practitioner')[0];
@@ -118,7 +119,7 @@ export const requesterSelector = createSelector(
 );
 
 export const participantsSelector = createSelector(
-  [resourceByIdSelector, resourcesSelector],
+  [resourceFromOwnPropsSelector, resourcesSelector],
   (resource, allResources) => {
     const resources = resolveReference(resource, allResources, 'participant');
     return resources.filter(({ type }) => type === 'Practitioner');

@@ -10,7 +10,7 @@ import {
   formatPractitionerName,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
-import { participantsSelector } from '../../../redux/selectors';
+import { participantsSelector, serviceProviderSelector } from '../../../redux/selectors';
 
 const EncounterCardBody = ({ resource, serviceProvider, participants }) => {
   const { type, subType } = resource;
@@ -58,6 +58,7 @@ EncounterCardBody.propTypes = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
+  serviceProvider: serviceProviderSelector(state, ownProps),
   participants: participantsSelector(state, ownProps),
 });
 
