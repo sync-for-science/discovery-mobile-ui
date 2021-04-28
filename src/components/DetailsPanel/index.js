@@ -20,7 +20,6 @@ import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
   const { detailsPanelSortingState: sortingState } = collection;
-  console.log('sortingState', sortingState)
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
