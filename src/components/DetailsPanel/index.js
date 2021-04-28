@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   StyleSheet, View, Text, SafeAreaView, Keyboard, KeyboardAvoidingView, TextInput
 } from 'react-native';
@@ -14,6 +14,7 @@ import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 import TypeGroupContainer from '../TypeGroupContainer';
+import BaseText from '../Generic/BaseText';
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
@@ -29,6 +30,7 @@ const defaultSortingState = {
 const DetailsPanel = ({ navigation, collection }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
   const [enableShift, setEnableShift] = useState(false)
+  const [notes, setNotes] = useState([])
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
@@ -71,6 +73,11 @@ const DetailsPanel = ({ navigation, collection }) => {
   }, [])
 
 
+  const textInputRef = useRef(null)
+  const handleSave = () => {
+    console.log('textInputRef', textInputRef.current)
+    setNotes([...notes, 'something'])
+  }
   return (
     <SafeAreaView style={styles.root}>
         <Header style={styles.header}>
@@ -96,11 +103,20 @@ const DetailsPanel = ({ navigation, collection }) => {
       <View>
       <ScrollView>
         <View style={styles.content}>
-          <Text>CollectionNotesScreen</Text>
-          <TouchableOpacity onPress={() => setEnableShift(true)}>
-            <Text>CreateNote</Text>
+          <TouchableOpacity onPress={() => setEnableShift(true)} style={{padding: 10, backgroundColor: Colors.primary, borderRadius: 5}}>
+            <Text style={{color: 'white'}}>Create Note</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setNotes([])} style={{marginTop: 10, padding: 10, backgroundColor: Colors.destructive, borderRadius: 5}}>
+            <Text style={{color: 'black'}}>Clear Notes</Text>
           </TouchableOpacity>
           <Text>enableShift: {enableShift.toString()}</Text>
+      {notes.map((note, index) => (
+        <View key={index} style={{margin: 20, borderRadius: 10, backgroundColor: Colors.lightgrey, padding: 20}}>
+          <Text>
+            {note}
+          </Text>
+        </View>
+      ))}
         </View>
       </ScrollView>
     </View>
@@ -109,19 +125,26 @@ const DetailsPanel = ({ navigation, collection }) => {
         behavior="position" 
         style={{
           width: '100%', 
-          zIndex: 1
+          zIndex: 1,
         }} 
         enabled={enableShift} 
         keyboardVerticalOffset={0}
       >
+        <View style={{padding: 10, backgroundColor: Colors.lightgrey, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
           <TextInput 
+            ref={textInputRef}
             style={{
-              backgroundColor: 'lightblue', 
-              height: 50, 
-              width: '100%',  
+              backgroundColor: 'white', 
+              flex: 1,  
+              borderRadius: 10,
+              padding: 10,
             }} 
             autoFocus={enableShift}
           />
+          <TouchableOpacity style={{marginLeft: 10}} onPress={handleSave}>
+            <BaseText variant="title">Save</BaseText>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     )}
         

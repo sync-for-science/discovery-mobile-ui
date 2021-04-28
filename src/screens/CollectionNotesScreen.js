@@ -19,13 +19,13 @@ const CollectionNotesScreen = ({ collection }) => {
     setEnableShift(true)
   }
 
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidHide", () => setEnableShift(false));
+  // useEffect(() => {
+  //   Keyboard.addListener("keyboardDidHide", () => setEnableShift(false));
 
-    return () => {
-      Keyboard.removeListener("keyboardDidHide", () => setKeyboardStatus(false));
-    };
-  }, [])
+  //   return () => {
+  //     Keyboard.removeListener("keyboardDidHide", () => setKeyboardStatus(false));
+  //   };
+  // }, [])
 
   return (
   <SafeAreaView style={styles.root}>
@@ -51,10 +51,16 @@ const CollectionNotesScreen = ({ collection }) => {
         </View>
       </ScrollView>
     </View>
+    <TextInput 
+            style={{
+              backgroundColor: 'lightblue', 
+              height: 50, width: '100%',  
+              borderBottomColor: 'black', 
+              borderBottomWidth: 1
+            }} 
+            autoFocus={enableShift}
+          />
     {enableShift && (
-      // <KeyboardAvoidingView behavior="position" style={{position: 'relative', backgroundColor: 'yellow', width: '100%', zIndex: 1}} enabled={enableShift}>
-      //     <TextInput style={{backgroundColor: 'lightblue', height: 50, width: '100%',  borderBottomColor: 'black', borderBottomWidth: 1}} autoFocus={enableShift}/>
-      // </KeyboardAvoidingView>
       <KeyboardAvoidingView 
         behavior="position" 
         style={{
@@ -75,7 +81,7 @@ const CollectionNotesScreen = ({ collection }) => {
             autoFocus={enableShift}
           />
       </KeyboardAvoidingView>
-    )}
+    )} 
   </SafeAreaView>
 )};
 
