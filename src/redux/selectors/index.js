@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
-
+import { referenceMap } from '../epics';
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
@@ -83,60 +83,45 @@ export const patientSelector = createSelector(
   (resources) => values(resources).find((r) => r.type === 'Patient'),
 );
 
+const resolveReference = (resource, allResources, refType) => {
+  const resources = [];
+  const referenceUrns = referenceMap[refType](resource).map(({ reference }) => reference);
+  referenceUrns.forEach((urn) => {
+    if (urn) {
+      const matches = urn.match(/(#|\/)(.+)/);
+      const resourceId = matches.pop();
+      const targetResource = allResources[resourceId];
+      if (targetResource) {
+        resources.push(targetResource);
+      } else {
+        console.warn(`Expected resource for reference "${urn}"`); // eslint-disable-line no-console
+      }
+    }
+  });
+  return resources;
+};
+
 export const serviceProviderSelector = createSelector(
   [resourceByIdSelector, resourcesSelector],
   (resource, allResources) => {
-    const ref = resource?.serviceProvider?.reference;
-    if (ref) {
-      const matches = ref.match(/(#|\/)(.+)/);
-      const resourceId = matches.pop();
-      const serviceProvider = allResources[resourceId];
-      if (serviceProvider) {
-        return serviceProvider;
-      }
-      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
-    }
-    return null;
+    const resources = resolveReference(resource, allResources, 'serviceProvider');
+    return resources[0];
   },
 );
 
 export const requesterSelector = createSelector(
   [resourceByIdSelector, resourcesSelector],
   (resource, allResources) => {
-    const ref = resource?.requester?.reference;
-    if (ref) {
-      const matches = ref.match(/(#|\/)(.+)/);
-      const resourceId = matches.pop();
-      const requester = allResources[resourceId];
-      if (requester && requester.type === 'Practitioner') {
-        return requester;
-      }
-      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
-    }
-    return null;
+    const resources = resolveReference(resource, allResources, 'requester');
+    return resources.filter(({ type }) => type === 'Practitioner')[0];
   },
 );
 
 export const participantsSelector = createSelector(
   [resourceByIdSelector, resourcesSelector],
   (resource, allResources) => {
-    const participants = [];
-    if (resource?.participant?.length) {
-      resource?.participant.forEach((p) => {
-        const ref = p?.individual.reference;
-        if (ref) {
-          const matches = ref.match(/(#|\/)(.+)/);
-          const resourceId = matches.pop();
-          const participant = allResources[resourceId];
-          if (participant && participant.type === 'Practitioner') {
-            participants.push(participant);
-          } else {
-            console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
-          }
-        }
-      });
-    }
-    return participants;
+    const resources = resolveReference(resource, allResources, 'participant');
+    return resources.filter(({ type }) => type === 'Practitioner');
   },
 );
 
