@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  KeyboardAvoidingView,
-  StyleSheet, TextInput, View,
+  StyleSheet, View, TouchableOpacity
 } from 'react-native';
 import {
   string, shape, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { useNavigation } from '@react-navigation/native';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -21,6 +22,7 @@ import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
+import Colors from '../../constants/Colors'
 
 const selectCardBody = (resource, serviceProvider) => {
   switch (resource.type) {
@@ -76,8 +78,10 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
 }) => {
+  console.log('resource', resource)
   const resourceDate = getResourceDate(resource);
   const firstCardStyle = index === 0 ? styles.firstCard : {};
+  const navigation = useNavigation()
 
   return (
       <View style={[styles.root, firstCardStyle]}>
@@ -109,7 +113,10 @@ const ResourceCard = ({
         <View style={styles.body}>
           {selectCardBody(resource, serviceProvider)}
         </View>
-        <TextInput style={{width: '100%', height: 50, backgroundColor: 'yellow'}} />
+        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', {resource})}>
+          <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
+          <BaseText variant="title" style={{color: Colors.darkgrey, marginLeft: 10}}>Add Note</BaseText>
+        </TouchableOpacity>
       </View>
   );
 };
@@ -163,4 +170,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  addNoteButton: {
+    marginHorizontal: 10, 
+    paddingVertical: 10, 
+    borderTopWidth: 1, 
+    borderTopColor: Colors.lightgrey, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    flexDirection: 'row'
+  }
 });

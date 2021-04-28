@@ -31,6 +31,7 @@ const DetailsPanel = ({ navigation, collection }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
   const [enableShift, setEnableShift] = useState(false)
   const [notes, setNotes] = useState([])
+  const [text, onChangeNote] = useState()
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
@@ -63,90 +64,86 @@ const DetailsPanel = ({ navigation, collection }) => {
         return null;
     }
   };
-
-  useEffect(() => {
-    Keyboard.addListener("keyboardDidHide", () => setEnableShift(false));
-
-    return () => {
-      Keyboard.removeListener("keyboardDidHide", () => setKeyboardStatus(false));
-    };
-  }, [])
-
-
-  const textInputRef = useRef(null)
+  
   const handleSave = () => {
-    console.log('textInputRef', textInputRef.current)
-    setNotes([...notes, 'something'])
+    setNotes([...notes, text])
+    setEnableShift(false)
+    onChangeNote("")
+  }
+
+  const handleClearNotes = () => {
+    setNotes([])
+    setEnableShift(false)
   }
   return (
     <SafeAreaView style={styles.root}>
-        <Header style={styles.header}>
-          <Left />
-          <View>
-            <Title>{collection?.label}</Title>
-          </View>
-          <Right>
-            <TouchableOpacity onPress={handlePressNoteIcon}>
-              <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
-            </TouchableOpacity>
-          </Right>
-        </Header>
+      <Header style={styles.header}>
+        <Left />
         <View>
-          <SortingHeader
-            sortingState={sortingState}
-            onChange={handleSortChange}
-          />
-          <ScrollView style={{backgroundColor: 'red'}}>
-            {displayAccordion()}
-          </ScrollView>
+          <Title>{collection?.label}</Title>
         </View>
+        <Right>
+          <TouchableOpacity onPress={handlePressNoteIcon}>
+            <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
+          </TouchableOpacity>
+        </Right>
+      </Header>
       <View>
-      <ScrollView>
-        <View style={styles.content}>
-          <TouchableOpacity onPress={() => setEnableShift(true)} style={{padding: 10, backgroundColor: Colors.primary, borderRadius: 5}}>
-            <Text style={{color: 'white'}}>Create Note</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setNotes([])} style={{marginTop: 10, padding: 10, backgroundColor: Colors.destructive, borderRadius: 5}}>
-            <Text style={{color: 'black'}}>Clear Notes</Text>
-          </TouchableOpacity>
-          <Text>enableShift: {enableShift.toString()}</Text>
-      {notes.map((note, index) => (
-        <View key={index} style={{margin: 20, borderRadius: 10, backgroundColor: Colors.lightgrey, padding: 20}}>
-          <Text>
-            {note}
-          </Text>
-        </View>
-      ))}
-        </View>
-      </ScrollView>
-    </View>
-    {enableShift && (
-      <KeyboardAvoidingView 
-        behavior="position" 
-        style={{
-          width: '100%', 
-          zIndex: 1,
-        }} 
-        enabled={enableShift} 
-        keyboardVerticalOffset={0}
-      >
-        <View style={{padding: 10, backgroundColor: Colors.lightgrey, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
-          <TextInput 
-            ref={textInputRef}
-            style={{
-              backgroundColor: 'white', 
-              flex: 1,  
-              borderRadius: 10,
-              padding: 10,
-            }} 
-            autoFocus={enableShift}
-          />
-          <TouchableOpacity style={{marginLeft: 10}} onPress={handleSave}>
-            <BaseText variant="title">Save</BaseText>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAvoidingView>
-    )}
+        <SortingHeader
+          sortingState={sortingState}
+          onChange={handleSortChange}
+        />
+        <ScrollView style={{backgroundColor: 'red'}}>
+          {displayAccordion()}
+        </ScrollView>
+      </View>
+      <View>
+        <ScrollView>
+          <View style={styles.content}>
+            <TouchableOpacity onPress={() => setEnableShift(true)} style={{padding: 10, backgroundColor: Colors.primary, borderRadius: 5}}>
+              <Text style={{color: 'white'}}>Create Note</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleClearNotes} style={{marginTop: 10, padding: 10, backgroundColor: Colors.destructive, borderRadius: 5}}>
+              <Text style={{color: 'black'}}>Clear Notes</Text>
+            </TouchableOpacity>
+            <Text>enableShift: {enableShift.toString()}</Text>
+        {notes.map((note, index) => (
+          <View key={index} style={{margin: 20, borderRadius: 10, backgroundColor: Colors.lightgrey, padding: 20}}>
+            <Text>
+              {note}
+            </Text>
+          </View>
+        ))}
+          </View>
+        </ScrollView>
+      </View>
+      {enableShift && 
+        <KeyboardAvoidingView 
+          behavior="position" 
+          style={{
+            width: '100%', 
+            zIndex: 1,
+          }} 
+          enabled={enableShift} 
+          keyboardVerticalOffset={0}
+        >
+          <View style={{padding: 10, backgroundColor: Colors.lightgrey, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+            <TextInput 
+              style={{
+                backgroundColor: 'white', 
+                flex: 1,  
+                borderRadius: 10,
+                padding: 10,
+              }} 
+              autoFocus={enableShift}
+              onChangeText={onChangeNote}
+            />
+            <TouchableOpacity style={{marginLeft: 10}} onPress={handleSave}>
+              <BaseText variant="title">Save</BaseText>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
+      }
         
     </SafeAreaView>
     
