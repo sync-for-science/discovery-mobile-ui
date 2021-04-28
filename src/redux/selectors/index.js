@@ -166,7 +166,8 @@ export const allValidRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-export const filteredRecordsSelector = createSelector(
+// returns Array of (picked fields from) _all_ records, flagged with responsiveness to each filter:
+const allRecordsWithFilterResponseSelector = createSelector(
   [allValidRecordsSortedByDateSelector, activeCollectionSelector],
   (items, activeCollection) => {
     const {
@@ -174,12 +175,44 @@ export const filteredRecordsSelector = createSelector(
       showCollectionOnly,
       showMarkedOnly,
       records,
+      dateRangeFilter: { dateRangeStart, dateRangeEnd },
     } = activeCollection;
-    return items
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && records[id]?.saved))
-      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && records[id]?.highlight));
+
+    return items.map(({
+      id, type, subType, timelineDate,
+    }) => ({
+      id,
+      type,
+      subType,
+      timelineDate,
+      passesFilters: {
+        type: resourceTypeFilters[type],
+        date: dateRangeStart && dateRangeEnd && isWithinInterval(
+          timelineDate,
+          {
+            start: dateRangeStart,
+            end: dateRangeEnd,
+          },
+        ),
+        inCollection: records[id]?.saved,
+        showCollectionOnly: !showCollectionOnly || (showCollectionOnly && records[id]?.saved),
+        isHighlighted: records[id]?.highlight,
+        showMarkedOnly: !showMarkedOnly || (showMarkedOnly && records[id]?.highlight),
+      },
+    }));
   },
+);
+
+export const filteredRecordsSelector = createSelector(
+  [allRecordsWithFilterResponseSelector],
+  (items) => items.filter(({
+    passesFilters: {
+      type,
+      date,
+      showCollectionOnly,
+      showMarkedOnly,
+    },
+  }) => type && date && showCollectionOnly && showMarkedOnly),
 );
 
 export const dateRangeForAllRecordsSelector = createSelector(
