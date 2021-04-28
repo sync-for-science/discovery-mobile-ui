@@ -108,7 +108,7 @@ export const requesterSelector = createSelector(
       const matches = ref.match(/(#|\/)(.+)/);
       const resourceId = matches.pop();
       const requester = allResources[resourceId];
-      if (requester) {
+      if (requester && requester.type === 'Practitioner') {
         return requester;
       }
       console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
