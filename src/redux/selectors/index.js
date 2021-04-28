@@ -117,6 +117,29 @@ export const requesterSelector = createSelector(
   },
 );
 
+export const participantsSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const participants = [];
+    if (resource?.participant?.length) {
+      resource?.participant.forEach((p) => {
+        const ref = p?.individual.reference;
+        if (ref) {
+          const matches = ref.match(/(#|\/)(.+)/);
+          const resourceId = matches.pop();
+          const participant = allResources[resourceId];
+          if (participant && participant.type === 'Practitioner') {
+            participants.push(participant);
+          } else {
+            console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
+          }
+        }
+      });
+    }
+    return participants;
+  },
+);
+
 export const providersSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources).filter((r) => r.type === 'Organization'),
