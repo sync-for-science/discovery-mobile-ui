@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { shape } from 'prop-types';
+import { connect } from 'react-redux';
+
 import CardBodyField from './CardBodyField';
 import {
   getReason,
@@ -8,10 +9,12 @@ import {
   getAbatementDateTime,
   getAssertedDate,
   getStatus,
+  formatPractitionerName,
 } from '../../../resources/fhirReader';
 import CARD_BODY_LABEL from '../../../resources/cardBodyLabel';
+import { requesterSelector } from '../../../redux/selectors';
 
-const MedicationCardBody = ({ resource }) => {
+const MedicationCardBody = ({ resource, requester }) => {
   const { type, subType } = resource;
 
   return (
@@ -65,12 +68,25 @@ const MedicationCardBody = ({ resource }) => {
         label={CARD_BODY_LABEL.refill}
         value={null}
       />
+      <CardBodyField
+        label={CARD_BODY_LABEL.requester}
+        value={formatPractitionerName(requester)}
+      />
     </>
   );
 };
 
 MedicationCardBody.propTypes = {
   resource: shape({}).isRequired,
+  requester: shape({}),
 };
 
-export default MedicationCardBody;
+MedicationCardBody.defaultProps = {
+  requester: null,
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  requester: requesterSelector(state, ownProps),
+});
+
+export default connect(mapStateToProps, null)(MedicationCardBody);

@@ -31,7 +31,12 @@ const selectCardBody = (resource, serviceProvider) => {
       return <GenericCardBody resource={resource} />;
     case 'Meds Dispensed':
     case 'MedicationRequest':
-      return <MedicationCardBody resource={resource} />;
+      return (
+        <MedicationCardBody
+          resource={resource}
+          resourceId={resource.id}
+        />
+      );
     // case 'Benefits':
     //   return <BenefitCardBody fieldsData={fieldsData} />;
     // case 'Claims':

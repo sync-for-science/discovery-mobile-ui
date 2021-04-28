@@ -29,6 +29,7 @@ const CARD_BODY_LABEL = {
   referral: 'Referral',
   refills: 'Refills',
   reported: 'Reported',
+  requester: 'Prescriber',
   result: 'Result',
   role: 'Role',
   startingOn: 'Starting On',

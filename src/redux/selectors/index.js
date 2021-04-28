@@ -100,6 +100,23 @@ export const serviceProviderSelector = createSelector(
   },
 );
 
+export const requesterSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const ref = resource?.requester?.reference;
+    if (ref) {
+      const matches = ref.match(/(#|\/)(.+)/);
+      const resourceId = matches.pop();
+      const requester = allResources[resourceId];
+      if (requester) {
+        return requester;
+      }
+      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
+    }
+    return null;
+  },
+);
+
 export const providersSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources).filter((r) => r.type === 'Organization'),
