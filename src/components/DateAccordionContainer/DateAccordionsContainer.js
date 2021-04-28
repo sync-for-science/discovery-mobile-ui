@@ -5,7 +5,7 @@ import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import {
-  arrayOf, bool, string, shape,
+  arrayOf, bool, string, shape, number
 } from 'prop-types';
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import BaseText from '../Generic/BaseText';
@@ -48,7 +48,7 @@ DateAccordion.propTypes = {
   date: string.isRequired,
   types: arrayOf(shape({}).isRequired).isRequired,
   fromDetailsPanel: bool.isRequired,
-  expanded: arrayOf(),
+  expanded: arrayOf(number),
 };
 
 DateAccordion.defaultProps = {
