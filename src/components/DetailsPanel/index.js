@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  StyleSheet, View, Text, SafeAreaView,
+  StyleSheet, View, Text, SafeAreaView, Keyboard, KeyboardAvoidingView, TextInput
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -28,6 +28,7 @@ const defaultSortingState = {
 
 const DetailsPanel = ({ navigation, collection }) => {
   const [sortingState, setSortingState] = useState(defaultSortingState);
+  const [enableShift, setEnableShift] = useState(false)
   const handlePressNoteIcon = () => {
     navigation.navigate('CollectionNotes');
   };
@@ -61,27 +62,71 @@ const DetailsPanel = ({ navigation, collection }) => {
     }
   };
 
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidHide", () => setEnableShift(false));
+
+    return () => {
+      Keyboard.removeListener("keyboardDidHide", () => setKeyboardStatus(false));
+    };
+  }, [])
+
+
   return (
     <SafeAreaView style={styles.root}>
-      <Header style={styles.header}>
-        <Left />
+        <Header style={styles.header}>
+          <Left />
+          <View>
+            <Title>{collection?.label}</Title>
+          </View>
+          <Right>
+            <TouchableOpacity onPress={handlePressNoteIcon}>
+              <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
+            </TouchableOpacity>
+          </Right>
+        </Header>
         <View>
-          <Title>{collection?.label}</Title>
+          <SortingHeader
+            sortingState={sortingState}
+            onChange={handleSortChange}
+          />
+          <ScrollView style={{backgroundColor: 'red'}}>
+            {displayAccordion()}
+          </ScrollView>
         </View>
-        <Right>
-          <TouchableOpacity onPress={handlePressNoteIcon}>
-            <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
-          </TouchableOpacity>
-        </Right>
-      </Header>
-      <SortingHeader
-        sortingState={sortingState}
-        onChange={handleSortChange}
-      />
+      <View>
       <ScrollView>
-        {displayAccordion()}
+        <View style={styles.content}>
+          <Text>CollectionNotesScreen</Text>
+          <TouchableOpacity onPress={() => setEnableShift(true)}>
+            <Text>CreateNote</Text>
+          </TouchableOpacity>
+          <Text>enableShift: {enableShift.toString()}</Text>
+        </View>
       </ScrollView>
+    </View>
+    {enableShift && (
+      <KeyboardAvoidingView 
+        behavior="position" 
+        style={{
+          width: '100%', 
+          zIndex: 1
+        }} 
+        enabled={enableShift} 
+        keyboardVerticalOffset={0}
+      >
+          <TextInput 
+            style={{
+              backgroundColor: 'lightblue', 
+              height: 50, 
+              width: '100%',  
+            }} 
+            autoFocus={enableShift}
+          />
+      </KeyboardAvoidingView>
+    )}
+        
     </SafeAreaView>
+    
   );
 };
 
@@ -95,10 +140,36 @@ export default DetailsPanel;
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: 'white',
   },
   header: {
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
   },
+  content: {
+    flex: 1,
+    height: 40000,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
 });
+
+
+// const styles = StyleSheet.create({
+//   root: {
+//     flex: 1,
+//     backgroundColor: 'pink'
+//   },
+//   header: {
+//     backgroundColor: 'white',
+//     alignItems: 'center',
+//     elevation: 0,
+//   },
+//   content: {
+//     flex: 1,
+//     height: 4000,
+//     justifyContent: 'flex-start',
+//     alignItems: 'center',
+//   },
+// });

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import { connect } from 'react-redux';
 import {
-  SafeAreaView, StyleSheet, Text, View, TouchableOpacity,
+  SafeAreaView, StyleSheet, Text, View, TouchableOpacity, KeyboardAvoidingView, TextInput, ScrollView, Keyboard
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -12,7 +12,22 @@ import { shape } from 'prop-types';
 import { activeCollectionSelector } from '../redux/selectors';
 import Colors from '../constants/Colors';
 
-const CollectionNotesScreen = ({ collection }) => (
+const CollectionNotesScreen = ({ collection }) => {
+  const [enableShift, setEnableShift] = useState(false)
+
+  const handleShowTextInput = () => {
+    setEnableShift(true)
+  }
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidHide", () => setEnableShift(false));
+
+    return () => {
+      Keyboard.removeListener("keyboardDidHide", () => setKeyboardStatus(false));
+    };
+  }, [])
+
+  return (
   <SafeAreaView style={styles.root}>
     <Header style={styles.header}>
       <Left />
@@ -25,11 +40,44 @@ const CollectionNotesScreen = ({ collection }) => (
         </TouchableOpacity>
       </Right>
     </Header>
-    <View style={styles.content}>
-      <Text>CollectionNotesScreen</Text>
+    <View>
+      <ScrollView>
+        <View style={styles.content}>
+          <Text>CollectionNotesScreen</Text>
+          <TouchableOpacity onPress={() => setEnableShift(true)}>
+            <Text>CreateNote</Text>
+          </TouchableOpacity>
+          <Text>enableShift: {enableShift.toString()}</Text>
+        </View>
+      </ScrollView>
     </View>
+    {enableShift && (
+      // <KeyboardAvoidingView behavior="position" style={{position: 'relative', backgroundColor: 'yellow', width: '100%', zIndex: 1}} enabled={enableShift}>
+      //     <TextInput style={{backgroundColor: 'lightblue', height: 50, width: '100%',  borderBottomColor: 'black', borderBottomWidth: 1}} autoFocus={enableShift}/>
+      // </KeyboardAvoidingView>
+      <KeyboardAvoidingView 
+        behavior="position" 
+        style={{
+          position: 'relative', 
+          backgroundColor: 'yellow', 
+          width: '100%', zIndex: 1
+        }} 
+        enabled={enableShift} 
+        keyboardVerticalOffset={0}
+      >
+          <TextInput 
+            style={{
+              backgroundColor: 'lightblue', 
+              height: 50, width: '100%',  
+              borderBottomColor: 'black', 
+              borderBottomWidth: 1
+            }} 
+            autoFocus={enableShift}
+          />
+      </KeyboardAvoidingView>
+    )}
   </SafeAreaView>
-);
+)};
 
 CollectionNotesScreen.propTypes = {
   collection: shape({}).isRequired,
@@ -53,7 +101,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
+    height: 40000,
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 });

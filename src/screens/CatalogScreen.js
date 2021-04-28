@@ -49,9 +49,13 @@ const CatalogScreen = ({
   navigation,
   collection,
   selectedRecordsGroupedBySubType,
-}) => (
-  <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+}) => {
+
+    
+    return (
+    <View style={styles.safeAreaView}>
+    <DetailsPanel navigation={navigation} collection={collection} />
+    {/* <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
       loop={false}
       showsPagination={false}
@@ -66,9 +70,9 @@ const CatalogScreen = ({
         </ScrollView>
       </FilterDrawer>
       <DetailsPanel navigation={navigation} collection={collection} />
-    </Swiper>
-  </SafeAreaView>
-);
+    </Swiper> */}
+  </View>
+)};
 
 CatalogScreen.propTypes = {
   navigation: shape({}).isRequired,
@@ -89,7 +93,7 @@ export default connect(mapStateToProps, null)(CatalogScreen);
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
   },
   screen: {
     flex: 1,

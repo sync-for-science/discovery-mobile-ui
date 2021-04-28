@@ -1,6 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  KeyboardAvoidingView,
+  StyleSheet, TextInput, View,
 } from 'react-native';
 import {
   string, shape, number, bool,
@@ -79,36 +80,37 @@ const ResourceCard = ({
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
   return (
-    <View style={[styles.root, firstCardStyle]}>
-      <View style={styles.header}>
-        <BaseText>{resourceDate}</BaseText>
-        <View style={styles.rightIconsContainer}>
-          { !fromDetailsPanel
-            && (
-            <>
-              <FocusedIcon
-                subType={resource.subType}
-                resourceIds={[resourceId]}
-                isAccordion={false}
-              />
-              <MarkedIcon
-                subType={resource.subType}
-                resourceIds={[resourceId]}
-                isAccordion={false}
-              />
-            </>
-            )}
-          <CollectionIcon
-            showCount={false}
-            collectionId={collectionId}
-            resourceIds={[resourceId]}
-          />
+      <View style={[styles.root, firstCardStyle]}>
+        <View style={styles.header}>
+          <BaseText>{resourceDate}</BaseText>
+          <View style={styles.rightIconsContainer}>
+            { !fromDetailsPanel
+              && (
+              <>
+                <FocusedIcon
+                  subType={resource.subType}
+                  resourceIds={[resourceId]}
+                  isAccordion={false}
+                />
+                <MarkedIcon
+                  subType={resource.subType}
+                  resourceIds={[resourceId]}
+                  isAccordion={false}
+                />
+              </>
+              )}
+            <CollectionIcon
+              showCount={false}
+              collectionId={collectionId}
+              resourceIds={[resourceId]}
+            />
+          </View>
         </View>
+        <View style={styles.body}>
+          {selectCardBody(resource, serviceProvider)}
+        </View>
+        <TextInput style={{width: '100%', height: 50, backgroundColor: 'yellow'}} />
       </View>
-      <View style={styles.body}>
-        {selectCardBody(resource, serviceProvider)}
-      </View>
-    </View>
   );
 };
 
