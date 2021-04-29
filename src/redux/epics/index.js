@@ -3,13 +3,12 @@ import { combineEpics, ofType } from 'redux-observable';
 import {
   catchError, map as rxMap, concatMap, mergeMap, switchMap, takeUntil, repeat,
 } from 'rxjs/operators';
-import {
-  compose, map, filter, propOr, hasPath, path, pathEq, flatten,
-} from 'ramda';
+import { pathEq, flatten } from 'ramda';
 
 import { actionTypes } from '../action-types';
 import { MOCK_AUTH, MOCK_BUNDLE } from '../../components/Login/SkipLoginButton';
 import flattenResources from './process-resources';
+import { referenceMap } from '../utils/fhir-references';
 
 const handleError = (error, message, type) => {
   console.error(`${message}: `, error); // eslint-disable-line no-console
@@ -75,24 +74,6 @@ const extractNextUrls = (() => {
     return flatten(urls).filter((url) => !!url);
   };
 })();
-
-export const referenceMap = {
-  // each key is a "type" (but not the referenced _resource_ type, eg: "Practitioner")
-  // each value operates on a FHIR resource, and returns an Array of reference Objects
-  serviceProvider: compose(
-    (result) => (result ? [result] : []),
-    path(['serviceProvider']),
-  ),
-  requester: compose(
-    (result) => (result ? [result] : []),
-    path(['requester']), // may or may not be practitioner?
-  ),
-  participant: compose(
-    map(path(['individual'])), // may or may not be practitioner?
-    filter(hasPath(['individual', 'reference'])),
-    propOr([], 'participant'),
-  ),
-};
 
 const extractReferences = ({ context, resources }) => {
   const urnContextMap = Object.values(resources)
