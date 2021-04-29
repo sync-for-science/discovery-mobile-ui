@@ -209,8 +209,8 @@ export const dateRangeForFilteredRecordsSelector = createSelector(
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
   [activeCollectionDateRangeFilterSelector, dateRangeForFilteredRecordsSelector],
-  (dateRangeFilter, timelineProps) => {
-    const { minimumDate, maximumDate } = timelineProps;
+  (dateRangeFilter, dateRangeForFilteredRecords) => {
+    const { minimumDate, maximumDate } = dateRangeForFilteredRecords;
     const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilter;
     return {
       dateRangeStart,
