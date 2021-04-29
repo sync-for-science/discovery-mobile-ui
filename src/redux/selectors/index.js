@@ -299,11 +299,9 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
 );
 
 const savedItemsSelector = createSelector(
-  [resourcesSelector, activeCollectionResourceIdsSelector],
-  (resources, saved) => values(resources)
-    .filter(({ id }) => saved[id])
-    .map(pickTimelineFields)
-    .sort(sortByDate),
+  [allRecordsWithFilterResponseSelector],
+  (resources) => resources
+    .filter(({ passesFilters: { inCollection } }) => inCollection),
 );
 
 // used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
