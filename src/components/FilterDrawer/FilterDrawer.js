@@ -55,7 +55,7 @@ ResourceTypeFilter.propTypes = {
 
 const DrawerContent = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
-    <Text style={styles.drawerTitle}>Resource Type Filters</Text>
+    <Text style={styles.drawerTitle}>Record Type Filters</Text>
     {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
       <ResourceTypeFilter
         key={type}
