@@ -216,6 +216,7 @@ const allRecordsWithFilterResponseSelector = createSelector(
   },
 );
 
+// This returns an Array of picked fields and 'passesFilters' map, not underlying records:
 export const filteredRecordsSelector = createSelector(
   [allRecordsWithFilterResponseSelector],
   (items) => items.filter(({
@@ -253,25 +254,6 @@ const timelineRangeSelector = createSelector(
   },
 );
 
-const filteredItemsInDateRangeSelector = createSelector(
-  // eslint-disable-next-line max-len
-  [filteredRecordsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
-  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
-    if (!dateRangeStart || !dateRangeEnd) {
-      return [];
-    }
-    return sortedTimelineItems
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ timelineDate }) => isWithinInterval(
-        timelineDate,
-        {
-          start: dateRangeStart,
-          end: dateRangeEnd,
-        },
-      ));
-  },
-);
-
 const sortedGroupedRecordsByType = (records, isDescending) => {
   // eslint-disable-next-line no-nested-ternary
   const sortedRecords = isDescending === undefined
@@ -305,7 +287,7 @@ const sortedGroupedRecordsByType = (records, isDescending) => {
 };
 
 export const selectedRecordsGroupedByTypeSelector = createSelector(
-  [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
+  [filteredRecordsSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
     if (!selectedResourceType) {
       return [];
@@ -405,7 +387,7 @@ const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
   [
-    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
+    filteredRecordsSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
     const { records } = activeCollection;
 
