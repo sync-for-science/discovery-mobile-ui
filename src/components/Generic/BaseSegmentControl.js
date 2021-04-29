@@ -2,15 +2,16 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 import {
-  arrayOf, func, number, string,
+  arrayOf, func, number, string, bool,
 } from 'prop-types';
 
 const BaseSegmentControl = ({
-  values, selectedIndex, onChange, activeColor,
+  enabled, values, selectedIndex, onChange, activeColor,
 }) => {
   const tintColor = activeColor || 'lightblue';
   return (
     <SegmentedControl
+      enabled={enabled}
       values={values}
       selectedIndex={selectedIndex}
       onChange={(event) => {
@@ -24,6 +25,7 @@ const BaseSegmentControl = ({
 };
 
 BaseSegmentControl.propTypes = {
+  enabled: bool.isRequired,
   values: arrayOf(string.isRequired).isRequired,
   selectedIndex: number.isRequired,
   onChange: func.isRequired,
