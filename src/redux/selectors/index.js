@@ -166,6 +166,18 @@ export const allValidRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
+export const dateRangeForAllRecordsSelector = createSelector(
+  [allValidRecordsSortedByDateSelector],
+  (items) => {
+    const r1 = items[0]; // might be same as r2
+    const r2 = items[items.length - 1];
+    return ({
+      minimumDate: r1 && startOfDay(r1.timelineDate),
+      maximumDate: r2 && endOfDay(r2.timelineDate),
+    });
+  },
+);
+
 // returns Array of (picked fields from) _all_ records, flagged with responsiveness to each filter:
 const allRecordsWithFilterResponseSelector = createSelector(
   [allValidRecordsSortedByDateSelector, activeCollectionSelector],
@@ -213,18 +225,6 @@ export const filteredRecordsSelector = createSelector(
       showMarkedOnly,
     },
   }) => type && date && showCollectionOnly && showMarkedOnly),
-);
-
-export const dateRangeForAllRecordsSelector = createSelector(
-  [allValidRecordsSortedByDateSelector],
-  (items) => {
-    const r1 = items[0]; // might be same as r2
-    const r2 = items[items.length - 1];
-    return ({
-      minimumDate: r1 && startOfDay(r1.timelineDate),
-      maximumDate: r2 && endOfDay(r2.timelineDate),
-    });
-  },
 );
 
 export const dateRangeForFilteredRecordsSelector = createSelector(
