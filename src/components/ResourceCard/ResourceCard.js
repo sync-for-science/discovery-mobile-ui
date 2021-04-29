@@ -15,13 +15,13 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import { resourceByIdSelector, serviceProviderSelector } from '../../redux/selectors';
+import { resourceByIdSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
-const selectCardBody = (resource, serviceProvider) => {
+const selectCardBody = (resource) => {
   switch (resource.type) {
     case 'Condition':
     case 'Procedure':
@@ -40,7 +40,6 @@ const selectCardBody = (resource, serviceProvider) => {
       return (
         <EncounterCardBody
           resource={resource}
-          serviceProvider={serviceProvider}
         />
       );
     case 'Immunization':
@@ -70,7 +69,6 @@ const selectCardBody = (resource, serviceProvider) => {
 const ResourceCard = ({
   resourceId,
   resource,
-  serviceProvider,
   collectionId,
   index,
   fromDetailsPanel,
@@ -106,7 +104,7 @@ const ResourceCard = ({
         </View>
       </View>
       <View style={styles.body}>
-        {selectCardBody(resource, serviceProvider)}
+        {selectCardBody(resource)}
       </View>
     </View>
   );
@@ -115,20 +113,17 @@ const ResourceCard = ({
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
-  serviceProvider: shape({}),
   collectionId: string.isRequired,
   index: number.isRequired,
   fromDetailsPanel: bool,
 };
 
 ResourceCard.defaultProps = {
-  serviceProvider: null,
   fromDetailsPanel: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
-  serviceProvider: serviceProviderSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

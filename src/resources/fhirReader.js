@@ -14,6 +14,14 @@ export const getPatientName = (patientResource) => {
   return [given?.[0], family].join(' ');
 };
 
+export const formatPractitionerName = (practitionerResource) => {
+  if (practitionerResource?.name[0]) {
+    const { prefix, given, family } = practitionerResource.name[0];
+    return [prefix?.[0], given?.[0], family].join(' ');
+  }
+  return '';
+};
+
 export const getPatientGender = (patientResource) => patientResource?.gender;
 
 // returns human-readable patient birth date

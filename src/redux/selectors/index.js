@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
-
+import { referenceMap } from '../utils/fhir-references';
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
@@ -20,6 +20,7 @@ export const authSelector = (state) => state.auth.authResult;
 const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
+const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
 
 const collectionsSelector = (state) => state.collections;
 
@@ -83,20 +84,45 @@ export const patientSelector = createSelector(
   (resources) => values(resources).find((r) => r.type === 'Patient'),
 );
 
-export const serviceProviderSelector = createSelector(
-  [resourceByIdSelector, resourcesSelector],
-  (resource, allResources) => {
-    const ref = resource?.serviceProvider?.reference;
-    if (ref) {
-      const matches = ref.match(/(#|\/)(.+)/);
+const resolveReference = (resource, allResources, refType) => {
+  const resources = [];
+  const referenceUrns = referenceMap[refType](resource).map(({ reference }) => reference);
+  referenceUrns.forEach((urn) => {
+    if (urn) {
+      const matches = urn.match(/(#|\/)(.+)/);
       const resourceId = matches.pop();
-      const serviceProvider = allResources[resourceId];
-      if (serviceProvider) {
-        return serviceProvider;
+      const targetResource = allResources[resourceId];
+      if (targetResource) {
+        resources.push(targetResource);
+      } else {
+        console.warn(`Expected resource for reference "${urn}"`); // eslint-disable-line no-console
       }
-      console.warn(`Expected resource for reference "${ref}"`); // eslint-disable-line no-console
     }
-    return null;
+  });
+  return resources;
+};
+
+export const serviceProviderSelector = createSelector(
+  [resourceFromOwnPropsSelector, resourcesSelector],
+  (resource, allResources) => {
+    const resources = resolveReference(resource, allResources, 'serviceProvider');
+    return resources[0];
+  },
+);
+
+export const requesterSelector = createSelector(
+  [resourceFromOwnPropsSelector, resourcesSelector],
+  (resource, allResources) => {
+    const resources = resolveReference(resource, allResources, 'requester');
+    return resources.filter(({ type }) => type === 'Practitioner')[0];
+  },
+);
+
+export const participantsSelector = createSelector(
+  [resourceFromOwnPropsSelector, resourcesSelector],
+  (resource, allResources) => {
+    const resources = resolveReference(resource, allResources, 'participant');
+    return resources.filter(({ type }) => type === 'Practitioner');
   },
 );
 
