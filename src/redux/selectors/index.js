@@ -180,14 +180,15 @@ export const dateRangeForAllRecordsSelector = createSelector(
 
 // returns Array of (picked fields from) _all_ records, flagged with responsiveness to each filter:
 const allRecordsWithFilterResponseSelector = createSelector(
-  [allValidRecordsSortedByDateSelector, activeCollectionSelector],
-  (items, activeCollection) => {
+  [allValidRecordsSortedByDateSelector, activeCollectionSelector, dateRangeForAllRecordsSelector],
+  (items, activeCollection, dateRangeForAllRecords) => {
+    const { minimumDate, maximumDate } = dateRangeForAllRecords;
     const {
       resourceTypeFilters,
       showCollectionOnly,
       showMarkedOnly,
       records,
-      dateRangeFilter: { dateRangeStart, dateRangeEnd },
+      dateRangeFilter: { dateRangeStart = minimumDate, dateRangeEnd = maximumDate },
     } = activeCollection;
 
     return items.map(({
