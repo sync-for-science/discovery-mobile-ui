@@ -24,10 +24,10 @@ const ResourceTypeFilter = ({
   resourceType, label, filterOpen, toggleResourceTypeFilterAction,
 }) => {
   let thumbColor;
-  if (filterOpen) {
-    thumbColor = Platform.OS === 'ios' ? 'white' : Colors.primary;
+  if (Platform.OS === 'ios') {
+    thumbColor = 'white';
   } else {
-    thumbColor = Platform.OS === 'ios' ? 'white' : Colors.lightgrey;
+    thumbColor = filterOpen ? Colors.primary : Colors.lightgrey;
   }
 
   return (
