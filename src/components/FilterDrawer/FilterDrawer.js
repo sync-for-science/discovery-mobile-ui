@@ -53,26 +53,43 @@ ResourceTypeFilter.propTypes = {
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
+const DrawerContent = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
+  <View>
+    <Text style={styles.drawerTitle}>Resource Type Filters</Text>
+    {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
+      <ResourceTypeFilter
+        key={type}
+        resourceType={type}
+        label={label}
+        filterOpen={typeIsEnabled}
+        toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+      />
+    ))}
+  </View>
+);
+
+DrawerContent.propTypes = {
+  orderedResourceTypeFilters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+    label: string.isRequired,
+  })).isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  orderedResourceTypeFilters: orderedResourceTypeFiltersSelector(state),
+});
+
+const mapDispatchToProps = {
+  toggleResourceTypeFilterAction: toggleResourceTypeFilter,
+};
+
+const DrawerContentHOC = connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
+
 const FilterDrawer = ({
-  toggleResourceTypeFilterAction,
-  orderedResourceTypeFilters,
   children,
 }) => {
-  const renderDrawer = () => (
-    <View>
-      <Text style={styles.drawerTitle}>Resource Type Filters</Text>
-      {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
-        <ResourceTypeFilter
-          key={type}
-          resourceType={type}
-          label={label}
-          filterOpen={typeIsEnabled}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-        />
-      ))}
-    </View>
-  );
-
   const drawerRef = useRef(null);
   const handleOpenDrawer = () => {
     drawerRef.current.openDrawer();
@@ -93,7 +110,7 @@ const FilterDrawer = ({
       drawerPosition={DrawerLayout.positions.Left}
       drawerType="front"
       drawerBackgroundColor="white"
-      renderNavigationView={renderDrawer}
+      renderNavigationView={() => <DrawerContentHOC />}
       edgeWidth={-wp('100%')}
     >
       <View style={styles.childrenContainer}>
@@ -104,24 +121,10 @@ const FilterDrawer = ({
 };
 
 FilterDrawer.propTypes = {
-  orderedResourceTypeFilters: arrayOf(shape({
-    type: string.isRequired,
-    typeIsEnabled: bool.isRequired,
-    label: string.isRequired,
-  })).isRequired,
-  toggleResourceTypeFilterAction: func.isRequired,
   children: node.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  orderedResourceTypeFilters: orderedResourceTypeFiltersSelector(state),
-});
-
-const mapDispatchToProps = {
-  toggleResourceTypeFilterAction: toggleResourceTypeFilter,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterDrawer);
+export default FilterDrawer;
 
 const styles = StyleSheet.create({
   drawerTitle: {
