@@ -15,7 +15,7 @@ const TypeFilterRow = ({
   resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction, disabled,
 }) => (
   <View style={styles.typeFilterRow}>
-    <Text>{label}</Text>
+    <Text style={styles.filterRowLabel}>{label}</Text>
     <Switch
       trackColor={{
         false: Colors.mediumgrey,
@@ -108,5 +108,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     marginVertical: 4,
+  },
+  filterRowLabel: {
+    fontSize: 18,
   },
 });
