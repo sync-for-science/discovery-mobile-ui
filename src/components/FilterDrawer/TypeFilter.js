@@ -35,7 +35,7 @@ TypeFilterRow.propTypes = {
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
-const RecordTypeFilters = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
+const TypeFilter = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
     <Text style={styles.drawerTitle}>Record Type Filters</Text>
     {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
@@ -50,7 +50,7 @@ const RecordTypeFilters = ({ orderedResourceTypeFilters, toggleResourceTypeFilte
   </View>
 );
 
-RecordTypeFilters.propTypes = {
+TypeFilter.propTypes = {
   orderedResourceTypeFilters: arrayOf(shape({
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
@@ -67,7 +67,7 @@ const mapDispatchToProps = {
   toggleResourceTypeFilterAction: toggleResourceTypeFilter,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecordTypeFilters);
+export default connect(mapStateToProps, mapDispatchToProps)(TypeFilter);
 
 const styles = StyleSheet.create({
   drawerTitle: {

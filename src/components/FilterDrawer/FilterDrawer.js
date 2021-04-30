@@ -6,7 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { DrawerLayout } from 'react-native-gesture-handler';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
-import RecordTypeFilters from '../Collections/RecordTypeFilters';
+import RecordTypeFilters from './TypeFilter';
 
 const FilterDrawer = ({
   children,
