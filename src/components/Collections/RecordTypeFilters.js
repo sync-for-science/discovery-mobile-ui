@@ -12,7 +12,7 @@ import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
 
 const TypeFilterRow = ({
-  resourceType, label, filterOpen, toggleResourceTypeFilterAction,
+  resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction,
 }) => (
   <View style={styles.categoryRow}>
     <Text>{label}</Text>
@@ -21,9 +21,9 @@ const TypeFilterRow = ({
         false: Colors.mediumgrey,
         true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
       }}
-      thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(filterOpen ? 'primary' : 'primaryLight')]}
+      thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(typeIsEnabled ? 'primary' : 'primaryLight')]}
       onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
-      value={filterOpen}
+      value={typeIsEnabled}
     />
   </View>
 );
@@ -31,7 +31,7 @@ const TypeFilterRow = ({
 TypeFilterRow.propTypes = {
   resourceType: string.isRequired,
   label: string.isRequired,
-  filterOpen: bool.isRequired,
+  typeIsEnabled: bool.isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
 };
 
@@ -43,7 +43,7 @@ const RecordTypeFilters = ({ orderedResourceTypeFilters, toggleResourceTypeFilte
         key={type}
         resourceType={type}
         label={label}
-        filterOpen={typeIsEnabled}
+        typeIsEnabled={typeIsEnabled}
         toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
       />
     ))}
