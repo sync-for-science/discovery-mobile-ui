@@ -112,9 +112,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(TypeFilter);
 
 const styles = StyleSheet.create({
   drawerTitle: {
-    marginTop: 4,
-    marginBottom: 4,
-    fontSize: 18,
+    backgroundColor: Colors.secondary,
+    color: 'white',
+    marginBottom: 8,
+    padding: 8,
+    fontSize: 20,
     textAlign: 'center',
   },
   groupHeading: {
