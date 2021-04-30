@@ -15,7 +15,7 @@ const TypeFilterRow = ({
   resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction, disabled,
 }) => (
   <View style={styles.typeFilterRow}>
-    <Text style={styles.filterRowLabel}>{label}</Text>
+    <Text style={styles.rowLabel}>{label}</Text>
     <Switch
       trackColor={{
         false: Colors.mediumgrey,
@@ -38,25 +38,30 @@ TypeFilterRow.propTypes = {
 };
 
 const TypeFilterGroup = ({
-  title, filters, toggleResourceTypeFilterAction, disabled,
-}) => (
-  <View>
-    <Text style={styles.drawerSubTitle}>{title}</Text>
-    {filters.map(({ type, typeIsEnabled, label }) => (
-      <TypeFilterRow
-        key={type}
-        resourceType={type}
-        label={label}
-        typeIsEnabled={typeIsEnabled}
-        toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-        disabled={disabled}
-      />
-    ))}
-  </View>
-);
+  heading, filters, toggleResourceTypeFilterAction, disabled,
+}) => {
+  if (!filters.length) {
+    return null;
+  }
+  return (
+    <View>
+      <Text style={styles.groupHeading}>{heading}</Text>
+      {filters.map(({ type, typeIsEnabled, label }) => (
+        <TypeFilterRow
+          key={type}
+          resourceType={type}
+          label={label}
+          typeIsEnabled={typeIsEnabled}
+          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          disabled={disabled}
+        />
+      ))}
+    </View>
+  );
+};
 
 TypeFilterGroup.propTypes = {
-  title: string.isRequired,
+  heading: string.isRequired,
   disabled: bool.isRequired,
   filters: arrayOf(shape({
     type: string.isRequired,
@@ -71,13 +76,13 @@ const TypeFilter = ({ allTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
     <Text style={styles.drawerTitle}>Record Type Filters</Text>
     <TypeFilterGroup
-      title="Available in time window"
+      heading="Available in time window"
       disabled={false}
       filters={allTypeFilters.filter(({ hasItemsInDateRange }) => hasItemsInDateRange)}
       toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
     />
     <TypeFilterGroup
-      title="Outside of time window"
+      heading="Outside of time window"
       disabled
       filters={allTypeFilters.filter(({ hasItemsInDateRange }) => !hasItemsInDateRange)}
       toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
   },
-  drawerSubTitle: {
+  groupHeading: {
     marginTop: 8,
     marginBottom: 4,
     fontSize: 16,
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     marginVertical: 4,
   },
-  filterRowLabel: {
+  rowLabel: {
     fontSize: 18,
   },
 });
