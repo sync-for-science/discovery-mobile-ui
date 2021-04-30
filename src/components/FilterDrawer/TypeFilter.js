@@ -37,40 +37,56 @@ TypeFilterRow.propTypes = {
   disabled: bool.isRequired,
 };
 
-const TypeFilter = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
+const TypeFilterGroup = ({
+  title, filters, toggleResourceTypeFilterAction, disabled,
+}) => (
+  <View>
+    <Text style={styles.drawerSubTitle}>{title}</Text>
+    {filters.map(({ type, typeIsEnabled, label }) => (
+      <TypeFilterRow
+        key={type}
+        resourceType={type}
+        label={label}
+        typeIsEnabled={typeIsEnabled}
+        toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+        disabled={disabled}
+      />
+    ))}
+  </View>
+);
+
+TypeFilterGroup.propTypes = {
+  title: string.isRequired,
+  disabled: bool.isRequired,
+  filters: arrayOf(shape({
+    type: string.isRequired,
+    typeIsEnabled: bool.isRequired,
+    label: string.isRequired,
+    hasItemsInDateRange: bool.isRequired,
+  })).isRequired,
+  toggleResourceTypeFilterAction: func.isRequired,
+};
+
+const TypeFilter = ({ allTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
     <Text style={styles.drawerTitle}>Record Type Filters</Text>
-    <Text style={styles.drawerSubTitle}>Available in time window</Text>
-    {orderedResourceTypeFilters
-      .filter(({ hasItemsInDateRange }) => hasItemsInDateRange)
-      .map(({ type, typeIsEnabled, label }) => (
-        <TypeFilterRow
-          key={type}
-          resourceType={type}
-          label={label}
-          typeIsEnabled={typeIsEnabled}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-          disabled={false}
-        />
-      ))}
-    <Text style={styles.drawerSubTitle}>Outside of time window</Text>
-    {orderedResourceTypeFilters
-      .filter(({ hasItemsInDateRange }) => !hasItemsInDateRange)
-      .map(({ type, typeIsEnabled, label }) => (
-        <TypeFilterRow
-          key={type}
-          resourceType={type}
-          label={label}
-          typeIsEnabled={typeIsEnabled}
-          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-          disabled
-        />
-      ))}
+    <TypeFilterGroup
+      title="Available in time window"
+      disabled={false}
+      filters={allTypeFilters.filter(({ hasItemsInDateRange }) => hasItemsInDateRange)}
+      toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+    />
+    <TypeFilterGroup
+      title="Outside of time window"
+      disabled
+      filters={allTypeFilters.filter(({ hasItemsInDateRange }) => !hasItemsInDateRange)}
+      toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+    />
   </View>
 );
 
 TypeFilter.propTypes = {
-  orderedResourceTypeFilters: arrayOf(shape({
+  allTypeFilters: arrayOf(shape({
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
     label: string.isRequired,
@@ -80,7 +96,7 @@ TypeFilter.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  orderedResourceTypeFilters: orderedResourceTypeFiltersSelector(state),
+  allTypeFilters: orderedResourceTypeFiltersSelector(state),
 });
 
 const mapDispatchToProps = {
