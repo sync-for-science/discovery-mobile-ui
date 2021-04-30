@@ -407,12 +407,16 @@ export const savedRecordsBySavedDaySelector = createSelector(
 );
 
 export const orderedResourceTypeFiltersSelector = createSelector(
-  [activeCollectionResourceTypeFiltersSelector],
-  (activeCollectionTypeFilters) => Object.entries(activeCollectionTypeFilters)
+  [activeCollectionResourceTypeFiltersSelector, allRecordsWithFilterResponseSelector],
+  (activeCollectionTypeFilters, items) => Object.entries(activeCollectionTypeFilters)
     .map(([type, typeIsEnabled]) => ({
       type,
       typeIsEnabled,
       label: PLURAL_RESOURCE_TYPES[type],
+      hasItemsInDateRange: !!items.find(({
+        type: t,
+        passesFilters: { date, showCollectionOnly, showHighlightedOnly },
+      }) => type === t && date && showCollectionOnly && showHighlightedOnly),
     }))
     .sort(({ label: l1 }, { label: l2 }) => ((l1.toLowerCase() < l2.toLowerCase()) ? -1 : 1)),
 );
