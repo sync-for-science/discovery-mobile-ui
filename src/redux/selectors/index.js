@@ -217,20 +217,25 @@ const allRecordsWithFilterResponseSelector = createSelector(
 );
 
 // This returns an Array of picked fields and 'passesFilters' map, not underlying records:
-export const filteredRecordsSelector = createSelector(
+const recordsFilteredByAllButDateSelector = createSelector(
   [allRecordsWithFilterResponseSelector],
   (items) => items.filter(({
     passesFilters: {
       type,
-      date,
       showCollectionOnly,
       showMarkedOnly,
     },
-  }) => type && date && showCollectionOnly && showMarkedOnly),
+  }) => type && showCollectionOnly && showMarkedOnly),
 );
 
-export const dateRangeForFilteredRecordsSelector = createSelector(
-  [filteredRecordsSelector],
+// This returns an Array of picked fields and 'passesFilters' map, not underlying records:
+export const filteredRecordsSelector = createSelector(
+  [recordsFilteredByAllButDateSelector],
+  (items) => items.filter(({ passesFilters: { date } }) => date),
+);
+
+export const timelinePropsSelector = createSelector(
+  [recordsFilteredByAllButDateSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
@@ -243,9 +248,8 @@ export const dateRangeForFilteredRecordsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [activeCollectionDateRangeFilterSelector, dateRangeForFilteredRecordsSelector],
-  (dateRangeFilter, dateRangeForFilteredRecords) => {
-    const { minimumDate, maximumDate } = dateRangeForFilteredRecords;
+  [activeCollectionDateRangeFilterSelector, timelinePropsSelector],
+  (dateRangeFilter, { minimumDate, maximumDate }) => {
     const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilter;
     return {
       dateRangeStart,

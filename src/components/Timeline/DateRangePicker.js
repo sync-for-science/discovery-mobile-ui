@@ -10,7 +10,7 @@ import {
 
 import { updateDateRange } from '../../redux/action-creators';
 import DatePicker from './DatePicker';
-import { dateRangeForFilteredRecordsSelector, activeCollectionDateRangeFilterSelector } from '../../redux/selectors';
+import { timelinePropsSelector, activeCollectionDateRangeFilterSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const DateRangePicker = ({ timelineProps, dateRangeFilter, updateDateRangeFilter }) => {
@@ -53,7 +53,7 @@ DateRangePicker.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  timelineProps: dateRangeForFilteredRecordsSelector(state),
+  timelineProps: timelinePropsSelector(state),
   dateRangeFilter: activeCollectionDateRangeFilterSelector(state),
 });
 
