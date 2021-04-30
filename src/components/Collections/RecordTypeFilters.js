@@ -14,7 +14,7 @@ import { toggleResourceTypeFilter } from '../../redux/action-creators';
 const TypeFilterRow = ({
   resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction,
 }) => (
-  <View style={styles.categoryRow}>
+  <View style={styles.typeFilterRow}>
     <Text>{label}</Text>
     <Switch
       trackColor={{
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-  categoryRow: {
+  typeFilterRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
