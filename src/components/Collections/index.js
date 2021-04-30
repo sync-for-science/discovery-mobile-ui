@@ -16,7 +16,7 @@ import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsCon
 import Colors from '../../constants/Colors';
 import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
-import FilterDrawer from '../FilterDrawer/FilterDrawer';
+import FilterDrawer from '../FilterDrawer';
 
 const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
   <Header style={styles.header}>
