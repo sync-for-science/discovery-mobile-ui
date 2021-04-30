@@ -210,7 +210,7 @@ const allRecordsWithFilterResponseSelector = createSelector(
         inCollection: records[id]?.saved,
         showCollectionOnly: !showCollectionOnly || (showCollectionOnly && records[id]?.saved),
         isHighlighted: records[id]?.highlight,
-        showMarkedOnly: !showMarkedOnly || (showMarkedOnly && records[id]?.highlight),
+        showHighlightedOnly: !showMarkedOnly || (showMarkedOnly && records[id]?.highlight),
       },
     }));
   },
@@ -223,9 +223,9 @@ const recordsFilteredByAllButDateSelector = createSelector(
     passesFilters: {
       type,
       showCollectionOnly,
-      showMarkedOnly,
+      showHighlightedOnly,
     },
-  }) => type && showCollectionOnly && showMarkedOnly),
+  }) => type && showCollectionOnly && showHighlightedOnly),
 );
 
 // This returns an Array of picked fields and 'passesFilters' map, not underlying records:
