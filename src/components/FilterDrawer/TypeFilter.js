@@ -3,16 +3,16 @@ import {
   arrayOf, bool, func, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 
-import Colors from '../../constants/Colors';
 import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
+import TypeFilterTitle from './TypeFilterTitle';
 import TypeFilterGroup from './TypeFilterGroup';
 
 const TypeFilter = ({ allTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
-    <Text style={styles.drawerTitle}>Record Type Filters</Text>
+    <TypeFilterTitle />
     <TypeFilterGroup
       heading="Available in time window"
       disabled={false}
@@ -47,14 +47,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TypeFilter);
-
-const styles = StyleSheet.create({
-  drawerTitle: {
-    backgroundColor: Colors.secondary,
-    color: 'white',
-    marginBottom: 8,
-    padding: 8,
-    fontSize: 20,
-    textAlign: 'center',
-  },
-});
