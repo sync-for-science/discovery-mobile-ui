@@ -1,12 +1,37 @@
-import { StyleSheet, Text } from 'react-native';
 import React from 'react';
-import Colors from '../../constants/Colors';
+import { shape } from 'prop-types';
+import { StyleSheet, Text } from 'react-native';
+import { connect } from 'react-redux';
 
-const TypeFilterTitle = () => (
-  <Text style={styles.title}>Record Type</Text>
+import Colors from '../../constants/Colors';
+import { activeCollectionSelector } from '../../redux/selectors';
+
+const getTitle = (activeCollection) => {
+  if (activeCollection.showCollectionOnly && activeCollection.showMarkedOnly) {
+    return 'Highlighted Record Types in Collection';
+  }
+  if (activeCollection.showCollectionOnly) {
+    return 'Record Types in Collection';
+  }
+  if (activeCollection.showMarkedOnly) {
+    return 'Highlighted Record Types';
+  }
+  return 'Record Types';
+};
+
+const TypeFilterTitle = ({ activeCollection }) => (
+  <Text style={styles.title}>{getTitle(activeCollection)}</Text>
 );
 
-export default TypeFilterTitle;
+TypeFilterTitle.propTypes = {
+  activeCollection: shape({}).isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  activeCollection: activeCollectionSelector(state),
+});
+
+export default connect(mapStateToProps, null)(TypeFilterTitle);
 
 const styles = StyleSheet.create({
   title: {
