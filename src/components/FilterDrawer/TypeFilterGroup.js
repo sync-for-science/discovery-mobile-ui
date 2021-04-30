@@ -14,7 +14,7 @@ const TypeFilterGroup = ({
   }
   return (
     <View>
-      <Text style={styles.groupHeading}>{heading}</Text>
+      <Text style={styles.heading}>{heading}</Text>
       {filters.map(({ type, typeIsEnabled, label }) => (
         <TypeFilterRow
           key={type}
@@ -44,7 +44,7 @@ TypeFilterGroup.propTypes = {
 export default TypeFilterGroup;
 
 const styles = StyleSheet.create({
-  groupHeading: {
+  heading: {
     marginTop: 8,
     marginBottom: 4,
     fontSize: 16,

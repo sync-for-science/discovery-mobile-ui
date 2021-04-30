@@ -9,8 +9,8 @@ import Colors from '../../constants/Colors';
 const TypeFilterRow = ({
   resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction, disabled,
 }) => (
-  <View style={styles.typeFilterRow}>
-    <Text style={styles.rowLabel}>{label}</Text>
+  <View style={styles.row}>
+    <Text style={styles.label}>{label}</Text>
     <Switch
       trackColor={{
         false: Colors.mediumgrey,
@@ -35,14 +35,14 @@ TypeFilterRow.propTypes = {
 export default TypeFilterRow;
 
 const styles = StyleSheet.create({
-  typeFilterRow: {
+  row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
     marginVertical: 4,
   },
-  rowLabel: {
+  label: {
     fontSize: 18,
   },
 });
