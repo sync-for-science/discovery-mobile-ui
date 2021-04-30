@@ -13,29 +13,20 @@ import { toggleResourceTypeFilter } from '../../redux/action-creators';
 
 const TypeFilterRow = ({
   resourceType, label, filterOpen, toggleResourceTypeFilterAction,
-}) => {
-  let thumbColor;
-  if (Platform.OS === 'ios') {
-    thumbColor = 'white';
-  } else {
-    thumbColor = filterOpen ? Colors.primary : Colors.lightgrey;
-  }
-
-  return (
-    <View style={styles.categoryRow}>
-      <Text>{label}</Text>
-      <Switch
-        trackColor={{
-          false: Colors.mediumgrey,
-          true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
-        }}
-        thumbColor={thumbColor}
-        onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
-        value={filterOpen}
-      />
-    </View>
-  );
-};
+}) => (
+  <View style={styles.categoryRow}>
+    <Text>{label}</Text>
+    <Switch
+      trackColor={{
+        false: Colors.mediumgrey,
+        true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
+      }}
+      thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(filterOpen ? 'primary' : 'primaryLight')]}
+      onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
+      value={filterOpen}
+    />
+  </View>
+);
 
 TypeFilterRow.propTypes = {
   resourceType: string.isRequired,
