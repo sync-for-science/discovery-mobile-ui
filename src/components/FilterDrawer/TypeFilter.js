@@ -91,16 +91,22 @@ export default connect(mapStateToProps, mapDispatchToProps)(TypeFilter);
 
 const styles = StyleSheet.create({
   drawerTitle: {
-    marginTop: 10,
-    marginBottom: 20,
-    fontSize: 20,
+    marginTop: 4,
+    marginBottom: 4,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  drawerSubTitle: {
+    marginTop: 8,
+    marginBottom: 4,
+    fontSize: 16,
     textAlign: 'center',
   },
   typeFilterRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    marginVertical: 10,
+    paddingHorizontal: 8,
+    marginVertical: 4,
   },
 });
