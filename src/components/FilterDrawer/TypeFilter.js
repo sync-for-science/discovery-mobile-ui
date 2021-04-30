@@ -12,7 +12,7 @@ import { orderedResourceTypeFiltersSelector } from '../../redux/selectors';
 import { toggleResourceTypeFilter } from '../../redux/action-creators';
 
 const TypeFilterRow = ({
-  resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction,
+  resourceType, label, typeIsEnabled, toggleResourceTypeFilterAction, disabled,
 }) => (
   <View style={styles.typeFilterRow}>
     <Text>{label}</Text>
@@ -24,6 +24,7 @@ const TypeFilterRow = ({
       thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(typeIsEnabled ? 'primary' : 'primaryLight')]}
       onValueChange={() => toggleResourceTypeFilterAction(resourceType)}
       value={typeIsEnabled}
+      disabled={disabled}
     />
   </View>
 );
@@ -33,20 +34,38 @@ TypeFilterRow.propTypes = {
   label: string.isRequired,
   typeIsEnabled: bool.isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
+  disabled: bool.isRequired,
 };
 
 const TypeFilter = ({ orderedResourceTypeFilters, toggleResourceTypeFilterAction }) => (
   <View>
     <Text style={styles.drawerTitle}>Record Type Filters</Text>
-    {orderedResourceTypeFilters.map(({ type, typeIsEnabled, label }) => (
-      <TypeFilterRow
-        key={type}
-        resourceType={type}
-        label={label}
-        typeIsEnabled={typeIsEnabled}
-        toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
-      />
-    ))}
+    <Text style={styles.drawerSubTitle}>Available in time window</Text>
+    {orderedResourceTypeFilters
+      .filter(({ hasItemsInDateRange }) => hasItemsInDateRange)
+      .map(({ type, typeIsEnabled, label }) => (
+        <TypeFilterRow
+          key={type}
+          resourceType={type}
+          label={label}
+          typeIsEnabled={typeIsEnabled}
+          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          disabled={false}
+        />
+      ))}
+    <Text style={styles.drawerSubTitle}>Outside of time window</Text>
+    {orderedResourceTypeFilters
+      .filter(({ hasItemsInDateRange }) => !hasItemsInDateRange)
+      .map(({ type, typeIsEnabled, label }) => (
+        <TypeFilterRow
+          key={type}
+          resourceType={type}
+          label={label}
+          typeIsEnabled={typeIsEnabled}
+          toggleResourceTypeFilterAction={toggleResourceTypeFilterAction}
+          disabled
+        />
+      ))}
   </View>
 );
 
@@ -55,6 +74,7 @@ TypeFilter.propTypes = {
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
     label: string.isRequired,
+    hasItemsInDateRange: bool.isRequired,
   })).isRequired,
   toggleResourceTypeFilterAction: func.isRequired,
 };
