@@ -67,48 +67,18 @@ const selectCardBody = (resource) => {
   }
 };
 
-const ResourceCard = ({
-  resourceId,
-  resource,
-  collectionId,
-  index,
-  fromDetailsPanel,
+const CardHeader = ({
+  resourceId, resource, collectionId, fromDetailsPanel,
 }) => {
   const resourceDate = getResourceDate(resource);
-  const firstCardStyle = index === 0 ? styles.firstCard : {};
   const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
 
-  const cardHeader = () => {
-    if (fromDetailsPanel) {
-      return (
-        <>
-          <BaseText style={styles.typeLabel}>{displayType}</BaseText>
-          <View style={styles.rightIconsContainer}>
-            <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
-            <CollectionIcon
-              showCount={false}
-              collectionId={collectionId}
-              resourceIds={[resourceId]}
-            />
-          </View>
-        </>
-      );
-    }
-
+  if (fromDetailsPanel) {
     return (
       <>
-        <BaseText>{resourceDate}</BaseText>
+        <BaseText style={styles.typeLabel}>{displayType}</BaseText>
         <View style={styles.rightIconsContainer}>
-          <FocusedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
-          <MarkedIcon
-            subType={resource.subType}
-            resourceIds={[resourceId]}
-            isAccordion={false}
-          />
+          <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
           <CollectionIcon
             showCount={false}
             collectionId={collectionId}
@@ -117,12 +87,61 @@ const ResourceCard = ({
         </View>
       </>
     );
-  };
+  }
+
+  return (
+    <>
+      <BaseText>{resourceDate}</BaseText>
+      <View style={styles.rightIconsContainer}>
+        <FocusedIcon
+          subType={resource.subType}
+          resourceIds={[resourceId]}
+          isAccordion={false}
+        />
+        <MarkedIcon
+          subType={resource.subType}
+          resourceIds={[resourceId]}
+          isAccordion={false}
+        />
+        <CollectionIcon
+          showCount={false}
+          collectionId={collectionId}
+          resourceIds={[resourceId]}
+        />
+      </View>
+    </>
+  );
+};
+
+CardHeader.propTypes = {
+  resourceId: string.isRequired,
+  resource: shape({}).isRequired,
+  collectionId: string.isRequired,
+  fromDetailsPanel: bool,
+};
+
+CardHeader.defaultProps = {
+  fromDetailsPanel: false,
+};
+
+const ResourceCard = ({
+  resourceId,
+  resource,
+  collectionId,
+  index,
+  fromDetailsPanel,
+}) => {
+  const firstCardStyle = index === 0 ? styles.firstCard : {};
 
   return (
     <View style={[styles.root, firstCardStyle]}>
       <View style={styles.header}>
-        {cardHeader()}
+        <CardHeader
+          resourceId={resourceId}
+          resource={resource}
+          collectionId={collectionId}
+          fromDetailsPanel={fromDetailsPanel}
+        />
       </View>
       <View style={styles.body}>
         {selectCardBody(resource)}
