@@ -5,7 +5,7 @@ import {
 import { Accordion } from 'native-base';
 import { connect } from 'react-redux';
 import {
-  arrayOf, bool, number, string,
+  arrayOf, bool, number, shape, string,
 } from 'prop-types';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -65,6 +65,17 @@ const AccordionHeader = ({
   );
 };
 
+AccordionHeader.propTypes = {
+  item: shape({}).isRequired,
+  expanded: bool.isRequired,
+  fromDetailsPanel: bool,
+  activeCollectionId: string.isRequired,
+};
+
+AccordionHeader.defaultProps = {
+  fromDetailsPanel: false,
+};
+
 const ResourceCards = ({ item, activeCollectionId, fromDetailsPanel }) => item.resourceIds.map(
   (resourceId, cardIndex) => (
     <ResourceCard
@@ -76,6 +87,16 @@ const ResourceCards = ({ item, activeCollectionId, fromDetailsPanel }) => item.r
     />
   ),
 );
+
+ResourceCards.propTypes = {
+  item: shape({}).isRequired,
+  fromDetailsPanel: bool,
+  activeCollectionId: string.isRequired,
+};
+
+ResourceCards.defaultProps = {
+  fromDetailsPanel: false,
+};
 
 const SubTypeAccordion = ({
   headerCount,
