@@ -320,7 +320,6 @@ export const savedRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-
 // DetailsPanel - Record Date accordion sorting
 export const savedRecordsByRecordDateSelector = createSelector(
   [savedItemsSelector, activeCollectionSelector],
