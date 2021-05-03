@@ -32,7 +32,6 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
         return (
           <SubTypeAccordionsContainer
             data={savedRecordsGroupedByType}
-            isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
             fromDetailsPanel
           />
         );

@@ -309,7 +309,7 @@ const savedItemsSelector = createSelector(
     .filter(({ passesFilters: { inCollection } }) => inCollection),
 );
 
-// used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
+// DetailsPanel - Record Type accordion sorting
 export const savedRecordsGroupedByTypeSelector = createSelector(
   [savedItemsSelector, activeCollectionSelector],
   (savedItems, collection) => {
