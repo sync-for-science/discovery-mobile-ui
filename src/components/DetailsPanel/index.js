@@ -39,7 +39,6 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
       case RECORD_DATE:
         return (
           <DateAccordionsContainer
-            isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
             fromDetailsPanel
           />
         );

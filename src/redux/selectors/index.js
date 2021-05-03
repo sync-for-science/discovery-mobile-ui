@@ -320,10 +320,13 @@ export const savedRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
+
+// DetailsPanel - Record Date accordion sorting
 export const savedRecordsByRecordDateSelector = createSelector(
-  [savedItemsSelector, (_, ownProps) => ownProps],
-  (items, ownProps) => {
-    const { isDescending } = ownProps;
+  [savedItemsSelector, activeCollectionSelector],
+  (items, collection) => {
+    const { RECORD_DATE } = sortFields;
+    const isDescending = collection.detailsPanelSortingState.sortDirections[RECORD_DATE] === SORT_DESC; // eslint-disable-line max-len
     const sortedRecords = isDescending ? [...items].reverse() : items;
     const typeMap = sortedRecords
       .reduce((acc, record) => {
