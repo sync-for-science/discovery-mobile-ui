@@ -27,8 +27,8 @@ TimeSavedAccordionsContainer.propTypes = {
   fromDetailsPanel: bool.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  savedRecordsBySavedDay: savedRecordsBySavedDaySelector(state, ownProps),
+const mapStateToProps = (state) => ({
+  savedRecordsBySavedDay: savedRecordsBySavedDaySelector(state),
 });
 
 export default connect(mapStateToProps, null)(TimeSavedAccordionsContainer);

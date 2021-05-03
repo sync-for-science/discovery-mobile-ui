@@ -46,7 +46,6 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
       case TIME_SAVED:
         return (
           <TimeSavedAccordionsContainer
-            isDescending={sortingState.sortDirections[TIME_SAVED] === SORT_DESC}
             fromDetailsPanel
           />
         );

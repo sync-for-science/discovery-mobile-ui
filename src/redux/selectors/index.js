@@ -367,10 +367,12 @@ export const savedRecordsByRecordDateSelector = createSelector(
   },
 );
 
+// DetailsPanel - Time Saved accordion sorting
 export const savedRecordsBySavedDaySelector = createSelector(
-  [savedItemsSelector, (_, ownProps) => ownProps],
-  (items, ownProps) => {
-    const { isDescending } = ownProps;
+  [savedItemsSelector, activeCollectionSelector],
+  (items, collection) => {
+    const { TIME_SAVED } = sortFields;
+    const isDescending = collection.detailsPanelSortingState.sortDirections[TIME_SAVED] === SORT_DESC; // eslint-disable-line max-len
     const ascDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 < t2 ? -1 : 1);
     const descDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 > t2 ? -1 : 1);
     const dateSortingDirection = isDescending ? descDates : ascDates;
