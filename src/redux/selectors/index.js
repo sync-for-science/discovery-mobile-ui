@@ -257,7 +257,7 @@ const timelineRangeSelector = createSelector(
       dateRangeEnd,
     };
   },
-); 
+);
 
 const sortedGroupedRecordsByType = ({ records, isDescending, descSortOnly }) => {
   // eslint-disable-next-line no-nested-ternary
@@ -375,14 +375,20 @@ export const savedRecordsBySavedDaySelector = createSelector(
   (items, collection) => {
     const { TIME_SAVED } = sortFields;
     const isDescending = collection.detailsPanelSortingState.sortDirections[TIME_SAVED] === SORT_DESC; // eslint-disable-line max-len
-    const ascDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 < t2 ? -1 : 1);
-    const descDates = ({ dateSaved: t1 }, { dateSaved: t2 }) => (t1 > t2 ? -1 : 1);
+    const ascDates = (
+      { passesFilters: { dateSaved: t1 } },
+      { passesFilters: { dateSaved: t2 } },
+    ) => (t1 < t2 ? -1 : 1);
+    const descDates = (
+      { passesFilters: { dateSaved: t1 } },
+      { passesFilters: { dateSaved: t2 } },
+    ) => (t1 > t2 ? -1 : 1);
     const dateSortingDirection = isDescending ? descDates : ascDates;
 
     const typeMap = items
       .sort(dateSortingDirection)
       .reduce((acc, record) => {
-        const { dateSaved } = record;
+        const { passesFilters: { dateSaved } } = record;
         const formattedDay = formatDate(dateSaved);
         return produce(acc, (draft) => {
         // eslint-disable-next-line no-param-reassign
