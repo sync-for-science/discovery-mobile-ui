@@ -20,31 +20,26 @@ import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
-const SubTypeAccordion = ({
-  headerCount,
-  resourceIds,
-  activeCollectionId,
-  headerLabel,
-  fromDetailsPanel,
+const AccordionHeader = ({
+  item, expanded, fromDetailsPanel, activeCollectionId,
 }) => {
-  const dataArray = [{ title: headerLabel, content: resourceIds }];
+  const { headerLabel, headerCount, resourceIds } = item;
 
-  const renderHeader = (item, expanded) => {
-    const chevronIcon = expanded
-      ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
-      : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
+  const chevronIcon = expanded
+    ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
+    : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
 
-    return (
-      <View style={styles.header}>
-        <View style={styles.headerTextContainer}>
-          {chevronIcon}
-          <CountIcon count={headerCount} />
-          <BaseText style={styles.headerText}>
-            {item.title}
-          </BaseText>
-        </View>
-        <View style={styles.rightIconsContainer}>
-          { !fromDetailsPanel
+  return (
+    <View style={styles.header}>
+      <View style={styles.headerTextContainer}>
+        {chevronIcon}
+        <CountIcon count={headerCount} />
+        <BaseText style={styles.headerText}>
+          {headerLabel}
+        </BaseText>
+      </View>
+      <View style={styles.rightIconsContainer}>
+        { !fromDetailsPanel
             && (
             <>
               <FocusedIcon
@@ -60,27 +55,36 @@ const SubTypeAccordion = ({
               />
             </>
             )}
-          <CollectionIcon
-            collectionId={activeCollectionId}
-            resourceIds={resourceIds}
-            showCount
-          />
-        </View>
+        <CollectionIcon
+          collectionId={activeCollectionId}
+          resourceIds={resourceIds}
+          showCount
+        />
       </View>
-    );
-  };
-
-  const renderContent = (item) => item.content.map(
-    (resourceId, cardIndex) => (
-      <ResourceCard
-        key={resourceId}
-        index={cardIndex}
-        resourceId={resourceId}
-        collectionId={activeCollectionId}
-        fromDetailsPanel={fromDetailsPanel}
-      />
-    ),
+    </View>
   );
+};
+
+const ResourceCards = ({ item, activeCollectionId, fromDetailsPanel }) => item.resourceIds.map(
+  (resourceId, cardIndex) => (
+    <ResourceCard
+      key={resourceId}
+      index={cardIndex}
+      resourceId={resourceId}
+      collectionId={activeCollectionId}
+      fromDetailsPanel={fromDetailsPanel}
+    />
+  ),
+);
+
+const SubTypeAccordion = ({
+  headerCount,
+  resourceIds,
+  activeCollectionId,
+  headerLabel,
+  fromDetailsPanel,
+}) => {
+  const dataArray = [{ headerLabel, headerCount, resourceIds }];
 
   return (
     <View style={styles.accordionContainer}>
@@ -88,8 +92,21 @@ const SubTypeAccordion = ({
         style={styles.accordion}
         dataArray={dataArray}
         expanded={[]}
-        renderHeader={renderHeader}
-        renderContent={renderContent}
+        renderHeader={(item, expanded) => (
+          <AccordionHeader
+            item={item}
+            expanded={expanded}
+            fromDetailsPanel={fromDetailsPanel}
+            activeCollectionId={activeCollectionId}
+          />
+        )}
+        renderContent={(item) => (
+          <ResourceCards
+            item={item}
+            fromDetailsPanel={fromDetailsPanel}
+            activeCollectionId={activeCollectionId}
+          />
+        )}
       />
     </View>
   );
