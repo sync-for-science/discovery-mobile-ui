@@ -33,8 +33,8 @@ export const flattenedResourcesReducer = (state = preloadedResources, { type, pa
 
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
-const defaultSortingState = {
-  activeSortField: 'record-type',
+const defaultDetailsPanelSortingState = {
+  activeSortField: RECORD_TYPE,
   sortDirections: {
     [RECORD_TYPE]: SORT_DESC,
     [RECORD_DATE]: SORT_DESC,
@@ -69,7 +69,7 @@ const createCollection = (label = 'Untitled Collection') => {
     showMarkedOnly: false,
     focusedSubtype: '',
     records: {},
-    savedRecordsSortingState: defaultSortingState,
+    detailsPanelSortingState: defaultDetailsPanelSortingState,
   };
 };
 
@@ -251,17 +251,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.TOGGLE_SORTING_STATE: {
       const { collectionId, sortField } = action.payload;
       return produce(state, (draft) => {
-        if (state[collectionId].savedRecordsSortingState.activeSortField === sortField) {
-          const prevDir = state[collectionId].savedRecordsSortingState.sortDirections[sortField];
+        if (state[collectionId].detailsPanelSortingState.activeSortField === sortField) {
+          const prevDir = state[collectionId].detailsPanelSortingState.sortDirections[sortField];
           // eslint-disable-next-line no-param-reassign
           draft[collectionId]
-            .savedRecordsSortingState.sortDirections[sortField] = (
+            .detailsPanelSortingState.sortDirections[sortField] = (
               (prevDir === SORT_ASC) ? SORT_DESC : SORT_ASC
             );
         }
         // eslint-disable-next-line no-param-reassign
         draft[collectionId]
-          .savedRecordsSortingState.activeSortField = sortField;
+          .detailsPanelSortingState.activeSortField = sortField;
       });
     }
     default:

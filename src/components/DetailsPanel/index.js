@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, Text, SafeAreaView,
+  StyleSheet, View, SafeAreaView,
 } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -12,13 +12,14 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
-import { SORT_DESC, sortFields } from '../../constants/sorting';
+import { sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
 import { activeCollectionSelector, savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
+import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
-  const { savedRecordsSortingState: sortingState } = collection;
+  const { detailsPanelSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
@@ -31,19 +32,21 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
         return (
           <SubTypeAccordionsContainer
             data={savedRecordsGroupedByType}
-            isDescending={sortingState.sortDirections[RECORD_TYPE] === SORT_DESC}
             fromDetailsPanel
           />
         );
       case RECORD_DATE:
         return (
           <DateAccordionsContainer
-            isDescending={sortingState.sortDirections[RECORD_DATE] === SORT_DESC}
             fromDetailsPanel
           />
         );
       case TIME_SAVED:
-        return <Text>TimeSaved</Text>;
+        return (
+          <TimeSavedAccordionsContainer
+            fromDetailsPanel
+          />
+        );
       default:
         console.warn('No activeSortField in DetailsPanel'); // eslint-disable-line no-console
         return null;

@@ -12,7 +12,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-l
 
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
-import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
+import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import Colors from '../../constants/Colors';
 import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';

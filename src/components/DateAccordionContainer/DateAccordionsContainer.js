@@ -75,8 +75,8 @@ DateAccordionsContainer.propTypes = {
   fromDetailsPanel: bool.isRequired,
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state, ownProps),
+const mapStateToProps = (state) => ({
+  savedRecordsByRecordDate: savedRecordsByRecordDateSelector(state),
 });
 
 export default connect(mapStateToProps, null)(DateAccordionsContainer);

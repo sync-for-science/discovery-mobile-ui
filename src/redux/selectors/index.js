@@ -208,6 +208,7 @@ const allRecordsWithFilterResponseSelector = createSelector(
           },
         ),
         inCollection: records[id]?.saved,
+        dateSaved: records[id]?.dateSaved,
         showCollectionOnly: !showCollectionOnly || (showCollectionOnly && records[id]?.saved),
         isHighlighted: records[id]?.highlight,
         showHighlightedOnly: !showMarkedOnly || (showMarkedOnly && records[id]?.highlight),
@@ -258,9 +259,9 @@ const timelineRangeSelector = createSelector(
   },
 );
 
-const sortedGroupedRecordsByType = (records, isDescending) => {
+const sortedGroupedRecordsByType = ({ records, isDescending, descSortOnly }) => {
   // eslint-disable-next-line no-nested-ternary
-  const sortedRecords = isDescending === undefined
+  const sortedRecords = descSortOnly
     ? [...records].reverse()
     : (isDescending ? [...records].reverse() : records);
 
@@ -297,7 +298,7 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
       return [];
     }
 
-    return sortedGroupedRecordsByType(items)
+    return sortedGroupedRecordsByType({ records: items, descSortOnly: true })
       .filter((group) => group.type === selectedResourceType);
   },
 );
@@ -308,21 +309,23 @@ const savedItemsSelector = createSelector(
     .filter(({ passesFilters: { inCollection } }) => inCollection),
 );
 
-// used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
+// DetailsPanel - Record Type accordion sorting
 export const savedRecordsGroupedByTypeSelector = createSelector(
   [savedItemsSelector, activeCollectionSelector],
   (savedItems, collection) => {
-    const { savedRecordsSortingState: sortingState } = collection;
+    const { detailsPanelSortingState: sortingState } = collection;
     const { RECORD_TYPE } = sortFields;
     const isDescending = sortingState.sortDirections[RECORD_TYPE] === SORT_DESC;
-    return sortedGroupedRecordsByType(savedItems, isDescending);
+    return sortedGroupedRecordsByType({ records: savedItems, isDescending });
   },
 );
 
+// DetailsPanel - Record Date accordion sorting
 export const savedRecordsByRecordDateSelector = createSelector(
-  [savedItemsSelector, (_, ownProps) => ownProps],
-  (items, ownProps) => {
-    const { isDescending } = ownProps;
+  [savedItemsSelector, activeCollectionSelector],
+  (items, collection) => {
+    const { RECORD_DATE } = sortFields;
+    const isDescending = collection.detailsPanelSortingState.sortDirections[RECORD_DATE] === SORT_DESC; // eslint-disable-line max-len
     const sortedRecords = isDescending ? [...items].reverse() : items;
     const typeMap = sortedRecords
       .reduce((acc, record) => {
@@ -363,6 +366,43 @@ export const savedRecordsByRecordDateSelector = createSelector(
           types: typeData,
         });
       }, []);
+  },
+);
+
+// DetailsPanel - Time Saved accordion sorting
+export const savedRecordsBySavedDaySelector = createSelector(
+  [savedItemsSelector, activeCollectionSelector],
+  (items, collection) => {
+    const { TIME_SAVED } = sortFields;
+    const isDescending = collection.detailsPanelSortingState.sortDirections[TIME_SAVED] === SORT_DESC; // eslint-disable-line max-len
+    const ascDates = (
+      { passesFilters: { dateSaved: t1 } },
+      { passesFilters: { dateSaved: t2 } },
+    ) => (t1 < t2 ? -1 : 1);
+    const descDates = (
+      { passesFilters: { dateSaved: t1 } },
+      { passesFilters: { dateSaved: t2 } },
+    ) => (t1 > t2 ? -1 : 1);
+    const dateSortingDirection = isDescending ? descDates : ascDates;
+
+    const typeMap = items
+      .sort(dateSortingDirection)
+      .reduce((acc, record) => {
+        const { passesFilters: { dateSaved } } = record;
+        const formattedDay = formatDate(dateSaved);
+        return produce(acc, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+          draft[formattedDay] = draft[formattedDay] ?? [];
+          draft[formattedDay].push(record.id);
+        });
+      }, {});
+
+    return Object
+      .entries(typeMap)
+      .reduce((acc, [date, recordIds]) => acc.concat({
+        date,
+        recordIds,
+      }), []);
   },
 );
 
