@@ -15,7 +15,7 @@ import SortingHeader from './SortingHeader';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
 import SubTypeAccordionsContainer from '../SubTypeAccordion/SubTypeAccordionsContainer';
-import { savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { activeCollectionSelector, savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 
 const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
   const { savedRecordsSortingState: sortingState } = collection;
@@ -80,6 +80,7 @@ DetailsPanel.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
+  collection: activeCollectionSelector(state),
   savedRecordsGroupedByType: savedRecordsGroupedByTypeSelector(state),
 });
 
