@@ -19,7 +19,7 @@ function selectIconName(name, focused) {
     case 'Profile':
       return focused ? 'md-person-sharp' : 'md-person-outline';
     case 'Summary':
-      return focused ? 'md-person-sharp' : 'md-person-outline';
+      return focused ? 'md-grid-sharp' : 'md-grid-outline';
     case 'Catalog':
       return focused ? 'file-tray-full' : 'file-tray-outline';
     case 'Collections':
