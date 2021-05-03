@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button, BackHandler,
+  StyleSheet, View, SafeAreaView, StatusBar, BackHandler,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
@@ -12,8 +12,6 @@ import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
 import Demographics from '../components/Demographics/Demographics';
 import UserInfo from '../components/UserInfo/UserInfo';
-import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
-import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 
 const ProfileScreen = ({
   clearAuthAction, clearPatientDataAction,
@@ -39,9 +37,6 @@ const ProfileScreen = ({
           <UserInfo />
         </View>
         <Demographics />
-        <RecordsSummary />
-        <ProvidersSummary />
-        <Button title="Logout" onPress={clearData} />
       </ScrollView>
     </SafeAreaView>
   );

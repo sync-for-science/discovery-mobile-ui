@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, Button, BackHandler,
+  StyleSheet, SafeAreaView, StatusBar, Button, BackHandler,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
@@ -10,8 +10,6 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
-import Demographics from '../components/Demographics/Demographics';
-import UserInfo from '../components/UserInfo/UserInfo';
 import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
 
@@ -35,10 +33,6 @@ const SummaryScreen = ({
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <ScrollView style={styles.screen}>
-        <View style={styles.descriptionContainer}>
-          <UserInfo />
-        </View>
-        <Demographics />
         <RecordsSummary />
         <ProvidersSummary />
         <Button title="Logout" onPress={clearData} />
