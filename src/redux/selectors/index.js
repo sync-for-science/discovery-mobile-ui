@@ -166,22 +166,6 @@ export const allValidRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-export const filteredRecordsSelector = createSelector(
-  [allValidRecordsSortedByDateSelector, activeCollectionSelector],
-  (items, activeCollection) => {
-    const {
-      resourceTypeFilters,
-      showCollectionOnly,
-      showMarkedOnly,
-      records,
-    } = activeCollection;
-    return items
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ id }) => !showCollectionOnly || (showCollectionOnly && records[id]?.saved))
-      .filter(({ id }) => !showMarkedOnly || (showMarkedOnly && records[id]?.highlight));
-  },
-);
-
 export const dateRangeForAllRecordsSelector = createSelector(
   [allValidRecordsSortedByDateSelector],
   (items) => {
@@ -194,8 +178,64 @@ export const dateRangeForAllRecordsSelector = createSelector(
   },
 );
 
-export const dateRangeForFilteredRecordsSelector = createSelector(
-  [filteredRecordsSelector],
+// returns Array of (picked fields from) _all_ records, flagged with responsiveness to each filter:
+const allRecordsWithFilterResponseSelector = createSelector(
+  [allValidRecordsSortedByDateSelector, activeCollectionSelector, dateRangeForAllRecordsSelector],
+  (items, activeCollection, dateRangeForAllRecords) => {
+    const { minimumDate, maximumDate } = dateRangeForAllRecords;
+    const {
+      resourceTypeFilters,
+      showCollectionOnly,
+      showMarkedOnly,
+      records,
+      dateRangeFilter: { dateRangeStart = minimumDate, dateRangeEnd = maximumDate },
+    } = activeCollection;
+
+    return items.map(({
+      id, type, subType, timelineDate,
+    }) => ({
+      id,
+      type,
+      subType,
+      timelineDate,
+      passesFilters: {
+        type: resourceTypeFilters[type],
+        date: dateRangeStart && dateRangeEnd && isWithinInterval(
+          timelineDate,
+          {
+            start: dateRangeStart,
+            end: dateRangeEnd,
+          },
+        ),
+        inCollection: records[id]?.saved,
+        showCollectionOnly: !showCollectionOnly || (showCollectionOnly && records[id]?.saved),
+        isHighlighted: records[id]?.highlight,
+        showHighlightedOnly: !showMarkedOnly || (showMarkedOnly && records[id]?.highlight),
+      },
+    }));
+  },
+);
+
+// This returns an Array of picked fields and 'passesFilters' map, not underlying records:
+const recordsFilteredByAllButDateSelector = createSelector(
+  [allRecordsWithFilterResponseSelector],
+  (items) => items.filter(({
+    passesFilters: {
+      type,
+      showCollectionOnly,
+      showHighlightedOnly,
+    },
+  }) => type && showCollectionOnly && showHighlightedOnly),
+);
+
+// This returns an Array of picked fields and 'passesFilters' map, not underlying records:
+export const filteredRecordsSelector = createSelector(
+  [recordsFilteredByAllButDateSelector],
+  (items) => items.filter(({ passesFilters: { date } }) => date),
+);
+
+export const timelinePropsSelector = createSelector(
+  [recordsFilteredByAllButDateSelector],
   (items) => {
     const r1 = items[0]; // might be same as r2
     const r2 = items[items.length - 1];
@@ -208,33 +248,13 @@ export const dateRangeForFilteredRecordsSelector = createSelector(
 
 // either user-selected values (undefined, by default), or: min / max dates of resources
 const timelineRangeSelector = createSelector(
-  [activeCollectionDateRangeFilterSelector, dateRangeForFilteredRecordsSelector],
-  (dateRangeFilterFilters, timelineProps) => {
-    const { minimumDate, maximumDate } = timelineProps;
-    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilterFilters;
+  [activeCollectionDateRangeFilterSelector, timelinePropsSelector],
+  (dateRangeFilter, { minimumDate, maximumDate }) => {
+    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = dateRangeFilter;
     return {
       dateRangeStart,
       dateRangeEnd,
     };
-  },
-);
-
-const filteredItemsInDateRangeSelector = createSelector(
-  // eslint-disable-next-line max-len
-  [filteredRecordsSelector, timelineRangeSelector, activeCollectionResourceTypeFiltersSelector],
-  (sortedTimelineItems, { dateRangeStart, dateRangeEnd }, resourceTypeFilters) => {
-    if (!dateRangeStart || !dateRangeEnd) {
-      return [];
-    }
-    return sortedTimelineItems
-      .filter(({ type }) => resourceTypeFilters[type])
-      .filter(({ timelineDate }) => isWithinInterval(
-        timelineDate,
-        {
-          start: dateRangeStart,
-          end: dateRangeEnd,
-        },
-      ));
   },
 );
 
@@ -271,7 +291,7 @@ const sortedGroupedRecordsByType = (records, isDescending) => {
 };
 
 export const selectedRecordsGroupedByTypeSelector = createSelector(
-  [filteredItemsInDateRangeSelector, activeCollectionResourceTypeSelector],
+  [filteredRecordsSelector, activeCollectionResourceTypeSelector],
   (items, selectedResourceType) => {
     if (!selectedResourceType) {
       return [];
@@ -283,11 +303,9 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
 );
 
 const savedItemsSelector = createSelector(
-  [resourcesSelector, activeCollectionResourceIdsSelector],
-  (resources, saved) => values(resources)
-    .filter(({ id }) => saved[id])
-    .map(pickTimelineFields)
-    .sort(sortByDate),
+  [allRecordsWithFilterResponseSelector],
+  (resources) => resources
+    .filter(({ passesFilters: { inCollection } }) => inCollection),
 );
 
 // used by SubTypeAccordion in CatalogScreen and RecordType sorting in DetailsPanel
@@ -371,7 +389,7 @@ const MAX_INTERVAL_COUNT = 25;
 
 export const timelineIntervalsSelector = createSelector(
   [
-    filteredItemsInDateRangeSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
+    filteredRecordsSelector, timelineRangeSelector, activeCollectionSelector, resourcesSelector], // eslint-disable-line max-len
   (filteredItemsInDateRange, timelineRange, activeCollection, resources) => {
     const { records } = activeCollection;
 
