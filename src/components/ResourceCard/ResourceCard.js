@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, TouchableOpacity, Text
+  StyleSheet, View, TouchableOpacity,
 } from 'react-native';
 import {
   string, shape, number, bool,
@@ -71,7 +71,7 @@ const selectCardBody = (resource) => {
 };
 
 const CardHeader = ({
-  resourceId, resource, collectionId, fromDetailsPanel, fromNotesScreen
+  resourceId, resource, collectionId, fromDetailsPanel, fromNotesScreen,
 }) => {
   const resourceDate = getResourceDate(resource);
   const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
@@ -93,7 +93,7 @@ const CardHeader = ({
   }
 
   if (fromNotesScreen) {
-    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
+    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>;
   }
 
   return (
@@ -125,10 +125,12 @@ CardHeader.propTypes = {
   resource: shape({}).isRequired,
   collectionId: string.isRequired,
   fromDetailsPanel: bool,
+  fromNotesScreen: bool,
 };
 
 CardHeader.defaultProps = {
   fromDetailsPanel: false,
+  fromNotesScreen: false,
 };
 
 const ResourceCard = ({
@@ -156,12 +158,13 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
-      { !fromNotesScreen && 
+      { !fromNotesScreen
+        && (
         <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resource })}>
           <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
           <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
         </TouchableOpacity>
-      }
+        )}
     </View>
   );
 };
@@ -172,12 +175,14 @@ ResourceCard.propTypes = {
   collectionId: string,
   index: number,
   fromDetailsPanel: bool,
+  fromNotesScreen: bool,
 };
 
 ResourceCard.defaultProps = {
   collectionId: null,
   index: null,
   fromDetailsPanel: false,
+  fromNotesScreen: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({

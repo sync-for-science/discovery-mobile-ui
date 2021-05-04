@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, View, TouchableOpacity, ScrollView
+  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -9,7 +9,7 @@ import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
-import ResourceCard from '../components/ResourceCard/ResourceCard'
+import ResourceCard from '../components/ResourceCard/ResourceCard';
 
 const NotesScreen = () => {
   const navigation = useNavigation();
