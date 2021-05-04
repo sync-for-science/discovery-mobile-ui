@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View, TouchableOpacity, Text
 } from 'react-native';
 import {
   string, shape, number, bool,
@@ -71,7 +71,7 @@ const selectCardBody = (resource) => {
 };
 
 const CardHeader = ({
-  resourceId, resource, collectionId, fromDetailsPanel,
+  resourceId, resource, collectionId, fromDetailsPanel, fromNotesScreen
 }) => {
   const resourceDate = getResourceDate(resource);
   const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
@@ -90,6 +90,10 @@ const CardHeader = ({
         </View>
       </>
     );
+  }
+
+  if (fromNotesScreen) {
+    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
   }
 
   return (
@@ -133,6 +137,7 @@ const ResourceCard = ({
   collectionId,
   index,
   fromDetailsPanel,
+  fromNotesScreen,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
   const navigation = useNavigation();
@@ -145,6 +150,7 @@ const ResourceCard = ({
           resource={resource}
           collectionId={collectionId}
           fromDetailsPanel={fromDetailsPanel}
+          fromNotesScreen={fromNotesScreen}
         />
       </View>
       <View style={styles.body}>
@@ -161,12 +167,14 @@ const ResourceCard = ({
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
-  collectionId: string.isRequired,
-  index: number.isRequired,
+  collectionId: string,
+  index: number,
   fromDetailsPanel: bool,
 };
 
 ResourceCard.defaultProps = {
+  collectionId: null,
+  index: null,
   fromDetailsPanel: false,
 };
 

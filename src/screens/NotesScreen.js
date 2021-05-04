@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, View, TouchableOpacity,
+  SafeAreaView, StyleSheet, Text, View, TouchableOpacity, ScrollView
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -9,6 +9,7 @@ import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Colors from '../constants/Colors';
+import ResourceCard from '../components/ResourceCard/ResourceCard'
 
 const NotesScreen = () => {
   const navigation = useNavigation();
@@ -31,7 +32,9 @@ const NotesScreen = () => {
           </TouchableOpacity>
         </Right>
       </Header>
-      <Text>NotesScreen</Text>
+      <ScrollView>
+        <ResourceCard index={0} resourceId={resource.id} resource={resource} fromNotesScreen />
+      </ScrollView>
     </SafeAreaView>
   );
 };
