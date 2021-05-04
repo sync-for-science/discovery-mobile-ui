@@ -131,17 +131,23 @@ const CatalogModal = ({
               </View>
               <TouchableOpacity
                 disabled={!clearCollectionEnabled}
-                style={styles.button}
+                style={[
+                  styles.clearButtonBase,
+                  clearCollectionEnabled ? null : styles.clearButtonDisabled,
+                ]}
                 onPress={handleClearCollection}
               >
-                <BaseText variant="buttonDestructive">Clear Collection</BaseText>
+                <BaseText variant={clearCollectionEnabled ? 'buttonDestructive' : 'buttonDisabled'}>Clear Collection</BaseText>
               </TouchableOpacity>
               <TouchableOpacity
                 disabled={!clearHighlightedEnabled}
-                style={styles.button}
+                style={[
+                  styles.clearButtonBase,
+                  clearHighlightedEnabled ? null : styles.clearButtonDisabled,
+                ]}
                 onPress={handleClearMarked}
               >
-                <BaseText variant="buttonDestructive">Clear Highlighted Records</BaseText>
+                <BaseText variant={clearHighlightedEnabled ? 'buttonDestructive' : 'buttonDisabled'}>Clear Highlighted Records</BaseText>
               </TouchableOpacity>
             </View>
           </View>
@@ -217,7 +223,7 @@ const styles = StyleSheet.create({
     width: '100%',
     marginTop: 20,
   },
-  button: {
+  clearButtonBase: {
     width: '100%',
     paddingVertical: 15,
     backgroundColor: Colors.lightgrey2,
@@ -236,5 +242,8 @@ const styles = StyleSheet.create({
   },
   segmentControlContainer: {
     marginBottom: 20,
+  },
+  clearButtonDisabled: {
+    backgroundColor: Colors.lightgrey2,
   },
 });
