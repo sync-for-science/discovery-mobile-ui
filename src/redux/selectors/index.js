@@ -217,6 +217,36 @@ const allRecordsWithFilterResponseSelector = createSelector(
   },
 );
 
+// is there a record with all filters applied, other than showCollectionOnly?
+export const hasAnyCollectionRecordInScope = createSelector(
+  [allRecordsWithFilterResponseSelector],
+  (items) => !!items.find(({
+    passesFilters: {
+      type,
+      date,
+      inCollection,
+      // showCollectionOnly,
+      // isHighlighted,
+      showHighlightedOnly,
+    },
+  }) => type && date && showHighlightedOnly && inCollection),
+);
+
+// is there a record with all filters applied, other than showHighlightedOnly?
+export const hasAnyHighlightedRecordInScope = createSelector(
+  [allRecordsWithFilterResponseSelector],
+  (items) => !!items.find(({
+    passesFilters: {
+      type,
+      date,
+      // inCollection,
+      showCollectionOnly,
+      isHighlighted,
+      // showHighlightedOnly,
+    },
+  }) => type && date && showCollectionOnly && isHighlighted),
+);
+
 // This returns an Array of picked fields and 'passesFilters' map, not underlying records:
 const recordsFilteredByAllButDateSelector = createSelector(
   [allRecordsWithFilterResponseSelector],

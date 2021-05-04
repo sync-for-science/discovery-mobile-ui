@@ -6,12 +6,13 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
-import { activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
+import { activeCollectionShowCollectionOnlySelector, hasAnyCollectionRecordInScope } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const collectionRecordsDescription = 'Only displays records saved to the collection.';
 
 const CollectionSegmentControl = ({
+  enabled,
   showCollectionOnly,
   toggleShowCollectionOnlyAction,
 }) => {
@@ -24,6 +25,7 @@ const CollectionSegmentControl = ({
   return (
     <View style={styles.root}>
       <BaseSegmentControl
+        enabled={enabled}
         values={['All Records', 'Collection Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
@@ -34,11 +36,13 @@ const CollectionSegmentControl = ({
 };
 
 CollectionSegmentControl.propTypes = {
+  enabled: bool.isRequired,
   showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  enabled: hasAnyCollectionRecordInScope(state),
   showCollectionOnly: activeCollectionShowCollectionOnlySelector(state),
 });
 

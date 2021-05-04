@@ -6,12 +6,13 @@ import { bool, func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
-import { activeCollectionShowMarkedOnlySelector } from '../../redux/selectors';
+import { activeCollectionShowMarkedOnlySelector, hasAnyHighlightedRecordInScope } from '../../redux/selectors';
 
 const allRecordsDescription = 'Displays all records.';
 const highlightedRecordsDescription = 'Only displays highlighted records.';
 
 const MarkedSegmentControl = ({
+  enabled,
   showMarkedOnly,
   toggleShowMarkedOnlyAction,
 }) => {
@@ -24,6 +25,7 @@ const MarkedSegmentControl = ({
   return (
     <View style={styles.root}>
       <BaseSegmentControl
+        enabled={enabled}
         values={['All Records', 'Highlighted Records']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
@@ -34,11 +36,13 @@ const MarkedSegmentControl = ({
 };
 
 MarkedSegmentControl.propTypes = {
+  enabled: bool.isRequired,
   showMarkedOnly: bool.isRequired,
   toggleShowMarkedOnlyAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  enabled: hasAnyHighlightedRecordInScope(state),
   showMarkedOnly: activeCollectionShowMarkedOnlySelector(state),
 });
 
