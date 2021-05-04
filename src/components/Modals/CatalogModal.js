@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import {
+  shape, func, string, bool,
+} from 'prop-types';
+import {
   Alert, Modal, StyleSheet, TouchableOpacity, View,
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import {
-  bool, func, shape, string,
-} from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
-import { activeCollectionSelector } from '../../redux/selectors';
+import { activeCollectionSelector, hasAnyHighlightedRecordInScope, hasAnyCollectionRecordInScope } from '../../redux/selectors';
 
 const scDesc1 = 'All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection or highlighting/unhighlighting in the Timeline.';
 const scDesc2 = 'Only the Records in the Collection are available for Preview, but you can highlight/unhighlight them in the Timeline.';
@@ -48,6 +48,8 @@ const CatalogModal = ({
   clearCollectionAction,
   clearMarkedResourcesAction,
   collection,
+  clearHighlightedEnabled,
+  clearCollectionEnabled,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { showCollectionOnly, showMarkedOnly } = collection;
@@ -127,10 +129,18 @@ const CatalogModal = ({
                 <CollectionSegmentControl />
                 <MarkedSegmentControl />
               </View>
-              <TouchableOpacity style={styles.button} onPress={handleClearCollection}>
+              <TouchableOpacity
+                disabled={!clearCollectionEnabled}
+                style={styles.button}
+                onPress={handleClearCollection}
+              >
                 <BaseText variant="buttonDestructive">Clear Collection</BaseText>
               </TouchableOpacity>
-              <TouchableOpacity style={styles.button} onPress={handleClearMarked}>
+              <TouchableOpacity
+                disabled={!clearHighlightedEnabled}
+                style={styles.button}
+                onPress={handleClearMarked}
+              >
                 <BaseText variant="buttonDestructive">Clear Highlighted Records</BaseText>
               </TouchableOpacity>
             </View>
@@ -153,10 +163,14 @@ CatalogModal.propTypes = {
   clearCollectionAction: func.isRequired,
   clearMarkedResourcesAction: func.isRequired,
   collection: shape({}).isRequired,
+  clearHighlightedEnabled: bool.isRequired,
+  clearCollectionEnabled: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
+  clearHighlightedEnabled: hasAnyHighlightedRecordInScope(state),
+  clearCollectionEnabled: hasAnyCollectionRecordInScope(state),
 });
 
 const mapDispatchToProps = {
