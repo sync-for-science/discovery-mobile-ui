@@ -7,7 +7,7 @@ import { shape } from 'prop-types';
 
 import Colors from '../constants/Colors';
 import DetailsPanel from '../components/DetailsPanel';
-import Collections from '../components/Collections';
+import Collections from '../components/Catalog';
 
 const CatalogScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
