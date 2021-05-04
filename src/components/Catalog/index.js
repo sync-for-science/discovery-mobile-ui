@@ -43,7 +43,7 @@ CatalogScreenHeader.defaultProps = {
   handleOpenDrawer: null,
 };
 
-const Collections = ({ collection, selectedRecordsGroupedByType }) => (
+const Catalog = ({ collection, selectedRecordsGroupedByType }) => (
   <FilterDrawer>
     <CatalogScreenHeader collection={collection} />
     <Timeline />
@@ -54,7 +54,7 @@ const Collections = ({ collection, selectedRecordsGroupedByType }) => (
   </FilterDrawer>
 );
 
-Collections.propTypes = {
+Catalog.propTypes = {
   collection: shape({}).isRequired,
   selectedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
 };
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => ({
   selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state),
 });
 
-export default connect(mapStateToProps, null)(Collections);
+export default connect(mapStateToProps, null)(Catalog);
 
 const styles = StyleSheet.create({
   header: {

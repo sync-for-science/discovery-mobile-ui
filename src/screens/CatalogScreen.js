@@ -7,7 +7,7 @@ import { shape } from 'prop-types';
 
 import Colors from '../constants/Colors';
 import DetailsPanel from '../components/DetailsPanel';
-import Collections from '../components/Catalog';
+import Catalog from '../components/Catalog';
 
 const CatalogScreen = ({ navigation }) => (
   <SafeAreaView style={styles.safeAreaView}>
@@ -17,7 +17,7 @@ const CatalogScreen = ({ navigation }) => (
       showsPagination={false}
       index={0}
     >
-      <Collections />
+      <Catalog />
       <DetailsPanel navigation={navigation} />
     </Swiper>
   </SafeAreaView>
