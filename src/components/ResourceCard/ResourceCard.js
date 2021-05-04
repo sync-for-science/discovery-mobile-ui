@@ -160,7 +160,7 @@ const ResourceCard = ({
       </View>
       { !fromNotesScreen
         && (
-        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resource })}>
+        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
           <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
           <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
         </TouchableOpacity>
