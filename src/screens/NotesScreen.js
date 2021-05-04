@@ -34,7 +34,7 @@ const NotesScreen = ({ resource }) => {
         </Right>
       </Header>
       <ScrollView>
-        <ResourceCard index={0} resourceId={resource.id} resource={resource} fromNotesScreen />
+        <ResourceCard resourceId={resource.id} resource={resource} fromNotesScreen />
       </ScrollView>
     </SafeAreaView>
   );
