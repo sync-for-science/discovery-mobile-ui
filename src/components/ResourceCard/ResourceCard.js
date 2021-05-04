@@ -156,10 +156,12 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
-      <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resource })}>
-        <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
-        <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
-      </TouchableOpacity>
+      { !fromNotesScreen && 
+        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resource })}>
+          <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
+          <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
+        </TouchableOpacity>
+      }
     </View>
   );
 };
@@ -204,6 +206,8 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 10,
     paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightgrey,
   },
   iconContainer: {
     marginLeft: 10,
@@ -221,8 +225,6 @@ const styles = StyleSheet.create({
   addNoteButton: {
     marginHorizontal: 10,
     paddingVertical: 10,
-    borderTopWidth: 1,
-    borderTopColor: Colors.lightgrey,
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
