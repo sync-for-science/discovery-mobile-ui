@@ -4,7 +4,8 @@
   "apps": {
     "ios": {
       "type": "ios.app",
-      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY"
+      "binaryPath": "SPECIFY_PATH_TO_YOUR_APP_BINARY",
+      "build": "expo build:ios -t simulator"
     },
     "android": {
       "type": "android.apk",

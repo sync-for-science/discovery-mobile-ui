@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sync-for-science.discovery-mobile-ui"
     },
     "android": {
       "adaptiveIcon": {
