@@ -123,7 +123,7 @@ const CardHeader = ({
 CardHeader.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
-  collectionId: string.isRequired,
+  collectionId: string,
   fromDetailsPanel: bool,
   fromNotesScreen: bool,
 };
@@ -131,6 +131,7 @@ CardHeader.propTypes = {
 CardHeader.defaultProps = {
   fromDetailsPanel: false,
   fromNotesScreen: false,
+  collectionId: null,
 };
 
 const ResourceCard = ({
