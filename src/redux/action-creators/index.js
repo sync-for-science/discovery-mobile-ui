@@ -142,14 +142,14 @@ export const deleteRecordNote = (resourceId, noteId) => (dispatch, getState) => 
 };
 
 export const editRecordNote = (resourceId, text, noteId) => (dispatch, getState) => {
-  const { activeCollectionId} = getState()
+  const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.EDIT_RECORD_NOTE,
     payload: {
       collectionId: activeCollectionId,
       resourceId,
       text,
-      noteId
-    }
-  })
-}
+      noteId,
+    },
+  });
+};

@@ -3,7 +3,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
@@ -13,8 +13,10 @@ import { deleteRecordNote, editRecordNote } from '../../redux/action-creators/in
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen }) => {
-  const navigation = useNavigation()
+const Note = ({
+  resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen,
+}) => {
+  const navigation = useNavigation();
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => Alert.alert(
     'Delete Note',
@@ -33,16 +35,16 @@ const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote, fromNo
     ],
   );
 
-  const hasBeenEdited = note.dateCreated !== note.dateEdited
-  const displayEdited = hasBeenEdited ? ' (Edited)' : ''
+  const hasBeenEdited = note.dateCreated !== note.dateEdited;
+  const displayEdited = hasBeenEdited ? ' (Edited)' : '';
 
   const handleEdit = () => {
     if (fromNotesScreen) {
-      handleEditNote(note.id, note.text)
+      handleEditNote(note.id, note.text);
     } else {
-      navigation.navigate('Notes', {resourceId, editingNote: note})
+      navigation.navigate('Notes', { resourceId, editingNote: { id: note.id, text: note.text } });
     }
-  }
+  };
 
   return (
     <View style={styles.noteContainer}>
@@ -75,15 +77,22 @@ Note.propTypes = {
   resourceId: string.isRequired,
   note: shape({}).isRequired,
   deleteRecordNoteAction: func.isRequired,
+  handleEditNote: func,
+  fromNotesScreen: bool,
+};
+
+Note.defaultProps = {
+  handleEditNote: undefined,
+  fromNotesScreen: false,
 };
 
 const NotesList = ({
-  resourceId, 
-  recordNotes, 
-  fromNotesScreen, 
-  showNotes, 
+  resourceId,
+  recordNotes,
+  fromNotesScreen,
+  showNotes,
   deleteRecordNoteAction,
-  handleEditNote
+  handleEditNote,
 }) => {
   const renderNotes = recordNotes.map((note) => (
     <Note
@@ -118,15 +127,17 @@ NotesList.propTypes = {
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
   deleteRecordNoteAction: func.isRequired,
+  handleEditNote: func,
 };
 
 NotesList.defaultProps = {
   fromNotesScreen: false,
+  handleEditNote: undefined,
 };
 
 const mapDispatchToProps = {
-  deleteRecordNoteAction: deleteRecordNote,
-  editRecordNoteAction: editRecordNote
+  deleteRecordNoteAction: deleteNoteFromRecord,
+  editRecordNoteAction: editRecordNote,
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);
@@ -164,6 +175,6 @@ const styles = StyleSheet.create({
   },
   editedText: {
     paddingLeft: 10,
-    fontStyle: 'italic'
-  }
+    fontStyle: 'italic',
+  },
 });

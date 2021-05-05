@@ -295,12 +295,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.EDIT_RECORD_NOTE: {
-      const { collectionId, resourceId, noteId, text } = action.payload
+      const {
+        collectionId, resourceId, noteId, text,
+      } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
-        draft[collectionId].records[resourceId].notes[noteId].text = text
+        draft[collectionId].records[resourceId].notes[noteId].text = text;
         // eslint-disable-next-line no-param-reassign
-        draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date()
+        draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date();
       });
     }
     default:

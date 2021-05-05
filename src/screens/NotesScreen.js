@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Button
+  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -18,38 +18,35 @@ import BaseText from '../components/Generic/BaseText';
 
 const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) => {
   const navigation = useNavigation();
-  const route = useRoute()
-  const editingNote = route?.params?.editingNote
+  const route = useRoute();
+  const editingNote = route?.params?.editingNote;
   const [text, onChangeText] = useState('');
-  const [editNoteId, setEditNoteId] = useState(null)
-
-  
+  const [editNoteId, setEditNoteId] = useState(null);
 
   const handleSave = () => {
     if (editNoteId) {
-      editRecordNoteAction(resource.id, text, editNoteId)
+      editRecordNoteAction(resource.id, text, editNoteId);
     } else {
       addRecordNoteAction(resource.id, text);
     }
     onChangeText('');
-    setEditNoteId(null)
+    setEditNoteId(null);
   };
 
-  const handleEditNote = (noteId, text) => {
-    setEditNoteId(noteId)
-    onChangeText(text)
-    textInputRef.current.focus()
-  }
+  const handleEditNote = (noteId, noteText) => {
+    setEditNoteId(noteId);
+    onChangeText(noteText);
+    textInputRef.current.focus();
+  };
 
   useEffect(() => {
     if (editingNote) {
-      handleEditNote(editingNote.id, editingNote.text)
+      handleEditNote(editingNote.id, editingNote.text);
     }
-  }, [])
+  }, []);
 
+  const textInputRef = useRef();
 
-  const textInputRef = useRef()
-  
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -68,12 +65,12 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
         </Right>
       </Header>
       <ScrollView>
-        <ResourceCard 
-        resourceId={resource.id} 
-        resource={resource} 
-        handleEditNote={handleEditNote}
-        fromNotesScreen 
-      />
+        <ResourceCard
+          resourceId={resource.id}
+          resource={resource}
+          handleEditNote={handleEditNote}
+          fromNotesScreen
+        />
       </ScrollView>
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.noteInputContainer}>
@@ -96,6 +93,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
 NotesScreen.propTypes = {
   resource: shape({}).isRequired,
   addRecordNoteAction: func.isRequired,
+  editRecordNoteAction: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -103,8 +101,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  addRecordNoteAction: addRecordNote,
-  editRecordNoteAction: editRecordNote
+  addRecordNoteAction: addNoteToRecord,
+  editRecordNoteAction: editRecordNote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);

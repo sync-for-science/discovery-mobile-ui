@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
-  bool, shape, string, arrayOf,
+  bool, shape, string, arrayOf, func,
 } from 'prop-types';
 import NotesList from '../Notes/NotesList';
 import { recordNotesSelector } from '../../redux/selectors';
@@ -13,7 +13,7 @@ const ResourceCardNotes = ({
   fromNotesScreen,
   resourceId,
   recordNotes,
-  handleEditNote
+  handleEditNote,
 }) => {
   const [showNotes, setShowNotes] = useState(false);
   const hasNotes = recordNotes.length > 0;
@@ -46,10 +46,12 @@ ResourceCardNotes.propTypes = {
   fromNotesScreen: bool,
   resourceId: string.isRequired,
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
+  handleEditNote: func,
 };
 
 ResourceCardNotes.defaultProps = {
   fromNotesScreen: false,
+  handleEditNote: undefined,
 };
 
 const mapStateToProps = (state, ownProps) => ({
