@@ -30,13 +30,17 @@ const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote }) => {
     ],
   );
 
-
+  const hasBeenEdited = note.dateCreated !== note.dateEdited
+  const displayEdited = hasBeenEdited ? ' (Edited)' : ''
 
   return (
     <View style={styles.noteContainer}>
       <View style={styles.noteContent}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>{displayDate}</Text>
+          <Text style={styles.headerText}>
+            {displayDate}
+            <Text style={styles.editedText}>{displayEdited}</Text>
+          </Text>
           <View style={styles.actionsContainer}>
             <TouchableOpacity onPress={() => handleEditNote(note.id, note.text)}>
               <Text style={[styles.headerText, styles.headerActions]}>
@@ -146,4 +150,8 @@ const styles = StyleSheet.create({
   deleteText: {
     marginLeft: 15,
   },
+  editedText: {
+    paddingLeft: 10,
+    fontStyle: 'italic'
+  }
 });
