@@ -10,13 +10,21 @@ import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-
 import { useNavigation } from '@react-navigation/native';
 import { shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
+import { addNoteToCollection } from '../redux/action-creators'
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard/ResourceCard';
+import BaseText from '../components/Generic/BaseText'
 
-const NotesScreen = ({ resource }) => {
+const NotesScreen = ({ resource, addNoteToCollectionAction }) => {
   const navigation = useNavigation();
   const [text, onChangeText] = useState('')
+
+  const handleSave = () => {
+    addNoteToCollectionAction(resource.id, text)
+    onChangeText('')
+  }
+
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -45,12 +53,14 @@ const NotesScreen = ({ resource }) => {
               flex: 1,  
               borderRadius: 10,
               padding: 10,
-              height: 100
             }} 
-            // autoFocus={enableShift}
             onChangeText={onChangeText}
-            numberOfLines={10}
+            multiline={true}
+            value={text}
           />
+        <TouchableOpacity style={{marginLeft: 10}} onPress={handleSave}>
+          <BaseText variant="title">Save</BaseText>
+        </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -65,7 +75,11 @@ const mapStateToProps = (state, ownProps) => ({
   resource: resourceByRoutePropsSelector(state, ownProps),
 });
 
-export default connect(mapStateToProps, null)(NotesScreen);
+const mapDispatchToProps = {
+  addNoteToCollectionAction: addNoteToCollection
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);
 
 const styles = StyleSheet.create({
   root: {

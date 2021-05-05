@@ -70,6 +70,7 @@ const createCollection = (label = 'Untitled Collection') => {
     focusedSubtype: '',
     records: {},
     detailsPanelSortingState: defaultDetailsPanelSortingState,
+    notes: {}
   };
 };
 
@@ -263,6 +264,17 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId]
           .detailsPanelSortingState.activeSortField = sortField;
       });
+    }
+    case actionTypes.ADD_NOTE_TO_RECORD: {
+      const { collectionId, resourceId, noteText } = action.payload;
+      
+      return produce(state, (draft) => {
+        draft[collectionId].notes[resourceId] = draft[collectionId].notes[resourceId] || []
+        draft[collectionId].notes[resourceId].push({
+          noteId: uuidv4(),
+          noteText
+        })
+      })
     }
     default:
       return state;
