@@ -274,14 +274,16 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {};
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes = (
-          draft[collectionId].records[resourceId].notes || []
+          draft[collectionId].records[resourceId].notes || {}
         );
-        draft[collectionId].records[resourceId].notes.push({
-          id: uuidv4(),
+        const noteId = uuidv4();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId].notes[noteId] = {
+          id: noteId,
           text,
           dateCreated: newDate,
           dateUpdated: newDate,
-        });
+        };
       });
     }
     default:
