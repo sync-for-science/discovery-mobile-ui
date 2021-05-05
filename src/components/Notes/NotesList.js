@@ -11,8 +11,8 @@ const Note = ({ note }) => {
   const displayDate = formatDate(note.dateCreated, true);
   return (
     <View style={styles.noteContainer}>
-      <View style={styles.noteBody}>
-        <View style={styles.noteDateContainer}>
+      <View style={styles.noteContent}>
+        <View style={styles.headerContainer}>
           <Text style={styles.headerText}>{displayDate}</Text>
           <View style={styles.actionsContainer}>
             <TouchableOpacity>
@@ -41,15 +41,15 @@ const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
   if (fromNotesScreen) {
     return (
       <>
-        <View style={styles.root} >
+        <View style={styles.root}>
           {recordNotes.map((note) => (
             <Note key={note.noteId} note={note} />
           ))}
         </View>
       </>
-    )
+    );
   }
-  
+
   if (showNotes) {
     return (
       <>
@@ -58,15 +58,16 @@ const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
           <Note note={note} />
         ))}
       </>
-    )
+    );
   }
 
-  return null
+  return null;
 };
 
 NotesList.propTypes = {
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
+  showNotes: bool.isRequired,
 };
 
 NotesList.defaultProps = {
@@ -85,14 +86,14 @@ const styles = StyleSheet.create({
     borderLeftColor: Colors.primary,
     borderLeftWidth: 3,
   },
-  noteBody: {
+  noteContent: {
     paddingHorizontal: 10,
   },
   headerText: {
     fontSize: 12,
     color: Colors.darkgrey2,
   },
-  noteDateContainer: {
+  headerContainer: {
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',

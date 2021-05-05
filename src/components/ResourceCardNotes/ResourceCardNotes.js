@@ -1,38 +1,54 @@
-import React, {useState} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { connect } from 'react-redux';
 
-import NotesList from '../Notes/NotesList'
+import {
+  bool, shape, string, arrayOf,
+} from 'prop-types';
+import NotesList from '../Notes/NotesList';
 import { recordNotesSelector } from '../../redux/selectors';
-import ResourceCardNoteActions from './ResourceCardNoteActions'
+import ResourceCardNoteActions from './ResourceCardNoteActions';
 
 const ResourceCardNotes = ({
   fromNotesScreen,
   resourceId,
-  recordNotes
+  recordNotes,
 }) => {
-  const [showNotes, setShowNotes] = useState(false)
+  const [showNotes, setShowNotes] = useState(false);
   const hasNotes = recordNotes.length > 0;
 
   return (
     <View>
-      {!fromNotesScreen && 
-        <ResourceCardNoteActions 
-          hasNotes={hasNotes} 
-          showNotes={showNotes} 
-          setShowNotes={setShowNotes} 
+      {!fromNotesScreen
+        && (
+        <ResourceCardNoteActions
+          hasNotes={hasNotes}
+          showNotes={showNotes}
+          setShowNotes={setShowNotes}
           resourceId={resourceId}
         />
-      }
-      <NotesList recordNotes={recordNotes} showNotes={showNotes} fromNotesScreen={fromNotesScreen}/>
+        )}
+      <NotesList
+        recordNotes={recordNotes}
+        showNotes={showNotes}
+        fromNotesScreen={fromNotesScreen}
+      />
     </View>
-  )
-}
+  );
+};
+
+ResourceCardNotes.propTypes = {
+  fromNotesScreen: bool,
+  resourceId: string.isRequired,
+  recordNotes: arrayOf(shape({}).isRequired).isRequired,
+};
+
+ResourceCardNotes.defaultProps = {
+  fromNotesScreen: false,
+};
 
 const mapStateToProps = (state, ownProps) => ({
   recordNotes: recordNotesSelector(state, ownProps),
 });
 
-export default connect(mapStateToProps, null)(ResourceCardNotes)
-
-const styles = StyleSheet.create({})
+export default connect(mapStateToProps, null)(ResourceCardNotes);

@@ -3,7 +3,7 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import {
-  string, shape, number, bool, arrayOf,
+  string, shape, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,7 +15,7 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import { resourceByIdSelector, recordNotesSelector } from '../../redux/selectors';
+import { resourceByIdSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
@@ -157,8 +157,8 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
-      <ResourceCardNotes 
-        fromNotesScreen={fromNotesScreen} 
+      <ResourceCardNotes
+        fromNotesScreen={fromNotesScreen}
         resourceId={resourceId}
       />
     </View>
@@ -223,5 +223,5 @@ const styles = StyleSheet.create({
   typeLabel: {
     textTransform: 'uppercase',
   },
-  
+
 });
