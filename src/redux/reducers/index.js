@@ -286,7 +286,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         };
       });
     }
-    case actionTypes.DELETE_NOTE_FROM_RECORD: {
+    case actionTypes.DELETE_RECORD_NOTE: {
       const { collectionId, resourceId, noteId } = action.payload;
 
       return produce(state, (draft) => {
