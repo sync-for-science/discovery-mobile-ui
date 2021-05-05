@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
-  arrayOf, shape, bool, string,
+  arrayOf, shape, bool, string, func,
 } from 'prop-types';
 import { deleteNoteFromRecord } from '../../redux/action-creators/index';
 
@@ -55,14 +55,21 @@ const Note = ({ resourceId, note, deleteNoteFromRecordAction }) => {
 };
 
 Note.propTypes = {
+  resourceId: string.isRequired,
   note: shape({}).isRequired,
+  deleteNoteFromRecordAction: func.isRequired,
 };
 
 const NotesList = ({
   resourceId, recordNotes, fromNotesScreen, showNotes, deleteNoteFromRecordAction,
 }) => {
   const renderNotes = recordNotes.map((note) => (
-    <Note key={note.id} resourceId={resourceId} note={note} deleteNoteFromRecordAction={deleteNoteFromRecordAction} />
+    <Note
+      key={note.id}
+      resourceId={resourceId}
+      note={note}
+      deleteNoteFromRecordAction={deleteNoteFromRecordAction}
+    />
   ));
 
   if (fromNotesScreen) {
@@ -86,6 +93,7 @@ NotesList.propTypes = {
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
+  deleteNoteFromRecordAction: func.isRequired,
 };
 
 NotesList.defaultProps = {
