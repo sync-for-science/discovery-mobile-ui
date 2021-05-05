@@ -1,11 +1,13 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity,
 } from 'react-native';
 import {
   string, shape, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
+import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { useNavigation } from '@react-navigation/native';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -21,6 +23,7 @@ import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
+import Colors from '../../constants/Colors';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -68,7 +71,7 @@ const selectCardBody = (resource) => {
 };
 
 const CardHeader = ({
-  resourceId, resource, collectionId, fromDetailsPanel,
+  resourceId, resource, collectionId, fromDetailsPanel, fromNotesScreen,
 }) => {
   const resourceDate = getResourceDate(resource);
   const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
@@ -87,6 +90,10 @@ const CardHeader = ({
         </View>
       </>
     );
+  }
+
+  if (fromNotesScreen) {
+    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>;
   }
 
   return (
@@ -116,12 +123,15 @@ const CardHeader = ({
 CardHeader.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
-  collectionId: string.isRequired,
+  collectionId: string,
   fromDetailsPanel: bool,
+  fromNotesScreen: bool,
 };
 
 CardHeader.defaultProps = {
   fromDetailsPanel: false,
+  fromNotesScreen: false,
+  collectionId: null,
 };
 
 const ResourceCard = ({
@@ -130,8 +140,10 @@ const ResourceCard = ({
   collectionId,
   index,
   fromDetailsPanel,
+  fromNotesScreen,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
+  const navigation = useNavigation();
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -141,11 +153,19 @@ const ResourceCard = ({
           resource={resource}
           collectionId={collectionId}
           fromDetailsPanel={fromDetailsPanel}
+          fromNotesScreen={fromNotesScreen}
         />
       </View>
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
+      { !fromNotesScreen
+        && (
+        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
+          <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
+          <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
+        </TouchableOpacity>
+        )}
     </View>
   );
 };
@@ -153,13 +173,17 @@ const ResourceCard = ({
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
-  collectionId: string.isRequired,
-  index: number.isRequired,
+  collectionId: string,
+  index: number,
   fromDetailsPanel: bool,
+  fromNotesScreen: bool,
 };
 
 ResourceCard.defaultProps = {
+  collectionId: null,
+  index: null,
   fromDetailsPanel: false,
+  fromNotesScreen: false,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -188,6 +212,8 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 10,
     paddingBottom: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.lightgrey,
   },
   iconContainer: {
     marginLeft: 10,
@@ -201,5 +227,12 @@ const styles = StyleSheet.create({
   },
   typeLabel: {
     textTransform: 'uppercase',
+  },
+  addNoteButton: {
+    marginHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
