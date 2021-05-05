@@ -45,7 +45,7 @@ const NotesScreen = ({ resource, addNoteToCollectionAction }) => {
       <ScrollView>
         <ResourceCard resourceId={resource.id} resource={resource} fromNotesScreen />
       </ScrollView>
-      <KeyboardAvoidingView behavior="position">
+      <KeyboardAvoidingView behavior="padding">
         <View style={{padding: 10, backgroundColor: Colors.lightgrey, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
           <TextInput
             style={{
