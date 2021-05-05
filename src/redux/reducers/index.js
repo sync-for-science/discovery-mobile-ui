@@ -70,7 +70,7 @@ const createCollection = (label = 'Untitled Collection') => {
     focusedSubtype: '',
     records: {},
     detailsPanelSortingState: defaultDetailsPanelSortingState,
-    notes: {}
+    notes: {},
   };
 };
 
@@ -267,18 +267,22 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.ADD_NOTE_TO_RECORD: {
       const { collectionId, resourceId, noteText } = action.payload;
-      
+
       return produce(state, (draft) => {
-        const newDate = new Date()
-        draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {}
-        draft[collectionId].records[resourceId].notes = draft[collectionId].records[resourceId].notes || []
+        const newDate = new Date();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {};
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId].notes = (
+          draft[collectionId].records[resourceId].notes || []
+        );
         draft[collectionId].records[resourceId].notes.push({
           noteId: uuidv4(),
           noteText,
           dateCreated: newDate,
-          dateUpdated: newDate
-        })
-      })
+          dateUpdated: newDate,
+        });
+      });
     }
     default:
       return state;

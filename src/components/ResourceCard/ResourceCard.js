@@ -3,7 +3,7 @@ import {
   StyleSheet, View, TouchableOpacity,
 } from 'react-native';
 import {
-  string, shape, number, bool,
+  string, shape, number, bool, arrayOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
@@ -24,7 +24,7 @@ import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import Colors from '../../constants/Colors';
-import NotesList from '../Notes/NotesList'
+import NotesList from '../Notes/NotesList';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -142,11 +142,11 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
-  recordNotes
+  recordNotes,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
   const navigation = useNavigation();
-  const hasNotes = recordNotes.length > 0
+  const hasNotes = recordNotes.length > 0;
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -169,7 +169,7 @@ const ResourceCard = ({
           <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
         </TouchableOpacity>
         )}
-      {hasNotes && <NotesList recordNotes={recordNotes} fromNotesScreen={fromNotesScreen}/>}
+      {hasNotes && <NotesList recordNotes={recordNotes} fromNotesScreen={fromNotesScreen} />}
     </View>
   );
 };
@@ -181,6 +181,7 @@ ResourceCard.propTypes = {
   index: number,
   fromDetailsPanel: bool,
   fromNotesScreen: bool,
+  recordNotes: arrayOf(shape({}).isRequired).isRequired,
 };
 
 ResourceCard.defaultProps = {
@@ -192,7 +193,7 @@ ResourceCard.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
-  recordNotes: recordNotesSelector(state, ownProps)
+  recordNotes: recordNotesSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);

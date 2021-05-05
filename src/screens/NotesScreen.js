@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
 } from 'react-native';
@@ -8,22 +8,22 @@ import {
 import { connect } from 'react-redux';
 import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation } from '@react-navigation/native';
-import { shape } from 'prop-types';
+import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
-import { addNoteToCollection } from '../redux/action-creators'
+import { addNoteToRecord } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard/ResourceCard';
-import BaseText from '../components/Generic/BaseText'
+import BaseText from '../components/Generic/BaseText';
 
-const NotesScreen = ({ resource, addNoteToCollectionAction }) => {
+const NotesScreen = ({ resource, addNoteToRecordAction }) => {
   const navigation = useNavigation();
-  const [text, onChangeText] = useState('')
+  const [text, onChangeText] = useState('');
 
   const handleSave = () => {
-    addNoteToCollectionAction(resource.id, text)
-    onChangeText('')
-  }
+    addNoteToRecordAction(resource.id, text);
+    onChangeText('');
+  };
 
   return (
     <SafeAreaView style={styles.root}>
@@ -46,21 +46,16 @@ const NotesScreen = ({ resource, addNoteToCollectionAction }) => {
         <ResourceCard resourceId={resource.id} resource={resource} fromNotesScreen />
       </ScrollView>
       <KeyboardAvoidingView behavior="padding">
-        <View style={{padding: 10, backgroundColor: Colors.lightgrey, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center'}}>
+        <View style={styles.noteInputContainer}>
           <TextInput
-            style={{
-              backgroundColor: 'white', 
-              flex: 1,  
-              borderRadius: 10,
-              padding: 10,
-            }} 
+            style={styles.textInput}
             onChangeText={onChangeText}
-            multiline={true}
+            multiline
             value={text}
           />
-        <TouchableOpacity style={{marginLeft: 10}} onPress={handleSave}>
-          <BaseText variant="title">Save</BaseText>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <BaseText variant="title">Save</BaseText>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -69,6 +64,7 @@ const NotesScreen = ({ resource, addNoteToCollectionAction }) => {
 
 NotesScreen.propTypes = {
   resource: shape({}).isRequired,
+  addNoteToRecordAction: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -76,8 +72,8 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  addNoteToCollectionAction: addNoteToCollection
-}
+  addNoteToRecordAction: addNoteToRecord,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);
 
@@ -90,5 +86,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
+  },
+  noteInputContainer: {
+    padding: 10,
+    backgroundColor: Colors.lightgrey,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  textInput: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 10,
+    padding: 10,
+  },
+  saveButton: {
+    marginLeft: 10,
   },
 });
