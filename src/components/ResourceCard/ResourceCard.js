@@ -140,6 +140,7 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
+  handleEditNote
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
@@ -160,6 +161,7 @@ const ResourceCard = ({
       <ResourceCardNotes
         fromNotesScreen={fromNotesScreen}
         resourceId={resourceId}
+        handleEditNote={handleEditNote}
       />
     </View>
   );

@@ -294,6 +294,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         delete draft[collectionId].records[resourceId].notes[noteId];
       });
     }
+    case actionTypes.EDIT_RECORD_NOTE: {
+      const { collectionId, resourceId, noteId, text } = action.payload
+      return state
+    }
     default:
       return state;
   }

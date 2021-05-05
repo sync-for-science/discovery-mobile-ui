@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, createRef } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
+  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Button
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -19,12 +19,25 @@ import BaseText from '../components/Generic/BaseText';
 const NotesScreen = ({ resource, addRecordNoteAction }) => {
   const navigation = useNavigation();
   const [text, onChangeText] = useState('');
+  const [editNoteId, setEditNoteId] = useState(null)
 
   const handleSave = () => {
-    addRecordNoteAction(resource.id, text);
+    if (editNoteId) {
+      editNoteToRecordAction(resourceId, text, editNoteId)
+    } else {
+      addRecordNoteAction(resource.id, text);
+    }
     onChangeText('');
   };
 
+  const handleEditNote = (noteId, text) => {
+    setEditNoteId(noteId)
+    onChangeText(text)
+    textInputRef.current.focus()
+  }
+
+  const textInputRef = useRef()
+  
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -43,11 +56,17 @@ const NotesScreen = ({ resource, addRecordNoteAction }) => {
         </Right>
       </Header>
       <ScrollView>
-        <ResourceCard resourceId={resource.id} resource={resource} fromNotesScreen />
+        <ResourceCard 
+        resourceId={resource.id} 
+        resource={resource} 
+        handleEditNote={handleEditNote}
+        fromNotesScreen 
+      />
       </ScrollView>
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.noteInputContainer}>
           <TextInput
+            ref={textInputRef}
             style={styles.textInput}
             onChangeText={onChangeText}
             multiline

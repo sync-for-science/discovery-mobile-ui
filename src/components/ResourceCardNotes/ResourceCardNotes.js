@@ -13,6 +13,7 @@ const ResourceCardNotes = ({
   fromNotesScreen,
   resourceId,
   recordNotes,
+  handleEditNote
 }) => {
   const [showNotes, setShowNotes] = useState(false);
   const hasNotes = recordNotes.length > 0;
@@ -35,6 +36,7 @@ const ResourceCardNotes = ({
         recordNotes={recordNotes}
         showNotes={showNotes}
         fromNotesScreen={fromNotesScreen}
+        handleEditNote={handleEditNote}
       />
     </View>
   );

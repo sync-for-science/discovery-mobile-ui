@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
-import { deleteRecordNote } from '../../redux/action-creators/index';
+import { deleteRecordNote, editRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
+const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote }) => {
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => Alert.alert(
     'Delete Note',
@@ -30,13 +30,15 @@ const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
     ],
   );
 
+
+
   return (
     <View style={styles.noteContainer}>
       <View style={styles.noteContent}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>{displayDate}</Text>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => handleEditNote(note.id, note.text)}>
               <Text style={[styles.headerText, styles.headerActions]}>
                 Edit
               </Text>
@@ -61,7 +63,12 @@ Note.propTypes = {
 };
 
 const NotesList = ({
-  resourceId, recordNotes, fromNotesScreen, showNotes, deleteRecordNoteAction,
+  resourceId, 
+  recordNotes, 
+  fromNotesScreen, 
+  showNotes, 
+  deleteRecordNoteAction,
+  handleEditNote
 }) => {
   const renderNotes = recordNotes.map((note) => (
     <Note
@@ -69,6 +76,7 @@ const NotesList = ({
       resourceId={resourceId}
       note={note}
       deleteRecordNoteAction={deleteRecordNoteAction}
+      handleEditNote={handleEditNote}
     />
   ));
 
@@ -102,6 +110,7 @@ NotesList.defaultProps = {
 
 const mapDispatchToProps = {
   deleteRecordNoteAction: deleteRecordNote,
+  editRecordNoteAction: editRecordNote
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);
