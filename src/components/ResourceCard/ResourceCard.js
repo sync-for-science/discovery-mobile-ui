@@ -17,13 +17,14 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import { resourceByIdSelector } from '../../redux/selectors';
+import { resourceByIdSelector, recordNotesSelector } from '../../redux/selectors';
 import { getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import Colors from '../../constants/Colors';
+import NotesList from '../Notes/NotesList'
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -141,6 +142,7 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
+  recordNotes
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
   const navigation = useNavigation();
@@ -166,6 +168,7 @@ const ResourceCard = ({
           <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
         </TouchableOpacity>
         )}
+      <NotesList recordNotes={recordNotes} />
     </View>
   );
 };
@@ -188,6 +191,7 @@ ResourceCard.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
+  recordNotes: recordNotesSelector(state, ownProps)
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
