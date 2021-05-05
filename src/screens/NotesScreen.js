@@ -10,24 +10,25 @@ import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-
 import { useNavigation } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
-import { addRecordNote } from '../redux/action-creators';
+import { addRecordNote, editRecordNote } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 
-const NotesScreen = ({ resource, addRecordNoteAction }) => {
+const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) => {
   const navigation = useNavigation();
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null)
 
   const handleSave = () => {
     if (editNoteId) {
-      editNoteToRecordAction(resourceId, text, editNoteId)
+      editRecordNoteAction(resource.id, text, editNoteId)
     } else {
       addRecordNoteAction(resource.id, text);
     }
     onChangeText('');
+    setEditNoteId(null)
   };
 
   const handleEditNote = (noteId, text) => {
@@ -92,6 +93,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   addRecordNoteAction: addRecordNote,
+  editRecordNoteAction: editRecordNote
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);
