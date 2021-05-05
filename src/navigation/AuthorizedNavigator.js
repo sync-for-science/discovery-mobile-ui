@@ -66,6 +66,7 @@ const CollectionStackScreen = () => (
 
 const AuthorizedNavigator = () => (
   <HomeTab.Navigator
+    initialRouteName="Collections"
     screenOptions={selectScreenOptions}
     tabBarOptions={{
       activeTintColor: Colors.primary,

@@ -6,12 +6,15 @@ import {
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
 import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
 import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
+
+const Tab = createMaterialTopTabNavigator();
 
 const SummaryScreen = ({
   clearAuthAction, clearPatientDataAction,
@@ -33,8 +36,10 @@ const SummaryScreen = ({
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <ScrollView style={styles.screen}>
-        <RecordsSummary />
-        <ProvidersSummary />
+        <Tab.Navigator>
+          <Tab.Screen name="Records" component={RecordsSummary} />
+          <Tab.Screen name="Providers" component={ProvidersSummary} />
+        </Tab.Navigator>
         <Button title="Logout" onPress={clearData} />
       </ScrollView>
     </SafeAreaView>
