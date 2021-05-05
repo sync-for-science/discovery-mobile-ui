@@ -266,7 +266,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.ADD_NOTE_TO_RECORD: {
-      const { collectionId, resourceId, noteText } = action.payload;
+      const { collectionId, resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
         const newDate = new Date();
@@ -277,8 +277,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           draft[collectionId].records[resourceId].notes || []
         );
         draft[collectionId].records[resourceId].notes.push({
-          noteId: uuidv4(),
-          noteText,
+          id: uuidv4(),
+          text,
           dateCreated: newDate,
           dateUpdated: newDate,
         });

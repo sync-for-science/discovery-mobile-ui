@@ -27,7 +27,7 @@ const Note = ({ note }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Text>{note.noteText}</Text>
+        <Text>{note.text}</Text>
       </View>
     </View>
   );
@@ -39,7 +39,7 @@ Note.propTypes = {
 
 const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
   const renderNotes = recordNotes.map((note) => (
-    <Note key={note.noteId} note={note} />
+    <Note key={note.id} note={note} />
   ));
 
   if (fromNotesScreen) {
