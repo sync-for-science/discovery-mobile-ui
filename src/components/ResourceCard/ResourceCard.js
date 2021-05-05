@@ -146,6 +146,7 @@ const ResourceCard = ({
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
   const navigation = useNavigation();
+  const hasNotes = recordNotes.length > 0
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -168,7 +169,7 @@ const ResourceCard = ({
           <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
         </TouchableOpacity>
         )}
-      <NotesList recordNotes={recordNotes} />
+      {hasNotes && <NotesList recordNotes={recordNotes} fromNotesScreen={fromNotesScreen}/>}
     </View>
   );
 };
@@ -233,7 +234,6 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   addNoteButton: {
-    marginHorizontal: 10,
     paddingVertical: 10,
     alignItems: 'center',
     justifyContent: 'center',
