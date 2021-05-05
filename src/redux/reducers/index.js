@@ -286,6 +286,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         };
       });
     }
+    case actionTypes.DELETE_NOTE_FROM_RECORD: {
+      const {collectionId, resourceId, noteId} = action.payload
+
+      return produce(state, (draft) => {
+        const updatedNotes = draft[collectionId].records[resourceId].notes.filter(note => note.id !== noteId)
+        draft[collectionId].records[resourceId].notes = updatedNotes
+      })
+    }
     default:
       return state;
   }

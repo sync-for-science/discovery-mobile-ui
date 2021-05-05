@@ -31,6 +31,7 @@ const ResourceCardNotes = ({
           </View>
         )}
       <NotesList
+        resourceId={resourceId}
         recordNotes={recordNotes}
         showNotes={showNotes}
         fromNotesScreen={fromNotesScreen}

@@ -2,15 +2,17 @@ import React from 'react';
 import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
-import { arrayOf, shape, bool } from 'prop-types';
+import { connect } from 'react-redux'
+import { arrayOf, shape, bool, string } from 'prop-types';
+import { deleteNoteFromRecord} from '../../redux/action-creators/index'
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ note }) => {
+const Note = ({ resourceId, note, deleteNoteFromRecordAction }) => {
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => {
-    deleteNoteFromRecordAction(recordId, note.noteId)
+    deleteNoteFromRecordAction(resourceId, note.id)
   }
   return (
     <View style={styles.noteContainer}>
@@ -40,9 +42,9 @@ Note.propTypes = {
   note: shape({}).isRequired,
 };
 
-const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
+const NotesList = ({ resourceId, recordNotes, fromNotesScreen, showNotes, deleteNoteFromRecordAction }) => {
   const renderNotes = recordNotes.map((note) => (
-    <Note key={note.id} note={note} />
+    <Note key={note.id} resourceId={resourceId} note={note} deleteNoteFromRecordAction={deleteNoteFromRecordAction}/>
   ));
 
   if (fromNotesScreen) {
@@ -62,6 +64,7 @@ const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
 };
 
 NotesList.propTypes = {
+  resourceId: string.isRequired,
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
@@ -71,7 +74,11 @@ NotesList.defaultProps = {
   fromNotesScreen: false,
 };
 
-export default NotesList;
+const mapDispatchToProps = {
+  deleteNoteFromRecordAction: deleteNoteFromRecord
+}
+
+export default connect(null, mapDispatchToProps)(NotesList);
 
 const styles = StyleSheet.create({
   divider: {
