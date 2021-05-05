@@ -3,15 +3,18 @@ import {
   StyleSheet, Text, View, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
+
 import { deleteRecordNote, editRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote }) => {
+const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen }) => {
+  const navigation = useNavigation()
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => Alert.alert(
     'Delete Note',
@@ -33,6 +36,14 @@ const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote }) => {
   const hasBeenEdited = note.dateCreated !== note.dateEdited
   const displayEdited = hasBeenEdited ? ' (Edited)' : ''
 
+  const handleEdit = () => {
+    if (fromNotesScreen) {
+      handleEditNote(note.id, note.text)
+    } else {
+      navigation.navigate('Notes', {resourceId, editingNote: note})
+    }
+  }
+
   return (
     <View style={styles.noteContainer}>
       <View style={styles.noteContent}>
@@ -42,7 +53,7 @@ const Note = ({ resourceId, note, deleteRecordNoteAction, handleEditNote }) => {
             <Text style={styles.editedText}>{displayEdited}</Text>
           </Text>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity onPress={() => handleEditNote(note.id, note.text)}>
+            <TouchableOpacity onPress={handleEdit}>
               <Text style={[styles.headerText, styles.headerActions]}>
                 Edit
               </Text>
@@ -81,6 +92,7 @@ const NotesList = ({
       note={note}
       deleteRecordNoteAction={deleteRecordNoteAction}
       handleEditNote={handleEditNote}
+      fromNotesScreen={fromNotesScreen}
     />
   ));
 

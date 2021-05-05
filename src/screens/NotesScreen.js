@@ -1,4 +1,4 @@
-import React, { useState, useRef, createRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView, Button
 } from 'react-native';
@@ -7,7 +7,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
 import { addRecordNote, editRecordNote } from '../redux/action-creators';
@@ -18,8 +18,12 @@ import BaseText from '../components/Generic/BaseText';
 
 const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) => {
   const navigation = useNavigation();
+  const route = useRoute()
+  const editingNote = route?.params?.editingNote
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null)
+
+  
 
   const handleSave = () => {
     if (editNoteId) {
@@ -36,6 +40,13 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
     onChangeText(text)
     textInputRef.current.focus()
   }
+
+  useEffect(() => {
+    if (editingNote) {
+      handleEditNote(editingNote.id, editingNote.text)
+    }
+  }, [])
+
 
   const textInputRef = useRef()
   
