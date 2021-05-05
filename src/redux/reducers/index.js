@@ -269,10 +269,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const { collectionId, resourceId, noteText } = action.payload;
       
       return produce(state, (draft) => {
-        draft[collectionId].notes[resourceId] = draft[collectionId].notes[resourceId] || []
-        draft[collectionId].notes[resourceId].push({
+        const newDate = new Date()
+        draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {}
+        draft[collectionId].records[resourceId].notes = draft[collectionId].records[resourceId].notes || []
+        draft[collectionId].records[resourceId].notes.push({
           noteId: uuidv4(),
-          noteText
+          noteText,
+          dateCreated: newDate,
+          dateUpdated: newDate
         })
       })
     }
