@@ -9,6 +9,9 @@ import { formatDate } from '../../resources/fhirReader';
 
 const Note = ({ note }) => {
   const displayDate = formatDate(note.dateCreated, true);
+  const handleDelete = () => {
+    deleteNoteFromRecordAction(recordId, note.noteId)
+  }
   return (
     <View style={styles.noteContainer}>
       <View style={styles.noteContent}>
@@ -20,7 +23,7 @@ const Note = ({ note }) => {
                 Edit
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleDelete}>
               <Text style={[styles.headerText, styles.headerActions, styles.deleteText]}>
                 Delete
               </Text>
