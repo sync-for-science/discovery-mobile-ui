@@ -594,6 +594,7 @@ export const recordNotesSelector = createSelector(
     if (!collection.records[resourceId]?.notes) {
       return [];
     }
-    return collection.records[resourceId].notes;
+    const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
+    return [...collection.records[resourceId].notes].sort(sortDesc);
   },
 );
