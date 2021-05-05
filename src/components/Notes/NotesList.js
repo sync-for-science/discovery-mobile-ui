@@ -37,16 +37,32 @@ Note.propTypes = {
   note: shape({}).isRequired,
 };
 
-const NotesList = ({ recordNotes, fromNotesScreen }) => (
-  <>
-    {!fromNotesScreen && <View style={styles.divider} />}
-    <View style={styles.root}>
-      {recordNotes.map((note) => (
-        <Note note={note} />
-      ))}
-    </View>
-  </>
-);
+const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
+  if (fromNotesScreen) {
+    return (
+      <>
+        <View style={styles.root} >
+          {recordNotes.map((note) => (
+            <Note key={note.noteId} note={note} />
+          ))}
+        </View>
+      </>
+    )
+  }
+  
+  if (showNotes) {
+    return (
+      <>
+        <View style={styles.divider} />
+        {recordNotes.map((note) => (
+          <Note note={note} />
+        ))}
+      </>
+    )
+  }
+
+  return null
+};
 
 NotesList.propTypes = {
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
@@ -60,15 +76,12 @@ NotesList.defaultProps = {
 export default NotesList;
 
 const styles = StyleSheet.create({
-  root: {
-    margin: 10,
-  },
   divider: {
     borderTopColor: Colors.lightgrey,
     borderTopWidth: 1,
   },
   noteContainer: {
-    marginVertical: 10,
+    margin: 10,
     borderLeftColor: Colors.primary,
     borderLeftWidth: 3,
   },

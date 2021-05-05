@@ -1,13 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View,
 } from 'react-native';
 import {
   string, shape, number, bool, arrayOf,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { useNavigation } from '@react-navigation/native';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -24,7 +22,7 @@ import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import Colors from '../../constants/Colors';
-import NotesList from '../Notes/NotesList';
+import ResourceCardNotes from '../ResourceCardNotes/ResourceCardNotes';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -142,11 +140,8 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
-  recordNotes,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
-  const navigation = useNavigation();
-  const hasNotes = recordNotes.length > 0;
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -162,14 +157,10 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
-      { !fromNotesScreen
-        && (
-        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-          <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
-          <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
-        </TouchableOpacity>
-        )}
-      {hasNotes && <NotesList recordNotes={recordNotes} fromNotesScreen={fromNotesScreen} />}
+      <ResourceCardNotes 
+        fromNotesScreen={fromNotesScreen} 
+        resourceId={resourceId}
+      />
     </View>
   );
 };
@@ -181,7 +172,6 @@ ResourceCard.propTypes = {
   index: number,
   fromDetailsPanel: bool,
   fromNotesScreen: bool,
-  recordNotes: arrayOf(shape({}).isRequired).isRequired,
 };
 
 ResourceCard.defaultProps = {
@@ -193,7 +183,6 @@ ResourceCard.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
-  recordNotes: recordNotesSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
@@ -234,10 +223,5 @@ const styles = StyleSheet.create({
   typeLabel: {
     textTransform: 'uppercase',
   },
-  addNoteButton: {
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
+  
 });
