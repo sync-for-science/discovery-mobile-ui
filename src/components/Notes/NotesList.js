@@ -38,25 +38,19 @@ Note.propTypes = {
 };
 
 const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
+  const renderNotes = recordNotes.map((note) => (
+    <Note key={note.noteId} note={note} />
+  ));
+
   if (fromNotesScreen) {
-    return (
-      <>
-        <View style={styles.root}>
-          {recordNotes.map((note) => (
-            <Note key={note.noteId} note={note} />
-          ))}
-        </View>
-      </>
-    );
+    return renderNotes;
   }
 
   if (showNotes) {
     return (
       <>
         <View style={styles.divider} />
-        {recordNotes.map((note) => (
-          <Note note={note} />
-        ))}
+        {renderNotes}
       </>
     );
   }
