@@ -11,6 +11,7 @@ const blue4 = '#4a8fe4';
 const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
 const blue7 = '#9dc3e6';
+const blue8 = '#e0eafa';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
 const red1 = 'red';
@@ -45,4 +46,5 @@ export default {
   dash: gray6,
   headerIcon: gray6,
   accordionChevronIcon: gray6,
+  editingBackground: blue8,
 };

@@ -14,6 +14,7 @@ const ResourceCardNotes = ({
   resourceId,
   recordNotes,
   handleEditNote,
+  editNoteId,
 }) => {
   const [showNotes, setShowNotes] = useState(false);
   const hasNotes = recordNotes.length > 0;
@@ -37,6 +38,7 @@ const ResourceCardNotes = ({
         showNotes={showNotes}
         fromNotesScreen={fromNotesScreen}
         handleEditNote={handleEditNote}
+        editNoteId={editNoteId}
       />
     </View>
   );
@@ -47,11 +49,13 @@ ResourceCardNotes.propTypes = {
   resourceId: string.isRequired,
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   handleEditNote: func,
+  editNoteId: string,
 };
 
 ResourceCardNotes.defaultProps = {
   fromNotesScreen: false,
   handleEditNote: undefined,
+  editNoteId: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({

@@ -141,6 +141,7 @@ const ResourceCard = ({
   fromDetailsPanel,
   fromNotesScreen,
   handleEditNote,
+  editNoteId,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
@@ -162,6 +163,7 @@ const ResourceCard = ({
         fromNotesScreen={fromNotesScreen}
         resourceId={resourceId}
         handleEditNote={handleEditNote}
+        editNoteId={editNoteId}
       />
     </View>
   );
@@ -175,6 +177,7 @@ ResourceCard.propTypes = {
   fromDetailsPanel: bool,
   fromNotesScreen: bool,
   handleEditNote: func,
+  editNoteId: string,
 };
 
 ResourceCard.defaultProps = {
@@ -183,6 +186,7 @@ ResourceCard.defaultProps = {
   fromDetailsPanel: false,
   fromNotesScreen: false,
   handleEditNote: undefined,
+  editNoteId: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({

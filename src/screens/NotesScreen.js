@@ -69,6 +69,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           resourceId={resource.id}
           resource={resource}
           handleEditNote={handleEditNote}
+          editNoteId={editNoteId}
           fromNotesScreen
         />
       </ScrollView>

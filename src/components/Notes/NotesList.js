@@ -14,7 +14,7 @@ import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
 const Note = ({
-  resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen,
+  resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen, editNoteId,
 }) => {
   const navigation = useNavigation();
   const displayDate = formatDate(note.dateCreated, true);
@@ -37,6 +37,8 @@ const Note = ({
 
   const hasBeenEdited = note.dateCreated !== note.dateEdited;
   const displayEdited = hasBeenEdited ? ' (Edited)' : '';
+  const isEditing = note.id === editNoteId;
+  const editingStyle = isEditing ? styles.editing : {};
 
   const handleEdit = () => {
     if (fromNotesScreen) {
@@ -47,7 +49,7 @@ const Note = ({
   };
 
   return (
-    <View style={styles.noteContainer}>
+    <View style={[styles.noteContainer, editingStyle]}>
       <View style={styles.noteContent}>
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>
@@ -79,11 +81,13 @@ Note.propTypes = {
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
   fromNotesScreen: bool,
+  editNoteId: string,
 };
 
 Note.defaultProps = {
   handleEditNote: undefined,
   fromNotesScreen: false,
+  editNoteId: null,
 };
 
 const NotesList = ({
@@ -93,6 +97,7 @@ const NotesList = ({
   showNotes,
   deleteRecordNoteAction,
   handleEditNote,
+  editNoteId,
 }) => {
   const renderNotes = recordNotes.map((note) => (
     <Note
@@ -102,6 +107,7 @@ const NotesList = ({
       deleteRecordNoteAction={deleteRecordNoteAction}
       handleEditNote={handleEditNote}
       fromNotesScreen={fromNotesScreen}
+      editNoteId={editNoteId}
     />
   ));
 
@@ -128,15 +134,17 @@ NotesList.propTypes = {
   showNotes: bool.isRequired,
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
+  editNoteId: string,
 };
 
 NotesList.defaultProps = {
   fromNotesScreen: false,
   handleEditNote: undefined,
+  editNoteId: null,
 };
 
 const mapDispatchToProps = {
-  deleteRecordNoteAction: deleteNoteFromRecord,
+  deleteRecordNoteAction: deleteRecordNote,
   editRecordNoteAction: editRecordNote,
 };
 
@@ -149,6 +157,7 @@ const styles = StyleSheet.create({
   },
   noteContainer: {
     margin: 10,
+    paddingVertical: 5,
     borderLeftColor: Colors.primary,
     borderLeftWidth: 3,
   },
@@ -176,5 +185,8 @@ const styles = StyleSheet.create({
   editedText: {
     paddingLeft: 10,
     fontStyle: 'italic',
+  },
+  editing: {
+    backgroundColor: Colors.editingBackground,
   },
 });
