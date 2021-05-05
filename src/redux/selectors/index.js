@@ -586,3 +586,14 @@ export const timelineIntervalsSelector = createSelector(
     };
   },
 );
+
+export const recordNotesSelector = createSelector(
+  [activeCollectionSelector, (_, ownProps) => ownProps],
+  (collection, ownProps) => {
+    const { resourceId } = ownProps
+    if (!collection.records[resourceId]?.notes) {
+      return []
+    }
+    return collection.records[resourceId].notes
+  }
+)
