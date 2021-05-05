@@ -290,11 +290,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const { collectionId, resourceId, noteId } = action.payload;
 
       return produce(state, (draft) => {
-        const updatedNotes = draft[collectionId].records[resourceId].notes.filter(
-          (note) => note.id !== noteId,
-        );
         // eslint-disable-next-line no-param-reassign
-        draft[collectionId].records[resourceId].notes = updatedNotes;
+        delete draft[collectionId].records[resourceId].notes[noteId];
       });
     }
     default:
