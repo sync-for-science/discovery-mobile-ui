@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import {
@@ -21,12 +21,14 @@ const ResourceCardNotes = ({
     <View>
       {!fromNotesScreen
         && (
-        <ResourceCardNoteActions
-          hasNotes={hasNotes}
-          showNotes={showNotes}
-          setShowNotes={setShowNotes}
-          resourceId={resourceId}
-        />
+          <View style={styles.noteActionsContainer}>
+            <ResourceCardNoteActions
+              hasNotes={hasNotes}
+              showNotes={showNotes}
+              setShowNotes={setShowNotes}
+              resourceId={resourceId}
+            />
+          </View>
         )}
       <NotesList
         recordNotes={recordNotes}
@@ -52,3 +54,10 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 export default connect(mapStateToProps, null)(ResourceCardNotes);
+
+const styles = StyleSheet.create({
+  noteActionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+});
