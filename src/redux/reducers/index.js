@@ -265,7 +265,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           .detailsPanelSortingState.activeSortField = sortField;
       });
     }
-    case actionTypes.ADD_NOTE_TO_RECORD: {
+    case actionTypes.ADD_RECORD_NOTE: {
       const { collectionId, resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
