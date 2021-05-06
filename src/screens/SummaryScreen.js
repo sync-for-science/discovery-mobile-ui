@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, SafeAreaView, StatusBar, Button, BackHandler,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -35,15 +34,13 @@ const SummaryScreen = ({
   return (
     <SafeAreaView style={styles.root}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <ScrollView style={styles.scrollContainer}>
-        <Tab.Navigator
-          initialRouteName="Records"
-        >
-          <Tab.Screen name="Records" component={RecordsSummary} />
-          <Tab.Screen name="Providers" component={ProvidersSummary} />
-        </Tab.Navigator>
-        <Button title="Logout" onPress={clearData} />
-      </ScrollView>
+      <Tab.Navigator
+        initialRouteName="Records"
+      >
+        <Tab.Screen name="Records" component={RecordsSummary} />
+        <Tab.Screen name="Providers" component={ProvidersSummary} />
+      </Tab.Navigator>
+      <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
   );
 };
@@ -65,9 +62,6 @@ export default connect(null, mapDispatchToProps)(SummaryScreen);
 const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
-    flex: 1,
-  },
-  scrollContainer: {
     flex: 1,
   },
 });

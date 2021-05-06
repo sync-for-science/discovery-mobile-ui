@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 
 import {
@@ -39,23 +40,25 @@ const RecordsSummary = ({ recordsByType }) => (
     <RecordCount
       emphasizeProviders={false}
     />
-    <View style={styles.resourceTypeContainer}>
-      <View style={styles.resourceTypeRow}>
-        <Text style={styles.resourceCount} />
-        <Text style={styles.resourceLabel} />
-        <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
-        <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.resourceTypeContainer}>
+        <View style={styles.resourceTypeRow}>
+          <Text style={styles.resourceCount} />
+          <Text style={styles.resourceLabel} />
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+        </View>
+        {recordsByType.map(({ type, label, items }) => (
+          <ResourceTypeRow
+            key={type}
+            label={label}
+            count={items.length}
+            earliestDate={items[0].timelineDate}
+            latestDate={items[items.length - 1].timelineDate}
+          />
+        ))}
       </View>
-      {recordsByType.map(({ type, label, items }) => (
-        <ResourceTypeRow
-          key={type}
-          label={label}
-          count={items.length}
-          earliestDate={items[0].timelineDate}
-          latestDate={items[items.length - 1].timelineDate}
-        />
-      ))}
-    </View>
+    </ScrollView>
   </View>
 );
 
@@ -87,6 +90,8 @@ const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
     justifyContent: 'center',
+  },
+  scrollContainer: {
   },
   resourceTypeContainer: {
     alignItems: 'center',

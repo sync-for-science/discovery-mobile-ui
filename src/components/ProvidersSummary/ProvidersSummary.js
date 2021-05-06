@@ -7,6 +7,7 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 
+import { ScrollView } from 'react-native-gesture-handler';
 import { providersSelector } from '../../redux/selectors';
 import RecordCount from '../Summary/RecordCount';
 
@@ -25,16 +26,18 @@ const ProvidersSummary = ({ providers }) => (
     <RecordCount
       emphasizeProviders
     />
-    <View style={styles.providerTypeContainer}>
-      {providers.map(
-        ({ name }) => (
-          <ProviderRow
-            key={name}
-            name={name}
-          />
-        ),
-      )}
-    </View>
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.providerTypeContainer}>
+        {providers.map(
+          ({ name }) => (
+            <ProviderRow
+              key={name}
+              name={name}
+            />
+          ),
+        )}
+      </View>
+    </ScrollView>
   </View>
 );
 
