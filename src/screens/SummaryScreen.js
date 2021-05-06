@@ -33,10 +33,12 @@ const SummaryScreen = ({
   );
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={styles.root}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <ScrollView style={styles.screen}>
-        <Tab.Navigator>
+      <ScrollView style={styles.scrollContainer}>
+        <Tab.Navigator
+          initialRouteName="Records"
+        >
           <Tab.Screen name="Records" component={RecordsSummary} />
           <Tab.Screen name="Providers" component={ProvidersSummary} />
         </Tab.Navigator>
@@ -61,39 +63,11 @@ const mapDispatchToProps = {
 export default connect(null, mapDispatchToProps)(SummaryScreen);
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
+  root: {
     backgroundColor: 'white',
-  },
-  screen: {
     flex: 1,
   },
-  descriptionContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  section: {
-    overflow: 'scroll',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  scrollViewInternal: {
-    height: 500,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 24,
-    fontWeight: '600',
-    paddingTop: 25,
+  scrollContainer: {
+    flex: 1,
   },
 });
