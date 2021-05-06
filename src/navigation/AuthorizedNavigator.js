@@ -20,8 +20,6 @@ function selectIconName(name, focused) {
       return focused ? 'md-person-sharp' : 'md-person-outline';
     case 'Summary':
       return focused ? 'md-grid-sharp' : 'md-grid-outline';
-    case 'Catalog':
-      return focused ? 'file-tray-full' : 'file-tray-outline';
     case 'Collections':
       return focused ? 'albums' : 'albums-outline';
     default:
