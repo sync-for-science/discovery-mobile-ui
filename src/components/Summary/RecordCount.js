@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  shape, arrayOf, instanceOf, string,
+  shape, arrayOf, instanceOf, string, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
@@ -20,7 +20,7 @@ const UI_DATE_FORMAT = 'MMM d, Y';
 const formatDate = (d) => format(d, UI_DATE_FORMAT);
 
 const RecordCount = ({
-  allRecordsSortedByDate, providers, dateRange,
+  emphasizeProviders, allRecordsSortedByDate, providers, dateRange,
 }) => {
   const { minimumDate, maximumDate } = dateRange;
   const formattedDateRange = !(minimumDate && maximumDate) ? '' : `from ${formatDate(minimumDate)} to ${formatDate(maximumDate)}`;
@@ -28,10 +28,8 @@ const RecordCount = ({
   return (
     <View style={styles.root}>
       <Text style={styles.recordCount}>
-        {`${allRecordsSortedByDate.length} Records with ${providers.length} Providers`}
-      </Text>
-      <Text style={styles.recordCount}>
-        {`${providers.length} Providers from ${allRecordsSortedByDate.length} Records`}
+        {!emphasizeProviders && `${allRecordsSortedByDate.length} Records with ${providers.length} Providers`}
+        {emphasizeProviders && `${providers.length} Providers from ${allRecordsSortedByDate.length} Records`}
       </Text>
       <Text style={styles.dateRange}>
         {formattedDateRange}
@@ -41,6 +39,7 @@ const RecordCount = ({
 };
 
 RecordCount.propTypes = {
+  emphasizeProviders: bool.isRequired,
   allRecordsSortedByDate: arrayOf(shape({})).isRequired,
   providers: arrayOf(shape({
     name: string.isRequired,

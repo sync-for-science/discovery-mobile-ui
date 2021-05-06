@@ -36,7 +36,9 @@ ResourceTypeRow.propTypes = {
 
 const RecordsSummary = ({ recordsByType }) => (
   <View style={styles.root}>
-    <RecordCount />
+    <RecordCount
+      emphasizeProviders={false}
+    />
     <View style={styles.resourceTypeContainer}>
       <View style={styles.resourceTypeRow}>
         <Text style={styles.resourceCount} />

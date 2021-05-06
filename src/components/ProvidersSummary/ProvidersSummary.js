@@ -23,7 +23,9 @@ ProviderRow.propTypes = {
 
 const ProvidersSummary = ({ providers }) => (
   <View style={styles.root}>
-    <RecordCount />
+    <RecordCount
+      emphasizeProviders
+    />
     <View style={styles.providerTypeContainer}>
       {providers.map(
         ({ name }) => (
