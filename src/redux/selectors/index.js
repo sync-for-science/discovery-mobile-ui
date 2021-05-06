@@ -448,6 +448,14 @@ export const orderedResourceTypeFiltersSelector = createSelector(
       type,
       typeIsEnabled,
       label: PLURAL_RESOURCE_TYPES[type],
+      hasCollectionItems: !!items.find(({
+        type: t,
+        passesFilters: { date, showHighlightedOnly, inCollection },
+      }) => type === t && date && showHighlightedOnly && inCollection),
+      hasHighlightedItems: !!items.find(({
+        type: t,
+        passesFilters: { date, showCollectionOnly, isHighlighted },
+      }) => type === t && date && showCollectionOnly && isHighlighted),
       hasItemsInDateRange: !!items.find(({
         type: t,
         passesFilters: { date, showCollectionOnly, showHighlightedOnly },

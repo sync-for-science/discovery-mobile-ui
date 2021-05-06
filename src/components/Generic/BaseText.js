@@ -5,7 +5,7 @@ import { shape, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const BaseText = ({ variant, style, children }) => (
-  <Text style={{ ...styles.base, ...styles[variant], ...style }}>{children}</Text>
+  <Text style={[styles.base, styles[variant], style]}>{children}</Text>
 );
 
 BaseText.propTypes = {

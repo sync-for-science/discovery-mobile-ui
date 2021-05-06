@@ -2,42 +2,44 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   arrayOf, func, shape, string, bool,
 } from 'prop-types';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Text } from 'native-base';
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import { selectResourceType } from '../../redux/action-creators';
 import { orderedResourceTypeFiltersSelector, activeCollectionResourceTypeSelector } from '../../redux/selectors';
-import BaseText from '../Generic/BaseText';
 
 const CategoryButton = ({
-  resourceType, label, isActive, selectResourceTypeAction,
-}) => {
-  const buttonStyle = isActive ? styles.buttonSelected : styles.button;
-  const buttonTextStyle = isActive ? styles.buttonSelectedText : styles.buttonText;
-
-  return (
-    <TouchableOpacity style={buttonStyle} onPress={() => selectResourceTypeAction(resourceType)}>
-      <BaseText style={buttonTextStyle}>{label}</BaseText>
-    </TouchableOpacity>
-  );
-};
+  resourceType, label, isActive, selectResourceTypeAction, hasCollectionItems, hasHighlightedItems,
+}) => (
+  <TouchableOpacity
+    style={[styles.button, isActive ? styles.selected : null]}
+    onPress={() => selectResourceTypeAction(resourceType)}
+  >
+    {hasHighlightedItems && <Text style={textStyles.hasHighlighted}>●</Text>}
+    {hasCollectionItems && <Text style={textStyles.hasCollection}>■</Text>}
+    <Text style={[textStyles.button, isActive ? textStyles.selected : null]}>{label}</Text>
+  </TouchableOpacity>
+);
 
 CategoryButton.propTypes = {
   resourceType: string.isRequired,
   label: string.isRequired,
   isActive: bool.isRequired,
   selectResourceTypeAction: func.isRequired,
+  hasCollectionItems: bool.isRequired,
+  hasHighlightedItems: bool.isRequired,
 };
 
 CategoryButton.defaultProps = {
 };
 
 const ResourceTypePicker = ({
-  resourceTypeFilters,
+  allTypeFilters,
   selectResourceTypeAction,
   selectedResourceType,
 }) => (
@@ -49,24 +51,28 @@ const ResourceTypePicker = ({
       contentContainerStyle={styles.contentContainerStyle}
     >
       {
-          resourceTypeFilters
-            .filter(({ typeIsEnabled }) => typeIsEnabled === true)
-            .map(({ type, label }) => (
-              <CategoryButton
-                key={type}
-                resourceType={type}
-                label={label}
-                isActive={selectedResourceType === type}
-                selectResourceTypeAction={selectResourceTypeAction}
-              />
-            ))
-        }
+        allTypeFilters
+          .filter(({ typeIsEnabled, hasItemsInDateRange }) => typeIsEnabled && hasItemsInDateRange)
+          .map(({
+            type, label, hasCollectionItems, hasHighlightedItems,
+          }) => (
+            <CategoryButton
+              key={type}
+              resourceType={type}
+              label={label}
+              isActive={selectedResourceType === type}
+              hasCollectionItems={hasCollectionItems}
+              hasHighlightedItems={hasHighlightedItems}
+              selectResourceTypeAction={selectResourceTypeAction}
+            />
+          ))
+      }
     </ScrollView>
   </View>
 );
 
 ResourceTypePicker.propTypes = {
-  resourceTypeFilters: arrayOf(shape({
+  allTypeFilters: arrayOf(shape({
     type: string.isRequired,
     typeIsEnabled: bool.isRequired,
     label: string.isRequired,
@@ -80,7 +86,7 @@ ResourceTypePicker.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  resourceTypeFilters: orderedResourceTypeFiltersSelector(state),
+  allTypeFilters: orderedResourceTypeFiltersSelector(state),
   selectedResourceType: activeCollectionResourceTypeSelector(state),
 });
 
@@ -98,33 +104,41 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   button: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginHorizontal: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'white',
-    borderRadius: 20,
     borderColor: 'white',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    marginHorizontal: 4,
+    borderRadius: 16,
     borderWidth: 2,
   },
-  buttonSelected: {
-    backgroundColor: 'white',
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    marginHorizontal: 5,
-    borderRadius: 20,
+  selected: {
     borderColor: Colors.darkgrey,
-    borderWidth: 2,
-  },
-  buttonSelectedText: {
-    color: 'black',
-    fontWeight: '700',
-  },
-  buttonText: {
-    color: 'black',
   },
   contentContainerStyle: {
     flexDirection: 'row',
     height: 45,
     alignItems: 'center',
+  },
+});
+
+const textStyles = StyleSheet.create({
+  button: {
+    color: 'black',
+  },
+  selected: {
+    fontWeight: '700',
+  },
+  hasHighlighted: {
+    fontSize: 16,
+    paddingRight: 4,
+    color: Colors.hasFocused,
+  },
+  hasCollection: {
+    fontSize: 16,
+    paddingRight: 4,
+    color: Colors.collectionIcon,
   },
 });
