@@ -1,18 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  arrayOf, instanceOf, shape, string,
+  arrayOf, shape, string,
 } from 'prop-types';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
 
-import {
-  allValidRecordsGroupedByTypeSelector,
-  allValidRecordsSortedByDateSelector,
-  providersSelector,
-} from '../../redux/selectors';
+import { providersSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
+import RecordCount from '../Summary/RecordCount';
 
 const ProviderRow = ({ name }) => (
   <View style={styles.providerTypeRow}>
@@ -24,15 +21,9 @@ ProviderRow.propTypes = {
   name: string.isRequired,
 };
 
-const ProvidersSummary = ({
-  allRecordsSortedByDate, recordsByType, providers,
-}) => (
+const ProvidersSummary = ({ providers }) => (
   <View style={styles.root}>
-    <View style={styles.header}>
-      <Text style={styles.recordCount}>
-        {`${allRecordsSortedByDate.length} Records with ${providers.length} Providers`}
-      </Text>
-    </View>
+    <RecordCount />
     <View style={styles.providerTypeContainer}>
       {providers.map(
         ({ name }) => (
@@ -47,17 +38,6 @@ const ProvidersSummary = ({
 );
 
 ProvidersSummary.propTypes = {
-  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
-  recordsByType: arrayOf(shape({
-    type: string.isRequired,
-    label: string.isRequired,
-    items: arrayOf(shape({
-      id: string.isRequired,
-      type: string.isRequired,
-      subType: string.isRequired,
-      timelineDate: instanceOf(Date).isRequired,
-    })).isRequired,
-  })).isRequired,
   providers: arrayOf(shape({
     name: string.isRequired,
   })).isRequired,
@@ -67,8 +47,6 @@ ProvidersSummary.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
-  allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
-  recordsByType: allValidRecordsGroupedByTypeSelector(state),
   providers: providersSelector(state),
 });
 
@@ -76,6 +54,7 @@ export default connect(mapStateToProps, null)(ProvidersSummary);
 
 const styles = StyleSheet.create({
   root: {
+    backgroundColor: 'white',
     justifyContent: 'center',
   },
   header: {

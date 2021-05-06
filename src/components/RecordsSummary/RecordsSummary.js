@@ -14,6 +14,7 @@ import {
   providersSelector,
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
+import RecordCount from '../Summary/RecordCount';
 
 const ResourceTypeRow = ({
   count, label, earliestDate, latestDate,
@@ -33,15 +34,9 @@ ResourceTypeRow.propTypes = {
   latestDate: instanceOf(Date).isRequired,
 };
 
-const RecordsSummary = ({
-  allRecordsSortedByDate, recordsByType, providers,
-}) => (
+const RecordsSummary = ({ recordsByType }) => (
   <View style={styles.root}>
-    <View style={styles.header}>
-      <Text style={styles.recordCount}>
-        {`${providers.length} Providers with ${allRecordsSortedByDate.length} Records`}
-      </Text>
-    </View>
+    <RecordCount />
     <View style={styles.resourceTypeContainer}>
       <View style={styles.resourceTypeRow}>
         <Text style={styles.resourceCount} />
@@ -63,7 +58,6 @@ const RecordsSummary = ({
 );
 
 RecordsSummary.propTypes = {
-  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
   recordsByType: arrayOf(shape({
     type: string.isRequired,
     label: string.isRequired,
@@ -73,9 +67,6 @@ RecordsSummary.propTypes = {
       subType: string.isRequired,
       timelineDate: instanceOf(Date).isRequired,
     })).isRequired,
-  })).isRequired,
-  providers: arrayOf(shape({
-    name: string.isRequired,
   })).isRequired,
 };
 
@@ -92,20 +83,8 @@ export default connect(mapStateToProps, null)(RecordsSummary);
 
 const styles = StyleSheet.create({
   root: {
-    justifyContent: 'center',
-  },
-  header: {
-    margin: 6,
-    padding: 8,
-    justifyContent: 'center',
     backgroundColor: 'white',
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 6,
-    borderColor: Colors.lightgrey,
-  },
-  recordCount: {
-    fontSize: 12,
+    justifyContent: 'center',
   },
   resourceTypeContainer: {
     alignItems: 'center',
