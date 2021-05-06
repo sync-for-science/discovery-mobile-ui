@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, BackHandler,
+  StyleSheet, SafeAreaView, StatusBar, BackHandler,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
@@ -30,12 +30,10 @@ const ProfileScreen = ({
   );
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={styles.root}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <ScrollView style={styles.screen}>
-        <View style={styles.descriptionContainer}>
-          <UserInfo />
-        </View>
+      <UserInfo />
+      <ScrollView style={styles.scrollContainer}>
         <Demographics />
       </ScrollView>
     </SafeAreaView>
@@ -57,16 +55,12 @@ const mapDispatchToProps = {
 export default connect(null, mapDispatchToProps)(ProfileScreen);
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  root: {
     flex: 1,
     backgroundColor: 'white',
   },
-  screen: {
+  scrollContainer: {
     flex: 1,
-  },
-  descriptionContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   section: {
     overflow: 'scroll',

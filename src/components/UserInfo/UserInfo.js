@@ -17,13 +17,11 @@ const UserInfo = ({
   const name = getPatientName(patientResource);
 
   return (
-    <View>
-      <View style={styles.userContainer}>
-        <Ionicons name="person-circle-outline" size={40} color="black" />
-        <Text style={styles.userName}>
-          {name}
-        </Text>
-      </View>
+    <View style={styles.root}>
+      <Ionicons name="person-circle-outline" size={40} color="black" />
+      <Text style={styles.userName}>
+        {name}
+      </Text>
     </View>
   );
 };
@@ -43,8 +41,9 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, null)(UserInfo);
 
 const styles = StyleSheet.create({
-  userContainer: {
+  root: {
     flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   userName: {
