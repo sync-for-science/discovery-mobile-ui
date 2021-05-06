@@ -1,13 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  arrayOf, shape, string,
+  arrayOf, instanceOf, shape, string,
 } from 'prop-types';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
 
-import { providersSelector } from '../../redux/selectors';
+import {
+  allValidRecordsGroupedByTypeSelector,
+  allValidRecordsSortedByDateSelector,
+  providersSelector,
+} from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const ProviderRow = ({ name }) => (
@@ -20,14 +24,13 @@ ProviderRow.propTypes = {
   name: string.isRequired,
 };
 
-const ProvidersSummary = ({ providers }) => (
-  <View style={styles.providerSummaryContainer}>
-    <View style={styles.providersHeader}>
-      <Text style={styles.providersHeaderText}>
-        providers
-      </Text>
-      <Text style={styles.providersHeaderTotal}>
-        {`${providers.length} Total`}
+const ProvidersSummary = ({
+  allRecordsSortedByDate, recordsByType, providers,
+}) => (
+  <View style={styles.root}>
+    <View style={styles.header}>
+      <Text style={styles.recordCount}>
+        {`${allRecordsSortedByDate.length} Records with ${providers.length} Providers`}
       </Text>
     </View>
     <View style={styles.providerTypeContainer}>
@@ -44,6 +47,17 @@ const ProvidersSummary = ({ providers }) => (
 );
 
 ProvidersSummary.propTypes = {
+  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
+  recordsByType: arrayOf(shape({
+    type: string.isRequired,
+    label: string.isRequired,
+    items: arrayOf(shape({
+      id: string.isRequired,
+      type: string.isRequired,
+      subType: string.isRequired,
+      timelineDate: instanceOf(Date).isRequired,
+    })).isRequired,
+  })).isRequired,
   providers: arrayOf(shape({
     name: string.isRequired,
   })).isRequired,
@@ -53,33 +67,29 @@ ProvidersSummary.defaultProps = {
 };
 
 const mapStateToProps = (state) => ({
+  allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
+  recordsByType: allValidRecordsGroupedByTypeSelector(state),
   providers: providersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ProvidersSummary);
 
 const styles = StyleSheet.create({
-  providerSummaryContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    marginHorizontal: 20,
+  root: {
     justifyContent: 'center',
   },
-  providersHeader: {
-    padding: 5,
-    backgroundColor: Colors.secondary,
+  header: {
+    margin: 6,
+    padding: 8,
+    justifyContent: 'center',
+    backgroundColor: 'white',
     flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: Colors.lightgrey,
   },
-  providersHeaderText: {
-    color: 'white',
-    fontSize: 16,
-    padding: 5,
-    textTransform: 'capitalize',
-  },
-  providersHeaderTotal: {
-    color: 'white',
+  recordCount: {
     fontSize: 12,
-    padding: 9, // FIXME, not the right way to align
   },
   providerTypeContainer: {
     alignItems: 'center',

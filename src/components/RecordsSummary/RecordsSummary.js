@@ -8,7 +8,11 @@ import {
 } from 'react-native';
 import { format } from 'date-fns';
 
-import { allValidRecordsSortedByDateSelector, allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import {
+  allValidRecordsSortedByDateSelector,
+  allValidRecordsGroupedByTypeSelector,
+  providersSelector,
+} from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const ResourceTypeRow = ({
@@ -30,15 +34,12 @@ ResourceTypeRow.propTypes = {
 };
 
 const RecordsSummary = ({
-  allRecordsSortedByDate, recordsByType,
+  allRecordsSortedByDate, recordsByType, providers,
 }) => (
-  <View style={styles.recordSummaryContainer}>
-    <View style={styles.recordsHeader}>
-      <Text style={styles.recordsHeaderText}>
-        Records
-      </Text>
-      <Text style={styles.recordsHeaderTotal}>
-        {`${allRecordsSortedByDate.length} Total`}
+  <View style={styles.root}>
+    <View style={styles.header}>
+      <Text style={styles.recordCount}>
+        {`${providers.length} Providers with ${allRecordsSortedByDate.length} Records`}
       </Text>
     </View>
     <View style={styles.resourceTypeContainer}>
@@ -73,6 +74,9 @@ RecordsSummary.propTypes = {
       timelineDate: instanceOf(Date).isRequired,
     })).isRequired,
   })).isRequired,
+  providers: arrayOf(shape({
+    name: string.isRequired,
+  })).isRequired,
 };
 
 RecordsSummary.defaultProps = {
@@ -81,31 +85,27 @@ RecordsSummary.defaultProps = {
 const mapStateToProps = (state) => ({
   allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
   recordsByType: allValidRecordsGroupedByTypeSelector(state),
+  providers: providersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RecordsSummary);
 
 const styles = StyleSheet.create({
-  recordSummaryContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    marginHorizontal: 20,
+  root: {
     justifyContent: 'center',
   },
-  recordsHeader: {
-    padding: 5,
-    backgroundColor: Colors.secondary,
+  header: {
+    margin: 6,
+    padding: 8,
+    justifyContent: 'center',
+    backgroundColor: 'white',
     flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: Colors.lightgrey,
   },
-  recordsHeaderText: {
-    color: 'white',
-    fontSize: 16,
-    padding: 5,
-  },
-  recordsHeaderTotal: {
-    color: 'white',
+  recordCount: {
     fontSize: 12,
-    padding: 9,
   },
   resourceTypeContainer: {
     alignItems: 'center',
