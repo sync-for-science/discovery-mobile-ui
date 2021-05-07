@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import { providersSelector } from '../../redux/selectors';
-import Colors from '../../constants/Colors';
 import RecordCount from '../Summary/RecordCount';
 
 const ProviderRow = ({ name }) => (
@@ -59,18 +58,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
   },
-  header: {
-    margin: 6,
-    padding: 8,
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    borderWidth: 1,
-    borderRadius: 6,
-    borderColor: Colors.lightgrey,
-  },
-  recordCount: {
-    fontSize: 12,
+  scrollContainer: {
   },
   providerTypeContainer: {
     alignItems: 'center',
@@ -82,27 +70,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingVertical: 10,
     paddingHorizontal: 5,
-
     padding: 10,
     backgroundColor: 'white',
     borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
-
   },
   providerName: {
     alignSelf: 'flex-start',
     flex: 6,
     textTransform: 'capitalize',
-  },
-  providerLatestDate: {
-    alignSelf: 'flex-end',
-    flex: 1,
-  },
-  providerLatestDateLabel: {
-    color: Colors.secondary,
-    fontSize: 10,
-    alignSelf: 'flex-end',
-    flex: 1,
-    textTransform: 'uppercase',
   },
 });
