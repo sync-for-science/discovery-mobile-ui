@@ -586,3 +586,15 @@ export const timelineIntervalsSelector = createSelector(
     };
   },
 );
+
+export const recordNotesSelector = createSelector(
+  [activeCollectionSelector, (_, ownProps) => ownProps],
+  (collection, ownProps) => {
+    const { resourceId } = ownProps;
+    if (!collection.records[resourceId]?.notes) {
+      return [];
+    }
+    const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
+    return values(collection.records[resourceId].notes).sort(sortDesc);
+  },
+);

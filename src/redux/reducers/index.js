@@ -70,6 +70,7 @@ const createCollection = (label = 'Untitled Collection') => {
     focusedSubtype: '',
     records: {},
     detailsPanelSortingState: defaultDetailsPanelSortingState,
+    notes: {},
   };
 };
 
@@ -262,6 +263,27 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId]
           .detailsPanelSortingState.activeSortField = sortField;
+      });
+    }
+    case actionTypes.ADD_RECORD_NOTE: {
+      const { collectionId, resourceId, text } = action.payload;
+
+      return produce(state, (draft) => {
+        const newDate = new Date();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {};
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId].notes = (
+          draft[collectionId].records[resourceId].notes || {}
+        );
+        const noteId = uuidv4();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].records[resourceId].notes[noteId] = {
+          id: noteId,
+          text,
+          dateCreated: newDate,
+          dateUpdated: newDate,
+        };
       });
     }
     default:

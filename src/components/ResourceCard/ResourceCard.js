@@ -1,13 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View,
 } from 'react-native';
 import {
   string, shape, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { useNavigation } from '@react-navigation/native';
 
 import GenericCardBody from './ResourceCardBody/GenericCardBody';
 import MedicationCardBody from './ResourceCardBody/MedicationCardBody';
@@ -24,6 +22,7 @@ import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import Colors from '../../constants/Colors';
+import ResourceCardNotes from '../ResourceCardNotes/ResourceCardNotes';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -143,7 +142,6 @@ const ResourceCard = ({
   fromNotesScreen,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
-  const navigation = useNavigation();
 
   return (
     <View style={[styles.root, firstCardStyle]}>
@@ -159,13 +157,10 @@ const ResourceCard = ({
       <View style={styles.body}>
         {selectCardBody(resource)}
       </View>
-      { !fromNotesScreen
-        && (
-        <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-          <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
-          <BaseText variant="title" style={{ color: Colors.darkgrey, marginLeft: 10 }}>Add Note</BaseText>
-        </TouchableOpacity>
-        )}
+      <ResourceCardNotes
+        fromNotesScreen={fromNotesScreen}
+        resourceId={resourceId}
+      />
     </View>
   );
 };
@@ -228,11 +223,5 @@ const styles = StyleSheet.create({
   typeLabel: {
     textTransform: 'uppercase',
   },
-  addNoteButton: {
-    marginHorizontal: 10,
-    paddingVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
+
 });
