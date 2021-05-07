@@ -10,18 +10,18 @@ import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-
 import { useNavigation } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
-import { addNoteToRecord } from '../redux/action-creators';
+import { addRecordNote } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 
-const NotesScreen = ({ resource, addNoteToRecordAction }) => {
+const NotesScreen = ({ resource, addRecordNoteAction }) => {
   const navigation = useNavigation();
   const [text, onChangeText] = useState('');
 
   const handleSave = () => {
-    addNoteToRecordAction(resource.id, text);
+    addRecordNoteAction(resource.id, text);
     onChangeText('');
   };
 
@@ -64,7 +64,7 @@ const NotesScreen = ({ resource, addNoteToRecordAction }) => {
 
 NotesScreen.propTypes = {
   resource: shape({}).isRequired,
-  addNoteToRecordAction: func.isRequired,
+  addRecordNoteAction: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -72,7 +72,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  addNoteToRecordAction: addNoteToRecord,
+  addRecordNoteAction: addRecordNote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);

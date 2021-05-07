@@ -117,7 +117,7 @@ export const toggleSortingState = (sortField) => (dispatch, getState) => {
   });
 };
 
-export const addNoteToRecord = (resourceId, text) => (dispatch, getState) => {
+export const addRecordNote = (resourceId, text) => (dispatch, getState) => {
   const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.ADD_RECORD_NOTE,
