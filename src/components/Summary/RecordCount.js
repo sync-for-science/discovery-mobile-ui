@@ -63,7 +63,6 @@ export default connect(mapStateToProps, null)(RecordCount);
 
 const styles = StyleSheet.create({
   root: {
-    flexDirection: 'column',
     alignItems: 'center',
     margin: 6,
     padding: 8,
