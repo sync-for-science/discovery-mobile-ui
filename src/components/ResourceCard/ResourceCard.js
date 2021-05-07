@@ -26,7 +26,7 @@ import ResourceCardNotes from '../ResourceCardNotes/ResourceCardNotes';
 import CardBodyField from './ResourceCardBody/CardBodyField';
 import CARD_BODY_LABEL from '../../resources/cardBodyLabel';
 
-const selectCardBody = (resource) => {
+const CardBody = ({ resource }) => {
   switch (resource.type) {
     case 'Condition':
     case 'Procedure':
@@ -69,6 +69,10 @@ const selectCardBody = (resource) => {
       console.log(`Unassigned CardBody rendered for resourceType: ${resource.resourceType}, resourceId: ${resource.id}`); // eslint-disable-line no-console
       return <UnassignedCardBody resource={resource} />;
   }
+};
+
+CardBody.propTypes = {
+  resource: shape({}).isRequired,
 };
 
 const CardHeader = ({
@@ -160,7 +164,9 @@ const ResourceCard = ({
         />
       </View>
       <View style={styles.body}>
-        {selectCardBody(resource)}
+        <CardBody
+          resource={resource}
+        />
         {
           relatedPractitioners.map((practitioner) => (
             <CardBodyField
