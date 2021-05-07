@@ -36,9 +36,16 @@ const SummaryScreen = ({
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Tab.Navigator
         initialRouteName="Records"
+        style={styles.tabs}
       >
-        <Tab.Screen name="Records" component={RecordsSummary} />
-        <Tab.Screen name="Providers" component={ProvidersSummary} />
+        <Tab.Screen
+          name="Records"
+          component={RecordsSummary}
+        />
+        <Tab.Screen
+          name="Providers"
+          component={ProvidersSummary}
+        />
       </Tab.Navigator>
     </SafeAreaView>
   );

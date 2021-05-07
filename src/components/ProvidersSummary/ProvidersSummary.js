@@ -58,6 +58,7 @@ export default connect(mapStateToProps, null)(ProvidersSummary);
 
 const styles = StyleSheet.create({
   root: {
+    flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
   },
