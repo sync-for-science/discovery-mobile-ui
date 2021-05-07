@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, SafeAreaView, StatusBar, Button, BackHandler,
+  StyleSheet, SafeAreaView, StatusBar, BackHandler,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -40,7 +40,6 @@ const SummaryScreen = ({
         <Tab.Screen name="Records" component={RecordsSummary} />
         <Tab.Screen name="Providers" component={ProvidersSummary} />
       </Tab.Navigator>
-      <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
   );
 };

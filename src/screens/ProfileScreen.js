@@ -2,7 +2,7 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, SafeAreaView, StatusBar, BackHandler,
+  StyleSheet, SafeAreaView, StatusBar, BackHandler, Button,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
@@ -36,6 +36,7 @@ const ProfileScreen = ({
       <ScrollView style={styles.scrollContainer}>
         <Demographics />
       </ScrollView>
+      <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
   );
 };
