@@ -102,7 +102,7 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  addRecordNoteAction: addNoteToRecord,
+  addRecordNoteAction: addRecordNote,
   editRecordNoteAction: editRecordNote,
 };
 
