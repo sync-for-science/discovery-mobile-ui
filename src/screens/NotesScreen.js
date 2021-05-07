@@ -53,6 +53,8 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
     }
   }, []);
 
+  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
+
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -65,8 +67,8 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           <Title>{resource.subType}</Title>
         </View>
         <Right>
-          <TouchableOpacity>
-            <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
+          <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
+            <SimpleLineIcons name="note" size={20} color={newNoteIconColor} />
           </TouchableOpacity>
         </Right>
       </Header>
