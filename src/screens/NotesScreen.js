@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
+  SafeAreaView, StyleSheet, View, TouchableOpacity,
+  ScrollView, TextInput, KeyboardAvoidingView, Alert,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -24,11 +25,38 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   const [editNoteId, setEditNoteId] = useState(null);
   const [showNoteInput, setShowNoteInput] = useState(false);
 
-  const handleCloseInput = () => {
+  const closeInput = () => {
     onChangeText('');
     setEditNoteId(null);
     setShowNoteInput(false);
-  }
+  };
+
+  const discardInputAlert = () => {
+    Alert.alert(
+      'Discard Edits',
+      'Are you sure you want to discard edits to this note?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Discard',
+          onPress: () => closeInput(),
+          style: 'destructive',
+        },
+      ],
+    );
+  };
+
+  const handleCloseInput = ({ alert }) => {
+    if (alert) {
+      discardInputAlert();
+    } else {
+      closeInput();
+    }
+  };
 
   const handleSave = () => {
     if (editNoteId) {
@@ -36,7 +64,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
     } else {
       addRecordNoteAction(resource.id, text);
     }
-    handleCloseInput()
+    closeInput();
   };
 
   const handleCreateNote = () => {
@@ -88,7 +116,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
       {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.noteEditingActions}>
-          <TouchableOpacity onPress={handleCloseInput}>
+          <TouchableOpacity onPress={() => handleCloseInput({ alert: true })}>
             <Ionicons name="ios-close-outline" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
