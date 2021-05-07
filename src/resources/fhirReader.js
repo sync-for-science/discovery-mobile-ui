@@ -25,7 +25,7 @@ export const formatPractitionerName = (practitionerResource) => {
 export const getPatientGender = (patientResource) => patientResource?.gender;
 
 // returns human-readable patient birth date
-export const getPatientBirthDate = (patientResource) => {
+export const formatPatientBirthDate = (patientResource) => {
   if (!patientResource) {
     return null;
   }
@@ -35,7 +35,7 @@ export const getPatientBirthDate = (patientResource) => {
 
 export const getPatientAddresses = (patientResource) => patientResource?.address;
 
-export const renderAddress = (address) => {
+export const formatAddress = (address) => {
   if (!address) {
     return null;
   }

@@ -9,20 +9,20 @@ import { patientSelector } from '../../redux/selectors';
 
 import {
   getPatientGender,
-  getPatientBirthDate,
+  formatPatientBirthDate,
   getPatientAge,
   getPatientAddresses,
-  renderAddress,
+  formatAddress,
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 
 const Demographics = ({
   patientResource,
 }) => {
-  const birthDate = getPatientBirthDate(patientResource);
+  const birthDate = formatPatientBirthDate(patientResource);
   const age = getPatientAge(patientResource);
   const gender = getPatientGender(patientResource);
-  const address = renderAddress(getPatientAddresses(patientResource));
+  const address = formatAddress(getPatientAddresses(patientResource));
 
   const demographics = [
     {
