@@ -113,6 +113,5 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   demographicsData: {
-    textTransform: 'capitalize',
   },
 });

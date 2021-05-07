@@ -78,6 +78,5 @@ const styles = StyleSheet.create({
   providerName: {
     alignSelf: 'flex-start',
     flex: 6,
-    textTransform: 'capitalize',
   },
 });
