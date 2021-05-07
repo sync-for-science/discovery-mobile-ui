@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
-import { format } from 'date-fns';
 
 import {
   allValidRecordsSortedByDateSelector,
@@ -14,10 +13,7 @@ import {
   dateRangeForAllRecordsSelector,
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-
-const UI_DATE_FORMAT = 'MMM d, Y';
-
-const formatDate = (d) => format(d, UI_DATE_FORMAT);
+import { formatDate } from '../../resources/fhirReader';
 
 const RecordCount = ({
   emphasizeProviders, allRecordsSortedByDate, providers, dateRange,
