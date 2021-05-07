@@ -3,7 +3,7 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import {
-  string, shape, number, bool, func,
+  arrayOf, string, shape, number, bool, func,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,14 +15,16 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import { resourceByIdSelector } from '../../redux/selectors';
-import { getResourceDate } from '../../resources/fhirReader';
+import { resourceByIdSelector, relatedPractitionersSelector } from '../../redux/selectors';
+import { formatPractitionerName, getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import Colors from '../../constants/Colors';
 import ResourceCardNotes from '../ResourceCardNotes/ResourceCardNotes';
+import CardBodyField from './ResourceCardBody/CardBodyField';
+import CARD_BODY_LABEL from '../../resources/cardBodyLabel';
 
 const selectCardBody = (resource) => {
   switch (resource.type) {
@@ -140,6 +142,7 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
+  relatedPractitioners,
   handleEditNote,
   editNoteId,
 }) => {
@@ -158,6 +161,15 @@ const ResourceCard = ({
       </View>
       <View style={styles.body}>
         {selectCardBody(resource)}
+        {
+          relatedPractitioners.map((practitioner) => (
+            <CardBodyField
+              key={practitioner.id}
+              label={CARD_BODY_LABEL.practitioner}
+              value={formatPractitionerName(practitioner)}
+            />
+          ))
+        }
       </View>
       <ResourceCardNotes
         fromNotesScreen={fromNotesScreen}
@@ -172,6 +184,7 @@ const ResourceCard = ({
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
+  relatedPractitioners: arrayOf(shape({})).isRequired,
   collectionId: string,
   index: number,
   fromDetailsPanel: bool,
@@ -191,6 +204,7 @@ ResourceCard.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
+  relatedPractitioners: relatedPractitionersSelector(state, ownProps),
 });
 
 export default connect(mapStateToProps, null)(ResourceCard);
