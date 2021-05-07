@@ -24,15 +24,19 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   const [editNoteId, setEditNoteId] = useState(null);
   const [showNoteInput, setShowNoteInput] = useState(false);
 
+  const handleCloseInput = () => {
+    onChangeText('');
+    setEditNoteId(null);
+    setShowNoteInput(false);
+  }
+
   const handleSave = () => {
     if (editNoteId) {
       editRecordNoteAction(resource.id, text, editNoteId);
     } else {
       addRecordNoteAction(resource.id, text);
     }
-    onChangeText('');
-    setEditNoteId(null);
-    setShowNoteInput(false);
+    handleCloseInput()
   };
 
   const handleCreateNote = () => {
@@ -84,7 +88,9 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
       {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.noteEditingActions}>
-          <Ionicons name="ios-close-outline" size={24} color="black" />
+          <TouchableOpacity onPress={handleCloseInput}>
+            <Ionicons name="ios-close-outline" size={24} color="black" />
+          </TouchableOpacity>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <BaseText variant="title" style={styles.saveButtonText}>Save</BaseText>
           </TouchableOpacity>
