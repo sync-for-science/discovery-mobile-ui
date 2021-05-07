@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
 } from 'react-native';
@@ -22,6 +22,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   const editingNote = route?.params?.editingNote;
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null);
+  const [showNoteInput, setShowNoteInput] = useState(false);
 
   const handleSave = () => {
     if (editNoteId) {
@@ -31,21 +32,26 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
     }
     onChangeText('');
     setEditNoteId(null);
+    setShowNoteInput(false);
+  };
+
+  const handleCreateNote = () => {
+    setShowNoteInput(true);
   };
 
   const handleEditNote = (noteId, noteText) => {
     setEditNoteId(noteId);
     onChangeText(noteText);
-    textInputRef.current.focus();
+    setShowNoteInput(true);
   };
 
   useEffect(() => {
     if (editingNote) {
       handleEditNote(editingNote.id, editingNote.text);
+    } else {
+      handleCreateNote();
     }
   }, []);
-
-  const textInputRef = useRef();
 
   return (
     <SafeAreaView style={styles.root}>
@@ -73,20 +79,22 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           fromNotesScreen
         />
       </ScrollView>
+      {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.noteInputContainer}>
           <TextInput
-            ref={textInputRef}
             style={styles.textInput}
             onChangeText={onChangeText}
             multiline
             value={text}
+            autoFocus
           />
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <BaseText variant="title">Save</BaseText>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
