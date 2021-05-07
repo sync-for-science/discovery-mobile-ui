@@ -3,15 +3,20 @@ import {
   StyleSheet, Text, View, TouchableOpacity, Alert,
 } from 'react-native';
 import { connect } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
-import { deleteRecordNote } from '../../redux/action-creators/index';
+
+import { deleteRecordNote, editRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
+const Note = ({
+  resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen, editNoteId,
+}) => {
+  const navigation = useNavigation();
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => Alert.alert(
     'Delete Note',
@@ -30,13 +35,29 @@ const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
     ],
   );
 
+  const hasBeenEdited = note.dateCreated !== note.dateEdited;
+  const displayEdited = hasBeenEdited ? ' (Edited)' : '';
+  const isEditing = note.id === editNoteId;
+  const editingStyle = isEditing ? styles.editing : {};
+
+  const handleEdit = () => {
+    if (fromNotesScreen) {
+      handleEditNote(note.id, note.text);
+    } else {
+      navigation.navigate('Notes', { resourceId, editingNote: { id: note.id, text: note.text } });
+    }
+  };
+
   return (
-    <View style={styles.noteContainer}>
+    <View style={[styles.noteContainer, editingStyle]}>
       <View style={styles.noteContent}>
         <View style={styles.headerContainer}>
-          <Text style={styles.headerText}>{displayDate}</Text>
+          <Text style={styles.headerText}>
+            {displayDate}
+            <Text style={styles.editedText}>{displayEdited}</Text>
+          </Text>
           <View style={styles.actionsContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleEdit}>
               <Text style={[styles.headerText, styles.headerActions]}>
                 Edit
               </Text>
@@ -58,10 +79,25 @@ Note.propTypes = {
   resourceId: string.isRequired,
   note: shape({}).isRequired,
   deleteRecordNoteAction: func.isRequired,
+  handleEditNote: func,
+  fromNotesScreen: bool,
+  editNoteId: string,
+};
+
+Note.defaultProps = {
+  handleEditNote: undefined,
+  fromNotesScreen: false,
+  editNoteId: null,
 };
 
 const NotesList = ({
-  resourceId, recordNotes, fromNotesScreen, showNotes, deleteRecordNoteAction,
+  resourceId,
+  recordNotes,
+  fromNotesScreen,
+  showNotes,
+  deleteRecordNoteAction,
+  handleEditNote,
+  editNoteId,
 }) => {
   const renderNotes = recordNotes.map((note) => (
     <Note
@@ -69,6 +105,9 @@ const NotesList = ({
       resourceId={resourceId}
       note={note}
       deleteRecordNoteAction={deleteRecordNoteAction}
+      handleEditNote={handleEditNote}
+      fromNotesScreen={fromNotesScreen}
+      editNoteId={editNoteId}
     />
   ));
 
@@ -94,14 +133,19 @@ NotesList.propTypes = {
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
   deleteRecordNoteAction: func.isRequired,
+  handleEditNote: func,
+  editNoteId: string,
 };
 
 NotesList.defaultProps = {
   fromNotesScreen: false,
+  handleEditNote: undefined,
+  editNoteId: null,
 };
 
 const mapDispatchToProps = {
   deleteRecordNoteAction: deleteRecordNote,
+  editRecordNoteAction: editRecordNote,
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);
@@ -113,6 +157,7 @@ const styles = StyleSheet.create({
   },
   noteContainer: {
     margin: 10,
+    paddingVertical: 5,
     borderLeftColor: Colors.primary,
     borderLeftWidth: 3,
   },
@@ -136,5 +181,12 @@ const styles = StyleSheet.create({
   },
   deleteText: {
     marginLeft: 15,
+  },
+  editedText: {
+    paddingLeft: 10,
+    fontStyle: 'italic',
+  },
+  editing: {
+    backgroundColor: Colors.editingBackground,
   },
 });

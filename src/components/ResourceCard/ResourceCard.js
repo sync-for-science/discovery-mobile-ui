@@ -3,7 +3,7 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import {
-  string, shape, number, bool,
+  string, shape, number, bool, func,
 } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -140,6 +140,8 @@ const ResourceCard = ({
   index,
   fromDetailsPanel,
   fromNotesScreen,
+  handleEditNote,
+  editNoteId,
 }) => {
   const firstCardStyle = index === 0 ? styles.firstCard : {};
 
@@ -160,6 +162,8 @@ const ResourceCard = ({
       <ResourceCardNotes
         fromNotesScreen={fromNotesScreen}
         resourceId={resourceId}
+        handleEditNote={handleEditNote}
+        editNoteId={editNoteId}
       />
     </View>
   );
@@ -172,6 +176,8 @@ ResourceCard.propTypes = {
   index: number,
   fromDetailsPanel: bool,
   fromNotesScreen: bool,
+  handleEditNote: func,
+  editNoteId: string,
 };
 
 ResourceCard.defaultProps = {
@@ -179,6 +185,8 @@ ResourceCard.defaultProps = {
   index: null,
   fromDetailsPanel: false,
   fromNotesScreen: false,
+  handleEditNote: undefined,
+  editNoteId: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({

@@ -25,4 +25,5 @@ export const actionTypes = { // eslint-disable-line import/prefer-default-export
   TOGGLE_SORTING_STATE: 'TOGGLE_SORTING_STATE',
   ADD_RECORD_NOTE: 'ADD_RECORD_NOTE',
   DELETE_RECORD_NOTE: 'DELETE_RECORD_NOTE',
+  EDIT_RECORD_NOTE: 'EDIT_RECORD_NOTE',
 };
