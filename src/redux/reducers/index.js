@@ -286,6 +286,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         };
       });
     }
+    case actionTypes.DELETE_RECORD_NOTE: {
+      const { collectionId, resourceId, noteId } = action.payload;
+
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        delete draft[collectionId].records[resourceId].notes[noteId];
+      });
+    }
     default:
       return state;
   }

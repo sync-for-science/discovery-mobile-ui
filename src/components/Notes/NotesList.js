@@ -1,14 +1,35 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, Alert,
 } from 'react-native';
-import { arrayOf, shape, bool } from 'prop-types';
+import { connect } from 'react-redux';
+import {
+  arrayOf, shape, bool, string, func,
+} from 'prop-types';
+import { deleteRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ note }) => {
+const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
   const displayDate = formatDate(note.dateCreated, true);
+  const handleDelete = () => Alert.alert(
+    'Delete Note',
+    'Are you sure you want to delete this note?',
+    [
+      {
+        text: 'Cancel',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: 'Delete',
+        onPress: () => deleteRecordNoteAction(resourceId, note.id),
+        style: 'destructive',
+      },
+    ],
+  );
+
   return (
     <View style={styles.noteContainer}>
       <View style={styles.noteContent}>
@@ -20,7 +41,7 @@ const Note = ({ note }) => {
                 Edit
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={handleDelete}>
               <Text style={[styles.headerText, styles.headerActions, styles.deleteText]}>
                 Delete
               </Text>
@@ -34,12 +55,21 @@ const Note = ({ note }) => {
 };
 
 Note.propTypes = {
+  resourceId: string.isRequired,
   note: shape({}).isRequired,
+  deleteRecordNoteAction: func.isRequired,
 };
 
-const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
+const NotesList = ({
+  resourceId, recordNotes, fromNotesScreen, showNotes, deleteRecordNoteAction,
+}) => {
   const renderNotes = recordNotes.map((note) => (
-    <Note key={note.id} note={note} />
+    <Note
+      key={note.id}
+      resourceId={resourceId}
+      note={note}
+      deleteRecordNoteAction={deleteRecordNoteAction}
+    />
   ));
 
   if (fromNotesScreen) {
@@ -59,16 +89,22 @@ const NotesList = ({ recordNotes, fromNotesScreen, showNotes }) => {
 };
 
 NotesList.propTypes = {
+  resourceId: string.isRequired,
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
+  deleteRecordNoteAction: func.isRequired,
 };
 
 NotesList.defaultProps = {
   fromNotesScreen: false,
 };
 
-export default NotesList;
+const mapDispatchToProps = {
+  deleteRecordNoteAction: deleteRecordNote,
+};
+
+export default connect(null, mapDispatchToProps)(NotesList);
 
 const styles = StyleSheet.create({
   divider: {
