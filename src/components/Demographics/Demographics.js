@@ -26,18 +26,22 @@ const Demographics = ({
 
   const demographics = [
     {
-      title: 'Birth date',
+      key: 'DOB',
+      title: 'Date of birth',
       data: [birthDate],
     },
     {
+      key: 'age',
       title: 'Age',
       data: [age],
     },
     {
+      key: 'gender',
       title: 'Gender',
       data: [gender],
     },
     {
+      key: 'address',
       title: 'Address',
       data: [address],
     },
@@ -59,10 +63,13 @@ const Demographics = ({
       </View>
       <SectionList
         sections={demographics}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <Item title={item} />}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.demographicsHeader}>{title.toUpperCase()}</Text>
+          <Text style={styles.demographicsHeader}>{title}</Text>
+        )}
+        renderItem={({ item }) => (
+          <Item
+            title={item}
+          />
         )}
       />
     </View>
@@ -102,9 +109,9 @@ const styles = StyleSheet.create({
   demographicsHeader: {
     paddingHorizontal: 10,
     paddingTop: 10,
-    fontSize: 12,
     backgroundColor: 'white',
-    color: Colors.primary,
+    fontSize: 14,
+    color: 'black',
   },
   demographicsRow: {
     padding: 10,
@@ -113,5 +120,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   demographicsData: {
+    color: Colors.darkgrey,
   },
 });
