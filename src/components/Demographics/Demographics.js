@@ -26,22 +26,18 @@ const Demographics = ({
 
   const demographics = [
     {
-      key: 'DOB',
       title: 'Date of birth',
       data: [birthDate],
     },
     {
-      key: 'age',
       title: 'Age',
       data: [age],
     },
     {
-      key: 'gender',
       title: 'Gender',
       data: [gender],
     },
     {
-      key: 'address',
       title: 'Address',
       data: [address],
     },
@@ -63,6 +59,7 @@ const Demographics = ({
       </View>
       <SectionList
         sections={demographics}
+        keyExtractor={(item, index) => item + index}
         renderSectionHeader={({ section: { title } }) => (
           <Text style={styles.demographicsHeader}>{title}</Text>
         )}
