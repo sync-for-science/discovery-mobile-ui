@@ -6,7 +6,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
@@ -83,7 +83,13 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
       </ScrollView>
       {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
-        <View style={styles.noteInputContainer}>
+        <View style={styles.noteEditingActions}>
+          <Ionicons name="ios-close-outline" size={24} color="black" />
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+            <BaseText variant="title" style={styles.saveButtonText}>Save</BaseText>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.textInputContainer}>
           <TextInput
             style={styles.textInput}
             onChangeText={onChangeText}
@@ -91,9 +97,6 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
             value={text}
             autoFocus
           />
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <BaseText variant="title">Save</BaseText>
-          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
       )}
@@ -128,20 +131,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 0,
   },
-  noteInputContainer: {
-    padding: 10,
+  textInputContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
     backgroundColor: Colors.lightgrey,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
   },
   textInput: {
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 10,
-    padding: 10,
+    padding: 8,
   },
   saveButton: {
     marginLeft: 10,
+  },
+  saveButtonText: {
+    color: Colors.primary,
+  },
+  noteEditingActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.lightgrey,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
