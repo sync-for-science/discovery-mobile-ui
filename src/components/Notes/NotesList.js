@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
 import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
-import { deleteNoteFromRecord } from '../../redux/action-creators/index';
+import { deleteRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
-const Note = ({ resourceId, note, deleteNoteFromRecordAction }) => {
+const Note = ({ resourceId, note, deleteRecordNoteAction }) => {
   const displayDate = formatDate(note.dateCreated, true);
   const handleDelete = () => Alert.alert(
     'Delete Note',
@@ -24,7 +24,7 @@ const Note = ({ resourceId, note, deleteNoteFromRecordAction }) => {
       },
       {
         text: 'Delete',
-        onPress: () => deleteNoteFromRecordAction(resourceId, note.id),
+        onPress: () => deleteRecordNoteAction(resourceId, note.id),
         style: 'destructive',
       },
     ],
@@ -57,18 +57,18 @@ const Note = ({ resourceId, note, deleteNoteFromRecordAction }) => {
 Note.propTypes = {
   resourceId: string.isRequired,
   note: shape({}).isRequired,
-  deleteNoteFromRecordAction: func.isRequired,
+  deleteRecordNoteAction: func.isRequired,
 };
 
 const NotesList = ({
-  resourceId, recordNotes, fromNotesScreen, showNotes, deleteNoteFromRecordAction,
+  resourceId, recordNotes, fromNotesScreen, showNotes, deleteRecordNoteAction,
 }) => {
   const renderNotes = recordNotes.map((note) => (
     <Note
       key={note.id}
       resourceId={resourceId}
       note={note}
-      deleteNoteFromRecordAction={deleteNoteFromRecordAction}
+      deleteRecordNoteAction={deleteRecordNoteAction}
     />
   ));
 
@@ -93,7 +93,7 @@ NotesList.propTypes = {
   recordNotes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
   showNotes: bool.isRequired,
-  deleteNoteFromRecordAction: func.isRequired,
+  deleteRecordNoteAction: func.isRequired,
 };
 
 NotesList.defaultProps = {
@@ -101,7 +101,7 @@ NotesList.defaultProps = {
 };
 
 const mapDispatchToProps = {
-  deleteNoteFromRecordAction: deleteNoteFromRecord,
+  deleteRecordNoteAction: deleteRecordNote,
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);

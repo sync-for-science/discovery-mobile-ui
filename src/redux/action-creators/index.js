@@ -129,7 +129,7 @@ export const addRecordNote = (resourceId, text) => (dispatch, getState) => {
   });
 };
 
-export const deleteNoteFromRecord = (resourceId, noteId) => (dispatch, getState) => {
+export const deleteRecordNote = (resourceId, noteId) => (dispatch, getState) => {
   const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.DELETE_RECORD_NOTE,
