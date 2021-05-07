@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
@@ -15,10 +16,10 @@ const CollectionsStack = createStackNavigator();
 
 function selectIconName(name, focused) {
   switch (name) {
-    case 'Summary':
+    case 'Profile':
       return focused ? 'md-person-sharp' : 'md-person-outline';
-    case 'Catalog':
-      return focused ? 'file-tray-full' : 'file-tray-outline';
+    case 'Summary':
+      return focused ? 'md-grid-sharp' : 'md-grid-outline';
     case 'Collections':
       return focused ? 'albums' : 'albums-outline';
     default:
@@ -63,6 +64,7 @@ const CollectionStackScreen = () => (
 
 const AuthorizedNavigator = () => (
   <HomeTab.Navigator
+    initialRouteName="Collections"
     screenOptions={selectScreenOptions}
     tabBarOptions={{
       activeTintColor: Colors.primary,
@@ -72,8 +74,9 @@ const AuthorizedNavigator = () => (
       },
     }}
   >
-    <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
+    <HomeTab.Screen name="Profile" component={ProfileScreen} />
     <HomeTab.Screen name="Summary" component={SummaryScreen} />
+    <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
   </HomeTab.Navigator>
 );
 

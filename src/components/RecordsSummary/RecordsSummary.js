@@ -6,10 +6,16 @@ import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 
-import { allValidRecordsSortedByDateSelector, allValidRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import {
+  allValidRecordsSortedByDateSelector,
+  allValidRecordsGroupedByTypeSelector,
+  providersSelector,
+} from '../../redux/selectors';
 import Colors from '../../constants/Colors';
+import RecordCount from '../Summary/RecordCount';
 
 const ResourceTypeRow = ({
   count, label, earliestDate, latestDate,
@@ -29,40 +35,34 @@ ResourceTypeRow.propTypes = {
   latestDate: instanceOf(Date).isRequired,
 };
 
-const RecordsSummary = ({
-  allRecordsSortedByDate, recordsByType,
-}) => (
-  <View style={styles.recordSummaryContainer}>
-    <View style={styles.recordsHeader}>
-      <Text style={styles.recordsHeaderText}>
-        Records
-      </Text>
-      <Text style={styles.recordsHeaderTotal}>
-        {`${allRecordsSortedByDate.length} Total`}
-      </Text>
-    </View>
-    <View style={styles.resourceTypeContainer}>
-      <View style={styles.resourceTypeRow}>
-        <Text style={styles.resourceCount} />
-        <Text style={styles.resourceLabel} />
-        <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
-        <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+const RecordsSummary = ({ recordsByType }) => (
+  <View style={styles.root}>
+    <RecordCount
+      emphasizeProviders={false}
+    />
+    <ScrollView style={styles.scrollContainer}>
+      <View style={styles.resourceTypeContainer}>
+        <View style={styles.resourceTypeRow}>
+          <Text style={styles.resourceCount} />
+          <Text style={styles.resourceLabel} />
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+        </View>
+        {recordsByType.map(({ type, label, items }) => (
+          <ResourceTypeRow
+            key={type}
+            label={label}
+            count={items.length}
+            earliestDate={items[0].timelineDate}
+            latestDate={items[items.length - 1].timelineDate}
+          />
+        ))}
       </View>
-      {recordsByType.map(({ type, label, items }) => (
-        <ResourceTypeRow
-          key={type}
-          label={label}
-          count={items.length}
-          earliestDate={items[0].timelineDate}
-          latestDate={items[items.length - 1].timelineDate}
-        />
-      ))}
-    </View>
+    </ScrollView>
   </View>
 );
 
 RecordsSummary.propTypes = {
-  allRecordsSortedByDate: arrayOf(shape({})).isRequired,
   recordsByType: arrayOf(shape({
     type: string.isRequired,
     label: string.isRequired,
@@ -81,31 +81,18 @@ RecordsSummary.defaultProps = {
 const mapStateToProps = (state) => ({
   allRecordsSortedByDate: allValidRecordsSortedByDateSelector(state),
   recordsByType: allValidRecordsGroupedByTypeSelector(state),
+  providers: providersSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RecordsSummary);
 
 const styles = StyleSheet.create({
-  recordSummaryContainer: {
-    marginTop: 10,
-    marginBottom: 20,
-    marginHorizontal: 20,
+  root: {
+    flex: 1,
+    backgroundColor: 'white',
     justifyContent: 'center',
   },
-  recordsHeader: {
-    padding: 5,
-    backgroundColor: Colors.secondary,
-    flexDirection: 'row',
-  },
-  recordsHeaderText: {
-    color: 'white',
-    fontSize: 16,
-    padding: 5,
-  },
-  recordsHeaderTotal: {
-    color: 'white',
-    fontSize: 12,
-    padding: 9,
+  scrollContainer: {
   },
   resourceTypeContainer: {
     alignItems: 'center',

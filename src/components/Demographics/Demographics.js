@@ -9,24 +9,24 @@ import { patientSelector } from '../../redux/selectors';
 
 import {
   getPatientGender,
-  getPatientBirthDate,
+  formatPatientBirthDate,
   getPatientAge,
   getPatientAddresses,
-  renderAddress,
+  formatAddress,
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 
 const Demographics = ({
   patientResource,
 }) => {
-  const birthDate = getPatientBirthDate(patientResource);
+  const birthDate = formatPatientBirthDate(patientResource);
   const age = getPatientAge(patientResource);
   const gender = getPatientGender(patientResource);
-  const address = renderAddress(getPatientAddresses(patientResource));
+  const address = formatAddress(getPatientAddresses(patientResource));
 
   const demographics = [
     {
-      title: 'Birth date',
+      title: 'Date of birth',
       data: [birthDate],
     },
     {
@@ -60,9 +60,13 @@ const Demographics = ({
       <SectionList
         sections={demographics}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => <Item title={item} />}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.demographicsHeader}>{title.toUpperCase()}</Text>
+          <Text style={styles.demographicsHeader}>{title}</Text>
+        )}
+        renderItem={({ item }) => (
+          <Item
+            title={item}
+          />
         )}
       />
     </View>
@@ -102,9 +106,9 @@ const styles = StyleSheet.create({
   demographicsHeader: {
     paddingHorizontal: 10,
     paddingTop: 10,
-    fontSize: 12,
     backgroundColor: 'white',
-    color: Colors.primary,
+    fontSize: 14,
+    color: 'black',
   },
   demographicsRow: {
     padding: 10,
@@ -113,6 +117,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   demographicsData: {
-    textTransform: 'capitalize',
+    color: Colors.darkgrey,
   },
 });

@@ -2,20 +2,18 @@ import React from 'react';
 import { func } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, SafeAreaView, StatusBar, BackHandler,
+  StyleSheet, SafeAreaView, StatusBar, BackHandler, Button,
 } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
-import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
-import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
+import Demographics from '../components/Demographics/Demographics';
+import UserInfo from '../components/UserInfo/UserInfo';
 
-const Tab = createMaterialTopTabNavigator();
-
-const SummaryScreen = ({
+const ProfileScreen = ({
   clearAuthAction, clearPatientDataAction,
 }) => {
   const clearData = () => {
@@ -34,24 +32,16 @@ const SummaryScreen = ({
   return (
     <SafeAreaView style={styles.root}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <Tab.Navigator
-        initialRouteName="Records"
-        style={styles.tabs}
-      >
-        <Tab.Screen
-          name="Records"
-          component={RecordsSummary}
-        />
-        <Tab.Screen
-          name="Providers"
-          component={ProvidersSummary}
-        />
-      </Tab.Navigator>
+      <UserInfo />
+      <ScrollView style={styles.scrollContainer}>
+        <Demographics />
+      </ScrollView>
+      <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
   );
 };
 
-SummaryScreen.propTypes = {
+ProfileScreen.propTypes = {
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
 };
@@ -63,11 +53,38 @@ const mapDispatchToProps = {
   }),
 };
 
-export default connect(null, mapDispatchToProps)(SummaryScreen);
+export default connect(null, mapDispatchToProps)(ProfileScreen);
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: 'white',
     flex: 1,
+    backgroundColor: 'white',
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  section: {
+    overflow: 'scroll',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 50,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  scrollViewInternal: {
+    height: 500,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: 'lightgray',
+    backgroundColor: 'white',
+  },
+  welcome: {
+    fontSize: 24,
+    fontWeight: '600',
+    paddingTop: 25,
   },
 });
