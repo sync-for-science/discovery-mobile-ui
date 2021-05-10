@@ -12,7 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
 import {
-  addRecordNote, editRecordNote, addCollectionNote, editCollectionNote,
+  createRecordNote, editRecordNote, createCollectionNote, editCollectionNote,
 } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
@@ -22,10 +22,10 @@ import CollectionNotes from '../components/CollectionNotes';
 
 const NotesScreen = ({
   resource,
-  addRecordNoteAction,
+  createRecordNoteAction,
   editRecordNoteAction,
   collection,
-  addCollectionNoteAction,
+  createCollectionNoteAction,
   editCollectionNoteAction,
 }) => {
   const navigation = useNavigation();
@@ -74,12 +74,12 @@ const NotesScreen = ({
       if (editNoteId) {
         editRecordNoteAction(resource.id, text, editNoteId);
       } else {
-        addRecordNoteAction(resource.id, text);
+        createRecordNoteAction(resource.id, text);
       }
     } else if (editNoteId) {
       editCollectionNoteAction(editNoteId, text);
     } else {
-      addCollectionNoteAction(text);
+      createCollectionNoteAction(text);
     }
     closeInput();
   };
@@ -169,10 +169,10 @@ const NotesScreen = ({
 
 NotesScreen.propTypes = {
   resource: shape({}),
-  addRecordNoteAction: func.isRequired,
+  createRecordNoteAction: func.isRequired,
   editRecordNoteAction: func.isRequired,
   collection: shape({}).isRequired,
-  addCollectionNoteAction: func.isRequired,
+  createCollectionNoteAction: func.isRequired,
   editCollectionNoteAction: func.isRequired,
 };
 
@@ -186,9 +186,9 @@ const mapStateToProps = (state, ownProps) => ({
 });
 
 const mapDispatchToProps = {
-  addRecordNoteAction: addRecordNote,
+  createRecordNoteAction: createRecordNote,
   editRecordNoteAction: editRecordNote,
-  addCollectionNoteAction: addCollectionNote,
+  createCollectionNoteAction: createCollectionNote,
   editCollectionNoteAction: editCollectionNote,
 };
 

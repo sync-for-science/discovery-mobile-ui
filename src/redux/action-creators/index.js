@@ -117,10 +117,10 @@ export const toggleSortingState = (sortField) => (dispatch, getState) => {
   });
 };
 
-export const addRecordNote = (resourceId, text) => (dispatch, getState) => {
+export const createRecordNote = (resourceId, text) => (dispatch, getState) => {
   const { activeCollectionId } = getState();
   return dispatch({
-    type: actionTypes.ADD_RECORD_NOTE,
+    type: actionTypes.CREATE_RECORD_NOTE,
     payload: {
       collectionId: activeCollectionId,
       resourceId,
@@ -154,10 +154,10 @@ export const editRecordNote = (resourceId, text, noteId) => (dispatch, getState)
   });
 };
 
-export const addCollectionNote = (text) => (dispatch, getState) => {
+export const createCollectionNote = (text) => (dispatch, getState) => {
   const { activeCollectionId } = getState();
   return dispatch({
-    type: actionTypes.ADD_COLLECTION_NOTE,
+    type: actionTypes.CREATE_COLLECTION_NOTE,
     payload: {
       collectionId: activeCollectionId,
       text,

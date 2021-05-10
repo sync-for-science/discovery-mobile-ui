@@ -275,7 +275,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           .detailsPanelSortingState.activeSortField = sortField;
       });
     }
-    case actionTypes.ADD_RECORD_NOTE: {
+    case actionTypes.CREATE_RECORD_NOTE: {
       const { collectionId, resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
@@ -308,7 +308,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date();
       });
     }
-    case actionTypes.ADD_COLLECTION_NOTE: {
+    case actionTypes.CREATE_COLLECTION_NOTE: {
       const { collectionId, text } = action.payload;
       const newNote = createNote(text);
       return produce(state, (draft) => {
