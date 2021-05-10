@@ -30,7 +30,6 @@ const CollectionSegmentControl = ({
         selectedIndex={segControlIndex}
         onChange={handleChange}
       />
-      <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
   );
 };
@@ -54,7 +53,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionSegmentCon
 
 const styles = StyleSheet.create({
   root: {
-    marginBottom: 30,
+    marginBottom: 10,
   },
   descriptionText: {
     marginTop: 10,
