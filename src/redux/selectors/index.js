@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 
 import { createIntervalMap, generateNextIntervalFunc } from './timeline-intervals';
-import { referenceMap } from '../utils/fhir-references';
+import { referenceMap, encounters } from '../utils/fhir-references';
 import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
@@ -134,6 +134,41 @@ export const participantsSelector = createSelector(
 export const providersSelector = createSelector(
   [resourcesSelector],
   (resources) => values(resources).filter((r) => r.type === 'Organization'),
+);
+
+const resolveEncounters = (resource, allResources, refType) => {
+  const resources = [];
+  const referenceUrns = encounters[refType](resource).map(({ reference }) => reference);
+  referenceUrns.forEach((urn) => {
+    if (urn) {
+      const matches = urn.match(/(#|\/)(.+)/);
+      const resourceId = matches.pop();
+      const targetResource = allResources[resourceId];
+      if (targetResource) {
+        resources.push(targetResource);
+      } else {
+        console.warn(`Expected resource for reference "${urn}"`); // eslint-disable-line no-console
+      }
+    }
+  });
+  return resources;
+};
+
+export const relatedPractitionersSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const encounter = resolveEncounters(resource, allResources, 'encounter')[0];
+    const participants = resolveReference(encounter, allResources, 'participant');
+    return participants.filter(({ type }) => type === 'Practitioner');
+  },
+);
+
+export const relatedProviderSelector = createSelector(
+  [resourceByIdSelector, resourcesSelector],
+  (resource, allResources) => {
+    const encounter = resolveEncounters(resource, allResources, 'encounter')[0];
+    return resolveReference(encounter, allResources, 'serviceProvider')[0];
+  },
 );
 
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
