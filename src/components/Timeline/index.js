@@ -28,7 +28,6 @@ const Timeline = ({ handleOpenDrawer }) => {
             />
           </TouchableOpacity>
         </Left>
-        <View style={styles.iconContainer} />
         <DateRangePicker />
         <Right>
           <TouchableOpacity
