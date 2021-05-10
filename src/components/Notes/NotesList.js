@@ -103,18 +103,21 @@ const NotesList = ({
   deleteCollectionNoteAction,
 }) => {
   const renderNotes = notes.map((note) => {
-    const deleteNoteAction = isCollectionNotes ? () => deleteCollectionNoteAction(note.id) : () => deleteRecordNoteAction(resourceId, note.id)
+    const deleteNoteAction = isCollectionNotes
+      ? () => deleteCollectionNoteAction(note.id)
+      : () => deleteRecordNoteAction(resourceId, note.id);
     return (
-    <Note
-      key={note.id}
-      resourceId={resourceId}
-      note={note}
-      deleteNoteAction={deleteNoteAction}
-      handleEditNote={handleEditNote}
-      fromNotesScreen={fromNotesScreen}
-      editNoteId={editNoteId}
-    />
-  )});
+      <Note
+        key={note.id}
+        resourceId={resourceId}
+        note={note}
+        deleteNoteAction={deleteNoteAction}
+        handleEditNote={handleEditNote}
+        fromNotesScreen={fromNotesScreen}
+        editNoteId={editNoteId}
+      />
+    );
+  });
 
   if (fromNotesScreen || isCollectionNotes) {
     return renderNotes;
@@ -141,7 +144,7 @@ NotesList.propTypes = {
   handleEditNote: func,
   editNoteId: string,
   isCollectionNotes: bool,
-  deleteCollectionNoteAction: func.isRequired
+  deleteCollectionNoteAction: func.isRequired,
 };
 
 NotesList.defaultProps = {
@@ -150,7 +153,7 @@ NotesList.defaultProps = {
   handleEditNote: undefined,
   editNoteId: null,
   showNotes: false,
-  isCollectionNotes: false
+  isCollectionNotes: false,
 };
 
 const mapDispatchToProps = {

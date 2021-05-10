@@ -11,7 +11,9 @@ import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslin
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
-import { addRecordNote, editRecordNote, addCollectionNote, editCollectionNote } from '../redux/action-creators';
+import {
+  addRecordNote, editRecordNote, addCollectionNote, editCollectionNote,
+} from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard';
@@ -24,7 +26,7 @@ const NotesScreen = ({
   editRecordNoteAction,
   collection,
   addCollectionNoteAction,
-  editCollectionNoteAction
+  editCollectionNoteAction,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -74,12 +76,10 @@ const NotesScreen = ({
       } else {
         addRecordNoteAction(resource.id, text);
       }
+    } else if (editNoteId) {
+      editCollectionNoteAction(editNoteId, text);
     } else {
-      if (editNoteId) {
-        editCollectionNoteAction(editNoteId, text);
-      } else {
-        addCollectionNoteAction(text);
-      }
+      addCollectionNoteAction(text);
     }
     closeInput();
   };
@@ -134,7 +134,13 @@ const NotesScreen = ({
           fromNotesScreen
         />
         )}
-        {!isResourceNotes && <CollectionNotes editNoteId={editNoteId} handleEditNote={handleEditNote} fromNotesScreen/>}
+        {!isResourceNotes && (
+          <CollectionNotes
+            editNoteId={editNoteId}
+            handleEditNote={handleEditNote}
+            fromNotesScreen
+          />
+        )}
       </ScrollView>
       {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
@@ -167,7 +173,7 @@ NotesScreen.propTypes = {
   editRecordNoteAction: func.isRequired,
   collection: shape({}).isRequired,
   addCollectionNoteAction: func.isRequired,
-  editCollectionNoteAction: func.isRequired
+  editCollectionNoteAction: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -179,7 +185,7 @@ const mapDispatchToProps = {
   addRecordNoteAction: addRecordNote,
   editRecordNoteAction: editRecordNote,
   addCollectionNoteAction: addCollectionNote,
-  editCollectionNoteAction: editCollectionNote
+  editCollectionNoteAction: editCollectionNote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);

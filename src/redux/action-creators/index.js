@@ -166,24 +166,24 @@ export const addCollectionNote = (text) => (dispatch, getState) => {
 };
 
 export const deleteCollectionNote = (noteId) => (dispatch, getState) => {
-  const {activeCollectionId} = getState()
+  const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.DELETE_COLLECTION_NOTE,
     payload: {
       collectionId: activeCollectionId,
       noteId,
-    }
-  })
-}
+    },
+  });
+};
 
 export const editCollectionNote = (noteId, text) => (dispatch, getState) => {
-  const { activeCollectionId } = getState()
+  const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.EDIT_COLLECTION_NOTE,
     payload: {
       collectionId: activeCollectionId,
       noteId,
-      text
-    }
-  })
-}
+      text,
+    },
+  });
+};

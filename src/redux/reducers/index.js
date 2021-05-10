@@ -325,17 +325,20 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DELETE_COLLECTION_NOTE: {
-      const { collectionId, noteId} = action.payload
+      const { collectionId, noteId } = action.payload;
       return produce(state, (draft) => {
-        delete draft[collectionId].notes[noteId]
-      })
+        // eslint-disable-next-line no-param-reassign
+        delete draft[collectionId].notes[noteId];
+      });
     }
     case actionTypes.EDIT_COLLECTION_NOTE: {
-      const { collectionId, noteId, text } = action.payload
+      const { collectionId, noteId, text } = action.payload;
       return produce(state, (draft) => {
-        draft[collectionId].notes[noteId].text = text
-        draft[collectionId].notes[noteId].dateEdited = new Date()
-      })
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[noteId].text = text;
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[noteId].dateEdited = new Date();
+      });
     }
     default:
       return state;
