@@ -636,5 +636,8 @@ export const recordNotesSelector = createSelector(
 
 export const collectionNotesSelector = createSelector(
   [activeCollectionSelector],
-  (collection) => values(collection.notes)
+  (collection) => {
+    const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
+    return values(collection.notes).sort(sortDesc)
+  }
 )
