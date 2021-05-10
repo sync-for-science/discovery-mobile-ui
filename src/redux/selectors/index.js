@@ -22,7 +22,7 @@ const resourcesSelector = (state) => state.resources;
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
 
 export const resourceByRoutePropsSelector = (state, ownProps) => (
-  state.resources[ownProps.route.params.resourceId]
+  state.resources?.[ownProps?.route?.params?.resourceId]
 );
 
 const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
@@ -631,5 +631,13 @@ export const recordNotesSelector = createSelector(
     }
     const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
     return values(collection.records[resourceId].notes).sort(sortDesc);
+  },
+);
+
+export const collectionNotesSelector = createSelector(
+  [activeCollectionSelector],
+  (collection) => {
+    const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
+    return values(collection.notes).sort(sortDesc);
   },
 );

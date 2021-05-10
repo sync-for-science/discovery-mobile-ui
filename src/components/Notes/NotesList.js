@@ -8,13 +8,13 @@ import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
 
-import { deleteRecordNote, editRecordNote } from '../../redux/action-creators/index';
+import { deleteCollectionNote, deleteRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
 
 const Note = ({
-  resourceId, note, deleteRecordNoteAction, handleEditNote, fromNotesScreen, editNoteId,
+  resourceId, note, deleteNoteAction, handleEditNote, fromNotesScreen, editNoteId,
 }) => {
   const navigation = useNavigation();
   const displayDate = formatDate(note.dateCreated, true);
@@ -29,7 +29,7 @@ const Note = ({
       },
       {
         text: 'Delete',
-        onPress: () => deleteRecordNoteAction(resourceId, note.id),
+        onPress: deleteNoteAction,
         style: 'destructive',
       },
     ],
@@ -76,15 +76,16 @@ const Note = ({
 };
 
 Note.propTypes = {
-  resourceId: string.isRequired,
+  resourceId: string,
   note: shape({}).isRequired,
-  deleteRecordNoteAction: func.isRequired,
+  deleteNoteAction: func.isRequired,
   handleEditNote: func,
   fromNotesScreen: bool,
   editNoteId: string,
 };
 
 Note.defaultProps = {
+  resourceId: null,
   handleEditNote: undefined,
   fromNotesScreen: false,
   editNoteId: null,
@@ -92,26 +93,33 @@ Note.defaultProps = {
 
 const NotesList = ({
   resourceId,
-  recordNotes,
+  notes,
   fromNotesScreen,
   showNotes,
   deleteRecordNoteAction,
   handleEditNote,
   editNoteId,
+  isCollectionNotes,
+  deleteCollectionNoteAction,
 }) => {
-  const renderNotes = recordNotes.map((note) => (
-    <Note
-      key={note.id}
-      resourceId={resourceId}
-      note={note}
-      deleteRecordNoteAction={deleteRecordNoteAction}
-      handleEditNote={handleEditNote}
-      fromNotesScreen={fromNotesScreen}
-      editNoteId={editNoteId}
-    />
-  ));
+  const renderNotes = notes.map((note) => {
+    const deleteNoteAction = isCollectionNotes
+      ? () => deleteCollectionNoteAction(note.id)
+      : () => deleteRecordNoteAction(resourceId, note.id);
+    return (
+      <Note
+        key={note.id}
+        resourceId={resourceId}
+        note={note}
+        deleteNoteAction={deleteNoteAction}
+        handleEditNote={handleEditNote}
+        fromNotesScreen={fromNotesScreen}
+        editNoteId={editNoteId}
+      />
+    );
+  });
 
-  if (fromNotesScreen) {
+  if (fromNotesScreen || isCollectionNotes) {
     return renderNotes;
   }
 
@@ -128,24 +136,29 @@ const NotesList = ({
 };
 
 NotesList.propTypes = {
-  resourceId: string.isRequired,
-  recordNotes: arrayOf(shape({}).isRequired).isRequired,
+  resourceId: string,
+  notes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
-  showNotes: bool.isRequired,
+  showNotes: bool,
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
   editNoteId: string,
+  isCollectionNotes: bool,
+  deleteCollectionNoteAction: func.isRequired,
 };
 
 NotesList.defaultProps = {
+  resourceId: null,
   fromNotesScreen: false,
   handleEditNote: undefined,
   editNoteId: null,
+  showNotes: false,
+  isCollectionNotes: false,
 };
 
 const mapDispatchToProps = {
   deleteRecordNoteAction: deleteRecordNote,
-  editRecordNoteAction: editRecordNote,
+  deleteCollectionNoteAction: deleteCollectionNote,
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);

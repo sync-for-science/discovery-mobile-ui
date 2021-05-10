@@ -117,10 +117,10 @@ export const toggleSortingState = (sortField) => (dispatch, getState) => {
   });
 };
 
-export const addRecordNote = (resourceId, text) => (dispatch, getState) => {
+export const createRecordNote = (resourceId, text) => (dispatch, getState) => {
   const { activeCollectionId } = getState();
   return dispatch({
-    type: actionTypes.ADD_RECORD_NOTE,
+    type: actionTypes.CREATE_RECORD_NOTE,
     payload: {
       collectionId: activeCollectionId,
       resourceId,
@@ -150,6 +150,40 @@ export const editRecordNote = (resourceId, text, noteId) => (dispatch, getState)
       resourceId,
       text,
       noteId,
+    },
+  });
+};
+
+export const createCollectionNote = (text) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.CREATE_COLLECTION_NOTE,
+    payload: {
+      collectionId: activeCollectionId,
+      text,
+    },
+  });
+};
+
+export const deleteCollectionNote = (noteId) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.DELETE_COLLECTION_NOTE,
+    payload: {
+      collectionId: activeCollectionId,
+      noteId,
+    },
+  });
+};
+
+export const editCollectionNote = (noteId, text) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.EDIT_COLLECTION_NOTE,
+    payload: {
+      collectionId: activeCollectionId,
+      noteId,
+      text,
     },
   });
 };

@@ -98,6 +98,16 @@ const getNextEnabledType = (resourceType, enabledTypes) => enabledTypes
   .find(({ type }) => type === resourceType)
   ?.next;
 
+const createNote = (text) => {
+  const newDate = new Date();
+  return {
+    id: uuidv4(),
+    text,
+    dateCreated: newDate,
+    dateEdited: newDate,
+  };
+};
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -265,30 +275,23 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           .detailsPanelSortingState.activeSortField = sortField;
       });
     }
-    case actionTypes.ADD_RECORD_NOTE: {
+    case actionTypes.CREATE_RECORD_NOTE: {
       const { collectionId, resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
-        const newDate = new Date();
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {};
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes = (
           draft[collectionId].records[resourceId].notes || {}
         );
-        const noteId = uuidv4();
+        const newNote = createNote(text);
         // eslint-disable-next-line no-param-reassign
-        draft[collectionId].records[resourceId].notes[noteId] = {
-          id: noteId,
-          text,
-          dateCreated: newDate,
-          dateEdited: newDate,
-        };
+        draft[collectionId].records[resourceId].notes[newNote.id] = newNote;
       });
     }
     case actionTypes.DELETE_RECORD_NOTE: {
       const { collectionId, resourceId, noteId } = action.payload;
-
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].records[resourceId].notes[noteId];
@@ -303,6 +306,30 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].records[resourceId].notes[noteId].text = text;
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date();
+      });
+    }
+    case actionTypes.CREATE_COLLECTION_NOTE: {
+      const { collectionId, text } = action.payload;
+      const newNote = createNote(text);
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[newNote.id] = newNote;
+      });
+    }
+    case actionTypes.DELETE_COLLECTION_NOTE: {
+      const { collectionId, noteId } = action.payload;
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        delete draft[collectionId].notes[noteId];
+      });
+    }
+    case actionTypes.EDIT_COLLECTION_NOTE: {
+      const { collectionId, noteId, text } = action.payload;
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[noteId].text = text;
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[noteId].dateEdited = new Date();
       });
     }
     default:

@@ -6,7 +6,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { SimpleLineIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -23,7 +23,7 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
-    navigation.navigate('CollectionNotes');
+    navigation.navigate('Notes');
   };
 
   const displayAccordion = () => {
@@ -62,7 +62,7 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
         </View>
         <Right>
           <TouchableOpacity onPress={handlePressNoteIcon}>
-            <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
+            <FontAwesome name="sticky-note-o" size={20} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Right>
       </Header>
