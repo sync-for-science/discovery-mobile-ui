@@ -12,19 +12,7 @@ import Svg, {
 } from 'react-native-svg';
 import { timelineIntervalsSelector } from '../../../redux/selectors';
 import Colors from '../../../constants/Colors';
-
-const VARIANCE_THRESHOLD = 30;
-const BAR_COLOR = '#ccc';
-const COLOR_1SD = '#999'; // also ccc in mocks
-const COLOR_2SD = '#f00'; // also fc0 in mocks
-const BOUNDARY_LINE_COLOR = '#36c';
-const CHART_MARGIN = 12;
-export const CHART_HEIGHT = 160;
-const BAR_HEIGHT = 80;
-const BAR_WIDTH = 6;
-const LABEL_COLOR = '#333';
-const LABEL_FONT_SIZE = 10;
-const MARKED_RADIUS = BAR_WIDTH / 2;
+import * as config from './config';
 
 const Variance = ({ x, y, zScore }) => {
   if (zScore < 1) {
@@ -34,7 +22,7 @@ const Variance = ({ x, y, zScore }) => {
     <Polygon
       x={x}
       y={y}
-      fill={(zScore >= 2) ? COLOR_2SD : COLOR_1SD}
+      fill={(zScore >= 2) ? config.COLOR_2SD : config.COLOR_1SD}
       points="-3 0, 0 -5, 3 0"
     />
   );
@@ -51,9 +39,9 @@ const Bar = ({
 }) => (
   <Line
     x1={x}
-    y1={BAR_HEIGHT}
+    y1={config.BAR_HEIGHT}
     x2={x}
-    y2={BAR_HEIGHT - height}
+    y2={config.BAR_HEIGHT - height}
     stroke={color}
     strokeWidth={width}
     vectorEffect="non-scaling-stroke"
@@ -73,23 +61,23 @@ const getCartoucheHeight = (cardinality) => {
     return 0;
   }
   if (cardinality === 1) {
-    return MARKED_RADIUS * 2; // circle
+    return config.MARKED_RADIUS * 2; // circle
   }
   if (cardinality < 10) {
-    return MARKED_RADIUS * 3;
+    return config.MARKED_RADIUS * 3;
   }
   if (cardinality < 20) {
-    return MARKED_RADIUS * 4;
+    return config.MARKED_RADIUS * 4;
   }
-  return MARKED_RADIUS * 5;
+  return config.MARKED_RADIUS * 5;
 };
 
 const MarkedCartouche = ({ hasFocused, markedHeight, y }) => (
   <Rect
-    rx={MARKED_RADIUS}
-    x={MARKED_RADIUS * -1}
+    rx={config.MARKED_RADIUS}
+    x={config.MARKED_RADIUS * -1}
     y={y}
-    width={MARKED_RADIUS * 2}
+    width={config.MARKED_RADIUS * 2}
     height={markedHeight}
     fill={hasFocused ? Colors.hasFocused : Colors.hasMarked}
   />
@@ -104,7 +92,7 @@ MarkedCartouche.propTypes = {
 const MarkedIndicators = ({
   markedItems,
 }) => {
-  let nextY = BAR_HEIGHT + 4;
+  let nextY = config.BAR_HEIGHT + 4;
   return markedItems.map(({ subType, marked, focused }) => {
     const markedHeight = getCartoucheHeight(marked.length);
     const thisY = nextY;
@@ -133,7 +121,7 @@ const TimelineItems = ({
   if (!countForMaxBarHeight) {
     return null;
   }
-  const tickUnits = BAR_HEIGHT / countForMaxBarHeight;
+  const tickUnits = config.BAR_HEIGHT / countForMaxBarHeight;
 
   return intervals
     .filter(({ items }) => !!items.length)
@@ -153,14 +141,14 @@ const TimelineItems = ({
         )}
         <Bar
           x={0}
-          width={BAR_WIDTH}
+          width={config.BAR_WIDTH}
           height={Math.max(Math.min(items.length, countForMaxBarHeight) * tickUnits, 4)}
-          color={BAR_COLOR}
+          color={config.BAR_COLOR}
         />
         {!collectionItems.length ? null : (
           <Bar
             x={0}
-            width={BAR_WIDTH}
+            width={config.BAR_WIDTH}
             height={Math.max(Math.min(collectionItems.length, countForMaxBarHeight) * tickUnits, 4)}
             color={Colors.collectionIcon}
           />
@@ -183,31 +171,31 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
   <>
     <Line
       x1={0}
-      y1={BAR_HEIGHT + 2}
+      y1={config.BAR_HEIGHT + 2}
       x2={availableWidth}
-      y2={BAR_HEIGHT + 2}
-      stroke={BAR_COLOR}
+      y2={config.BAR_HEIGHT + 2}
+      stroke={config.BAR_COLOR}
       strokeWidth="1"
       vectorEffect="non-scaling-stroke"
     />
     <SvgText
-      fill={LABEL_COLOR}
+      fill={config.LABEL_COLOR}
       stroke="none"
-      fontSize={LABEL_FONT_SIZE}
+      fontSize={config.LABEL_FONT_SIZE}
       fontWeight="normal"
       x={0}
-      y={BAR_HEIGHT + 12}
+      y={config.BAR_HEIGHT + 12}
       textAnchor="start"
     >
       {startLabel}
     </SvgText>
     <SvgText
-      fill={LABEL_COLOR}
+      fill={config.LABEL_COLOR}
       stroke="none"
-      fontSize={LABEL_FONT_SIZE}
+      fontSize={config.LABEL_FONT_SIZE}
       fontWeight="normal"
       x={availableWidth}
-      y={BAR_HEIGHT + 12}
+      y={config.BAR_HEIGHT + 12}
       textAnchor="end"
     >
       {endLabel}
@@ -235,15 +223,15 @@ const VerticalBound = ({
         y1={-2}
         x2={availableWidth}
         y2={-2}
-        stroke={BOUNDARY_LINE_COLOR}
+        stroke={config.BOUNDARY_LINE_COLOR}
         strokeDasharray="2 2"
         strokeWidth="1"
         vectorEffect="non-scaling-stroke"
       />
       <SvgText
-        fill={LABEL_COLOR}
+        fill={config.LABEL_COLOR}
         stroke="none"
-        fontSize={LABEL_FONT_SIZE}
+        fontSize={config.LABEL_FONT_SIZE}
         x={-4}
         y={0}
         textAnchor="end"
@@ -278,9 +266,9 @@ const VarianceLegend = ({
           <SvgText
             x={126}
             y={-16}
-            fill={LABEL_COLOR}
+            fill={config.LABEL_COLOR}
             stroke="none"
-            fontSize={LABEL_FONT_SIZE}
+            fontSize={config.LABEL_FONT_SIZE}
             textAnchor="start"
           >
             {above2label}
@@ -299,9 +287,9 @@ const VarianceLegend = ({
         <SvgText
           x={6}
           y={-16}
-          fill={LABEL_COLOR}
+          fill={config.LABEL_COLOR}
           stroke="none"
-          fontSize={LABEL_FONT_SIZE}
+          fontSize={config.LABEL_FONT_SIZE}
           textAnchor="start"
         >
           {between1and2SDlabel}
@@ -335,9 +323,9 @@ const Metrics = ({
       <SvgText
         x={availableWidth}
         y={-16}
-        fill={LABEL_COLOR}
+        fill={config.LABEL_COLOR}
         stroke="none"
-        fontSize={LABEL_FONT_SIZE}
+        fontSize={config.LABEL_FONT_SIZE}
         textAnchor="end"
       >
         {`grouped by ${intervalLengthLabel}`}
@@ -358,10 +346,10 @@ const TimelineChart = ({ timelineIntervals }) => {
     intervals, intervalLength,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
-  const availableWidth = screenWidth - (3 * CHART_MARGIN);
+  const availableWidth = screenWidth - (3 * config.CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
-  const showVariance = maxCount > VARIANCE_THRESHOLD;
+  const showVariance = maxCount > config.VARIANCE_THRESHOLD;
   const countForMaxBarHeight = showVariance ? maxCount1SD : maxCount;
 
   return (
@@ -373,22 +361,22 @@ const TimelineChart = ({ timelineIntervals }) => {
     >
       <Svg
         width={`${screenWidth}`}
-        height={CHART_HEIGHT}
-        viewBox={`0 0 ${screenWidth} ${CHART_HEIGHT}`}
+        height={config.CHART_HEIGHT}
+        viewBox={`0 0 ${screenWidth} ${config.CHART_HEIGHT}`}
         style={{ borderWidth: 0 }}
       >
         <G
-          x={2 * CHART_MARGIN} // accommodate label for boundary line
+          x={2 * config.CHART_MARGIN} // accommodate label for boundary line
           y={32}
         >
           <SvgText
-            fill={LABEL_COLOR}
+            fill={config.LABEL_COLOR}
             stroke="none"
             fontSize="12"
             fontWeight="bold"
             fontStyle="italic"
             x={availableWidth / 2}
-            y={BAR_HEIGHT / 2}
+            y={config.BAR_HEIGHT / 2}
             textAnchor="middle"
           >
             {noResultsMessage}
@@ -424,7 +412,7 @@ const TimelineChart = ({ timelineIntervals }) => {
             x="0"
             y="0"
             width={availableWidth}
-            height={BAR_HEIGHT}
+            height={config.BAR_HEIGHT}
             strokeDasharray="2 2"
             // stroke="#f008" // debug position
           />
@@ -433,7 +421,7 @@ const TimelineChart = ({ timelineIntervals }) => {
           x="0"
           y="0"
           width={screenWidth}
-          height={CHART_HEIGHT}
+          height={config.CHART_HEIGHT}
           strokeDasharray="2 2"
           // stroke="#00f8" // debug position
         />
@@ -477,7 +465,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TimelineC
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    minHeight: CHART_HEIGHT,
+    minHeight: config.CHART_HEIGHT,
   },
   debug: {
     left: 2,
