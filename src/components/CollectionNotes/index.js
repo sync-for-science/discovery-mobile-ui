@@ -1,22 +1,29 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import { connect } from 'react-redux'
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { arrayOf, shape } from 'prop-types';
+import { connect } from 'react-redux';
 
-import { collectionNotesSelector } from '../../redux/selectors'
-import NotesList from '../Notes/NotesList'
+import { collectionNotesSelector } from '../../redux/selectors';
+import NotesList from '../Notes/NotesList';
 
-const CollectionNotes = ({collectionNotes}) => {
-  return (
-    <View style={{flex: 1}}>
-      <NotesList notes={collectionNotes} fromNotesScreen isCollectionNotes/>
-    </View>
-  )
-}
+const CollectionNotes = ({ collectionNotes }) => (
+  <View style={styles.root}>
+    <NotesList notes={collectionNotes} fromNotesScreen isCollectionNotes />
+  </View>
+);
 
 const mapStateToProps = (state) => ({
-  collectionNotes: collectionNotesSelector(state)
-})
+  collectionNotes: collectionNotesSelector(state),
+});
 
-export default connect(mapStateToProps, null)(CollectionNotes)
+CollectionNotes.propTypes = {
+  collectionNotes: arrayOf(shape({}).isRequired).isRequired,
+};
 
-const styles = StyleSheet.create({})
+export default connect(mapStateToProps, null)(CollectionNotes);
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+});

@@ -99,14 +99,14 @@ const getNextEnabledType = (resourceType, enabledTypes) => enabledTypes
   ?.next;
 
 const createNote = (text) => {
-  const newDate = new Date()
+  const newDate = new Date();
   return {
     id: uuidv4(),
     text,
     dateCreated: newDate,
-    dateEdited: newDate
-  }
-}
+    dateEdited: newDate,
+  };
+};
 
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
@@ -317,11 +317,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.ADD_COLLECTION_NOTE: {
-      const { collectionId, text } = action.payload
-      const newNote = createNote(text)
+      const { collectionId, text } = action.payload;
+      const newNote = createNote(text);
       return produce(state, (draft) => {
-        draft[collectionId].notes[newNote.id] = newNote
-      })
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].notes[newNote.id] = newNote;
+      });
     }
     default:
       return state;

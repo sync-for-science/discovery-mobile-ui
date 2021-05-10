@@ -85,6 +85,7 @@ Note.propTypes = {
 };
 
 Note.defaultProps = {
+  resourceId: null,
   handleEditNote: undefined,
   fromNotesScreen: false,
   editNoteId: null,
@@ -138,9 +139,11 @@ NotesList.propTypes = {
 };
 
 NotesList.defaultProps = {
+  resourceId: null,
   fromNotesScreen: false,
   handleEditNote: undefined,
   editNoteId: null,
+  showNotes: false,
 };
 
 const mapDispatchToProps = {

@@ -638,6 +638,6 @@ export const collectionNotesSelector = createSelector(
   [activeCollectionSelector],
   (collection) => {
     const sortDesc = ({ dateCreated: d1 }, { dateCreated: d2 }) => (d1 > d2 ? -1 : 1);
-    return values(collection.notes).sort(sortDesc)
-  }
-)
+    return values(collection.notes).sort(sortDesc);
+  },
+);

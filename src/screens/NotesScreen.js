@@ -18,12 +18,12 @@ import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 import CollectionNotes from '../components/CollectionNotes';
 
-const NotesScreen = ({ 
-  resource, 
-  addRecordNoteAction, 
-  editRecordNoteAction, 
-  collection, 
-  addCollectionNoteAction 
+const NotesScreen = ({
+  resource,
+  addRecordNoteAction,
+  editRecordNoteAction,
+  collection,
+  addCollectionNoteAction,
 }) => {
   const navigation = useNavigation();
   const route = useRoute();
@@ -31,7 +31,7 @@ const NotesScreen = ({
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null);
   const [showNoteInput, setShowNoteInput] = useState(false);
-  const isResourceNotes = !!resource
+  const isResourceNotes = !!resource;
 
   const closeInput = () => {
     onChangeText('');
@@ -74,7 +74,7 @@ const NotesScreen = ({
         addRecordNoteAction(resource.id, text);
       }
     } else {
-      addCollectionNoteAction(text)
+      addCollectionNoteAction(text);
     }
     closeInput();
   };
@@ -100,7 +100,7 @@ const NotesScreen = ({
   const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
-  const headerTitle = isResourceNotes ? resource.subType : collection.label
+  const headerTitle = isResourceNotes ? resource.subType : collection.label;
 
   return (
     <SafeAreaView style={styles.root}>
@@ -120,13 +120,15 @@ const NotesScreen = ({
         </Right>
       </Header>
       <ScrollView>
-        {isResourceNotes && <ResourceCard
+        {isResourceNotes && (
+        <ResourceCard
           resourceId={resource.id}
           resource={resource}
           handleEditNote={handleEditNote}
           editNoteId={editNoteId}
           fromNotesScreen
-        />}
+        />
+        )}
         {!isResourceNotes && <CollectionNotes />}
       </ScrollView>
       {showNoteInput && (
@@ -158,18 +160,19 @@ NotesScreen.propTypes = {
   resource: shape({}).isRequired,
   addRecordNoteAction: func.isRequired,
   editRecordNoteAction: func.isRequired,
-  collection: shape({}).isRequired
+  collection: shape({}).isRequired,
+  addCollectionNoteAction: func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByRoutePropsSelector(state, ownProps),
-  collection: activeCollectionSelector(state)
+  collection: activeCollectionSelector(state),
 });
 
 const mapDispatchToProps = {
   addRecordNoteAction: addRecordNote,
   editRecordNoteAction: editRecordNote,
-  addCollectionNoteAction: addCollectionNote
+  addCollectionNoteAction: addCollectionNote,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);

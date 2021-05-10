@@ -154,14 +154,13 @@ export const editRecordNote = (resourceId, text, noteId) => (dispatch, getState)
   });
 };
 
-export const addCollectionNote = (text) => (dispatch, getState) =>  {
-  const { activeCollectionId } = getState()
+export const addCollectionNote = (text) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
   return dispatch({
     type: actionTypes.ADD_COLLECTION_NOTE,
     payload: {
       collectionId: activeCollectionId,
-      text
-    }
-  })
-}
- 
+      text,
+    },
+  });
+};
