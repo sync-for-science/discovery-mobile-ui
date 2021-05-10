@@ -8,12 +8,15 @@ import {
 import { connect } from 'react-redux';
 import { formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
-  Rect, Line, G, Text as SvgText, // Mask
+  Rect, G, Text as SvgText, // Mask
 } from 'react-native-svg';
 
 import { timelineIntervalsSelector } from '../../../redux/selectors';
-import Bar from './Bar';
+import VarianceLegend from './VarianceLegend';
+import VerticalBound from './VerticalBound';
 import Variance from './Variance';
+import Bar from './Bar';
+import XAxis from './XAxis';
 import MarkedIndicators from './MarkedIndicators';
 import Colors from '../../../constants/Colors';
 import * as config from './config';
@@ -68,147 +71,6 @@ TimelineItems.propTypes = {
   countForMaxBarHeight: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
   showVariance: bool.isRequired,
-};
-
-const XAxis = ({ availableWidth, startLabel, endLabel }) => (
-  <>
-    <Line
-      x1={0}
-      y1={config.BAR_HEIGHT + 2}
-      x2={availableWidth}
-      y2={config.BAR_HEIGHT + 2}
-      stroke={config.BAR_COLOR}
-      strokeWidth="1"
-      vectorEffect="non-scaling-stroke"
-    />
-    <SvgText
-      fill={config.LABEL_COLOR}
-      stroke="none"
-      fontSize={config.LABEL_FONT_SIZE}
-      fontWeight="normal"
-      x={0}
-      y={config.BAR_HEIGHT + 12}
-      textAnchor="start"
-    >
-      {startLabel}
-    </SvgText>
-    <SvgText
-      fill={config.LABEL_COLOR}
-      stroke="none"
-      fontSize={config.LABEL_FONT_SIZE}
-      fontWeight="normal"
-      x={availableWidth}
-      y={config.BAR_HEIGHT + 12}
-      textAnchor="end"
-    >
-      {endLabel}
-    </SvgText>
-  </>
-);
-
-XAxis.propTypes = {
-  availableWidth: number.isRequired,
-  startLabel: string.isRequired,
-  endLabel: string.isRequired,
-};
-
-const VerticalBound = ({
-  availableWidth, countForMaxBarHeight,
-}) => {
-  if (!countForMaxBarHeight) {
-    return null;
-  }
-  const verticalBoundLabel = `${countForMaxBarHeight}`;
-  return (
-    <>
-      <Line
-        x1={0}
-        y1={-2}
-        x2={availableWidth}
-        y2={-2}
-        stroke={config.BOUNDARY_LINE_COLOR}
-        strokeDasharray="2 2"
-        strokeWidth="1"
-        vectorEffect="non-scaling-stroke"
-      />
-      <SvgText
-        fill={config.LABEL_COLOR}
-        stroke="none"
-        fontSize={config.LABEL_FONT_SIZE}
-        x={-4}
-        y={0}
-        textAnchor="end"
-      >
-        {verticalBoundLabel}
-      </SvgText>
-    </>
-  );
-};
-
-VerticalBound.propTypes = {
-  availableWidth: number.isRequired,
-  countForMaxBarHeight: number.isRequired,
-};
-
-const VarianceLegend = ({
-  maxCount, maxCount1SD, maxCount2SD, recordCount2SDplus,
-}) => {
-  if (maxCount > maxCount1SD) {
-    const between1and2SDlabel = `between ${maxCount1SD} and ${maxCount2SD}`;
-    let above2SD = null;
-
-    if (recordCount2SDplus) {
-      const above2label = `above ${maxCount2SD}`;
-      above2SD = (
-        <>
-          <Variance
-            x={120}
-            y={-16}
-            zScore={2}
-          />
-          <SvgText
-            x={126}
-            y={-16}
-            fill={config.LABEL_COLOR}
-            stroke="none"
-            fontSize={config.LABEL_FONT_SIZE}
-            textAnchor="start"
-          >
-            {above2label}
-          </SvgText>
-        </>
-      );
-    }
-
-    return (
-      <>
-        <Variance
-          x={0}
-          y={-16}
-          zScore={1}
-        />
-        <SvgText
-          x={6}
-          y={-16}
-          fill={config.LABEL_COLOR}
-          stroke="none"
-          fontSize={config.LABEL_FONT_SIZE}
-          textAnchor="start"
-        >
-          {between1and2SDlabel}
-        </SvgText>
-        {above2SD}
-      </>
-    );
-  }
-  return null;
-};
-
-VarianceLegend.propTypes = {
-  maxCount: number.isRequired,
-  maxCount1SD: number.isRequired,
-  maxCount2SD: number.isRequired,
-  recordCount2SDplus: number.isRequired,
 };
 
 const formatDays = (numDays) => {
