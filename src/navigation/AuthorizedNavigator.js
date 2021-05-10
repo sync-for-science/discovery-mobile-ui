@@ -66,7 +66,9 @@ const AuthorizedNavigator = () => (
       inactiveTintColor: 'gray',
       style: {
         paddingVertical: 10,
+        height: 84,
       },
+      labelStyle: { fontSize: 12 },
     }}
   >
     <HomeTab.Screen name="Profile" component={ProfileScreen} />
