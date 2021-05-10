@@ -6,9 +6,15 @@ import { connect } from 'react-redux';
 import { collectionNotesSelector } from '../../redux/selectors';
 import NotesList from '../Notes/NotesList';
 
-const CollectionNotes = ({ collectionNotes }) => (
+const CollectionNotes = ({ collectionNotes, editNoteId, handleEditNote, fromNotesScreen }) => (
   <View style={styles.root}>
-    <NotesList notes={collectionNotes} isCollectionNotes />
+    <NotesList 
+      notes={collectionNotes} 
+      editNoteId={editNoteId} 
+      handleEditNote={handleEditNote}
+      fromNotesScreen={fromNotesScreen} 
+      isCollectionNotes 
+    />
   </View>
 );
 

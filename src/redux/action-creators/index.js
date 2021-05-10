@@ -175,3 +175,15 @@ export const deleteCollectionNote = (noteId) => (dispatch, getState) => {
     }
   })
 }
+
+export const editCollectionNote = (noteId, text) => (dispatch, getState) => {
+  const { activeCollectionId } = getState()
+  return dispatch({
+    type: actionTypes.EDIT_COLLECTION_NOTE,
+    payload: {
+      collectionId: activeCollectionId,
+      noteId,
+      text
+    }
+  })
+}

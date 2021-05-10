@@ -8,7 +8,7 @@ import {
   arrayOf, shape, bool, string, func,
 } from 'prop-types';
 
-import { deleteCollectionNote, deleteRecordNote, editRecordNote } from '../../redux/action-creators/index';
+import { deleteCollectionNote, deleteRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
@@ -100,7 +100,7 @@ const NotesList = ({
   handleEditNote,
   editNoteId,
   isCollectionNotes,
-  deleteCollectionNoteAction
+  deleteCollectionNoteAction,
 }) => {
   const renderNotes = notes.map((note) => {
     const deleteNoteAction = isCollectionNotes ? () => deleteCollectionNoteAction(note.id) : () => deleteRecordNoteAction(resourceId, note.id)
@@ -155,8 +155,7 @@ NotesList.defaultProps = {
 
 const mapDispatchToProps = {
   deleteRecordNoteAction: deleteRecordNote,
-  editRecordNoteAction: editRecordNote,
-  deleteCollectionNoteAction: deleteCollectionNote
+  deleteCollectionNoteAction: deleteCollectionNote,
 };
 
 export default connect(null, mapDispatchToProps)(NotesList);
