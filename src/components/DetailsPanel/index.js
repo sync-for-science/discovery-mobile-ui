@@ -58,7 +58,7 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
       <Header style={styles.header}>
         <Left />
         <View>
-          <Title>{collection?.label}</Title>
+          <Title style={styles.headerText}>{collection?.label}</Title>
         </View>
         <Right>
           <TouchableOpacity onPress={handlePressNoteIcon}>
@@ -97,5 +97,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
+  },
+  headerText: {
+    fontSize: 18,
   },
 });

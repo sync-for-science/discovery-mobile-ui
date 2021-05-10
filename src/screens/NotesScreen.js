@@ -116,7 +116,7 @@ const NotesScreen = ({
           </TouchableOpacity>
         </Left>
         <View>
-          <Title>{headerTitle}</Title>
+          <Title style={styles.headerText}>{headerTitle}</Title>
         </View>
         <Right>
           <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
@@ -203,6 +203,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
+  },
+  headerText: {
+    fontSize: 18,
   },
   textInputContainer: {
     paddingHorizontal: 10,
