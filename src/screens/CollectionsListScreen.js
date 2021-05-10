@@ -114,6 +114,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     color: 'black',
+    fontSize: 18,
   },
   logoutContainer: {
     marginLeft: 5,
