@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
-  Alert, Modal, StyleSheet, TouchableOpacity, View, Text
+  Alert, Modal, StyleSheet, TouchableOpacity, View,
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 
-import { func, shape, string } from 'prop-types';
+import {
+  bool, func, shape, string,
+} from 'prop-types';
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl';
@@ -13,38 +15,42 @@ import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
 import { activeCollectionSelector } from '../../redux/selectors';
 
-const scDesc1 = "All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection or highlighting/unhighlighting in the Timeline."
-const scDesc2 = "Only the Records in the Collection are available for Preview, but you can highlight/unhighlight them in the Timeline."
-const scDesc3 = "Only the Records in the Collection that are also highlighted are available for Preview."
-const scDesc4 = "All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection, but you can only Preview the highlights."
+const scDesc1 = 'All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection or highlighting/unhighlighting in the Timeline.';
+const scDesc2 = 'Only the Records in the Collection are available for Preview, but you can highlight/unhighlight them in the Timeline.';
+const scDesc3 = 'Only the Records in the Collection that are also highlighted are available for Preview.';
+const scDesc4 = 'All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection, but you can only Preview the highlights.';
 
-const SegmentControlDescription = ({showCollectionOnly, showMarkedOnly}) => {
-  let description
+const SegmentControlDescription = ({ showCollectionOnly, showMarkedOnly }) => {
+  let description;
   if (!showCollectionOnly && !showMarkedOnly) {
-    description =  scDesc1
+    description = scDesc1;
   } if (showCollectionOnly && !showMarkedOnly) {
-    description =  scDesc2
+    description = scDesc2;
   } if (showCollectionOnly && showMarkedOnly) {
-    description =  scDesc3
+    description = scDesc3;
   } if (!showCollectionOnly && showMarkedOnly) {
-    description = scDesc4
+    description = scDesc4;
   }
-  return ( 
+  return (
     <View style={styles.segmentControlDescriptionContainer}>
       <BaseText style={styles.segmentControlDescriptionText}>{description}</BaseText>
     </View>
-  )
-}
+  );
+};
 
+SegmentControlDescription.propTypes = {
+  showCollectionOnly: bool.isRequired,
+  showMarkedOnly: bool.isRequired,
+};
 
 const CatalogModal = ({
   collectionId,
   clearCollectionAction,
   clearMarkedResourcesAction,
-  collection
+  collection,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { showCollectionOnly, showMarkedOnly } = collection
+  const { showCollectionOnly, showMarkedOnly } = collection;
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
@@ -113,7 +119,10 @@ const CatalogModal = ({
               </TouchableOpacity>
             </View>
             <View style={styles.controlsContainer}>
-              <SegmentControlDescription showCollectionOnly={showCollectionOnly} showMarkedOnly={showMarkedOnly} />
+              <SegmentControlDescription
+                showCollectionOnly={showCollectionOnly}
+                showMarkedOnly={showMarkedOnly}
+              />
               <View style={styles.segmentControlContainer}>
                 <CollectionSegmentControl />
                 <MarkedSegmentControl />
@@ -143,12 +152,12 @@ CatalogModal.propTypes = {
   collectionId: string.isRequired,
   clearCollectionAction: func.isRequired,
   clearMarkedResourcesAction: func.isRequired,
-  collection: shape({}).isRequired
+  collection: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  collection: activeCollectionSelector(state)
-})
+  collection: activeCollectionSelector(state),
+});
 
 const mapDispatchToProps = {
   clearCollectionAction: clearCollection,
@@ -205,13 +214,13 @@ const styles = StyleSheet.create({
   segmentControlDescriptionContainer: {
     marginBottom: 20,
     height: 80,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   segmentControlDescriptionText: {
     textAlign: 'center',
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   segmentControlContainer: {
     marginBottom: 20,
-  }
+  },
 });

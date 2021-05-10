@@ -4,12 +4,8 @@ import { connect } from 'react-redux';
 import { bool, func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
-import BaseText from '../Generic/BaseText';
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
 import { activeCollectionShowCollectionOnlySelector, hasAnyCollectionRecordInScope } from '../../redux/selectors';
-
-const allRecordsDescription = 'Displays all records.';
-const collectionRecordsDescription = 'Only displays records saved to the collection.';
 
 const CollectionSegmentControl = ({
   enabled,
@@ -17,7 +13,6 @@ const CollectionSegmentControl = ({
   toggleShowCollectionOnlyAction,
 }) => {
   const segControlIndex = showCollectionOnly ? 1 : 0;
-  const description = segControlIndex === 0 ? allRecordsDescription : collectionRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
     toggleShowCollectionOnlyAction(selectedSegmentIndex !== 0);
   };
