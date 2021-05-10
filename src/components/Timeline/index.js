@@ -4,15 +4,12 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import DateRangePicker from './DateRangePicker';
-import TimelineBrowser from './TimelineBrowser';
+import TimelineChart from './TimelineChart';
 
 import Colors from '../../constants/Colors';
 
 const Timeline = () => {
   const [showTimeline, setShowTimeline] = useState(true);
-  const expandIcon = showTimeline
-    ? <Ionicons name="chevron-up" size={24} color={Colors.expandTimeline} />
-    : <Ionicons name="chevron-down" size={24} color={Colors.expandTimeline} />;
 
   return (
     <View style={styles.root}>
@@ -23,10 +20,14 @@ const Timeline = () => {
           style={styles.iconContainer}
           onPress={() => setShowTimeline(!showTimeline)}
         >
-          {expandIcon}
+          <Ionicons
+            name={showTimeline ? 'chevron-up' : 'chevron-down'}
+            size={24}
+            color={Colors.expandTimeline}
+          />
         </TouchableOpacity>
       </View>
-      {showTimeline && <TimelineBrowser />}
+      {showTimeline && <TimelineChart />}
     </View>
   );
 };
