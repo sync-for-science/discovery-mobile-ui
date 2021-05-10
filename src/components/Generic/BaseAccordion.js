@@ -13,7 +13,7 @@ import {
   activeCollectionIdSelector,
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import ResourceCard from '../ResourceCard/ResourceCard';
+import ResourceCard from '../ResourceCard';
 import BaseText from './BaseText';
 import CountIcon from '../Icons/CountIcon';
 import FocusedIcon from '../Icons/FocusedIcon';

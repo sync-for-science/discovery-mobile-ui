@@ -13,7 +13,7 @@ import { resourceByRoutePropsSelector } from '../redux/selectors';
 import { addRecordNote, editRecordNote } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
-import ResourceCard from '../components/ResourceCard/ResourceCard';
+import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 
 const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) => {
