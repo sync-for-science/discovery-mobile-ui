@@ -1,12 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity, ScrollView, TextInput, KeyboardAvoidingView,
+  SafeAreaView, StyleSheet, View, TouchableOpacity,
+  ScrollView, TextInput, KeyboardAvoidingView, Alert,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { SimpleLineIcons, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector } from '../redux/selectors';
@@ -22,6 +23,40 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   const editingNote = route?.params?.editingNote;
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null);
+  const [showNoteInput, setShowNoteInput] = useState(false);
+
+  const closeInput = () => {
+    onChangeText('');
+    setEditNoteId(null);
+    setShowNoteInput(false);
+  };
+
+  const discardInputAlert = () => {
+    Alert.alert(
+      'Discard Edits',
+      'Are you sure you want to discard edits to this note?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {
+          text: 'Discard',
+          onPress: () => closeInput(),
+          style: 'destructive',
+        },
+      ],
+    );
+  };
+
+  const handleCloseInput = ({ alert }) => {
+    if (alert) {
+      discardInputAlert();
+    } else {
+      closeInput();
+    }
+  };
 
   const handleSave = () => {
     if (editNoteId) {
@@ -29,23 +64,30 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
     } else {
       addRecordNoteAction(resource.id, text);
     }
-    onChangeText('');
-    setEditNoteId(null);
+    closeInput();
+  };
+
+  const handleCreateNote = () => {
+    setShowNoteInput(true);
   };
 
   const handleEditNote = (noteId, noteText) => {
     setEditNoteId(noteId);
     onChangeText(noteText);
-    textInputRef.current.focus();
+    setShowNoteInput(true);
   };
 
   useEffect(() => {
     if (editingNote) {
       handleEditNote(editingNote.id, editingNote.text);
+    } else {
+      handleCreateNote();
     }
   }, []);
 
-  const textInputRef = useRef();
+  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
+  const hasTextValue = text.length > 0;
+  const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
 
   return (
     <SafeAreaView style={styles.root}>
@@ -59,8 +101,8 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           <Title>{resource.subType}</Title>
         </View>
         <Right>
-          <TouchableOpacity>
-            <SimpleLineIcons name="note" size={20} color={Colors.headerIcon} />
+          <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
+            <SimpleLineIcons name="note" size={20} color={newNoteIconColor} />
           </TouchableOpacity>
         </Right>
       </Header>
@@ -73,20 +115,27 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           fromNotesScreen
         />
       </ScrollView>
+      {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
-        <View style={styles.noteInputContainer}>
+        <View style={styles.noteEditingActions}>
+          <TouchableOpacity onPress={() => handleCloseInput({ alert: true })}>
+            <Ionicons name="ios-close-outline" size={24} color="black" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave} disabled={!hasTextValue}>
+            <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.textInputContainer}>
           <TextInput
-            ref={textInputRef}
             style={styles.textInput}
             onChangeText={onChangeText}
             multiline
             value={text}
+            autoFocus
           />
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <BaseText variant="title">Save</BaseText>
-          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
@@ -118,20 +167,33 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 0,
   },
-  noteInputContainer: {
-    padding: 10,
+  textInputContainer: {
+    paddingHorizontal: 10,
+    paddingBottom: 10,
     backgroundColor: Colors.lightgrey,
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
   },
   textInput: {
     backgroundColor: 'white',
     flex: 1,
     borderRadius: 10,
-    padding: 10,
+    padding: 8,
   },
   saveButton: {
     marginLeft: 10,
+  },
+  saveButtonText: {
+    color: Colors.primary,
+  },
+  disabledSaveButtonText: {
+    color: Colors.darkgrey2,
+  },
+  noteEditingActions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: Colors.lightgrey,
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
   },
 });
