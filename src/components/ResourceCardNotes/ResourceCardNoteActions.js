@@ -29,7 +29,7 @@ const ResourceCardNoteActions = ({
     <View style={styles.actionsContainer}>
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
         <FontAwesome name="sticky-note-o" size={16} color={Colors.darkgrey} />
-        <BaseText variant="title" style={styles.buttonText}>Add Note</BaseText>
+        <BaseText variant="title" style={styles.buttonText}>Add Notes</BaseText>
       </TouchableOpacity>
       <View style={styles.verticalDivider} />
       <TouchableOpacity style={styles.addNoteButton} onPress={() => setShowNotes(!showNotes)}>
