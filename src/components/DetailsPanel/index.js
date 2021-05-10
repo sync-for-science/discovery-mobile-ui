@@ -14,13 +14,17 @@ import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
-import { activeCollectionSelector, savedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { activeCollectionSelector, savedRecordsGroupedByTypeSelector, activeCollectionResourceIdsSelector } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
+import BaseText from '../Generic/BaseText';
 
-const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => {
+const DetailsPanel = ({
+  navigation, collection, savedRecordsGroupedByType, savedRecords,
+}) => {
   const { detailsPanelSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
+  const hasSavedRecords = Object.entries(savedRecords).length > 0;
 
   const handlePressNoteIcon = () => {
     navigation.navigate('Notes');
@@ -66,12 +70,21 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
           </TouchableOpacity>
         </Right>
       </Header>
-      <SortingHeader
-        sortingState={sortingState}
-      />
-      <ScrollView>
-        {displayAccordion()}
-      </ScrollView>
+      {!hasSavedRecords && (
+        <View style={styles.zeroStateContainer}>
+          <BaseText style={styles.zeroStateText}>No Records In Collection</BaseText>
+        </View>
+      )}
+      {hasSavedRecords && (
+        <>
+          <SortingHeader
+            sortingState={sortingState}
+          />
+          <ScrollView>
+            {displayAccordion()}
+          </ScrollView>
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -80,11 +93,13 @@ DetailsPanel.propTypes = {
   navigation: shape({}).isRequired,
   collection: shape({}).isRequired,
   savedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
+  savedRecords: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
   savedRecordsGroupedByType: savedRecordsGroupedByTypeSelector(state),
+  savedRecords: activeCollectionResourceIdsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(DetailsPanel);
@@ -100,5 +115,14 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
+  },
+  zeroStateContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  zeroStateText: {
+    fontStyle: 'italic',
   },
 });
