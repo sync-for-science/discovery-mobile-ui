@@ -6,6 +6,7 @@ import BaseSegmentControl from '../Generic/BaseSegmentControl';
 
 import { toggleShowCollectionOnly } from '../../redux/action-creators';
 import { activeCollectionShowCollectionOnlySelector, hasAnyCollectionRecordInScope } from '../../redux/selectors';
+import Colors from '../../constants/Colors';
 
 const CollectionSegmentControl = ({
   enabled,
@@ -24,6 +25,7 @@ const CollectionSegmentControl = ({
         values={['Edit Collection', 'Preview Collection']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
+        activeColor={Colors.collectionSegmentControl}
       />
     </View>
   );

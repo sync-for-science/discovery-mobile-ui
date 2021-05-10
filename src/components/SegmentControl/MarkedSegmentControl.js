@@ -6,6 +6,7 @@ import { bool, func } from 'prop-types';
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
 import { activeCollectionShowMarkedOnlySelector, hasAnyHighlightedRecordInScope } from '../../redux/selectors';
+import Colors from '../../constants/Colors';
 
 const MarkedSegmentControl = ({
   enabled,
@@ -24,6 +25,7 @@ const MarkedSegmentControl = ({
         values={['Edit Highlights', 'Preview Highlights']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
+        activeColor={Colors.markedsegmentControl}
       />
     </View>
   );
