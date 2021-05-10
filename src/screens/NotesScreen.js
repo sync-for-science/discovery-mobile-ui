@@ -86,6 +86,8 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   }, []);
 
   const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
+  const hasTextValue = text.length > 0;
+  const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
 
   return (
     <SafeAreaView style={styles.root}>
@@ -119,8 +121,8 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           <TouchableOpacity onPress={() => handleCloseInput({ alert: true })}>
             <Ionicons name="ios-close-outline" size={24} color="black" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-            <BaseText variant="title" style={styles.saveButtonText}>Save</BaseText>
+          <TouchableOpacity style={styles.saveButton} onPress={handleSave} disabled={!hasTextValue}>
+            <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
           </TouchableOpacity>
         </View>
         <View style={styles.textInputContainer}>
@@ -182,6 +184,9 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     color: Colors.primary,
+  },
+  disabledSaveButtonText: {
+    color: Colors.darkgrey2,
   },
   noteEditingActions: {
     flexDirection: 'row',
