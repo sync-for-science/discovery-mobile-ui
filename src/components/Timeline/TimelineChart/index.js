@@ -8,112 +8,15 @@ import {
 import { connect } from 'react-redux';
 import { formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
-  Rect, Line, G, Text as SvgText, Polygon, // Mask
+  Rect, Line, G, Text as SvgText, // Mask
 } from 'react-native-svg';
+
 import { timelineIntervalsSelector } from '../../../redux/selectors';
+import Bar from './Bar';
+import Variance from './Variance';
+import MarkedIndicators from './MarkedIndicators';
 import Colors from '../../../constants/Colors';
 import * as config from './config';
-
-const Variance = ({ x, y, zScore }) => {
-  if (zScore < 1) {
-    return null;
-  }
-  return (
-    <Polygon
-      x={x}
-      y={y}
-      fill={(zScore >= 2) ? config.COLOR_2SD : config.COLOR_1SD}
-      points="-3 0, 0 -5, 3 0"
-    />
-  );
-};
-
-Variance.propTypes = {
-  x: number.isRequired,
-  y: number.isRequired,
-  zScore: number.isRequired,
-};
-
-const Bar = ({
-  x, height, width, color,
-}) => (
-  <Line
-    x1={x}
-    y1={config.BAR_HEIGHT}
-    x2={x}
-    y2={config.BAR_HEIGHT - height}
-    stroke={color}
-    strokeWidth={width}
-    vectorEffect="non-scaling-stroke"
-    shapeRendering="crispEdges"
-  />
-);
-
-Bar.propTypes = {
-  x: number.isRequired,
-  width: number.isRequired,
-  height: number.isRequired,
-  color: string.isRequired,
-};
-
-const getCartoucheHeight = (cardinality) => {
-  if (cardinality === 0) {
-    return 0;
-  }
-  if (cardinality === 1) {
-    return config.MARKED_RADIUS * 2; // circle
-  }
-  if (cardinality < 10) {
-    return config.MARKED_RADIUS * 3;
-  }
-  if (cardinality < 20) {
-    return config.MARKED_RADIUS * 4;
-  }
-  return config.MARKED_RADIUS * 5;
-};
-
-const MarkedCartouche = ({ hasFocused, markedHeight, y }) => (
-  <Rect
-    rx={config.MARKED_RADIUS}
-    x={config.MARKED_RADIUS * -1}
-    y={y}
-    width={config.MARKED_RADIUS * 2}
-    height={markedHeight}
-    fill={hasFocused ? Colors.hasFocused : Colors.hasMarked}
-  />
-);
-
-MarkedCartouche.propTypes = {
-  hasFocused: bool.isRequired,
-  markedHeight: number.isRequired,
-  y: number.isRequired,
-};
-
-const MarkedIndicators = ({
-  markedItems,
-}) => {
-  let nextY = config.BAR_HEIGHT + 4;
-  return markedItems.map(({ subType, marked, focused }) => {
-    const markedHeight = getCartoucheHeight(marked.length);
-    const thisY = nextY;
-    nextY += (markedHeight + 1);
-    return (
-      <MarkedCartouche
-        key={subType}
-        hasFocused={!!focused.length}
-        markedHeight={markedHeight}
-        y={thisY}
-      />
-    );
-  });
-};
-
-MarkedIndicators.propTypes = {
-  markedItems: arrayOf(shape({
-    subType: string.isRequired,
-    marked: arrayOf(string).isRequired,
-  }).isRequired).isRequired,
-};
 
 const TimelineItems = ({
   availableWidth, countForMaxBarHeight, intervals, showVariance,
