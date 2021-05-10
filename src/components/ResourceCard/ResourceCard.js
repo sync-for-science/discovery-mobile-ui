@@ -15,7 +15,7 @@ import UnassignedCardBody from './ResourceCardBody/UnassignedCardBody';
 import LabResultCardBody from './ResourceCardBody/LabResultCardBody';
 import VitalSignCardBody from './ResourceCardBody/VitalSignCardBody';
 import BaseText from '../Generic/BaseText';
-import { resourceByIdSelector, relatedPractitionersSelector } from '../../redux/selectors';
+import { resourceByIdSelector, relatedPractitionersSelector, relatedProviderSelector } from '../../redux/selectors';
 import { formatPractitionerName, getResourceDate } from '../../resources/fhirReader';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
@@ -147,6 +147,7 @@ const ResourceCard = ({
   fromDetailsPanel,
   fromNotesScreen,
   relatedPractitioners,
+  relatedProvider,
   handleEditNote,
   editNoteId,
 }) => {
@@ -167,6 +168,14 @@ const ResourceCard = ({
         <CardBody
           resource={resource}
         />
+        {
+          relatedProvider && (
+            <CardBodyField
+              label={CARD_BODY_LABEL.provider}
+              value={relatedProvider?.name}
+            />
+          )
+        }
         {
           relatedPractitioners.map((practitioner) => (
             <CardBodyField
@@ -190,6 +199,7 @@ const ResourceCard = ({
 ResourceCard.propTypes = {
   resourceId: string.isRequired,
   resource: shape({}).isRequired,
+  relatedProvider: shape({}),
   relatedPractitioners: arrayOf(shape({})).isRequired,
   collectionId: string,
   index: number,
@@ -201,6 +211,7 @@ ResourceCard.propTypes = {
 
 ResourceCard.defaultProps = {
   collectionId: null,
+  relatedProvider: null,
   index: null,
   fromDetailsPanel: false,
   fromNotesScreen: false,
@@ -210,6 +221,7 @@ ResourceCard.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByIdSelector(state, ownProps),
+  relatedProvider: relatedProviderSelector(state, ownProps),
   relatedPractitioners: relatedPractitionersSelector(state, ownProps),
 });
 
