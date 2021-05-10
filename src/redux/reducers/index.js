@@ -324,6 +324,13 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].notes[newNote.id] = newNote;
       });
     }
+    case actionTypes.DELETE_COLLECTION_NOTE: {
+      console.log('hello!')
+      const { collectionId, noteId} = action.payload
+      return produce(state, (draft) => {
+        delete draft[collectionId].notes[noteId]
+      })
+    }
     default:
       return state;
   }
