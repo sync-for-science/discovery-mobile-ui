@@ -1,10 +1,18 @@
 import React from 'react';
-import { number, string } from 'prop-types';
+import { instanceOf, number } from 'prop-types';
 import { Line, Text as SvgText } from 'react-native-svg';
+import { format } from 'date-fns';
 
 import * as config from './config';
 
-const XAxis = ({ availableWidth, startLabel, endLabel }) => (
+const formatLabel = (date) => {
+  if (date) {
+    return format(date, 'yyyy/MM');
+  }
+  return '';
+};
+
+const XAxis = ({ availableWidth, minDate, maxDate }) => (
   <>
     <Line
       x1={0}
@@ -24,7 +32,7 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
       y={config.BAR_HEIGHT + 12}
       textAnchor="start"
     >
-      {startLabel}
+      {formatLabel(minDate)}
     </SvgText>
     <SvgText
       fill={config.LABEL_COLOR}
@@ -35,15 +43,20 @@ const XAxis = ({ availableWidth, startLabel, endLabel }) => (
       y={config.BAR_HEIGHT + 12}
       textAnchor="end"
     >
-      {endLabel}
+      {formatLabel(maxDate)}
     </SvgText>
   </>
 );
 
 XAxis.propTypes = {
   availableWidth: number.isRequired,
-  startLabel: string.isRequired,
-  endLabel: string.isRequired,
+  minDate: instanceOf(Date),
+  maxDate: instanceOf(Date),
+};
+
+XAxis.defaultProps = {
+  minDate: null,
+  maxDate: null,
 };
 
 export default XAxis;

@@ -77,6 +77,7 @@ const TimelineChart = ({ timelineIntervals }) => {
   const {
     maxCount, maxCount1SD, maxCount2SD, recordCount, recordCount2SDplus,
     intervals, intervalLength,
+    minDate, maxDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
   const availableWidth = screenWidth - (3 * config.CHART_MARGIN);
@@ -116,8 +117,8 @@ const TimelineChart = ({ timelineIntervals }) => {
           </SvgText>
           <XAxis
             availableWidth={availableWidth}
-            startLabel=""
-            endLabel=""
+            minDate={minDate}
+            maxDate={maxDate}
           />
           <TimelineItems
             availableWidth={availableWidth}
@@ -165,7 +166,7 @@ const TimelineChart = ({ timelineIntervals }) => {
 
 TimelineChart.propTypes = {
   timelineIntervals: shape({
-    startDate: instanceOf(Date),
+    minDate: instanceOf(Date),
     maxDate: instanceOf(Date),
     intervals: arrayOf(shape({
       zScore: number.isRequired,
