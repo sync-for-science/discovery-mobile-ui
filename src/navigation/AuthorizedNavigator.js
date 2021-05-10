@@ -7,7 +7,6 @@ import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
-import CollectionNotesScreen from '../screens/CollectionNotesScreen';
 import NotesScreen from '../screens/NotesScreen';
 import Colors from '../constants/Colors';
 
@@ -50,10 +49,6 @@ const CollectionStackScreen = () => (
     <CollectionsStack.Screen
       name="Catalog"
       component={CatalogScreen}
-    />
-    <CollectionsStack.Screen
-      name="CollectionNotes"
-      component={CollectionNotesScreen}
     />
     <CollectionsStack.Screen
       name="Notes"
