@@ -12,6 +12,17 @@ const formatLabel = (date) => {
   return '';
 };
 
+const generateIntervals = (minDate, maxDate) => {
+  const dateArray = [];
+  if (minDate && maxDate) {
+    const interval = (maxDate - minDate) / (config.X_AXIS_INTERVAL_COUNT);
+    for (let i = 0; i <= config.X_AXIS_INTERVAL_COUNT; i += 1) {
+      dateArray.push(minDate.getTime() + (i * interval));
+    }
+  }
+  return dateArray;
+};
+
 const XAxis = ({ availableWidth, minDate, maxDate }) => (
   <>
     <Line
@@ -23,28 +34,21 @@ const XAxis = ({ availableWidth, minDate, maxDate }) => (
       strokeWidth="1"
       vectorEffect="non-scaling-stroke"
     />
-    <SvgText
-      fill={config.LABEL_COLOR}
-      stroke="none"
-      fontSize={config.LABEL_FONT_SIZE}
-      fontWeight="normal"
-      x={0}
-      y={config.BAR_HEIGHT + 12}
-      textAnchor="start"
-    >
-      {formatLabel(minDate)}
-    </SvgText>
-    <SvgText
-      fill={config.LABEL_COLOR}
-      stroke="none"
-      fontSize={config.LABEL_FONT_SIZE}
-      fontWeight="normal"
-      x={availableWidth}
-      y={config.BAR_HEIGHT + 12}
-      textAnchor="end"
-    >
-      {formatLabel(maxDate)}
-    </SvgText>
+    {
+      generateIntervals(minDate, maxDate).map((date, i) => (
+        <SvgText
+          fill={config.LABEL_COLOR}
+          stroke="none"
+          fontSize={config.LABEL_FONT_SIZE}
+          fontWeight="normal"
+          x={(i) * (availableWidth / config.X_AXIS_INTERVAL_COUNT)}
+          y={config.BAR_HEIGHT + 12}
+          textAnchor="middle"
+        >
+          {formatLabel(date)}
+        </SvgText>
+      ))
+    }
   </>
 );
 

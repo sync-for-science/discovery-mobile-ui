@@ -80,7 +80,7 @@ const TimelineChart = ({ timelineIntervals }) => {
     minDate, maxDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
-  const availableWidth = screenWidth - (3 * config.CHART_MARGIN);
+  const availableWidth = screenWidth - (4 * config.CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
   const showVariance = maxCount > config.VARIANCE_THRESHOLD;

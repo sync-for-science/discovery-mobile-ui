@@ -15,3 +15,5 @@ export const COLOR_2SD = '#f00'; // also fc0 in mocks
 
 export const LABEL_COLOR = '#333';
 export const LABEL_FONT_SIZE = 10;
+
+export const X_AXIS_INTERVAL_COUNT = 5;
