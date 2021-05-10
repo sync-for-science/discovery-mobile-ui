@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dash: {
+    paddingRight: 8,
     fontSize: 30,
     color: Colors.dash,
   },
