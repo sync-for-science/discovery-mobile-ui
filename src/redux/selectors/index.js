@@ -22,7 +22,7 @@ const resourcesSelector = (state) => state.resources;
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];
 
 export const resourceByRoutePropsSelector = (state, ownProps) => (
-  state?.resources?.[ownProps?.route?.params?.resourceId]
+  state.resources?.[ownProps?.route?.params?.resourceId]
 );
 
 const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
