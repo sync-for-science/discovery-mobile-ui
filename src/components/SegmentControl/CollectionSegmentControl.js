@@ -21,7 +21,7 @@ const CollectionSegmentControl = ({
     <View style={styles.root}>
       <BaseSegmentControl
         enabled={enabled}
-        values={['All Records', 'Collection Records']}
+        values={['Edit Collection', 'Preview Collection']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
       />

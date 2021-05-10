@@ -21,7 +21,7 @@ const MarkedSegmentControl = ({
     <View style={styles.root}>
       <BaseSegmentControl
         enabled={enabled}
-        values={['All Records', 'Highlighted Records']}
+        values={['Edit Highlights', 'Preview Highlights']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
       />
