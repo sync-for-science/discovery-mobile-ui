@@ -1,30 +1,24 @@
 import React from 'react';
-import { arrayOf, func, shape } from 'prop-types';
+import { arrayOf, shape } from 'prop-types';
 import {
-  StyleSheet, View, TouchableOpacity,
+  StyleSheet, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
-import Colors from '../../constants/Colors';
 import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
 
-const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
+const CatalogScreenHeader = ({ collection }) => (
   <Header style={styles.header}>
-    <Left>
-      <TouchableOpacity onPress={handleOpenDrawer} style={styles.drawerIcon}>
-        <MaterialCommunityIcons name="filter-outline" size={24} color={Colors.headerIcon} />
-      </TouchableOpacity>
-    </Left>
+    <Left />
     <View>
       <Title style={styles.collectionLabel}>{collection?.label}</Title>
     </View>
@@ -36,11 +30,9 @@ const CatalogScreenHeader = ({ collection, handleOpenDrawer }) => (
 
 CatalogScreenHeader.propTypes = {
   collection: shape({}).isRequired,
-  handleOpenDrawer: func,
 };
 
 CatalogScreenHeader.defaultProps = {
-  handleOpenDrawer: null,
 };
 
 const Catalog = ({ collection, selectedRecordsGroupedByType }) => (
@@ -71,9 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     elevation: 0,
-  },
-  drawerIcon: {
-    paddingLeft: 10,
   },
   scrollView: {
     flex: 1,
