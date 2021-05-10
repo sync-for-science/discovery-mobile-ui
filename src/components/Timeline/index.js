@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import DateRangePicker from './DateRangePicker';
-import TimelineBrowser from './TimelineBrowser';
+import TimelineChart from './TimelineChart';
 
 import Colors from '../../constants/Colors';
 
@@ -26,7 +26,7 @@ const Timeline = () => {
           {expandIcon}
         </TouchableOpacity>
       </View>
-      {showTimeline && <TimelineBrowser />}
+      {showTimeline && <TimelineChart />}
     </View>
   );
 };

@@ -10,8 +10,8 @@ import { formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
   Rect, Line, G, Text as SvgText, Polygon, // Mask
 } from 'react-native-svg';
-import { timelineIntervalsSelector } from '../../redux/selectors';
-import Colors from '../../constants/Colors';
+import { timelineIntervalsSelector } from '../../../redux/selectors';
+import Colors from '../../../constants/Colors';
 
 const VARIANCE_THRESHOLD = 30;
 const BAR_COLOR = '#ccc';
@@ -352,7 +352,7 @@ Metrics.propTypes = {
   intervalLength: number.isRequired,
 };
 
-const TimelineBrowser = ({ timelineIntervals }) => {
+const TimelineChart = ({ timelineIntervals }) => {
   const {
     maxCount, maxCount1SD, maxCount2SD, recordCount, recordCount2SDplus,
     intervals, intervalLength,
@@ -442,7 +442,7 @@ const TimelineBrowser = ({ timelineIntervals }) => {
   );
 };
 
-TimelineBrowser.propTypes = {
+TimelineChart.propTypes = {
   timelineIntervals: shape({
     startDate: instanceOf(Date),
     maxDate: instanceOf(Date),
@@ -472,7 +472,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TimelineBrowser));
+export default connect(mapStateToProps, mapDispatchToProps)(React.memo(TimelineChart));
 
 const styles = StyleSheet.create({
   root: {
