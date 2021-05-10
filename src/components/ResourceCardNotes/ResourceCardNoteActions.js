@@ -9,8 +9,6 @@ import { bool, func, string } from 'prop-types';
 import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
 
-// start collection-notes
-
 const ResourceCardNoteActions = ({
   hasNotes, showNotes, setShowNotes, resourceId,
 }) => {
