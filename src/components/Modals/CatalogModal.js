@@ -113,7 +113,7 @@ const CatalogModal = ({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modalHeaderContainer}>
-              <BaseText variant="sectionTitle">Record Filters</BaseText>
+              <BaseText variant="sectionTitle">Workspaces</BaseText>
               <TouchableOpacity onPress={() => setModalVisible(false)}>
                 <Ionicons name="close" size={30} color="black" />
               </TouchableOpacity>
