@@ -31,7 +31,7 @@ const Timeline = ({ handleOpenDrawer }) => {
         <DateRangePicker />
         <Right>
           <TouchableOpacity
-            style={styles.iconContainer}
+            style={styles.expandIcon}
             onPress={() => setShowTimeline(!showTimeline)}
           >
             <Ionicons
@@ -65,15 +65,14 @@ const styles = StyleSheet.create({
   },
   dateRangeContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginVertical: 15,
+    marginVertical: 8,
   },
   drawerIcon: {
     paddingLeft: 10,
   },
-  iconContainer: {
-    width: 50,
+  expandIcon: {
+    paddingRight: 10,
     flexDirection: 'row',
     justifyContent: 'center',
   },
