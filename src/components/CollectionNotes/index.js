@@ -1,7 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { connect } from 'react-redux'
 
-const CollectionNotes = () => {
+import { collectionNotesSelector } from '../../redux/selectors'
+
+const CollectionNotes = ({collectionNotes}) => {
   return (
     <View style={{flex: 1}}>
       <Text>CollectionNotes</Text>
@@ -9,6 +12,10 @@ const CollectionNotes = () => {
   )
 }
 
-export default CollectionNotes
+const mapStateToProps = (state) => ({
+  collectionNotes: collectionNotesSelector(state)
+})
+
+export default connect(mapStateToProps, null)(CollectionNotes)
 
 const styles = StyleSheet.create({})

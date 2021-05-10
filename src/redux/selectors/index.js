@@ -633,3 +633,8 @@ export const recordNotesSelector = createSelector(
     return values(collection.records[resourceId].notes).sort(sortDesc);
   },
 );
+
+export const collectionNotesSelector = createSelector(
+  [activeCollectionSelector],
+  (collection) => values(collection.notes)
+)
