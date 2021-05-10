@@ -26,4 +26,5 @@ export const actionTypes = { // eslint-disable-line import/prefer-default-export
   ADD_RECORD_NOTE: 'ADD_RECORD_NOTE',
   DELETE_RECORD_NOTE: 'DELETE_RECORD_NOTE',
   EDIT_RECORD_NOTE: 'EDIT_RECORD_NOTE',
+  ADD_COLLECTION_NOTE: 'ADD_COLLECTION_NOTE'
 };

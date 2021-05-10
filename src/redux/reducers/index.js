@@ -98,6 +98,16 @@ const getNextEnabledType = (resourceType, enabledTypes) => enabledTypes
   .find(({ type }) => type === resourceType)
   ?.next;
 
+const createNote = (text) => {
+  const newDate = new Date()
+  return {
+    id: uuidv4(),
+    text,
+    dateCreated: newDate,
+    dateEdited: newDate
+  }
+}
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -298,12 +308,20 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const {
         collectionId, resourceId, noteId, text,
       } = action.payload;
+
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].text = text;
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date();
       });
+    }
+    case actionTypes.ADD_COLLECTION_NOTE: {
+      const { collectionId, text } = action.payload
+      const newNote = createNote(text)
+      return produce(state, (draft) => {
+        draft[collectionId].notes[newNote.id] = newNote
+      })
     }
     default:
       return state;

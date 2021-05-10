@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { collectionNotesSelector } from '../../redux/selectors'
 
 const CollectionNotes = ({collectionNotes}) => {
+  console.log('collectionNotes', collectionNotes)
   return (
     <View style={{flex: 1}}>
       <Text>CollectionNotes</Text>

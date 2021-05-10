@@ -11,14 +11,20 @@ import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslin
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
-import { addRecordNote, editRecordNote } from '../redux/action-creators';
+import { addRecordNote, editRecordNote, addCollectionNote } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 import CollectionNotes from '../components/CollectionNotes';
 
-const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction, collection }) => {
+const NotesScreen = ({ 
+  resource, 
+  addRecordNoteAction, 
+  editRecordNoteAction, 
+  collection, 
+  addCollectionNoteAction 
+}) => {
   const navigation = useNavigation();
   const route = useRoute();
   const editingNote = route?.params?.editingNote;
@@ -61,10 +67,14 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction, coll
   };
 
   const handleSave = () => {
-    if (editNoteId) {
-      editRecordNoteAction(resource.id, text, editNoteId);
+    if (isResourceNotes) {
+      if (editNoteId) {
+        editRecordNoteAction(resource.id, text, editNoteId);
+      } else {
+        addRecordNoteAction(resource.id, text);
+      }
     } else {
-      addRecordNoteAction(resource.id, text);
+      addCollectionNoteAction(text)
     }
     closeInput();
   };
@@ -159,6 +169,7 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = {
   addRecordNoteAction: addRecordNote,
   editRecordNoteAction: editRecordNote,
+  addCollectionNoteAction: addCollectionNote
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(NotesScreen);
