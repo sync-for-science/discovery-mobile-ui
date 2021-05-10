@@ -3,12 +3,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import { connect } from 'react-redux'
 
 import { collectionNotesSelector } from '../../redux/selectors'
+import NotesList from '../Notes/NotesList'
 
 const CollectionNotes = ({collectionNotes}) => {
-  console.log('collectionNotes', collectionNotes)
   return (
     <View style={{flex: 1}}>
-      <Text>CollectionNotes</Text>
+      <NotesList notes={collectionNotes} fromNotesScreen isCollectionNotes/>
     </View>
   )
 }

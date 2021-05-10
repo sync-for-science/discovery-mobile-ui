@@ -76,7 +76,7 @@ const Note = ({
 };
 
 Note.propTypes = {
-  resourceId: string.isRequired,
+  resourceId: string,
   note: shape({}).isRequired,
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
@@ -92,14 +92,14 @@ Note.defaultProps = {
 
 const NotesList = ({
   resourceId,
-  recordNotes,
+  notes,
   fromNotesScreen,
   showNotes,
   deleteRecordNoteAction,
   handleEditNote,
   editNoteId,
 }) => {
-  const renderNotes = recordNotes.map((note) => (
+  const renderNotes = notes.map((note) => (
     <Note
       key={note.id}
       resourceId={resourceId}
@@ -128,10 +128,10 @@ const NotesList = ({
 };
 
 NotesList.propTypes = {
-  resourceId: string.isRequired,
-  recordNotes: arrayOf(shape({}).isRequired).isRequired,
+  resourceId: string,
+  notes: arrayOf(shape({}).isRequired).isRequired,
   fromNotesScreen: bool,
-  showNotes: bool.isRequired,
+  showNotes: bool,
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
   editNoteId: string,

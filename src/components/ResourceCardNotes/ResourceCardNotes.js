@@ -34,7 +34,7 @@ const ResourceCardNotes = ({
         )}
       <NotesList
         resourceId={resourceId}
-        recordNotes={recordNotes}
+        notes={recordNotes}
         showNotes={showNotes}
         fromNotesScreen={fromNotesScreen}
         handleEditNote={handleEditNote}
