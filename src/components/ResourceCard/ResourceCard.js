@@ -7,82 +7,14 @@ import {
 } from 'prop-types';
 import { connect } from 'react-redux';
 
-import BaseText from '../Generic/BaseText';
 import { resourceByIdSelector, relatedPractitionersSelector, relatedProviderSelector } from '../../redux/selectors';
-import { formatPractitionerName, getResourceDate } from '../../resources/fhirReader';
-import FocusedIcon from '../Icons/FocusedIcon';
-import MarkedIcon from '../Icons/MarkedIcon';
-import CollectionIcon from '../Icons/CollectionIcon';
-import { SINGULAR_RESOURCE_TYPES } from '../../constants/resource-types';
+import { formatPractitionerName } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import ResourceCardNotes from '../ResourceCardNotes/ResourceCardNotes';
+import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 import CardBodyField from './ResourceCardBody/CardBodyField';
 import CARD_BODY_LABEL from '../../resources/cardBodyLabel';
-
-const CardHeader = ({
-  resourceId, resource, collectionId, fromDetailsPanel, fromNotesScreen,
-}) => {
-  const resourceDate = getResourceDate(resource);
-  const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
-
-  if (fromDetailsPanel) {
-    return (
-      <>
-        <BaseText style={styles.typeLabel}>{displayType}</BaseText>
-        <View style={styles.rightIconsContainer}>
-          <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
-          <CollectionIcon
-            showCount={false}
-            collectionId={collectionId}
-            resourceIds={[resourceId]}
-          />
-        </View>
-      </>
-    );
-  }
-
-  if (fromNotesScreen) {
-    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>;
-  }
-
-  return (
-    <>
-      <BaseText>{resourceDate}</BaseText>
-      <View style={styles.rightIconsContainer}>
-        <FocusedIcon
-          subType={resource.subType}
-          resourceIds={[resourceId]}
-          isAccordion={false}
-        />
-        <MarkedIcon
-          subType={resource.subType}
-          resourceIds={[resourceId]}
-          isAccordion={false}
-        />
-        <CollectionIcon
-          showCount={false}
-          collectionId={collectionId}
-          resourceIds={[resourceId]}
-        />
-      </View>
-    </>
-  );
-};
-
-CardHeader.propTypes = {
-  resourceId: string.isRequired,
-  resource: shape({}).isRequired,
-  collectionId: string,
-  fromDetailsPanel: bool,
-  fromNotesScreen: bool,
-};
-
-CardHeader.defaultProps = {
-  fromDetailsPanel: false,
-  fromNotesScreen: false,
-  collectionId: null,
-};
 
 const ResourceCard = ({
   resourceId,
@@ -194,18 +126,5 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightgrey,
-  },
-  iconContainer: {
-    marginLeft: 10,
-  },
-  rightIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  resourceDate: {
-    marginRight: 10,
-  },
-  typeLabel: {
-    textTransform: 'uppercase',
   },
 });
