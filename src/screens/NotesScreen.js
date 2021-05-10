@@ -168,12 +168,16 @@ const NotesScreen = ({
 };
 
 NotesScreen.propTypes = {
-  resource: shape({}).isRequired,
+  resource: shape({}),
   addRecordNoteAction: func.isRequired,
   editRecordNoteAction: func.isRequired,
   collection: shape({}).isRequired,
   addCollectionNoteAction: func.isRequired,
   editCollectionNoteAction: func.isRequired,
+};
+
+NotesScreen.defaultProps = {
+  resource: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({
