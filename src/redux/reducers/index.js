@@ -279,21 +279,15 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const { collectionId, resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
-        const newDate = new Date();
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId] = draft[collectionId].records[resourceId] || {};
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes = (
           draft[collectionId].records[resourceId].notes || {}
         );
-        const noteId = uuidv4();
+        const newNote = createNote(text);
         // eslint-disable-next-line no-param-reassign
-        draft[collectionId].records[resourceId].notes[noteId] = {
-          id: noteId,
-          text,
-          dateCreated: newDate,
-          dateEdited: newDate,
-        };
+        draft[collectionId].records[resourceId].notes[newNote.id] = newNote;
       });
     }
     case actionTypes.DELETE_RECORD_NOTE: {
