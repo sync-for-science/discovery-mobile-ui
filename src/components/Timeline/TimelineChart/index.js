@@ -6,13 +6,13 @@ import {
   arrayOf, instanceOf, shape, string, number, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { formatDistanceStrict, addDays } from 'date-fns';
 import Svg, {
-  Rect, G, Text as SvgText, // Mask
+  Rect, G, Text as SvgText,
 } from 'react-native-svg';
 
 import { timelineIntervalsSelector } from '../../../redux/selectors';
 import VarianceLegend from './VarianceLegend';
+import GroupingLegend from './GroupingLegend';
 import VerticalBound from './VerticalBound';
 import Variance from './Variance';
 import Bar from './Bar';
@@ -71,38 +71,6 @@ TimelineItems.propTypes = {
   countForMaxBarHeight: number.isRequired,
   intervals: arrayOf(shape({})).isRequired,
   showVariance: bool.isRequired,
-};
-
-const formatDays = (numDays) => {
-  const d = new Date();
-  return formatDistanceStrict(d, addDays(d, numDays), { unit: 'day' });
-};
-
-const Metrics = ({
-  availableWidth,
-  intervalLength,
-}) => {
-  if (intervalLength) {
-    const intervalLengthLabel = formatDays(Math.round(intervalLength));
-    return (
-      <SvgText
-        x={availableWidth}
-        y={-16}
-        fill={config.LABEL_COLOR}
-        stroke="none"
-        fontSize={config.LABEL_FONT_SIZE}
-        textAnchor="end"
-      >
-        {`grouped by ${intervalLengthLabel}`}
-      </SvgText>
-    );
-  }
-  return null;
-};
-
-Metrics.propTypes = {
-  availableWidth: number.isRequired,
-  intervalLength: number.isRequired,
 };
 
 const TimelineChart = ({ timelineIntervals }) => {
@@ -169,7 +137,7 @@ const TimelineChart = ({ timelineIntervals }) => {
             recordCount2SDplus={recordCount2SDplus}
           />
           )}
-          <Metrics
+          <GroupingLegend
             availableWidth={availableWidth}
             intervalLength={intervalLength}
           />
