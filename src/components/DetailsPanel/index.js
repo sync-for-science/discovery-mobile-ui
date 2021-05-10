@@ -23,7 +23,7 @@ const DetailsPanel = ({ navigation, collection, savedRecordsGroupedByType }) => 
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
   const handlePressNoteIcon = () => {
-    navigation.navigate('CollectionNotes');
+    navigation.navigate('Notes');
   };
 
   const displayAccordion = () => {

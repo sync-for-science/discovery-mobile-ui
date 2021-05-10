@@ -10,20 +10,22 @@ import { connect } from 'react-redux';
 import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
-import { resourceByRoutePropsSelector } from '../redux/selectors';
+import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
 import { addRecordNote, editRecordNote } from '../redux/action-creators';
 
 import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
+import CollectionNotes from '../components/CollectionNotes';
 
-const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) => {
+const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction, collection }) => {
   const navigation = useNavigation();
   const route = useRoute();
   const editingNote = route?.params?.editingNote;
   const [text, onChangeText] = useState('');
   const [editNoteId, setEditNoteId] = useState(null);
   const [showNoteInput, setShowNoteInput] = useState(false);
+  const isResourceNotes = !!resource
 
   const closeInput = () => {
     onChangeText('');
@@ -88,6 +90,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
   const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
+  const headerTitle = isResourceNotes ? resource.subType : collection.label
 
   return (
     <SafeAreaView style={styles.root}>
@@ -98,7 +101,7 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
           </TouchableOpacity>
         </Left>
         <View>
-          <Title>{resource.subType}</Title>
+          <Title>{headerTitle}</Title>
         </View>
         <Right>
           <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
@@ -107,13 +110,14 @@ const NotesScreen = ({ resource, addRecordNoteAction, editRecordNoteAction }) =>
         </Right>
       </Header>
       <ScrollView>
-        <ResourceCard
+        {isResourceNotes && <ResourceCard
           resourceId={resource.id}
           resource={resource}
           handleEditNote={handleEditNote}
           editNoteId={editNoteId}
           fromNotesScreen
-        />
+        />}
+        {!isResourceNotes && <CollectionNotes />}
       </ScrollView>
       {showNoteInput && (
       <KeyboardAvoidingView behavior="padding">
@@ -144,10 +148,12 @@ NotesScreen.propTypes = {
   resource: shape({}).isRequired,
   addRecordNoteAction: func.isRequired,
   editRecordNoteAction: func.isRequired,
+  collection: shape({}).isRequired
 };
 
 const mapStateToProps = (state, ownProps) => ({
   resource: resourceByRoutePropsSelector(state, ownProps),
+  collection: activeCollectionSelector(state)
 });
 
 const mapDispatchToProps = {
