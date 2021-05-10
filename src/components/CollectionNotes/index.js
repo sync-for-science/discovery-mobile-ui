@@ -8,7 +8,7 @@ import NotesList from '../Notes/NotesList';
 
 const CollectionNotes = ({ collectionNotes }) => (
   <View style={styles.root}>
-    <NotesList notes={collectionNotes} fromNotesScreen isCollectionNotes />
+    <NotesList notes={collectionNotes} isCollectionNotes />
   </View>
 );
 
@@ -19,6 +19,7 @@ const mapStateToProps = (state) => ({
 CollectionNotes.propTypes = {
   collectionNotes: arrayOf(shape({}).isRequired).isRequired,
 };
+
 
 export default connect(mapStateToProps, null)(CollectionNotes);
 

@@ -99,7 +99,9 @@ const NotesList = ({
   deleteRecordNoteAction,
   handleEditNote,
   editNoteId,
+  isCollectionNotes
 }) => {
+  console.log('isCollectionNotes', isCollectionNotes)
   const renderNotes = notes.map((note) => (
     <Note
       key={note.id}
@@ -112,7 +114,7 @@ const NotesList = ({
     />
   ));
 
-  if (fromNotesScreen) {
+  if (fromNotesScreen || isCollectionNotes) {
     return renderNotes;
   }
 
@@ -136,6 +138,7 @@ NotesList.propTypes = {
   deleteRecordNoteAction: func.isRequired,
   handleEditNote: func,
   editNoteId: string,
+  isCollectionNotes: bool
 };
 
 NotesList.defaultProps = {
@@ -144,6 +147,7 @@ NotesList.defaultProps = {
   handleEditNote: undefined,
   editNoteId: null,
   showNotes: false,
+  isCollectionNotes: false
 };
 
 const mapDispatchToProps = {
