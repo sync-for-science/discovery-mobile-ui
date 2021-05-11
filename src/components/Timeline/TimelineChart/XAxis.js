@@ -17,7 +17,7 @@ const generateIntervals = (minDate, maxDate) => {
   if (minDate && maxDate) {
     const interval = (maxDate - minDate) / (config.X_AXIS_INTERVAL_COUNT);
     for (let i = 0; i <= config.X_AXIS_INTERVAL_COUNT; i += 1) {
-      dateArray.push(minDate.getTime() + (i * interval));
+      dateArray.push(new Date(minDate.getTime() + (i * interval)));
     }
   }
   return dateArray;
