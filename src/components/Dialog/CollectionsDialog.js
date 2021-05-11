@@ -9,9 +9,16 @@ import {
 import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
 import { collectionsLabelsSelector } from '../../redux/selectors';
 
+export const COLLECTION_ACTIONS = {
+  RENAME: 'RENAME',
+  DUPLICATE: 'DUPLICATE',
+  DELETE: 'DELETE',
+  DELETE_ERROR: 'DELETE_ERROR',
+};
+
 export const CollectionDialogText = {
-  rename: {
-    action: 'rename',
+  [COLLECTION_ACTIONS.RENAME]: {
+    action: COLLECTION_ACTIONS.RENAME,
     title: 'Rename Collection',
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
@@ -20,8 +27,8 @@ export const CollectionDialogText = {
     showTextInput: true,
     useDupLabel: true,
   },
-  duplicate: {
-    action: 'duplicate',
+  [COLLECTION_ACTIONS.DUPLICATE]: {
+    action: COLLECTION_ACTIONS.DUPLICATE,
     title: 'Duplicate Collection',
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
@@ -30,8 +37,8 @@ export const CollectionDialogText = {
     showTextInput: true,
     useDupLabel: true,
   },
-  delete: {
-    action: 'delete',
+  [COLLECTION_ACTIONS.DELETE]: {
+    action: COLLECTION_ACTIONS.DELETE,
     title: 'Delete Collection',
     description: 'Are you sure you want to delete this collection?',
     errorDescription: null,
@@ -40,8 +47,8 @@ export const CollectionDialogText = {
     showTextInput: false,
     useDupLabel: false,
   },
-  deleteError: {
-    action: 'deleteError',
+  [COLLECTION_ACTIONS.DELETE_ERROR]: {
+    action: COLLECTION_ACTIONS.DELETE_ERROR,
     title: 'Delete Error',
     description: 'Cannot delete last collection.',
     errorDescription: null,
@@ -71,7 +78,7 @@ const CollectionsDialog = ({
 
   const getDefaultValue = () => {
     if (collectionDialogText.useDupLabel) {
-      if (collectionDialogText.action === 'rename') {
+      if (collectionDialogText.action === COLLECTION_ACTIONS.RENAME) {
         return collectionLabel;
       }
       // collectionDialogText.action === 'duplicate'
@@ -93,14 +100,20 @@ const CollectionsDialog = ({
   };
 
   const handleSubmit = (text) => {
-    if (checkUniqueName({ text, rename: collectionDialogText.action === 'rename', collectionLabel })) {
-      if (collectionDialogText.action === 'rename') {
+    if (
+      checkUniqueName({
+        text,
+        rename: collectionDialogText.action === COLLECTION_ACTIONS.RENAME,
+        collectionLabel,
+      })
+    ) {
+      if (collectionDialogText.action === COLLECTION_ACTIONS.RENAME) {
         renameCollectionAction(collectionId, text);
-      } if (collectionDialogText.action === 'duplicate') {
+      } if (collectionDialogText.action === COLLECTION_ACTIONS.DUPLICATE) {
         duplicateCollectionAction(collectionId, text);
-      } if (collectionDialogText.action === 'delete') {
+      } if (collectionDialogText.action === COLLECTION_ACTIONS.DELETE) {
         deleteCollectionAction(collectionId);
-      } if (collectionDialogText.action === 'deleteError') {
+      } if (collectionDialogText.action === COLLECTION_ACTIONS.DELETE_ERROR) {
         setCollectionDialogText(null);
       }
       setCollectionDialogText(null);

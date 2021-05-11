@@ -10,7 +10,7 @@ import {
 
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import CollectionsDialog, { CollectionDialogText } from '../Dialog/CollectionsDialog';
+import CollectionsDialog, { COLLECTION_ACTIONS, CollectionDialogText } from '../Dialog/CollectionsDialog';
 
 const CollectionRowActionIcon = ({
   collectionId,
@@ -22,7 +22,12 @@ const CollectionRowActionIcon = ({
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: ['Cancel', 'Rename Collection', 'Duplicate Collection', 'Delete Collection'],
+        options: [
+          'Cancel',
+          CollectionDialogText[COLLECTION_ACTIONS.RENAME].title,
+          CollectionDialogText[COLLECTION_ACTIONS.DUPLICATE].title,
+          CollectionDialogText[COLLECTION_ACTIONS.DELETE].title,
+        ],
         destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
@@ -31,14 +36,14 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          setCollectionDialogText(CollectionDialogText.rename);
+          setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.RENAME]);
         } else if (buttonIndex === 2) {
-          setCollectionDialogText(CollectionDialogText.duplicate);
+          setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DUPLICATE]);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
-            setCollectionDialogText(CollectionDialogText.deleteError);
+            setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DELETE_ERROR]);
           } else {
-            setCollectionDialogText(CollectionDialogText.delete);
+            setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DELETE]);
           }
         }
       },
