@@ -23,6 +23,25 @@ const generateIntervals = (minDate, maxDate) => {
   return dateArray;
 };
 
+const Label = ({ x, date }) => (
+  <SvgText
+    fill={config.LABEL_COLOR}
+    stroke="none"
+    fontSize={config.LABEL_FONT_SIZE}
+    fontWeight="normal"
+    x={x}
+    y={config.BAR_HEIGHT + 12}
+    textAnchor="middle"
+  >
+    {formatLabel(date)}
+  </SvgText>
+);
+
+Label.propTypes = {
+  date: instanceOf(Date).isRequired,
+  x: number.isRequired,
+};
+
 const XAxis = ({ availableWidth, minDate, maxDate }) => (
   <>
     <Line
@@ -36,17 +55,10 @@ const XAxis = ({ availableWidth, minDate, maxDate }) => (
     />
     {
       generateIntervals(minDate, maxDate).map((date, i) => (
-        <SvgText
-          fill={config.LABEL_COLOR}
-          stroke="none"
-          fontSize={config.LABEL_FONT_SIZE}
-          fontWeight="normal"
+        <Label
+          date={date}
           x={(i) * (availableWidth / config.X_AXIS_INTERVAL_COUNT)}
-          y={config.BAR_HEIGHT + 12}
-          textAnchor="middle"
-        >
-          {formatLabel(date)}
-        </SvgText>
+        />
       ))
     }
   </>
