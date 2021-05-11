@@ -10,8 +10,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
-import RecordsSummary from '../components/RecordsSummary/RecordsSummary';
-import ProvidersSummary from '../components/ProvidersSummary/ProvidersSummary';
+import RecordsSummary from '../components/Summary/RecordsSummary';
+import ProvidersSummary from '../components/Summary/ProvidersSummary';
 
 const Tab = createMaterialTopTabNavigator();
 

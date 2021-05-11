@@ -15,7 +15,7 @@ import {
   providersSelector,
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import RecordCount from '../Summary/RecordCount';
+import RecordCount from './RecordCount';
 
 const ResourceTypeRow = ({
   count, label, earliestDate, latestDate,

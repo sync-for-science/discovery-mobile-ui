@@ -9,7 +9,7 @@ import {
 
 import { ScrollView } from 'react-native-gesture-handler';
 import { providersSelector } from '../../redux/selectors';
-import RecordCount from '../Summary/RecordCount';
+import RecordCount from './RecordCount';
 
 const ProviderRow = ({ name }) => (
   <View style={styles.providerTypeRow}>
