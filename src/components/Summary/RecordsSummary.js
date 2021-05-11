@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
   },
   resourceCount: {
     alignSelf: 'flex-start',
-    textAlign: 'left',
+    textAlign: 'right',
     paddingRight: 10,
     flex: 1,
   },
