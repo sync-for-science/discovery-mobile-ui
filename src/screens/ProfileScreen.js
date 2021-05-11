@@ -63,28 +63,4 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  section: {
-    overflow: 'scroll',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  scrollViewInternal: {
-    height: 500,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 24,
-    fontWeight: '600',
-    paddingTop: 25,
-  },
 });
