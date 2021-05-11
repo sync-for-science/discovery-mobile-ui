@@ -25,7 +25,6 @@ export const CollectionsDialogText = {
     action: COLLECTIONS_DIALOG_ACTIONS.CREATE,
     title: 'Create Collection',
     description: 'Enter name for this new collection.',
-    errorDescription: 'Collection name must be unique.',
     submitButton: 'Submit',
     showCancelButton: true,
     showTextInput: true,
@@ -35,7 +34,6 @@ export const CollectionsDialogText = {
     action: COLLECTIONS_DIALOG_ACTIONS.RENAME,
     title: 'Rename Collection',
     description: 'Enter name for this new collection.',
-    errorDescription: 'Collection name must be unique.',
     submitButton: 'Rename',
     showCancelButton: true,
     showTextInput: true,
@@ -45,7 +43,6 @@ export const CollectionsDialogText = {
     action: COLLECTIONS_DIALOG_ACTIONS.DUPLICATE,
     title: 'Duplicate Collection',
     description: 'Enter name for this new collection.',
-    errorDescription: 'Collection name must be unique.',
     submitButton: 'Duplicate',
     showCancelButton: true,
     showTextInput: true,
@@ -55,7 +52,6 @@ export const CollectionsDialogText = {
     action: COLLECTIONS_DIALOG_ACTIONS.DELETE,
     title: 'Delete Collection',
     description: 'Are you sure you want to delete this collection?',
-    errorDescription: null,
     submitButton: 'Delete',
     showCancelButton: true,
     showTextInput: false,
@@ -65,7 +61,6 @@ export const CollectionsDialogText = {
     action: COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR,
     title: 'Delete Error',
     description: 'Cannot delete last collection.',
-    errorDescription: null,
     submitButton: 'OK',
     showCancelButton: false,
     showTextInput: false,
@@ -73,8 +68,8 @@ export const CollectionsDialogText = {
   },
 };
 
-const UNIQUE_ERROR = 'Collection name must be unique.'
-const LABEL_LENGTH_ERROR = 'Collection name must be at least 1 character'
+const UNIQUE_ERROR = 'Collection name must be unique.';
+const LABEL_LENGTH_ERROR = 'Collection name must be at least 1 character';
 
 const CollectionsDialog = ({
   collectionId,
@@ -88,11 +83,10 @@ const CollectionsDialog = ({
   createCollectionAction,
 }) => {
   const [inputText, setInputText] = useState('');
-  const [showUniqueError, setShowUniqueError] = useState(false);
-  const [errorText, setErrorText] = useState('')
+  const [errorText, setErrorText] = useState('');
 
   const {
-    title, description, errorDescription, submitButton, showTextInput, showCancelButton,
+    title, description, submitButton, showTextInput, showCancelButton,
   } = collectionsDialogText;
 
   const getDefaultValue = () => {
@@ -118,7 +112,7 @@ const CollectionsDialog = ({
     return !collectionsLabels.includes(text);
   };
 
-  const checkLength = (text) => text.length > 0
+  const checkLength = (text) => text.length > 0;
 
   const handleSubmit = (text) => {
     if (checkLength(text)) {
@@ -141,14 +135,12 @@ const CollectionsDialog = ({
           setCollectionsDialogText(null);
         }
         setCollectionsDialogText(null);
-        // setShowUniqueError(false);
-        setErrorText('')
+        setErrorText('');
       } else {
-        setErrorText(UNIQUE_ERROR)
-        // setShowUniqueError(true);
+        setErrorText(UNIQUE_ERROR);
       }
     } else {
-      setErrorText(LABEL_LENGTH_ERROR)
+      setErrorText(LABEL_LENGTH_ERROR);
     }
   };
 
