@@ -127,7 +127,7 @@ const CollectionRowActionIcon = ({
   const [collectionDialogText, setCollectionDialogText] = useState(null);
   const [showUniqueError, setShowUniqueError] = useState(false);
 
-  const checkUniqueName = ({ inputText, rename, label }) => {
+  const checkUniqueName = ({ inputText, rename, collectionLabel: label }) => {
     // if action is rename, new label can be same as old label
     if (rename && (inputText === label)) {
       return true;
