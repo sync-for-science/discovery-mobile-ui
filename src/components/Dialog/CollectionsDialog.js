@@ -1,9 +1,13 @@
-import {
-  bool, func, shape, string,
-} from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
+import {
+  func, shape, string, arrayOf,
+} from 'prop-types';
+
+import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
+import { collectionsLabelsSelector } from '../../redux/selectors';
 
 export const CollectionDialogText = {
   rename: {
@@ -49,13 +53,18 @@ export const CollectionDialogText = {
 };
 
 const CollectionsDialog = ({
+  collectionId,
   collectionDialogText,
   setCollectionDialogText,
-  showUniqueError,
-  handleSubmit,
   collectionLabel,
+  deleteCollectionAction,
+  renameCollectionAction,
+  duplicateCollectionAction,
+  collectionsLabels,
 }) => {
   const [inputText, setInputText] = useState('');
+  const [showUniqueError, setShowUniqueError] = useState(false);
+
   const {
     title, description, errorDescription, submitButton, showTextInput, showCancelButton,
   } = collectionDialogText;
@@ -74,6 +83,32 @@ const CollectionsDialog = ({
   useEffect(() => {
     setInputText(getDefaultValue());
   }, []);
+
+  const checkUniqueName = ({ text, rename, collectionLabel: label }) => {
+    // if action is rename, new label can be same as old label
+    if (rename && (text === label)) {
+      return true;
+    }
+    return !collectionsLabels.includes(text);
+  };
+
+  const handleSubmit = (text) => {
+    if (checkUniqueName({ text, rename: collectionDialogText.action === 'rename', collectionLabel })) {
+      if (collectionDialogText.action === 'rename') {
+        renameCollectionAction(collectionId, text);
+      } if (collectionDialogText.action === 'duplicate') {
+        duplicateCollectionAction(collectionId, text);
+      } if (collectionDialogText.action === 'delete') {
+        deleteCollectionAction(collectionId);
+      } if (collectionDialogText.action === 'deleteError') {
+        setCollectionDialogText(null);
+      }
+      setCollectionDialogText(null);
+      setShowUniqueError(false);
+    } else {
+      setShowUniqueError(true);
+    }
+  };
 
   return (
     <View>
@@ -98,14 +133,28 @@ const CollectionsDialog = ({
 };
 
 CollectionsDialog.propTypes = {
+  collectionId: string.isRequired,
   collectionDialogText: shape({}).isRequired,
   setCollectionDialogText: func.isRequired,
-  showUniqueError: bool.isRequired,
-  handleSubmit: func.isRequired,
   collectionLabel: string.isRequired,
+  deleteCollectionAction: func.isRequired,
+  renameCollectionAction: func.isRequired,
+  duplicateCollectionAction: func.isRequired,
+  collectionsLabels: arrayOf(string.isRequired).isRequired,
 };
 
-export default CollectionsDialog;
+const mapStateToProps = (state) => ({
+  collectionsLabels: collectionsLabelsSelector(state),
+});
+
+const mapDispatchToProps = {
+  deleteCollectionAction: deleteCollection,
+  renameCollectionAction: renameCollection,
+  duplicateCollectionAction: duplicateCollection,
+
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionsDialog);
 
 const styles = StyleSheet.create({
   errorDescription: {
