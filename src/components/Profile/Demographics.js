@@ -45,15 +45,15 @@ const Demographics = ({
 
   // eslint-disable-next-line react/prop-types
   const Item = ({ title }) => (
-    <View style={styles.demographicsRow}>
-      <Text style={styles.demographicsData}>{title}</Text>
+    <View style={styles.row}>
+      <Text style={styles.data}>{title}</Text>
     </View>
   );
 
   return (
-    <View style={styles.demographicsContainer}>
-      <View style={styles.panelHeader}>
-        <Text style={styles.panelText}>
+    <View style={styles.root}>
+      <View style={styles.heading}>
+        <Text style={styles.headingText}>
           Demographics
         </Text>
       </View>
@@ -61,7 +61,7 @@ const Demographics = ({
         sections={demographics}
         keyExtractor={(item, index) => item + index}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.demographicsHeader}>{title}</Text>
+          <Text style={styles.subHeading}>{title}</Text>
         )}
         renderItem={({ item }) => (
           <Item
@@ -90,31 +90,31 @@ const mapDispatchToProps = {};
 export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
 const styles = StyleSheet.create({
-  panelHeader: {
+  root: {
+    marginHorizontal: 20,
+    justifyContent: 'center',
+  },
+  heading: {
     padding: 5,
     backgroundColor: Colors.secondary,
   },
-  panelText: {
+  headingText: {
     color: 'white',
     fontSize: 16,
     padding: 5,
   },
-  demographicsContainer: {
-    marginHorizontal: 20,
-    justifyContent: 'center',
-  },
-  demographicsHeader: {
+  subHeading: {
     paddingHorizontal: 10,
     paddingTop: 10,
     backgroundColor: 'white',
     fontSize: 14,
     color: 'black',
   },
-  demographicsRow: {
+  row: {
     padding: 10,
     backgroundColor: 'white',
   },
-  demographicsData: {
+  data: {
     color: Colors.darkgrey,
   },
 });
