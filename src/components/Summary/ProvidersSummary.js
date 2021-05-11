@@ -8,20 +8,37 @@ import {
 } from 'react-native';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import { providersSelector } from '../../redux/selectors';
+import { format } from 'date-fns';
+import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 
-const ProviderRow = ({ name }) => (
-  <View style={styles.providerTypeRow}>
-    <Text style={styles.providerName}>{name}</Text>
-  </View>
-);
+const formatDate = (date) => {
+  if (date) {
+    return format(date, 'MMM d, Y');
+  }
+  return '';
+};
+
+const ProviderRow = ({ name, items }) => {
+  const oldest = items[0];
+  const latest = items.slice(-1)[0];
+
+  return (
+    <View style={styles.providerTypeRow}>
+      <Text style={styles.providerCount}>{items.length}</Text>
+      <Text style={styles.providerName}>{name}</Text>
+      <Text style={styles.oldest}>{formatDate(oldest?.timelineDate)}</Text>
+      <Text style={styles.latest}>{formatDate(latest?.timelineDate)}</Text>
+    </View>
+  );
+};
 
 ProviderRow.propTypes = {
   name: string.isRequired,
+  items: arrayOf(shape({})).isRequired,
 };
 
-const ProvidersSummary = ({ providers }) => (
+const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
   <View style={styles.root}>
     <RecordCount
       emphasizeProviders
@@ -29,10 +46,11 @@ const ProvidersSummary = ({ providers }) => (
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.providerTypeContainer}>
         {providers.map(
-          ({ name }) => (
+          ({ id, name }) => (
             <ProviderRow
               key={name}
               name={name}
+              items={allResourcesByProvider[id]}
             />
           ),
         )}
@@ -45,6 +63,7 @@ ProvidersSummary.propTypes = {
   providers: arrayOf(shape({
     name: string.isRequired,
   })).isRequired,
+  allResourcesByProvider: shape({}).isRequired,
 };
 
 ProvidersSummary.defaultProps = {
@@ -52,6 +71,7 @@ ProvidersSummary.defaultProps = {
 
 const mapStateToProps = (state) => ({
   providers: providersSelector(state),
+  allResourcesByProvider: allResourcesByProviderSelector(state),
 });
 
 export default connect(mapStateToProps, null)(ProvidersSummary);
@@ -79,8 +99,19 @@ const styles = StyleSheet.create({
     borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
   },
+  providerCount: {
+    flex: 1,
+    textAlign: 'right',
+    paddingRight: 8,
+  },
   providerName: {
     alignSelf: 'flex-start',
-    flex: 6,
+    flex: 4,
+  },
+  oldest: {
+    flex: 2,
+  },
+  latest: {
+    flex: 2,
   },
 });
