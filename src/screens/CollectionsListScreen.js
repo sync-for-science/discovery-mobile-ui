@@ -7,7 +7,7 @@ import { shape, func } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { FontAwesome, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -61,7 +61,7 @@ const CollectionsListScreen = ({
         </Body>
         <Right>
           <TouchableOpacity onPress={handleNewCollectionPress}>
-            <Ionicons name="add" size={24} color={Colors.darkgrey} />
+            <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Right>
       </Header>
