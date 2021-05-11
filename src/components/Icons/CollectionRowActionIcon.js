@@ -14,6 +14,7 @@ import Colors from '../../constants/Colors';
 
 const CollectionRowActionIcon = ({
   collectionId,
+  collectionLabel,
   collectionsCount,
   deleteCollectionAction,
   renameCollectionAction,
@@ -68,6 +69,8 @@ const CollectionRowActionIcon = ({
         onPress: (text) => duplicateCollectionAction(collectionId, text),
       },
     ],
+    'plain-text',
+    collectionLabel,
   );
 
   const handlePress = () => {
@@ -107,6 +110,7 @@ const CollectionRowActionIcon = ({
 
 CollectionRowActionIcon.propTypes = {
   collectionId: string.isRequired,
+  collectionLabel: string.isRequired,
   collectionsCount: number.isRequired,
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
