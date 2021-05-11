@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableOpacity, ActionSheetIOS, View, Alert, StyleSheet,
 } from 'react-native';
@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import {
   arrayOf,
   bool,
-  func, number, string,
+  func, number, shape, string,
 } from 'prop-types';
 import Dialog from 'react-native-dialog';
 
@@ -15,40 +15,78 @@ import { deleteCollection, renameCollection, duplicateCollection } from '../../r
 import { collectionsCountSelector, collectionsLabelsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
+const CollectionDialogText = {
+  rename: {
+    action: 'rename',
+    title: 'Rename Collection',
+    description: 'Enter name for this new collection.',
+    errorDescription: 'Collection name must be unique.',
+    submitButton: 'Rename',
+    showTextInput: true,
+    useDupLabel: true,
+  },
+  duplicate: {
+    action: 'duplicate',
+    title: 'Duplicate Collection',
+    description: 'Enter name for this new collection.',
+    errorDescription: 'Collection name must be unique.',
+    submitButton: 'Duplicate',
+    showTextInput: true,
+    useDupLabel: true,
+  },
+  delete: {
+    action: 'delete',
+    title: 'Delete Collection',
+    description: 'Are you sure you want to delete this collection?',
+    errorDescription: null,
+    submitButton: 'Delete',
+    showTextInput: false,
+    useDupLabel: false,
+  },
+};
+
 const CollectionDialog = ({
-  isVisibleDialog,
-  setIsVisibleDialog,
+  collectionDialogText,
+  setCollectionDialogText,
   showUniqueError,
+  handleSubmit,
   defaultValue,
-  handlePressDuplicate,
 }) => {
   const [inputText, setInputText] = useState('');
+  const {
+    title, description, errorDescription, submitButton, showTextInput,
+  } = collectionDialogText;
+
+  useEffect(() => {
+    setInputText(defaultValue);
+  }, []);
+
   return (
     <View>
-      <Dialog.Container visible={isVisibleDialog}>
-        <Dialog.Title>Duplicate Collection</Dialog.Title>
+      <Dialog.Container visible>
+        <Dialog.Title>{title}</Dialog.Title>
         <Dialog.Description>
-          Enter name for this new collection.
+          {description}
         </Dialog.Description>
         {showUniqueError && (
-        <Dialog.Description style={styles.errorDescription}>
-          Collection name must be unique.
-        </Dialog.Description>
+          <Dialog.Description style={styles.errorDescription}>
+            {errorDescription}
+          </Dialog.Description>
         )}
-        <Dialog.Input defaultValue={defaultValue} onChangeText={setInputText} />
-        <Dialog.Button label="Cancel" onPress={() => setIsVisibleDialog(false)} />
-        <Dialog.Button label="Duplicate" onPress={() => handlePressDuplicate(inputText)} />
+        {showTextInput && <Dialog.Input defaultValue={defaultValue} onChangeText={setInputText} />}
+        <Dialog.Button label="Cancel" onPress={() => setCollectionDialogText(null)} />
+        <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
       </Dialog.Container>
     </View>
   );
 };
 
 CollectionDialog.propTypes = {
-  isVisibleDialog: bool.isRequired,
-  setIsVisibleDialog: func.isRequired,
+  collectionDialogText: shape({}).isRequired,
+  setCollectionDialogText: func.isRequired,
   showUniqueError: bool.isRequired,
+  handleSubmit: func.isRequired,
   defaultValue: string.isRequired,
-  handlePressDuplicate: func.isRequired,
 };
 
 const CollectionRowActionIcon = ({
@@ -60,45 +98,12 @@ const CollectionRowActionIcon = ({
   duplicateCollectionAction,
   collectionsLabels,
 }) => {
-  const [isVisibleDialog, setIsVisibleDialog] = useState(false);
+  const [collectionDialogText, setCollectionDialogText] = useState(null);
   const [showUniqueError, setShowUniqueError] = useState(false);
 
   const checkUniqueName = (inputText) => (!collectionsLabels.includes(inputText));
 
-  const renameAlert = () => Alert.prompt(
-    'Rename Collection',
-    'Enter new name for this collection.',
-    [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-        style: 'cancel',
-      },
-      {
-        text: 'Rename',
-        onPress: (text) => renameCollectionAction(collectionId, text),
-      },
-    ],
-  );
-
   const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
-
-  const deleteCollectionAlert = () => Alert.alert(
-    'Delete Collection',
-    'Are you sure you want to delete this collection?',
-    [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-        style: 'cancel',
-      },
-      {
-        text: 'Delete',
-        onPress: () => deleteCollectionAction(collectionId),
-        style: 'destructive',
-      },
-    ],
-  );
 
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
@@ -112,28 +117,44 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          renameAlert();
+          setCollectionDialogText(CollectionDialogText.rename);
         } else if (buttonIndex === 2) {
-          setIsVisibleDialog(true);
+          setCollectionDialogText(CollectionDialogText.duplicate);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
             deleteErrorAlert();
           } else {
-            deleteCollectionAlert();
+            setCollectionDialogText(CollectionDialogText.delete);
           }
         }
       },
     );
   };
 
-  const handlePressDuplicate = (inputText) => {
+  const handleSubmit = (inputText) => {
     if (checkUniqueName(inputText)) {
-      duplicateCollectionAction(collectionId, inputText);
-      setIsVisibleDialog(false);
+      if (collectionDialogText.action === 'rename') {
+        renameCollectionAction(collectionId, inputText);
+      } if (collectionDialogText.action === 'duplicate') {
+        duplicateCollectionAction(collectionId, inputText);
+      } if (collectionDialogText.action === 'delete') {
+        deleteCollectionAction(collectionId);
+      }
+      setCollectionDialogText(null);
       setShowUniqueError(false);
     } else {
       setShowUniqueError(true);
     }
+  };
+
+  const getDefaultValue = () => {
+    if (collectionDialogText.useDupLabel) {
+      if (collectionDialogText.action === 'rename') {
+        return collectionLabel;
+      }
+      return `${collectionLabel} copy`;
+    }
+    return '';
   };
 
   return (
@@ -141,13 +162,15 @@ const CollectionRowActionIcon = ({
       <TouchableOpacity onPress={handlePress}>
         <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
+      {collectionDialogText && (
       <CollectionDialog
-        isVisibleDialog={isVisibleDialog}
-        setIsVisibleDialog={setIsVisibleDialog}
+        collectionDialogText={collectionDialogText}
+        setCollectionDialogText={setCollectionDialogText}
         showUniqueError={showUniqueError}
-        defaultValue={`${collectionLabel} copy`}
-        handlePressDuplicate={handlePressDuplicate}
+        handleSubmit={handleSubmit}
+        defaultValue={getDefaultValue()}
       />
+      )}
     </View>
   );
 };
