@@ -24,17 +24,28 @@ const generateIntervals = (minDate, maxDate) => {
 };
 
 const Label = ({ x, date }) => (
-  <SvgText
-    fill={config.LABEL_COLOR}
-    stroke="none"
-    fontSize={config.LABEL_FONT_SIZE}
-    fontWeight="normal"
-    x={x}
-    y={config.BAR_HEIGHT + 12}
-    textAnchor="middle"
-  >
-    {formatLabel(date)}
-  </SvgText>
+  <>
+    <Line
+      x1={x}
+      y1={config.BAR_HEIGHT + 4}
+      x2={x}
+      y2={config.BAR_HEIGHT - 2}
+      stroke={config.BAR_COLOR}
+      strokeWidth="1"
+      vectorEffect="non-scaling-stroke"
+    />
+    <SvgText
+      fill={config.LABEL_COLOR}
+      stroke="none"
+      fontSize={config.LABEL_FONT_SIZE}
+      fontWeight="normal"
+      x={x}
+      y={config.BAR_HEIGHT + 16}
+      textAnchor="middle"
+    >
+      {formatLabel(date)}
+    </SvgText>
+  </>
 );
 
 Label.propTypes = {
@@ -56,6 +67,7 @@ const XAxis = ({ availableWidth, minDate, maxDate }) => (
     {
       generateIntervals(minDate, maxDate).map((date, i) => (
         <Label
+          key={`${date}-${i}`} // eslint-disable-line react/no-array-index-key
           date={date}
           x={(i) * (availableWidth / config.X_AXIS_INTERVAL_COUNT)}
         />
