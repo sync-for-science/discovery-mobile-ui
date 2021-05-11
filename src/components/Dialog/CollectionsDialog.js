@@ -73,6 +73,9 @@ export const CollectionsDialogText = {
   },
 };
 
+const UNIQUE_ERROR = 'Collection name must be unique.'
+const LABEL_LENGTH_ERROR = 'Collection name must be at least 1 character'
+
 const CollectionsDialog = ({
   collectionId,
   collectionsDialogText,
@@ -86,6 +89,7 @@ const CollectionsDialog = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [showUniqueError, setShowUniqueError] = useState(false);
+  const [errorText, setErrorText] = useState('')
 
   const {
     title, description, errorDescription, submitButton, showTextInput, showCancelButton,
@@ -114,29 +118,37 @@ const CollectionsDialog = ({
     return !collectionsLabels.includes(text);
   };
 
+  const checkLength = (text) => text.length > 0
+
   const handleSubmit = (text) => {
-    if (
-      checkUniqueName({
-        text,
-        rename: collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME,
-        collectionLabel,
-      })
-    ) {
-      if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.CREATE) {
-        createCollectionAction(text);
-      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME) {
-        renameCollectionAction(collectionId, text);
-      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DUPLICATE) {
-        duplicateCollectionAction(collectionId, text);
-      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE) {
-        deleteCollectionAction(collectionId);
-      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR) {
+    if (checkLength(text)) {
+      if (
+        checkUniqueName({
+          text,
+          rename: collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME,
+          collectionLabel,
+        })
+      ) {
+        if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.CREATE) {
+          createCollectionAction(text);
+        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME) {
+          renameCollectionAction(collectionId, text);
+        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DUPLICATE) {
+          duplicateCollectionAction(collectionId, text);
+        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE) {
+          deleteCollectionAction(collectionId);
+        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR) {
+          setCollectionsDialogText(null);
+        }
         setCollectionsDialogText(null);
+        // setShowUniqueError(false);
+        setErrorText('')
+      } else {
+        setErrorText(UNIQUE_ERROR)
+        // setShowUniqueError(true);
       }
-      setCollectionsDialogText(null);
-      setShowUniqueError(false);
     } else {
-      setShowUniqueError(true);
+      setErrorText(LABEL_LENGTH_ERROR)
     }
   };
 
@@ -147,9 +159,9 @@ const CollectionsDialog = ({
         <Dialog.Description style={styles.description}>
           {description}
         </Dialog.Description>
-        {showUniqueError && (
+        {errorText && (
           <Dialog.Description style={styles.errorDescription}>
-            {errorDescription}
+            {errorText}
           </Dialog.Description>
         )}
         {showTextInput && (
