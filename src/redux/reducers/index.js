@@ -31,6 +31,41 @@ export const flattenedResourcesReducer = (state = preloadedResources, { type, pa
   }
 };
 
+const defaultAssociations = {
+  encounters: {},
+};
+
+export const associationsReducer = (state = defaultAssociations, { type, payload }) => {
+  switch (type) {
+    case actionTypes.CLEAR_PATIENT_DATA: {
+      return defaultAssociations;
+    }
+    case actionTypes.RESOURCE_BATCH: {
+      const encounters = {};
+      Object.entries(payload.resources).forEach(([id, resource]) => {
+        if (state[id]) {
+          console.warn(`resource ${id} of type ${resource.resourceType} already processed.`); // eslint-disable-line no-console
+        }
+        const encounterUrn = resource.encounter?.reference;
+        if (encounterUrn) {
+          const matches = encounterUrn.match(/(#|\/)(.+)/);
+          const encounterId = matches.pop();
+          if (encounterId) {
+            encounters[id] = encounterId;
+          }
+        }
+      });
+
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft.encounters = { ...state.encounters, ...encounters };
+      });
+    }
+    default:
+      return state;
+  }
+};
+
 const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
 
 const defaultDetailsPanelSortingState = {
