@@ -144,7 +144,7 @@ const CollectionsDialog = ({
     <View>
       <Dialog.Container visible>
         <Dialog.Title>{title}</Dialog.Title>
-        <Dialog.Description>
+        <Dialog.Description style={styles.description}>
           {description}
         </Dialog.Description>
         {showUniqueError && (
@@ -188,8 +188,11 @@ const mapDispatchToProps = {
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsDialog);
 
 const styles = StyleSheet.create({
+  description: {
+    color: Colors.darkgrey
+  },
   errorDescription: {
-    color: 'red',
+    color: Colors.destructive,
   },
   cancelButton: {
     color: Colors.darkgrey,
