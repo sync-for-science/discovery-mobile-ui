@@ -1,7 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { oneOf, func, shape } from 'prop-types';
+import {
+  oneOf, func, shape, bool,
+} from 'prop-types';
 import { connect } from 'react-redux';
 
 import BaseText from '../Generic/BaseText';
@@ -29,7 +31,7 @@ const SORTING_TEXT = {
   },
 };
 
-const SortingHeader = ({ sortingState, toggleSortingStateAction }) => {
+const SortingHeader = ({ sortingState, toggleSortingStateAction, hasMultipleSavedRecords }) => {
   const { activeSortField, sortDirections } = sortingState;
 
   const sortConfig = orderedSortFields.map((sortField) => ({
@@ -46,9 +48,10 @@ const SortingHeader = ({ sortingState, toggleSortingStateAction }) => {
             key={sortField}
             style={styles.button}
             onPress={() => toggleSortingStateAction(sortField)}
+            disabled={!hasMultipleSavedRecords && (sortField === activeSortField)}
           >
             <BaseText variant={isPicked ? 'title' : ''}>{SORTING_TEXT[sortField].label}</BaseText>
-            {isPicked && (
+            {isPicked && hasMultipleSavedRecords && (
               <Ionicons
                 name={sortDir === SORT_DESC ? 'arrow-down' : 'arrow-up'}
                 size={20}
@@ -74,6 +77,7 @@ SortingHeader.propTypes = {
     sortDirections: shape({}).isRequired,
   }).isRequired,
   toggleSortingStateAction: func.isRequired,
+  hasMultipleSavedRecords: bool.isRequired,
 };
 
 const mapDispatchToProps = {

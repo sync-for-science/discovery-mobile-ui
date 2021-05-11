@@ -25,6 +25,7 @@ const DetailsPanel = ({
   const { detailsPanelSortingState: sortingState } = collection;
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
   const hasSavedRecords = Object.entries(savedRecords).length > 0;
+  const hasMultipleSavedRecords = Object.entries(savedRecords).length > 1;
 
   const handlePressNoteIcon = () => {
     navigation.navigate('Notes');
@@ -79,6 +80,7 @@ const DetailsPanel = ({
         <>
           <SortingHeader
             sortingState={sortingState}
+            hasMultipleSavedRecords={hasMultipleSavedRecords}
           />
           <ScrollView>
             {displayAccordion()}
