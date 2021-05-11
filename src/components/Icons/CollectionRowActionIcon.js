@@ -45,20 +45,31 @@ const CollectionDialogText = {
   },
 };
 
-const CollectionDialog = ({
+const CollectionsDialog = ({
   collectionDialogText,
   setCollectionDialogText,
   showUniqueError,
   handleSubmit,
-  defaultValue,
+  collectionLabel,
 }) => {
   const [inputText, setInputText] = useState('');
   const {
     title, description, errorDescription, submitButton, showTextInput,
   } = collectionDialogText;
 
+  const getDefaultValue = () => {
+    if (collectionDialogText.useDupLabel) {
+      if (collectionDialogText.action === 'rename') {
+        return collectionLabel;
+      }
+      // collectionDialogText.action === 'duplicate'
+      return `${collectionLabel} copy`;
+    }
+    return '';
+  };
+
   useEffect(() => {
-    setInputText(defaultValue);
+    setInputText(getDefaultValue());
   }, []);
 
   return (
@@ -73,7 +84,9 @@ const CollectionDialog = ({
             {errorDescription}
           </Dialog.Description>
         )}
-        {showTextInput && <Dialog.Input defaultValue={defaultValue} onChangeText={setInputText} />}
+        {showTextInput && (
+          <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} />
+        )}
         <Dialog.Button label="Cancel" onPress={() => setCollectionDialogText(null)} />
         <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
       </Dialog.Container>
@@ -81,12 +94,12 @@ const CollectionDialog = ({
   );
 };
 
-CollectionDialog.propTypes = {
+CollectionsDialog.propTypes = {
   collectionDialogText: shape({}).isRequired,
   setCollectionDialogText: func.isRequired,
   showUniqueError: bool.isRequired,
   handleSubmit: func.isRequired,
-  defaultValue: string.isRequired,
+  collectionLabel: string.isRequired,
 };
 
 const CollectionRowActionIcon = ({
@@ -101,7 +114,13 @@ const CollectionRowActionIcon = ({
   const [collectionDialogText, setCollectionDialogText] = useState(null);
   const [showUniqueError, setShowUniqueError] = useState(false);
 
-  const checkUniqueName = (inputText) => (!collectionsLabels.includes(inputText));
+  const checkUniqueName = ({ inputText, rename, label }) => {
+    // if action is rename, new label can be same as old label
+    if (rename && (inputText === label)) {
+      return true;
+    }
+    return !collectionsLabels.includes(inputText);
+  };
 
   const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
 
@@ -132,7 +151,7 @@ const CollectionRowActionIcon = ({
   };
 
   const handleSubmit = (inputText) => {
-    if (checkUniqueName(inputText)) {
+    if (checkUniqueName({ inputText, rename: collectionDialogText.action === 'rename', collectionLabel })) {
       if (collectionDialogText.action === 'rename') {
         renameCollectionAction(collectionId, inputText);
       } if (collectionDialogText.action === 'duplicate') {
@@ -147,28 +166,18 @@ const CollectionRowActionIcon = ({
     }
   };
 
-  const getDefaultValue = () => {
-    if (collectionDialogText.useDupLabel) {
-      if (collectionDialogText.action === 'rename') {
-        return collectionLabel;
-      }
-      return `${collectionLabel} copy`;
-    }
-    return '';
-  };
-
   return (
     <View>
       <TouchableOpacity onPress={handlePress}>
         <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
       {collectionDialogText && (
-      <CollectionDialog
+      <CollectionsDialog
         collectionDialogText={collectionDialogText}
         setCollectionDialogText={setCollectionDialogText}
         showUniqueError={showUniqueError}
         handleSubmit={handleSubmit}
-        defaultValue={getDefaultValue()}
+        collectionLabel={collectionLabel}
       />
       )}
     </View>
