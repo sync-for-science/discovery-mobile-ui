@@ -6,6 +6,7 @@ import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-ex
 import { connect } from 'react-redux';
 import {
   arrayOf,
+  bool,
   func, number, string,
 } from 'prop-types';
 import Dialog from 'react-native-dialog';
@@ -13,6 +14,42 @@ import Dialog from 'react-native-dialog';
 import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
 import { collectionsCountSelector, collectionsLabelsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
+
+const CollectionDialog = ({
+  isVisibleDialog,
+  setIsVisibleDialog,
+  showUniqueError,
+  defaultValue,
+  handlePressDuplicate,
+}) => {
+  const [inputText, setInputText] = useState('');
+  return (
+    <View>
+      <Dialog.Container visible={isVisibleDialog}>
+        <Dialog.Title>Duplicate Collection</Dialog.Title>
+        <Dialog.Description>
+          Enter name for this new collection.
+        </Dialog.Description>
+        {showUniqueError && (
+        <Dialog.Description style={styles.errorDescription}>
+          Collection name must be unique.
+        </Dialog.Description>
+        )}
+        <Dialog.Input defaultValue={defaultValue} onChangeText={setInputText} />
+        <Dialog.Button label="Cancel" onPress={() => setIsVisibleDialog(false)} />
+        <Dialog.Button label="Duplicate" onPress={() => handlePressDuplicate(inputText)} />
+      </Dialog.Container>
+    </View>
+  );
+};
+
+CollectionDialog.propTypes = {
+  isVisibleDialog: bool.isRequired,
+  setIsVisibleDialog: func.isRequired,
+  showUniqueError: bool.isRequired,
+  defaultValue: string.isRequired,
+  handlePressDuplicate: func.isRequired,
+};
 
 const CollectionRowActionIcon = ({
   collectionId,
@@ -24,10 +61,9 @@ const CollectionRowActionIcon = ({
   collectionsLabels,
 }) => {
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
-  const [inputText, setInputText] = useState('');
   const [showUniqueError, setShowUniqueError] = useState(false);
 
-  const checkUniqueName = () => (!collectionsLabels.includes(inputText));
+  const checkUniqueName = (inputText) => (!collectionsLabels.includes(inputText));
 
   const renameAlert = () => Alert.prompt(
     'Rename Collection',
@@ -44,8 +80,6 @@ const CollectionRowActionIcon = ({
       },
     ],
   );
-
-  // console.log('collectionsLabels', collectionsLabels)
 
   const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
 
@@ -66,24 +100,6 @@ const CollectionRowActionIcon = ({
     ],
   );
 
-  // const duplicateAlert = () => Alert.prompt(
-  //   'Duplicate Collection',
-  //   'Enter name for this new collection.',
-  //   [
-  //     {
-  //       text: 'Cancel',
-  //       onPress: () => {},
-  //       style: 'cancel',
-  //     },
-  //     {
-  //       text: 'Duplicate',
-  //       onPress: (text) => duplicateCollectionAction(collectionId, text),
-  //     },
-  //   ],
-  //   'plain-text',
-  //   collectionLabel,
-  // );
-
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -98,7 +114,6 @@ const CollectionRowActionIcon = ({
         } else if (buttonIndex === 1) {
           renameAlert();
         } else if (buttonIndex === 2) {
-          setInputText(`${collectionLabel} copy`);
           setIsVisibleDialog(true);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
@@ -111,8 +126,8 @@ const CollectionRowActionIcon = ({
     );
   };
 
-  const handlePressDuplicate = () => {
-    if (checkUniqueName()) {
+  const handlePressDuplicate = (inputText) => {
+    if (checkUniqueName(inputText)) {
       duplicateCollectionAction(collectionId, inputText);
       setIsVisibleDialog(false);
       setShowUniqueError(false);
@@ -126,22 +141,13 @@ const CollectionRowActionIcon = ({
       <TouchableOpacity onPress={handlePress}>
         <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
-      <View>
-        <Dialog.Container visible={isVisibleDialog}>
-          <Dialog.Title>Duplicate Collection</Dialog.Title>
-          <Dialog.Description>
-            Enter name for this new collection.
-          </Dialog.Description>
-          {showUniqueError && (
-          <Dialog.Description style={styles.errorDescription}>
-            Collection name must be unique.
-          </Dialog.Description>
-          )}
-          <Dialog.Input defaultValue={inputText} onChangeText={setInputText} />
-          <Dialog.Button label="Cancel" onPress={() => setIsVisibleDialog(false)} />
-          <Dialog.Button label="Duplicate" onPress={handlePressDuplicate} />
-        </Dialog.Container>
-      </View>
+      <CollectionDialog
+        isVisibleDialog={isVisibleDialog}
+        setIsVisibleDialog={setIsVisibleDialog}
+        showUniqueError={showUniqueError}
+        defaultValue={`${collectionLabel} copy`}
+        handlePressDuplicate={handlePressDuplicate}
+      />
     </View>
   );
 };
