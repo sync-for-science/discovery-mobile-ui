@@ -163,15 +163,20 @@ const CollectionsDialog = ({
 };
 
 CollectionsDialog.propTypes = {
-  collectionId: string.isRequired,
   collectionsDialogText: shape({}).isRequired,
   setCollectionsDialogText: func.isRequired,
-  collectionLabel: string.isRequired,
+  collectionId: string,
+  collectionLabel: string,
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
   duplicateCollectionAction: func.isRequired,
   collectionsLabels: arrayOf(string.isRequired).isRequired,
   createCollectionAction: func.isRequired,
+};
+
+CollectionsDialog.defaultProps = {
+  collectionId: null,
+  collectionLabel: null,
 };
 
 const mapStateToProps = (state) => ({
@@ -189,7 +194,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionsDialog);
 
 const styles = StyleSheet.create({
   description: {
-    color: Colors.darkgrey
+    color: Colors.darkgrey,
   },
   errorDescription: {
     color: Colors.destructive,
