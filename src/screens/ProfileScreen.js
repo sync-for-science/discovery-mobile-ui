@@ -10,8 +10,8 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
-import Demographics from '../components/Demographics/Demographics';
-import UserInfo from '../components/UserInfo/UserInfo';
+import UserInfo from '../components/Profile/UserInfo';
+import Demographics from '../components/Profile/Demographics';
 
 const ProfileScreen = ({
   clearAuthAction, clearPatientDataAction,
