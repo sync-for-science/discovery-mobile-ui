@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  TouchableOpacity, ActionSheetIOS, View, Alert, StyleSheet,
+  TouchableOpacity, ActionSheetIOS, View, StyleSheet,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
@@ -22,6 +22,7 @@ const CollectionDialogText = {
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
     submitButton: 'Rename',
+    showCancelButton: true,
     showTextInput: true,
     useDupLabel: true,
   },
@@ -31,6 +32,7 @@ const CollectionDialogText = {
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
     submitButton: 'Duplicate',
+    showCancelButton: true,
     showTextInput: true,
     useDupLabel: true,
   },
@@ -40,6 +42,17 @@ const CollectionDialogText = {
     description: 'Are you sure you want to delete this collection?',
     errorDescription: null,
     submitButton: 'Delete',
+    showCancelButton: true,
+    showTextInput: false,
+    useDupLabel: false,
+  },
+  deleteError: {
+    action: 'deleteError',
+    title: 'Delete Error',
+    description: 'Cannot delete last collection.',
+    errorDescription: null,
+    submitButton: 'OK',
+    showCancelButton: false,
     showTextInput: false,
     useDupLabel: false,
   },
@@ -54,7 +67,7 @@ const CollectionsDialog = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const {
-    title, description, errorDescription, submitButton, showTextInput,
+    title, description, errorDescription, submitButton, showTextInput, showCancelButton,
   } = collectionDialogText;
 
   const getDefaultValue = () => {
@@ -87,7 +100,7 @@ const CollectionsDialog = ({
         {showTextInput && (
           <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} />
         )}
-        <Dialog.Button label="Cancel" onPress={() => setCollectionDialogText(null)} />
+        {showCancelButton && <Dialog.Button label="Cancel" onPress={() => setCollectionDialogText(null)} />}
         <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
       </Dialog.Container>
     </View>
@@ -122,8 +135,6 @@ const CollectionRowActionIcon = ({
     return !collectionsLabels.includes(inputText);
   };
 
-  const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
-
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
@@ -141,7 +152,7 @@ const CollectionRowActionIcon = ({
           setCollectionDialogText(CollectionDialogText.duplicate);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
-            deleteErrorAlert();
+            setCollectionDialogText(CollectionDialogText.deleteError);
           } else {
             setCollectionDialogText(CollectionDialogText.delete);
           }
@@ -158,6 +169,8 @@ const CollectionRowActionIcon = ({
         duplicateCollectionAction(collectionId, inputText);
       } if (collectionDialogText.action === 'delete') {
         deleteCollectionAction(collectionId);
+      } if (collectionDialogText.action === 'deleteError') {
+        setCollectionDialogText(null);
       }
       setCollectionDialogText(null);
       setShowUniqueError(false);
