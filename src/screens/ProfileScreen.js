@@ -12,6 +12,7 @@ import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
 import UserInfo from '../components/Profile/UserInfo';
 import Demographics from '../components/Profile/Demographics';
+import Data from '../components/Profile/Data';
 
 const ProfileScreen = ({
   clearAuthAction, clearPatientDataAction,
@@ -35,6 +36,7 @@ const ProfileScreen = ({
       <UserInfo />
       <ScrollView style={styles.scrollContainer}>
         <Demographics />
+        <Data />
       </ScrollView>
       <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
