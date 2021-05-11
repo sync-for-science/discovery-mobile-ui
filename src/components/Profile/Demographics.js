@@ -113,8 +113,6 @@ const styles = StyleSheet.create({
   demographicsRow: {
     padding: 10,
     backgroundColor: 'white',
-    borderBottomColor: Colors.secondary,
-    borderBottomWidth: 1,
   },
   demographicsData: {
     color: Colors.darkgrey,
