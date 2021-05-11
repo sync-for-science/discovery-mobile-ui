@@ -10,7 +10,7 @@ import {
 
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import CollectionsDialog, { COLLECTION_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
+import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
 
 const CollectionRowActionIcon = ({
   collectionId,
@@ -24,9 +24,9 @@ const CollectionRowActionIcon = ({
       {
         options: [
           'Cancel',
-          CollectionsDialogText[COLLECTION_ACTIONS.RENAME].title,
-          CollectionsDialogText[COLLECTION_ACTIONS.DUPLICATE].title,
-          CollectionsDialogText[COLLECTION_ACTIONS.DELETE].title,
+          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME].title,
+          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
+          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE].title,
         ],
         destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
@@ -36,14 +36,16 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.RENAME]);
+          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
         } else if (buttonIndex === 2) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DUPLICATE]);
+          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
-            setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DELETE_ERROR]);
+            setCollectionsDialogText(
+              CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR],
+            );
           } else {
-            setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DELETE]);
+            setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE]);
           }
         }
       },

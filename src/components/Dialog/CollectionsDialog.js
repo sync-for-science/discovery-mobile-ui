@@ -12,7 +12,7 @@ import {
 import { collectionsLabelsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
-export const COLLECTION_ACTIONS = {
+export const COLLECTIONS_DIALOG_ACTIONS = {
   CREATE: 'CREATE',
   RENAME: 'RENAME',
   DUPLICATE: 'DUPLICATE',
@@ -21,8 +21,8 @@ export const COLLECTION_ACTIONS = {
 };
 
 export const CollectionsDialogText = {
-  [COLLECTION_ACTIONS.CREATE]: {
-    action: COLLECTION_ACTIONS.CREATE,
+  [COLLECTIONS_DIALOG_ACTIONS.CREATE]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.CREATE,
     title: 'Create Collection',
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
@@ -31,8 +31,8 @@ export const CollectionsDialogText = {
     showTextInput: true,
     useDupLabel: false,
   },
-  [COLLECTION_ACTIONS.RENAME]: {
-    action: COLLECTION_ACTIONS.RENAME,
+  [COLLECTIONS_DIALOG_ACTIONS.RENAME]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.RENAME,
     title: 'Rename Collection',
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
@@ -41,8 +41,8 @@ export const CollectionsDialogText = {
     showTextInput: true,
     useDupLabel: true,
   },
-  [COLLECTION_ACTIONS.DUPLICATE]: {
-    action: COLLECTION_ACTIONS.DUPLICATE,
+  [COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.DUPLICATE,
     title: 'Duplicate Collection',
     description: 'Enter name for this new collection.',
     errorDescription: 'Collection name must be unique.',
@@ -51,8 +51,8 @@ export const CollectionsDialogText = {
     showTextInput: true,
     useDupLabel: true,
   },
-  [COLLECTION_ACTIONS.DELETE]: {
-    action: COLLECTION_ACTIONS.DELETE,
+  [COLLECTIONS_DIALOG_ACTIONS.DELETE]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.DELETE,
     title: 'Delete Collection',
     description: 'Are you sure you want to delete this collection?',
     errorDescription: null,
@@ -61,8 +61,8 @@ export const CollectionsDialogText = {
     showTextInput: false,
     useDupLabel: false,
   },
-  [COLLECTION_ACTIONS.DELETE_ERROR]: {
-    action: COLLECTION_ACTIONS.DELETE_ERROR,
+  [COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR,
     title: 'Delete Error',
     description: 'Cannot delete last collection.',
     errorDescription: null,
@@ -93,7 +93,7 @@ const CollectionsDialog = ({
 
   const getDefaultValue = () => {
     if (collectionsDialogText.useDupLabel) {
-      if (collectionsDialogText.action === COLLECTION_ACTIONS.RENAME) {
+      if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME) {
         return collectionLabel;
       }
       // collectionsDialogText.action === 'duplicate'
@@ -118,19 +118,19 @@ const CollectionsDialog = ({
     if (
       checkUniqueName({
         text,
-        rename: collectionsDialogText.action === COLLECTION_ACTIONS.RENAME,
+        rename: collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME,
         collectionLabel,
       })
     ) {
-      if (collectionsDialogText.action === COLLECTION_ACTIONS.CREATE) {
+      if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.CREATE) {
         createCollectionAction(text);
-      } if (collectionsDialogText.action === COLLECTION_ACTIONS.RENAME) {
+      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME) {
         renameCollectionAction(collectionId, text);
-      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DUPLICATE) {
+      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DUPLICATE) {
         duplicateCollectionAction(collectionId, text);
-      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DELETE) {
+      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE) {
         deleteCollectionAction(collectionId);
-      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DELETE_ERROR) {
+      } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR) {
         setCollectionsDialogText(null);
       }
       setCollectionsDialogText(null);

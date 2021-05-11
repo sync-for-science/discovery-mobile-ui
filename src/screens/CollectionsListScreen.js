@@ -15,7 +15,7 @@ import { clearAuth } from '../features/auth/authSlice';
 import Colors from '../constants/Colors';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
 import { actionTypes } from '../redux/action-types';
-import CollectionsDialog, { COLLECTION_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
+import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
 
 const CollectionsListScreen = ({
   navigation,
@@ -26,7 +26,7 @@ const CollectionsListScreen = ({
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
 
   const handleNewCollectionPress = () => {
-    setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.CREATE]);
+    setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
   };
 
   const clearData = () => {
