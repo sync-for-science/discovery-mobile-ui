@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import {
-  TouchableOpacity, ActionSheetIOS, View, Alert,
+  TouchableOpacity, ActionSheetIOS, View, Alert, StyleSheet,
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 import {
+  arrayOf,
   func, number, string,
 } from 'prop-types';
 import Dialog from 'react-native-dialog';
 
 import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
-import { collectionsCountSelector } from '../../redux/selectors';
+import { collectionsCountSelector, collectionsLabelsSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 
 const CollectionRowActionIcon = ({
@@ -20,9 +21,14 @@ const CollectionRowActionIcon = ({
   deleteCollectionAction,
   renameCollectionAction,
   duplicateCollectionAction,
+  collectionsLabels,
 }) => {
   const [isVisibleDialog, setIsVisibleDialog] = useState(false);
   const [inputText, setInputText] = useState('');
+  const [showUniqueError, setShowUniqueError] = useState(false);
+
+  const checkUniqueName = () => (!collectionsLabels.includes(inputText));
+
   const renameAlert = () => Alert.prompt(
     'Rename Collection',
     'Enter new name for this collection.',
@@ -38,6 +44,8 @@ const CollectionRowActionIcon = ({
       },
     ],
   );
+
+  // console.log('collectionsLabels', collectionsLabels)
 
   const deleteErrorAlert = () => Alert.alert('Delete Error', 'Cannot delete last collection.');
 
@@ -104,8 +112,13 @@ const CollectionRowActionIcon = ({
   };
 
   const handlePressDuplicate = () => {
-    duplicateCollectionAction(collectionId, inputText);
-    setIsVisibleDialog(false);
+    if (checkUniqueName()) {
+      duplicateCollectionAction(collectionId, inputText);
+      setIsVisibleDialog(false);
+      setShowUniqueError(false);
+    } else {
+      setShowUniqueError(true);
+    }
   };
 
   return (
@@ -119,6 +132,11 @@ const CollectionRowActionIcon = ({
           <Dialog.Description>
             Enter name for this new collection.
           </Dialog.Description>
+          {showUniqueError && (
+          <Dialog.Description style={styles.errorDescription}>
+            Collection name must be unique.
+          </Dialog.Description>
+          )}
           <Dialog.Input defaultValue={inputText} onChangeText={setInputText} />
           <Dialog.Button label="Cancel" onPress={() => setIsVisibleDialog(false)} />
           <Dialog.Button label="Duplicate" onPress={handlePressDuplicate} />
@@ -135,10 +153,12 @@ CollectionRowActionIcon.propTypes = {
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
   duplicateCollectionAction: func.isRequired,
+  collectionsLabels: arrayOf(string.isRequired).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collectionsCount: collectionsCountSelector(state),
+  collectionsLabels: collectionsLabelsSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -148,3 +168,9 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionRowActionIcon);
+
+const styles = StyleSheet.create({
+  errorDescription: {
+    color: 'red',
+  },
+});
