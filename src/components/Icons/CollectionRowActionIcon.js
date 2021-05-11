@@ -10,23 +10,23 @@ import {
 
 import { collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import CollectionsDialog, { COLLECTION_ACTIONS, CollectionDialogText } from '../Dialog/CollectionsDialog';
+import CollectionsDialog, { COLLECTION_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
 
 const CollectionRowActionIcon = ({
   collectionId,
   collectionLabel,
   collectionsCount,
 }) => {
-  const [collectionDialogText, setCollectionDialogText] = useState(null);
+  const [collectionsDialogText, setCollectionsDialogText] = useState(null);
 
   const handlePress = () => {
     ActionSheetIOS.showActionSheetWithOptions(
       {
         options: [
           'Cancel',
-          CollectionDialogText[COLLECTION_ACTIONS.RENAME].title,
-          CollectionDialogText[COLLECTION_ACTIONS.DUPLICATE].title,
-          CollectionDialogText[COLLECTION_ACTIONS.DELETE].title,
+          CollectionsDialogText[COLLECTION_ACTIONS.RENAME].title,
+          CollectionsDialogText[COLLECTION_ACTIONS.DUPLICATE].title,
+          CollectionsDialogText[COLLECTION_ACTIONS.DELETE].title,
         ],
         destructiveButtonIndex: 3,
         cancelButtonIndex: 0,
@@ -36,14 +36,14 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.RENAME]);
+          setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.RENAME]);
         } else if (buttonIndex === 2) {
-          setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DUPLICATE]);
+          setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DUPLICATE]);
         } else if (buttonIndex === 3) {
           if (collectionsCount <= 1) {
-            setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DELETE_ERROR]);
+            setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DELETE_ERROR]);
           } else {
-            setCollectionDialogText(CollectionDialogText[COLLECTION_ACTIONS.DELETE]);
+            setCollectionsDialogText(CollectionsDialogText[COLLECTION_ACTIONS.DELETE]);
           }
         }
       },
@@ -55,12 +55,12 @@ const CollectionRowActionIcon = ({
       <TouchableOpacity onPress={handlePress}>
         <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
-      {collectionDialogText && (
+      {collectionsDialogText && (
       <CollectionsDialog
         collectionId={collectionId}
         collectionLabel={collectionLabel}
-        collectionDialogText={collectionDialogText}
-        setCollectionDialogText={setCollectionDialogText}
+        collectionsDialogText={collectionsDialogText}
+        setCollectionsDialogText={setCollectionsDialogText}
       />
       )}
     </View>

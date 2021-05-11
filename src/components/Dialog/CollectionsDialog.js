@@ -6,17 +6,31 @@ import {
   func, shape, string, arrayOf,
 } from 'prop-types';
 
-import { deleteCollection, renameCollection, duplicateCollection } from '../../redux/action-creators';
+import {
+  createCollection, deleteCollection, renameCollection, duplicateCollection,
+} from '../../redux/action-creators';
 import { collectionsLabelsSelector } from '../../redux/selectors';
+import Colors from '../../constants/Colors';
 
 export const COLLECTION_ACTIONS = {
+  CREATE: 'CREATE',
   RENAME: 'RENAME',
   DUPLICATE: 'DUPLICATE',
   DELETE: 'DELETE',
   DELETE_ERROR: 'DELETE_ERROR',
 };
 
-export const CollectionDialogText = {
+export const CollectionsDialogText = {
+  [COLLECTION_ACTIONS.CREATE]: {
+    action: COLLECTION_ACTIONS.CREATE,
+    title: 'Create Collection',
+    description: 'Enter name for this new collection.',
+    errorDescription: 'Collection name must be unique.',
+    submitButton: 'Submit',
+    showCancelButton: true,
+    showTextInput: true,
+    useDupLabel: false,
+  },
   [COLLECTION_ACTIONS.RENAME]: {
     action: COLLECTION_ACTIONS.RENAME,
     title: 'Rename Collection',
@@ -61,27 +75,28 @@ export const CollectionDialogText = {
 
 const CollectionsDialog = ({
   collectionId,
-  collectionDialogText,
-  setCollectionDialogText,
+  collectionsDialogText,
+  setCollectionsDialogText,
   collectionLabel,
   deleteCollectionAction,
   renameCollectionAction,
   duplicateCollectionAction,
   collectionsLabels,
+  createCollectionAction,
 }) => {
   const [inputText, setInputText] = useState('');
   const [showUniqueError, setShowUniqueError] = useState(false);
 
   const {
     title, description, errorDescription, submitButton, showTextInput, showCancelButton,
-  } = collectionDialogText;
+  } = collectionsDialogText;
 
   const getDefaultValue = () => {
-    if (collectionDialogText.useDupLabel) {
-      if (collectionDialogText.action === COLLECTION_ACTIONS.RENAME) {
+    if (collectionsDialogText.useDupLabel) {
+      if (collectionsDialogText.action === COLLECTION_ACTIONS.RENAME) {
         return collectionLabel;
       }
-      // collectionDialogText.action === 'duplicate'
+      // collectionsDialogText.action === 'duplicate'
       return `${collectionLabel} copy`;
     }
     return '';
@@ -103,20 +118,22 @@ const CollectionsDialog = ({
     if (
       checkUniqueName({
         text,
-        rename: collectionDialogText.action === COLLECTION_ACTIONS.RENAME,
+        rename: collectionsDialogText.action === COLLECTION_ACTIONS.RENAME,
         collectionLabel,
       })
     ) {
-      if (collectionDialogText.action === COLLECTION_ACTIONS.RENAME) {
+      if (collectionsDialogText.action === COLLECTION_ACTIONS.CREATE) {
+        createCollectionAction(text);
+      } if (collectionsDialogText.action === COLLECTION_ACTIONS.RENAME) {
         renameCollectionAction(collectionId, text);
-      } if (collectionDialogText.action === COLLECTION_ACTIONS.DUPLICATE) {
+      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DUPLICATE) {
         duplicateCollectionAction(collectionId, text);
-      } if (collectionDialogText.action === COLLECTION_ACTIONS.DELETE) {
+      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DELETE) {
         deleteCollectionAction(collectionId);
-      } if (collectionDialogText.action === COLLECTION_ACTIONS.DELETE_ERROR) {
-        setCollectionDialogText(null);
+      } if (collectionsDialogText.action === COLLECTION_ACTIONS.DELETE_ERROR) {
+        setCollectionsDialogText(null);
       }
-      setCollectionDialogText(null);
+      setCollectionsDialogText(null);
       setShowUniqueError(false);
     } else {
       setShowUniqueError(true);
@@ -138,7 +155,7 @@ const CollectionsDialog = ({
         {showTextInput && (
           <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} />
         )}
-        {showCancelButton && <Dialog.Button label="Cancel" onPress={() => setCollectionDialogText(null)} />}
+        {showCancelButton && <Dialog.Button style={styles.cancelButton} label="Cancel" onPress={() => setCollectionsDialogText(null)} />}
         <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
       </Dialog.Container>
     </View>
@@ -147,13 +164,14 @@ const CollectionsDialog = ({
 
 CollectionsDialog.propTypes = {
   collectionId: string.isRequired,
-  collectionDialogText: shape({}).isRequired,
-  setCollectionDialogText: func.isRequired,
+  collectionsDialogText: shape({}).isRequired,
+  setCollectionsDialogText: func.isRequired,
   collectionLabel: string.isRequired,
   deleteCollectionAction: func.isRequired,
   renameCollectionAction: func.isRequired,
   duplicateCollectionAction: func.isRequired,
   collectionsLabels: arrayOf(string.isRequired).isRequired,
+  createCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -164,7 +182,7 @@ const mapDispatchToProps = {
   deleteCollectionAction: deleteCollection,
   renameCollectionAction: renameCollection,
   duplicateCollectionAction: duplicateCollection,
-
+  createCollectionAction: createCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionsDialog);
@@ -172,5 +190,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionsDialog);
 const styles = StyleSheet.create({
   errorDescription: {
     color: 'red',
+  },
+  cancelButton: {
+    color: Colors.darkgrey,
   },
 });
