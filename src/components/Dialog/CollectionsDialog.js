@@ -104,44 +104,60 @@ const CollectionsDialog = ({
     setInputText(getDefaultValue());
   }, []);
 
-  const checkUniqueName = ({ text, rename, collectionLabel: label }) => {
+  const isUniqueName = ({ text, isRename, label }) => {
     // if action is rename, new label can be same as old label
-    if (rename && (text === label)) {
+    if (isRename && (text === label)) {
       return true;
     }
     return !collectionsLabels.includes(text);
   };
 
-  const checkLength = (text) => text.length > 0;
+  const hasMinLength = (text) => text.length > 0;
+
+  const hasInputErrors = ({ text, isRename, label }) => {
+    if (!hasMinLength(text)) {
+      setErrorText(LABEL_LENGTH_ERROR);
+      return true;
+    }
+    if (!isUniqueName({ text, isRename, label })) {
+      setErrorText(UNIQUE_ERROR);
+      return true;
+    }
+    return false;
+  };
 
   const handleSubmit = (text) => {
-    if (checkLength(text)) {
-      if (
-        checkUniqueName({
-          text,
-          rename: collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME,
-          collectionLabel,
-        })
-      ) {
-        if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.CREATE) {
-          createCollectionAction(text);
-        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.RENAME) {
-          renameCollectionAction(collectionId, text);
-        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DUPLICATE) {
-          duplicateCollectionAction(collectionId, text);
-        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE) {
-          deleteCollectionAction(collectionId);
-        } if (collectionsDialogText.action === COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR) {
-          setCollectionsDialogText(null);
+    switch (collectionsDialogText.action) {
+      case COLLECTIONS_DIALOG_ACTIONS.CREATE:
+        if (hasInputErrors({ text, isRename: false, label: collectionLabel })) {
+          return;
         }
+        createCollectionAction(text);
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.RENAME:
+        if (hasInputErrors({ text, isRename: true, label: collectionLabel })) {
+          return;
+        }
+        renameCollectionAction(collectionId, text);
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.DUPLICATE:
+        if (hasInputErrors({ text, isRename: false, label: collectionLabel })) {
+          return;
+        }
+        duplicateCollectionAction(collectionId, text);
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.DELETE:
+        deleteCollectionAction(collectionId);
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR:
         setCollectionsDialogText(null);
-        setErrorText('');
-      } else {
-        setErrorText(UNIQUE_ERROR);
-      }
-    } else {
-      setErrorText(LABEL_LENGTH_ERROR);
+        break;
+      default:
+        setCollectionsDialogText(null);
+        break;
     }
+    setCollectionsDialogText(null);
+    setErrorText('');
   };
 
   return (
