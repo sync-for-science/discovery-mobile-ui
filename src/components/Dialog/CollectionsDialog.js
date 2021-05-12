@@ -106,10 +106,10 @@ const CollectionsDialog = ({
 
   const isUniqueName = ({ text, isRename, label }) => {
     // if action is rename, new label can be same as old label
-    if (isRename && (text === label)) {
+    if (isRename && (text.toLowerCase() === label.toLowerCase())) {
       return true;
     }
-    return !collectionsLabels.includes(text);
+    return !collectionsLabels.includes(text.toLowerCase());
   };
 
   const hasMinLength = (text) => text.length > 0;

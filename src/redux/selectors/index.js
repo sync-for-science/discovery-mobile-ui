@@ -645,5 +645,5 @@ export const collectionNotesSelector = createSelector(
 export const collectionsLabelsSelector = createSelector(
   [collectionsSelector],
   (collections) => values(collections)
-    .reduce((acc, { label }) => { acc.push(label); return acc; }, []),
+    .reduce((acc, { label }) => { acc.push(label.toLowerCase()); return acc; }, []),
 );
