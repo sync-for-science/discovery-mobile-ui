@@ -173,7 +173,7 @@ const CollectionsDialog = ({
           </Dialog.Description>
         )}
         {showTextInput && (
-          <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} />
+          <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} autoFocus />
         )}
         {showCancelButton && <Dialog.Button style={styles.cancelButton} label="Cancel" onPress={() => setCollectionsDialogText(null)} />}
         <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
