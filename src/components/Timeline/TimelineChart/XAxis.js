@@ -1,29 +1,32 @@
 import React from 'react';
 import { instanceOf, number } from 'prop-types';
 import { Line, Text as SvgText } from 'react-native-svg';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 
 import * as config from './config';
 
-const formatLabel = (date) => {
+const formatLabel = (date, intervalInDays) => {
   if (date) {
+    if (intervalInDays < 365) {
+      return format(date, 'MM/dd/yy');
+    }
     return format(date, 'yyyy/MM');
   }
   return '';
 };
 
-const generateIntervals = (minDate, maxDate) => {
+const generateIntervals = (minDate, maxDate, hatchCount) => {
   const dateArray = [];
   if (minDate && maxDate) {
-    const interval = (maxDate - minDate) / (config.X_AXIS_INTERVAL_COUNT);
-    for (let i = 0; i <= config.X_AXIS_INTERVAL_COUNT; i += 1) {
+    const interval = (maxDate - minDate) / hatchCount;
+    for (let i = 0; i <= hatchCount; i += 1) {
       dateArray.push(new Date(minDate.getTime() + (i * interval)));
     }
   }
   return dateArray;
 };
 
-const Label = ({ x, date }) => (
+const Label = ({ x, date, intervalInDays }) => (
   <>
     <Line
       x1={x}
@@ -43,7 +46,7 @@ const Label = ({ x, date }) => (
       y={config.BAR_HEIGHT + 16}
       textAnchor="middle"
     >
-      {formatLabel(date)}
+      {formatLabel(date, intervalInDays)}
     </SvgText>
   </>
 );
@@ -51,30 +54,36 @@ const Label = ({ x, date }) => (
 Label.propTypes = {
   date: instanceOf(Date).isRequired,
   x: number.isRequired,
+  intervalInDays: number.isRequired,
 };
 
-const XAxis = ({ availableWidth, minDate, maxDate }) => (
-  <>
-    <Line
-      x1={0}
-      y1={config.BAR_HEIGHT + 2}
-      x2={availableWidth}
-      y2={config.BAR_HEIGHT + 2}
-      stroke={config.BAR_COLOR}
-      strokeWidth="1"
-      vectorEffect="non-scaling-stroke"
-    />
-    {
-      generateIntervals(minDate, maxDate).map((date, i) => (
-        <Label
-          key={`${date}-${i}`} // eslint-disable-line react/no-array-index-key
-          date={date}
-          x={(i) * (availableWidth / config.X_AXIS_INTERVAL_COUNT)}
-        />
-      ))
-    }
-  </>
-);
+const XAxis = ({ availableWidth, minDate, maxDate }) => {
+  const intervalInDays = Math.max(1, (maxDate && minDate) ? differenceInDays(maxDate, minDate) : 1);
+  const hatchCount = Math.min(intervalInDays, config.X_AXIS_INTERVAL_COUNT);
+  return (
+    <>
+      <Line
+        x1={0}
+        y1={config.BAR_HEIGHT + 2}
+        x2={availableWidth}
+        y2={config.BAR_HEIGHT + 2}
+        stroke={config.BAR_COLOR}
+        strokeWidth="1"
+        vectorEffect="non-scaling-stroke"
+      />
+      {
+        generateIntervals(minDate, maxDate, hatchCount).map((date, i) => (
+          <Label
+            key={`${date}-${i}`} // eslint-disable-line react/no-array-index-key
+            date={date}
+            x={(i) * (availableWidth / hatchCount)}
+            intervalInDays={intervalInDays}
+          />
+        ))
+      }
+    </>
+  );
+};
 
 XAxis.propTypes = {
   availableWidth: number.isRequired,
