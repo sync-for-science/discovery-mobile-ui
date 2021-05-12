@@ -127,24 +127,25 @@ const CollectionsDialog = ({
   };
 
   const handleSubmit = (text) => {
+    const trimmedText = text.trim();
     switch (collectionsDialogText.action) {
       case COLLECTIONS_DIALOG_ACTIONS.CREATE:
-        if (hasInputErrors({ text, isRename: false, label: collectionLabel })) {
+        if (hasInputErrors({ text: trimmedText, isRename: false, label: collectionLabel })) {
           return;
         }
-        createCollectionAction(text);
+        createCollectionAction(trimmedText);
         break;
       case COLLECTIONS_DIALOG_ACTIONS.RENAME:
-        if (hasInputErrors({ text, isRename: true, label: collectionLabel })) {
+        if (hasInputErrors({ text: trimmedText, isRename: true, label: collectionLabel })) {
           return;
         }
-        renameCollectionAction(collectionId, text);
+        renameCollectionAction(collectionId, trimmedText);
         break;
       case COLLECTIONS_DIALOG_ACTIONS.DUPLICATE:
-        if (hasInputErrors({ text, isRename: false, label: collectionLabel })) {
+        if (hasInputErrors({ text: trimmedText, isRename: false, label: collectionLabel })) {
           return;
         }
-        duplicateCollectionAction(collectionId, text);
+        duplicateCollectionAction(collectionId, trimmedText);
         break;
       case COLLECTIONS_DIALOG_ACTIONS.DELETE:
         deleteCollectionAction(collectionId);
