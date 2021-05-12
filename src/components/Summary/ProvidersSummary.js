@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
+import Colors from '../../constants/Colors';
 
 const formatDate = (date) => {
   if (date) {
@@ -19,22 +20,21 @@ const formatDate = (date) => {
   return '';
 };
 
-const ProviderRow = ({ name, items }) => {
+const ProviderRow = ({ label, items }) => {
   const oldest = items[0];
   const latest = items.slice(-1)[0];
-
   return (
-    <View style={styles.providerTypeRow}>
-      <Text style={styles.providerCount}>{items.length}</Text>
-      <Text style={styles.providerName}>{name}</Text>
-      <Text style={styles.oldest}>{formatDate(oldest?.timelineDate)}</Text>
-      <Text style={styles.latest}>{formatDate(latest?.timelineDate)}</Text>
+    <View style={styles.resourceTypeRow}>
+      <Text style={styles.resourceCount}>{items.length}</Text>
+      <Text style={styles.resourceLabel}>{label}</Text>
+      <Text style={styles.resourceDate}>{formatDate(oldest.timelineDate)}</Text>
+      <Text style={styles.resourceDate}>{formatDate(latest.timelineDate)}</Text>
     </View>
   );
 };
 
 ProviderRow.propTypes = {
-  name: string.isRequired,
+  label: string.isRequired,
   items: arrayOf(shape({})).isRequired,
 };
 
@@ -44,16 +44,20 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
       emphasizeProviders
     />
     <ScrollView style={styles.scrollContainer}>
-      <View style={styles.providerTypeContainer}>
-        {providers.map(
-          ({ id, name }) => (
-            <ProviderRow
-              key={name}
-              name={name}
-              items={allResourcesByProvider[id]}
-            />
-          ),
-        )}
+      <View style={styles.resourceTypeContainer}>
+        <View style={styles.resourceTypeRow}>
+          <Text style={styles.resourceCount} />
+          <Text style={styles.resourceLabel} />
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
+          <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
+        </View>
+        {providers.map(({ id, name }) => (
+          <ProviderRow
+            key={name}
+            label={name}
+            items={allResourcesByProvider[id]}
+          />
+        ))}
       </View>
     </ScrollView>
   </View>
@@ -84,11 +88,11 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
   },
-  providerTypeContainer: {
+  resourceTypeContainer: {
     alignItems: 'center',
     width: '100%',
   },
-  providerTypeRow: {
+  resourceTypeRow: {
     width: '100%',
     flex: 1,
     flexDirection: 'row',
@@ -98,20 +102,27 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomColor: 'lightgray',
     borderBottomWidth: 1,
+
   },
-  providerCount: {
-    flex: 1,
-    textAlign: 'right',
-    paddingRight: 8,
+  tableHeading: {
+    color: Colors.secondary,
+    fontSize: 12,
+    alignSelf: 'flex-end',
   },
-  providerName: {
+  resourceCount: {
     alignSelf: 'flex-start',
+    textAlign: 'right',
+    paddingRight: 10,
+    flex: 1,
+  },
+  resourceLabel: {
+    alignSelf: 'flex-start',
+    fontSize: 12,
     flex: 4,
   },
-  oldest: {
-    flex: 2,
-  },
-  latest: {
+  resourceDate: {
+    alignSelf: 'flex-end',
+    fontSize: 11,
     flex: 2,
   },
 });
