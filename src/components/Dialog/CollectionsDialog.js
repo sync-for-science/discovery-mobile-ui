@@ -160,6 +160,13 @@ const CollectionsDialog = ({
     setErrorText('');
   };
 
+  const handleOnChange = (text) => {
+    if (errorText) {
+      setErrorText(false);
+    }
+    setInputText(text);
+  };
+
   return (
     <View>
       <Dialog.Container visible>
@@ -173,7 +180,11 @@ const CollectionsDialog = ({
           </Dialog.Description>
         )}
         {showTextInput && (
-          <Dialog.Input defaultValue={getDefaultValue()} onChangeText={setInputText} autoFocus />
+          <Dialog.Input
+            defaultValue={getDefaultValue()}
+            onChangeText={(text) => handleOnChange(text)}
+            autoFocus
+          />
         )}
         {showCancelButton && <Dialog.Button style={styles.cancelButton} label="Cancel" onPress={() => setCollectionsDialogText(null)} />}
         <Dialog.Button label={submitButton} onPress={() => handleSubmit(inputText)} />
