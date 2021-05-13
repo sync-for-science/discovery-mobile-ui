@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
+  associationsReducer,
   collectionsReducer,
   activeCollectionIdReducer,
 } from './reducers';
@@ -21,6 +22,7 @@ const createStore = () => {
   const rootReducer = combineReducers({
     auth: authReducer,
     resources: flattenedResourcesReducer,
+    associations: associationsReducer,
     activeCollectionId: activeCollectionIdReducer,
     collections: collectionsReducer,
   });

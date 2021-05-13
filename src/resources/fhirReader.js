@@ -79,10 +79,11 @@ export const getResourceDate = (resource) => (
   resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
 );
 
-export const formatDate = (date, includeTime = false) => {
-  const dateFormat = includeTime ? UI_DATE_FORMAT_LONG : UI_DATE_FORMAT;
-  return date ? format(new Date(date), dateFormat) : null;
-};
+// TODO: Ensure these always receive a Date or empty value, and perform Date(...) casting in caller?
+export const formatDate = (date) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
+
+export const formatDateTime = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_LONG) : '');
+
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
 
 export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display;
@@ -105,7 +106,7 @@ export const getVerficationStatus = (resource) => (
   titleCase(resource.verificationStatus?.coding?.[0]?.code)
 );
 
-export const getEnding = (resource) => formatDate(resource.period?.end, true);
+export const getEnding = (resource) => formatDateTime(resource.period?.end);
 
 export const getClass = (resource) => resource.class?.code;
 

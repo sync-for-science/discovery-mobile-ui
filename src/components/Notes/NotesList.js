@@ -11,13 +11,13 @@ import {
 import { deleteCollectionNote, deleteRecordNote } from '../../redux/action-creators/index';
 
 import Colors from '../../constants/Colors';
-import { formatDate } from '../../resources/fhirReader';
+import { formatDateTime } from '../../resources/fhirReader';
 
 const Note = ({
   resourceId, note, deleteNoteAction, handleEditNote, fromNotesScreen, editNoteId,
 }) => {
   const navigation = useNavigation();
-  const displayDate = formatDate(note.dateCreated, true);
+  const displayDate = formatDateTime(note.dateCreated);
   const handleDelete = () => Alert.alert(
     'Delete Note',
     'Are you sure you want to delete this note?',

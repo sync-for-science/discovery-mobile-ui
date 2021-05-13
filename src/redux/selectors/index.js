@@ -171,6 +171,8 @@ export const relatedProviderSelector = createSelector(
   },
 );
 
+const associatedEncountersSelector = (state) => state.associations.encounters;
+
 const pickTimelineFields = (resource) => pick(['id', 'timelineDate', 'type', 'subType'], resource);
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
@@ -182,6 +184,35 @@ export const allValidRecordsSortedByDateSelector = createSelector(
     .filter((r) => r.timelineDate) // must have timelineDate
     .map(pickTimelineFields)
     .sort(sortByDate),
+);
+
+const allResourcesByEncounterSelector = createSelector(
+  [associatedEncountersSelector, allValidRecordsSortedByDateSelector],
+  (associatedEncounters, items) => items.reduce((acc, item) => {
+    const encounterId = associatedEncounters[item.id];
+    if (encounterId) {
+      acc[encounterId] = acc[encounterId] ?? [];
+      acc[encounterId].push(item);
+    }
+    return acc;
+  }, {}),
+);
+
+export const allResourcesByProviderSelector = createSelector(
+  [allResourcesByEncounterSelector, resourcesSelector],
+  (allResourcesByEncounter, resources) => Object.entries(allResourcesByEncounter)
+    .reduce((acc, [encounterId, items]) => {
+      const encounter = resources[encounterId];
+      const providerUrn = encounter?.serviceProvider?.reference;
+      if (providerUrn) {
+        const matches = providerUrn.match(/(#|\/)(.+)/);
+        const providerId = matches.pop();
+        if (providerId) {
+          acc[providerId] = items;
+        }
+      }
+      return acc;
+    }, {}),
 );
 
 export const allValidRecordsGroupedByTypeSelector = createSelector(
