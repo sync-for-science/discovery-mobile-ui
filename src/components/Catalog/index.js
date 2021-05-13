@@ -3,7 +3,7 @@ import { arrayOf, shape } from 'prop-types';
 import {
   StyleSheet, View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { PanGestureHandler, ScrollView } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
@@ -35,20 +35,29 @@ CatalogScreenHeader.propTypes = {
 CatalogScreenHeader.defaultProps = {
 };
 
-const Catalog = ({ collection, selectedRecordsGroupedByType }) => (
+const Catalog = ({ collection, selectedRecordsGroupedByType, navigation }) => (
   <FilterDrawer>
-    <CatalogScreenHeader collection={collection} />
-    <Timeline />
-    <ResourceTypePicker />
-    <ScrollView style={styles.scrollView}>
-      <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
-    </ScrollView>
+    <PanGestureHandler
+      activeOffsetX={-10}
+      failOffsetX={[-20, 0]}
+      onGestureEvent={() => navigation.navigate('CollectionDetails')}
+    >
+      <View style={{ flex: 1 }}>
+        <CatalogScreenHeader collection={collection} />
+        <Timeline />
+        <ResourceTypePicker />
+        <ScrollView style={styles.scrollView}>
+          <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
+        </ScrollView>
+      </View>
+    </PanGestureHandler>
   </FilterDrawer>
 );
 
 Catalog.propTypes = {
   collection: shape({}).isRequired,
   selectedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
+  navigation: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
