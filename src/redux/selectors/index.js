@@ -17,6 +17,8 @@ import { SORT_DESC, sortFields } from '../../constants/sorting';
 
 export const authSelector = (state) => state.auth.authResult;
 
+export const isOnboardingCompleteSelector = (state) => state.isOnboardingComplete;
+
 const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];

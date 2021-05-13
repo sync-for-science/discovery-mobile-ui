@@ -1,20 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { shape } from 'prop-types';
+import { bool, shape } from 'prop-types';
 
 import UnauthorizedNavigator from './UnauthorizedNavigator';
 import AuthorizedNavigator from './AuthorizedNavigator';
-import { authSelector } from '../redux/selectors';
+import OnboardingNavigator from './OnboardingNavigator';
+import { authSelector, isOnboardingCompleteSelector } from '../redux/selectors';
 
-const RootNavigator = ({ authResult }) => (
+const RootNavigator = ({ authResult, isOnboardingComplete }) => (
   <NavigationContainer>
-    {!authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
+
+    {
+      // eslint-disable-next-line no-nested-ternary
+      !authResult ? <UnauthorizedNavigator />
+        : isOnboardingComplete ? <AuthorizedNavigator /> : <OnboardingNavigator />
+    }
   </NavigationContainer>
 );
 
 RootNavigator.propTypes = {
   authResult: shape({}),
+  isOnboardingComplete: bool.isRequired,
 };
 
 RootNavigator.defaultProps = {
@@ -23,6 +30,7 @@ RootNavigator.defaultProps = {
 
 const mapStateToProps = (state) => ({
   authResult: authSelector(state),
+  isOnboardingComplete: isOnboardingCompleteSelector(state),
 });
 
 export default connect(mapStateToProps, null)(RootNavigator);
