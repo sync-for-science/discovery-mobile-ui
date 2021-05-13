@@ -54,9 +54,9 @@ export default {
     textTransform: 'lowercase',
   },
   italic: {
-    fontStyle: 'italic'
+    fontStyle: 'italic',
   },
   bold: {
-    fontStyle: 'bold'
-  }
+    fontStyle: 'bold',
+  },
 };
