@@ -7,7 +7,6 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
 
 import {
   allValidRecordsSortedByDateSelector,
@@ -16,13 +15,7 @@ import {
 } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 import DataRow from './DataRow';
-
-const formatDate = (date) => {
-  if (date) {
-    return format(date, 'MMM d, Y');
-  }
-  return '';
-};
+import { formatDate } from '../../resources/fhirReader';
 
 const RecordsSummary = ({ recordsByType }) => (
   <View style={styles.root}>

@@ -8,17 +8,10 @@ import {
 } from 'react-native';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
 import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 import DataRow from './DataRow';
-
-const formatDate = (date) => {
-  if (date) {
-    return format(date, 'MMM d, Y');
-  }
-  return '';
-};
+import { formatDate } from '../../resources/fhirReader';
 
 const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
   <View style={styles.root}>
