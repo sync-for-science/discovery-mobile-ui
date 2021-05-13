@@ -10,7 +10,6 @@ import { authSelector, isOnboardingCompleteSelector } from '../redux/selectors';
 
 const RootNavigator = ({ authResult, isOnboardingComplete }) => (
   <NavigationContainer>
-
     {
       // eslint-disable-next-line no-nested-ternary
       !isOnboardingComplete ? <OnboardingNavigator />

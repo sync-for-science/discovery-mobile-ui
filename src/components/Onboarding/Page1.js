@@ -4,12 +4,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { actionTypes } from '../../redux/action-types';
+import TextStyles from '../../resources/textStyles'
 
 const Page1 = () => {
   const dispatch = useDispatch();
   return (
     <View style={styles.root}>
-      <Text>Page1</Text>
+      <Text style={TextStyles.h1}>Page1</Text>
       <View>
         <Button
           onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}
