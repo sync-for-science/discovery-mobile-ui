@@ -1,5 +1,3 @@
-import Colors from "../constants/Colors";
-
 export default {
   h1: {
     fontSize: 36,
@@ -35,8 +33,5 @@ export default {
   },
   body2: {
     fontSize: 12,
-  },
-  uppercase: {
-    textTranform: 'uppercase' 
   }
 }
