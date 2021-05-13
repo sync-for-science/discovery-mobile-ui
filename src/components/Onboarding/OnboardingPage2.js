@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { actionTypes } from '../../redux/action-types';
 
-const Page2 = () => {
+const OnboardingPage2 = () => {
   const dispatch = useDispatch();
   return (
     <View style={styles.root}>
@@ -22,7 +22,7 @@ const Page2 = () => {
   );
 };
 
-export default Page2;
+export default OnboardingPage2;
 
 const styles = StyleSheet.create({
   root: {
