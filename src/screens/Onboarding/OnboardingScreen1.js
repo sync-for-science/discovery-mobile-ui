@@ -1,61 +1,44 @@
 import React from 'react';
-import { Button } from 'native-base';
 import {
   SafeAreaView, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
 
-import { actionTypes } from '../../redux/action-types';
+import { shape } from 'prop-types';
 import TextStyles from '../../resources/textStyles';
 import Colors from '../../constants/Colors';
 
-const OnboardingScreen1 = ({navigation}) => {
+const OnboardingScreen1 = ({ navigation }) => {
   const {
     h1, h2, h3, h4, h5, alignCenter, italic,
   } = TextStyles;
-  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.root}>
       <View style={styles.contentContainer}>
-        <View style={{ marginTop: 60 }}>
+        <View style={styles.descriptionContainer}>
           <Text style={h1}>Welcome to Discovery</Text>
-        </View>
-        <View style={styles.logoContainer}>
-          <Text style={[h2, alignCenter, italic, { color: Colors.lightgrey }]}>LOGO HERE</Text>
-        </View>
-        <View style={{ margin: 20 }}>
+          <View style={styles.logoContainer}>
+            <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
+          </View>
           <Text style={[h4, alignCenter]}>Use Discover to explore your personal medical data</Text>
         </View>
-        <View style={{ margin: 20 }}>
-          <View>
-            <Text style={[h5, alignCenter]}>ACCESS</Text>
-          </View>
-          <View>
-            <Text style={[h5, alignCenter]}>ORGANIZE</Text>
-          </View>
-          <View>
-            <Text style={[h5, alignCenter]}>EXPLORE</Text>
-          </View>
-          <View>
-            <Text style={[h5, alignCenter]}>USE</Text>
-          </View>
+        <View style={styles.singleWordsContainer}>
+          <Text style={h5}>ACCESS</Text>
+          <Text style={h5}>ORGANIZE</Text>
+          <Text style={h5}>EXPLORE</Text>
+          <Text style={h5}>USE</Text>
         </View>
       </View>
       <View style={styles.navigationContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('OnboardingScreen2')}>
-          <Text style={[h3, {color: Colors.primary}]}>Next</Text>
+          <Text style={[h3, { color: Colors.primary }]}>Next</Text>
         </TouchableOpacity>
-        <View>
-          <Button
-            onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}
-            style={{ paddingHorizontal: 20 }}
-          >
-            <Text>SKIP ONBOARDING</Text>
-          </Button>
-        </View>
       </View>
     </SafeAreaView>
   );
+};
+
+OnboardingScreen1.propTypes = {
+  navigation: shape({}).isRequired,
 };
 
 export default OnboardingScreen1;
@@ -68,18 +51,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   contentContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+    marginVertical: 60,
   },
   logoContainer: {
     height: 100,
     width: 100,
     backgroundColor: Colors.mediumgrey,
-    margin: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  tempLogoText: {
+    color: Colors.lightgrey,
+  },
   navigationContainer: {
+    alignItems: 'center',
+  },
+  singleWordsContainer: {
+    flex: 2,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  descriptionContainer: {
+    flex: 3,
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 });

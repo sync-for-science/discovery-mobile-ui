@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import OnboardingScreen1 from '../screens/Onboarding/OnboardingScreen1';
-import OnboardingScreen2 from '../screens/Onboarding/OnboardingScreen2'
+import OnboardingScreen2 from '../screens/Onboarding/OnboardingScreen2';
 
 const OnboardingStack = createStackNavigator();
 
