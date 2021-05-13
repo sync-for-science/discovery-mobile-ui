@@ -641,3 +641,9 @@ export const collectionNotesSelector = createSelector(
     return values(collection.notes).sort(sortDesc);
   },
 );
+
+export const collectionsLabelsSelector = createSelector(
+  [collectionsSelector],
+  (collections) => values(collections)
+    .reduce((acc, { label }) => { acc.push(label.toLowerCase()); return acc; }, []),
+);

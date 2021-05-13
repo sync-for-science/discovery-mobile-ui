@@ -22,7 +22,7 @@ const CollectionRow = ({
   return (
     <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
       <BaseText style={styles.labelText}>{label}</BaseText>
-      <CollectionRowActionIcon collectionId={collectionId} />
+      <CollectionRowActionIcon collectionId={collectionId} collectionLabel={label} />
     </TouchableOpacity>
   );
 };

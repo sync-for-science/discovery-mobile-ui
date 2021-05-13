@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Alert, BackHandler,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, BackHandler,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape, func } from 'prop-types';
@@ -13,19 +13,20 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { clearAuth } from '../features/auth/authSlice';
 import Colors from '../constants/Colors';
-import { createCollection } from '../redux/action-creators';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
 import { actionTypes } from '../redux/action-types';
+import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
 
 const CollectionsListScreen = ({
   navigation,
   collections,
-  createCollectionAction,
   clearAuthAction,
   clearPatientDataAction,
 }) => {
+  const [collectionsDialogText, setCollectionsDialogText] = useState(null);
+
   const handleNewCollectionPress = () => {
-    Alert.prompt('New Collection', 'Enter name for this new collection.', (text) => createCollectionAction(text));
+    setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
   };
 
   const clearData = () => {
@@ -75,6 +76,12 @@ const CollectionsListScreen = ({
           />
         ))}
       </View>
+      {collectionsDialogText && (
+        <CollectionsDialog
+          collectionsDialogText={collectionsDialogText}
+          setCollectionsDialogText={setCollectionsDialogText}
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -82,7 +89,6 @@ const CollectionsListScreen = ({
 CollectionsListScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
-  createCollectionAction: func.isRequired,
   clearAuthAction: func.isRequired,
   clearPatientDataAction: func.isRequired,
 };
@@ -92,7 +98,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  createCollectionAction: createCollection,
   clearAuthAction: clearAuth,
   clearPatientDataAction: () => ({
     type: actionTypes.CLEAR_PATIENT_DATA,
