@@ -105,7 +105,7 @@ const NotesScreen = ({
   const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
-  const headerTitle = isResourceNotes ? resource.subType : collection.label;
+  // const headerTitle = isResourceNotes ? resource.subType : collection.label;
 
   return (
     <SafeAreaView style={styles.root}>
@@ -116,7 +116,7 @@ const NotesScreen = ({
           </TouchableOpacity>
         </Left>
         <View>
-          <Title style={styles.headerText}>{headerTitle}</Title>
+          <Title style={styles.headerText}>Notes</Title>
         </View>
         <Right>
           <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
@@ -135,11 +135,16 @@ const NotesScreen = ({
         />
         )}
         {!isResourceNotes && (
-          <CollectionNotes
-            editNoteId={editNoteId}
-            handleEditNote={handleEditNote}
-            fromNotesScreen
-          />
+          <>
+            <View style={styles.collectionHeaderContainer}>
+              <BaseText variant="title">{collection.label}</BaseText>
+            </View>
+            <CollectionNotes
+              editNoteId={editNoteId}
+              handleEditNote={handleEditNote}
+              fromNotesScreen
+            />
+          </>
         )}
       </ScrollView>
       {showNoteInput && (
@@ -235,5 +240,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  collectionHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
   },
 });
