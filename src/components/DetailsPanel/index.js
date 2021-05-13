@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView,
+  StyleSheet, View, SafeAreaView, TouchableOpacity, ScrollView,
 } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
 } from 'native-base';

@@ -1,9 +1,9 @@
 import React from 'react';
 import { arrayOf, shape } from 'prop-types';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity, ScrollView,
 } from 'react-native';
-import { PanGestureHandler, ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
