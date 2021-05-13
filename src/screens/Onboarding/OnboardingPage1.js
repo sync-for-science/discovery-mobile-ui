@@ -10,7 +10,9 @@ import TextStyles from '../../resources/textStyles';
 import Colors from '../../constants/Colors';
 
 const OnboardingScreen1 = () => {
-  const { h1, h2, h4, h5, alignCenter, italic } = TextStyles
+  const {
+    h1, h2, h4, h5, alignCenter, italic,
+  } = TextStyles;
   const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.root}>
@@ -19,7 +21,7 @@ const OnboardingScreen1 = () => {
           <Text style={h1}>Welcome to Discovery</Text>
         </View>
         <View style={styles.logoContainer}>
-          <Text style={[h2, alignCenter, italic, { color: Colors.lightgrey}]}>LOGO HERE</Text>
+          <Text style={[h2, alignCenter, italic, { color: Colors.lightgrey }]}>LOGO HERE</Text>
         </View>
         <View style={{ margin: 20 }}>
           <Text style={[h4, alignCenter]}>Use Discover to explore your personal medical data</Text>
