@@ -54,9 +54,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     padding: 10,
     backgroundColor: 'white',
-    borderBottomColor: 'lightgray',
-    borderBottomWidth: 1,
-
   },
   heading: {
     color: Colors.secondary,
