@@ -526,7 +526,7 @@ export const activeCollectionIdReducer = (state = null, action) => {
 
 export const isOnboardingCompleteReducer = (state = false, action) => {
   switch (action.type) {
-    case actionTypes.ONBOARDING_COMPLETED: {
+    case actionTypes.COMPLETE_ONBOARDING: {
       return true;
     }
     default:
