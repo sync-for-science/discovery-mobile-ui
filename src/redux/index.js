@@ -8,6 +8,7 @@ import {
   associationsReducer,
   collectionsReducer,
   activeCollectionIdReducer,
+  isOnboardingCompleteReducer,
 } from './reducers';
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
@@ -25,6 +26,7 @@ const createStore = () => {
     associations: associationsReducer,
     activeCollectionId: activeCollectionIdReducer,
     collections: collectionsReducer,
+    isOnboardingComplete: isOnboardingCompleteReducer,
   });
 
   const store = configureStore({
