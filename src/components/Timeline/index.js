@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   drawerIcon: {
-    paddingLeft: 10,
+    paddingLeft: 8,
   },
   expandIcon: {
-    paddingRight: 10,
+    paddingRight: 8,
     flexDirection: 'row',
     justifyContent: 'center',
   },
