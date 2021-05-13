@@ -61,9 +61,6 @@ export default React.memo(DatePicker);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
   },
   picker: {
     width: 130,
