@@ -1,7 +1,7 @@
 import React from 'react';
 import { func, instanceOf, shape } from 'prop-types';
 import {
-  StyleSheet, View, Text,
+  Platform, StyleSheet, View, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -67,10 +67,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-around',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   dash: {
+    paddingLeft: Platform.OS === 'ios' ? 0 : 8,
+    paddingRight: 8,
     fontSize: 30,
     color: Colors.dash,
   },
