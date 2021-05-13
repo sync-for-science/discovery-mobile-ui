@@ -30,8 +30,27 @@ export default {
     fontStyle: 'italic'
   },
   body1: {
+    // intentionally left empty
   },
   body2: {
     fontSize: 12,
-  }
+  },
+  alignLeft: {
+    textAlign: 'left'
+  },
+  alignCenter: {
+    textAlign: 'center'
+  },
+  alignRight: {
+    textAlign: 'right'
+  },
+  uppercase: {
+    textTransform: 'uppercase'
+  },
+  capitalize: {
+    textTransform: 'capitalize'
+  },
+  lowercase: {
+    textTransform: 'lowercase'
+  },
 }
