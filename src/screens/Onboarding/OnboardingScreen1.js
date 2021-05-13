@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'native-base';
 import {
-  SafeAreaView, StyleSheet, Text, View,
+  SafeAreaView, StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 
@@ -9,9 +9,9 @@ import { actionTypes } from '../../redux/action-types';
 import TextStyles from '../../resources/textStyles';
 import Colors from '../../constants/Colors';
 
-const OnboardingScreen1 = () => {
+const OnboardingScreen1 = ({navigation}) => {
   const {
-    h1, h2, h4, h5, alignCenter, italic,
+    h1, h2, h3, h4, h5, alignCenter, italic,
   } = TextStyles;
   const dispatch = useDispatch();
   return (
@@ -42,6 +42,9 @@ const OnboardingScreen1 = () => {
         </View>
       </View>
       <View style={styles.navigationContainer}>
+        <TouchableOpacity onPress={() => navigation.navigate('OnboardingScreen2')}>
+          <Text style={[h3, {color: Colors.primary}]}>Next</Text>
+        </TouchableOpacity>
         <View>
           <Button
             onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}
