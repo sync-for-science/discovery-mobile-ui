@@ -43,7 +43,7 @@ MarkedCartouche.propTypes = {
 const MarkedIndicators = ({
   markedItems,
 }) => {
-  let nextY = config.BAR_HEIGHT + 4;
+  let nextY = config.BAR_HEIGHT + 18;
   return markedItems.map(({ subType, marked, focused }) => {
     const markedHeight = getCartoucheHeight(marked.length);
     const thisY = nextY;

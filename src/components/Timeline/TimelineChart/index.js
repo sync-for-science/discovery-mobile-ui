@@ -77,9 +77,10 @@ const TimelineChart = ({ timelineIntervals }) => {
   const {
     maxCount, maxCount1SD, maxCount2SD, recordCount, recordCount2SDplus,
     intervals, intervalLength,
+    minDate, maxDate,
   } = timelineIntervals;
   const screenWidth = Dimensions.get('window').width;
-  const availableWidth = screenWidth - (3 * config.CHART_MARGIN);
+  const availableWidth = screenWidth - (4 * config.CHART_MARGIN);
   // TODO: a full, multi-line description of applied filters?
   const noResultsMessage = recordCount ? '' : 'No loaded records pass your filters.';
   const showVariance = maxCount > config.VARIANCE_THRESHOLD;
@@ -116,8 +117,8 @@ const TimelineChart = ({ timelineIntervals }) => {
           </SvgText>
           <XAxis
             availableWidth={availableWidth}
-            startLabel=""
-            endLabel=""
+            minDate={minDate}
+            maxDate={maxDate}
           />
           <TimelineItems
             availableWidth={availableWidth}
@@ -165,7 +166,7 @@ const TimelineChart = ({ timelineIntervals }) => {
 
 TimelineChart.propTypes = {
   timelineIntervals: shape({
-    startDate: instanceOf(Date),
+    minDate: instanceOf(Date),
     maxDate: instanceOf(Date),
     intervals: arrayOf(shape({
       zScore: number.isRequired,
