@@ -389,3 +389,13 @@ export const activeCollectionIdReducer = (state = null, action) => {
       return state;
   }
 };
+
+export const isOnboardingCompleteReducer = (state = false, action) => {
+  switch (action.type) {
+    case actionTypes.ONBOARDING_COMPLETED: {
+      return true;
+    }
+    default:
+      return state;
+  }
+};
