@@ -3,13 +3,11 @@ import {
   StyleSheet, SafeAreaView, StatusBar,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { shape } from 'prop-types';
 
 import Colors from '../constants/Colors';
-import DetailsPanel from '../components/DetailsPanel';
 import Catalog from '../components/Catalog';
 
-const CatalogScreen = ({ navigation }) => (
+const CatalogScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <Swiper
@@ -18,17 +16,9 @@ const CatalogScreen = ({ navigation }) => (
       index={0}
     >
       <Catalog />
-      <DetailsPanel navigation={navigation} />
     </Swiper>
   </SafeAreaView>
 );
-
-CatalogScreen.propTypes = {
-  navigation: shape({}).isRequired,
-};
-
-CatalogScreen.defaultProps = {
-};
 
 export default CatalogScreen;
 
