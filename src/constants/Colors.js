@@ -47,4 +47,6 @@ export default {
   headerIcon: gray6,
   accordionChevronIcon: gray6,
   editingBackground: blue8,
+  collectionSegmentControl: yellow1,
+  markedsegmentControl: blue4,
 };

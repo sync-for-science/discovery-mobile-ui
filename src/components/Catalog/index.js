@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
   },
   collectionLabel: {
     color: 'black',
+    fontSize: 18,
   },
 });

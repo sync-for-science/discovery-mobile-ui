@@ -4,12 +4,9 @@ import { connect } from 'react-redux';
 import { bool, func } from 'prop-types';
 
 import BaseSegmentControl from '../Generic/BaseSegmentControl';
-import BaseText from '../Generic/BaseText';
 import { toggleShowMarkedOnly } from '../../redux/action-creators';
 import { activeCollectionShowMarkedOnlySelector, hasAnyHighlightedRecordInScope } from '../../redux/selectors';
-
-const allRecordsDescription = 'Displays all records.';
-const highlightedRecordsDescription = 'Only displays highlighted records.';
+import Colors from '../../constants/Colors';
 
 const MarkedSegmentControl = ({
   enabled,
@@ -17,7 +14,6 @@ const MarkedSegmentControl = ({
   toggleShowMarkedOnlyAction,
 }) => {
   const segControlIndex = showMarkedOnly ? 1 : 0;
-  const description = segControlIndex === 0 ? allRecordsDescription : highlightedRecordsDescription;
   const handleChange = (selectedSegmentIndex) => {
     toggleShowMarkedOnlyAction(selectedSegmentIndex !== 0);
   };
@@ -26,11 +22,11 @@ const MarkedSegmentControl = ({
     <View style={styles.root}>
       <BaseSegmentControl
         enabled={enabled}
-        values={['All Records', 'Highlighted Records']}
+        values={['Edit Highlights', 'Preview Highlights']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
+        activeColor={Colors.markedsegmentControl}
       />
-      <BaseText style={styles.descriptionText}>{description}</BaseText>
     </View>
   );
 };
@@ -54,7 +50,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(MarkedSegmentControl
 
 const styles = StyleSheet.create({
   root: {
-    marginBottom: 30,
+    marginBottom: 10,
   },
   descriptionText: {
     marginTop: 10,

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   StyleSheet, View, TouchableOpacity,
 } from 'react-native';
-import { FontAwesome, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation } from '@react-navigation/native';
 import { bool, func, string } from 'prop-types';
 
@@ -17,23 +17,23 @@ const ResourceCardNoteActions = ({
   if (!hasNotes) {
     return (
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-        <FontAwesome name="sticky-note-o" size={20} color={Colors.darkgrey} />
+        <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
         <BaseText variant="title" style={styles.buttonText}>Add Note</BaseText>
       </TouchableOpacity>
     );
   }
 
   const showNotesText = showNotes ? 'Hide Notes' : 'Show Notes';
-  const showNotesIcon = showNotes ? 'eye-off-outline' : 'eye-outline';
+  const showNotesIcon = showNotes ? 'sticky-note' : 'sticky-note-o';
   return (
     <View style={styles.actionsContainer}>
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-        <FontAwesome name="sticky-note-o" size={16} color={Colors.darkgrey} />
+        <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
         <BaseText variant="title" style={styles.buttonText}>Add Notes</BaseText>
       </TouchableOpacity>
       <View style={styles.verticalDivider} />
       <TouchableOpacity style={styles.addNoteButton} onPress={() => setShowNotes(!showNotes)}>
-        <Ionicons name={showNotesIcon} size={20} color={Colors.darkgrey} />
+        <FontAwesome name={showNotesIcon} size={20} color={Colors.headerIcon} />
         <BaseText variant="title" style={styles.buttonText}>{showNotesText}</BaseText>
       </TouchableOpacity>
     </View>

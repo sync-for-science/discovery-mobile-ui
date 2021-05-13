@@ -7,7 +7,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { SimpleLineIcons, Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
@@ -105,7 +105,7 @@ const NotesScreen = ({
   const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
-  const headerTitle = isResourceNotes ? resource.subType : collection.label;
+  // const headerTitle = isResourceNotes ? resource.subType : collection.label;
 
   return (
     <SafeAreaView style={styles.root}>
@@ -116,11 +116,11 @@ const NotesScreen = ({
           </TouchableOpacity>
         </Left>
         <View>
-          <Title>{headerTitle}</Title>
+          <Title style={styles.headerText}>Notes</Title>
         </View>
         <Right>
           <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-            <SimpleLineIcons name="note" size={20} color={newNoteIconColor} />
+            <Entypo name="squared-plus" size={24} color={newNoteIconColor} />
           </TouchableOpacity>
         </Right>
       </Header>
@@ -135,11 +135,16 @@ const NotesScreen = ({
         />
         )}
         {!isResourceNotes && (
-          <CollectionNotes
-            editNoteId={editNoteId}
-            handleEditNote={handleEditNote}
-            fromNotesScreen
-          />
+          <>
+            <View style={styles.collectionHeaderContainer}>
+              <BaseText variant="title">{collection.label}</BaseText>
+            </View>
+            <CollectionNotes
+              editNoteId={editNoteId}
+              handleEditNote={handleEditNote}
+              fromNotesScreen
+            />
+          </>
         )}
       </ScrollView>
       {showNoteInput && (
@@ -204,6 +209,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 0,
   },
+  headerText: {
+    fontSize: 18,
+  },
   textInputContainer: {
     paddingHorizontal: 10,
     paddingBottom: 10,
@@ -232,5 +240,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
+  },
+  collectionHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10,
   },
 });

@@ -32,8 +32,10 @@ const AccordionHeader = ({
   return (
     <View style={styles.header}>
       <View style={styles.headerTextContainer}>
-        {chevronIcon}
-        <CountIcon count={headerCount} />
+        <View style={styles.leftIconContainer}>
+          {chevronIcon}
+          <CountIcon count={headerCount} />
+        </View>
         <BaseText style={styles.headerText}>
           {headerLabel}
         </BaseText>
@@ -156,12 +158,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 5,
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: 'white',
   },
   headerTextContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    // backgroundColor: 'pink',
     flex: 1,
   },
   headerText: {
@@ -178,5 +181,10 @@ const styles = StyleSheet.create({
   },
   accordion: {
     borderWidth: 0,
+  },
+  leftIconContainer: {
+    flexDirection: 'row',
+    marginTop: 2,
+    marginRight: 2,
   },
 });
