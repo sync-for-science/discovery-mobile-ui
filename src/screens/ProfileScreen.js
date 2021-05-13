@@ -10,8 +10,9 @@ import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../constants/Colors';
 import { clearAuth } from '../features/auth/authSlice';
 import { actionTypes } from '../redux/action-types';
-import Demographics from '../components/Demographics/Demographics';
-import UserInfo from '../components/UserInfo/UserInfo';
+import UserInfo from '../components/Profile/UserInfo';
+import Demographics from '../components/Profile/Demographics';
+import Data from '../components/Profile/Data';
 
 const ProfileScreen = ({
   clearAuthAction, clearPatientDataAction,
@@ -35,6 +36,7 @@ const ProfileScreen = ({
       <UserInfo />
       <ScrollView style={styles.scrollContainer}>
         <Demographics />
+        <Data />
       </ScrollView>
       <Button title="Logout" onPress={clearData} />
     </SafeAreaView>
@@ -62,29 +64,5 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
-  },
-  section: {
-    overflow: 'scroll',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 50,
-    paddingHorizontal: 10,
-    borderRadius: 10,
-  },
-  title: {
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  scrollViewInternal: {
-    height: 500,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    backgroundColor: 'white',
-  },
-  welcome: {
-    fontSize: 24,
-    fontWeight: '600',
-    paddingTop: 25,
   },
 });
