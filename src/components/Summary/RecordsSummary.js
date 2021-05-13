@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  shape, arrayOf, instanceOf, string, number,
+  shape, arrayOf, instanceOf, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
@@ -14,25 +14,14 @@ import {
   allValidRecordsGroupedByTypeSelector,
   providersSelector,
 } from '../../redux/selectors';
-import Colors from '../../constants/Colors';
 import RecordCount from './RecordCount';
+import DataRow from './DataRow';
 
-const ResourceTypeRow = ({
-  count, label, earliestDate, latestDate,
-}) => (
-  <View style={styles.resourceTypeRow}>
-    <Text style={styles.resourceCount}>{count}</Text>
-    <Text style={styles.resourceLabel}>{label}</Text>
-    <Text style={styles.resourceDate}>{format(earliestDate, 'MMM d, Y')}</Text>
-    <Text style={styles.resourceDate}>{format(latestDate, 'MMM d, Y')}</Text>
-  </View>
-);
-
-ResourceTypeRow.propTypes = {
-  count: number.isRequired,
-  label: string.isRequired,
-  earliestDate: instanceOf(Date).isRequired,
-  latestDate: instanceOf(Date).isRequired,
+const formatDate = (date) => {
+  if (date) {
+    return format(date, 'MMM d, Y');
+  }
+  return '';
 };
 
 const RecordsSummary = ({ recordsByType }) => (
@@ -42,19 +31,20 @@ const RecordsSummary = ({ recordsByType }) => (
     />
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.resourceTypeContainer}>
-        <View style={styles.resourceTypeRow}>
-          <Text style={styles.resourceCount} />
-          <Text style={styles.resourceLabel} />
-          <Text style={[styles.resourceDate, styles.tableHeading]}>Oldest</Text>
-          <Text style={[styles.resourceDate, styles.tableHeading]}>Latest</Text>
-        </View>
+        <DataRow
+          isHeadingRow
+          label=""
+          count=""
+          oldest="Oldest"
+          latest="Latest"
+        />
         {recordsByType.map(({ type, label, items }) => (
-          <ResourceTypeRow
+          <DataRow
             key={type}
             label={label}
             count={items.length}
-            earliestDate={items[0].timelineDate}
-            latestDate={items[items.length - 1].timelineDate}
+            oldest={formatDate(items[0]?.timelineDate)}
+            latest={formatDate(items[items.length - 1]?.timelineDate)}
           />
         ))}
       </View>
@@ -97,38 +87,5 @@ const styles = StyleSheet.create({
   resourceTypeContainer: {
     alignItems: 'center',
     width: '100%',
-  },
-  resourceTypeRow: {
-    width: '100%',
-    flex: 1,
-    flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-
-    padding: 10,
-    backgroundColor: 'white',
-    borderBottomColor: 'lightgray',
-    borderBottomWidth: 1,
-
-  },
-  tableHeading: {
-    color: Colors.secondary,
-    fontSize: 12,
-    alignSelf: 'flex-end',
-  },
-  resourceCount: {
-    alignSelf: 'flex-start',
-    textAlign: 'right',
-    paddingRight: 10,
-    flex: 1,
-  },
-  resourceLabel: {
-    alignSelf: 'flex-start',
-    flex: 4,
-  },
-  resourceDate: {
-    alignSelf: 'flex-end',
-    fontSize: 11,
-    flex: 2,
   },
 });
