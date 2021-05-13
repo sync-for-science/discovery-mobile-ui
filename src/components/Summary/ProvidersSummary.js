@@ -22,8 +22,8 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
       <View style={styles.resourceTypeContainer}>
         <DataRow
           isHeadingRow
-          label=""
           count=""
+          label=""
           oldest="Oldest"
           latest="Latest"
         />
@@ -32,8 +32,8 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
           return (
             <DataRow
               key={name}
+              count={String(items.length)}
               label={name}
-              count={items.length}
               oldest={formatDate(items[0]?.timelineDate)}
               latest={formatDate(items[items.length - 1]?.timelineDate)}
             />

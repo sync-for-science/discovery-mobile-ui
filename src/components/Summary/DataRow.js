@@ -1,5 +1,5 @@
 import React from 'react';
-import { number, string, bool } from 'prop-types';
+import { string, bool } from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Colors from '../../constants/Colors';
@@ -33,7 +33,7 @@ const DataRow = ({
 
 DataRow.propTypes = {
   isHeadingRow: bool,
-  count: number.isRequired,
+  count: string.isRequired,
   label: string.isRequired,
   oldest: string.isRequired,
   latest: string.isRequired,

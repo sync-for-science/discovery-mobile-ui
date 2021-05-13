@@ -26,16 +26,16 @@ const RecordsSummary = ({ recordsByType }) => (
       <View style={styles.resourceTypeContainer}>
         <DataRow
           isHeadingRow
-          label=""
           count=""
+          label=""
           oldest="Oldest"
           latest="Latest"
         />
         {recordsByType.map(({ type, label, items }) => (
           <DataRow
             key={type}
+            count={String(items.length)}
             label={label}
-            count={items.length}
             oldest={formatDate(items[0]?.timelineDate)}
             latest={formatDate(items[items.length - 1]?.timelineDate)}
           />
