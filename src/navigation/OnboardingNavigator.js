@@ -1,15 +1,16 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import OnboardingScreen from '../screens/OnboardingScreen';
+
+import OnboardingScreen1 from '../screens/Onboarding/OnboardingPage1';
 
 const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator
-    initialRouteName="Onboarding"
+    initialRouteName="OnboardingScreen1"
     headerMode="none"
   >
-    <OnboardingStack.Screen name="Onboarding" component={OnboardingScreen} />
+    <OnboardingStack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />
   </OnboardingStack.Navigator>
 );
 
