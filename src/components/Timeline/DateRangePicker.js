@@ -1,7 +1,7 @@
 import React from 'react';
 import { func, instanceOf, shape } from 'prop-types';
 import {
-  StyleSheet, View, Text,
+  Platform, StyleSheet, View, Text,
 } from 'react-native';
 import { connect } from 'react-redux';
 import {
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dash: {
+    paddingLeft: Platform.OS === 'ios' ? 0 : 8,
     paddingRight: 8,
     fontSize: 30,
     color: Colors.dash,
