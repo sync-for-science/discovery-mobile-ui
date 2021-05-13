@@ -169,10 +169,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
   },
   noteContainer: {
-    margin: 10,
+    marginVertical: 5,
     paddingVertical: 5,
-    borderLeftColor: Colors.primary,
-    borderLeftWidth: 3,
   },
   noteContent: {
     paddingHorizontal: 10,
