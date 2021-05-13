@@ -13,8 +13,8 @@ const RootNavigator = ({ authResult, isOnboardingComplete }) => (
 
     {
       // eslint-disable-next-line no-nested-ternary
-      !authResult ? <UnauthorizedNavigator />
-        : isOnboardingComplete ? <AuthorizedNavigator /> : <OnboardingNavigator />
+      !isOnboardingComplete ? <OnboardingNavigator />
+        : !authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />
     }
   </NavigationContainer>
 );
