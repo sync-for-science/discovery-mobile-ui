@@ -2,8 +2,8 @@ import React from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 
-import Page1 from '../components/Onboarding/Page1';
-import Page2 from '../components/Onboarding/Page2';
+import OnboardingPage1 from '../components/Onboarding/OnboardingPage1';
+import OnboardingPage2 from '../components/Onboarding/OnboardingPage2';
 
 const OnboardingScreen = () => (
   <SafeAreaView style={styles.root}>
@@ -11,9 +11,8 @@ const OnboardingScreen = () => (
       loop={false}
       index={0}
     >
-
-      <Page1 />
-      <Page2 />
+      <OnboardingPage1 />
+      <OnboardingPage2 />
     </Swiper>
   </SafeAreaView>
 );
