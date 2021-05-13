@@ -41,6 +41,7 @@ export default {
   countIcon: gray5,
   screenBackground: gray4,
   destructive: red1,
+  disabled: gray6,
   resourceCardBorder: gray5,
   expandTimeline: gray6,
   dash: gray6,
