@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import { shape } from 'prop-types';
-import TextStyles from '../../resources/textStyles';
+import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 
 const OnboardingScreen1 = ({ navigation }) => {
