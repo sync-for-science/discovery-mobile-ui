@@ -1,34 +1,31 @@
 import React from 'react';
-import { Button } from 'native-base';
-import { StyleSheet, Text, View } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
 
-import { actionTypes } from '../../redux/action-types';
+import OBHeader from './OBHeader';
+import OBNavigation from './OBNavigation';
 
 // wireframe page 4
 const OBScreenSecurity = () => {
-  const dispatch = useDispatch();
   return (
-    <View style={styles.root}>
-      <Text>Page2</Text>
-      <View>
-        <Button
-          onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}
-          style={{ paddingHorizontal: 20 }}
-        >
-          <Text>SKIP ONBOARDING</Text>
-        </Button>
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.root}>
+        <OBHeader screenNumber={2}/>
+        <OBNavigation />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default OBScreenSecurity;
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
   root: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+    backgroundColor: 'white'
   },
 });
