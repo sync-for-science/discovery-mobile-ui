@@ -41,7 +41,11 @@ const OBHeader = ({ screenNumber }) => {
 };
 
 OBHeader.propTypes = {
-  screenNumber: number.isRequired,
+  screenNumber: number,
+};
+
+OBHeader.defaultProps = {
+  screenNumber: 0,
 };
 
 export default OBHeader;

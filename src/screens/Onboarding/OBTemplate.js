@@ -13,7 +13,7 @@ const OBTemplate = ({
   <SafeAreaView style={styles.safeAreaView}>
     <View style={styles.root}>
       <View style={styles.headerAndContentContainer}>
-        <OBHeader screenNumber={screenNumber} />
+        {!firstScreen && <OBHeader screenNumber={screenNumber} />}
         {children}
       </View>
       <OBNavigation
