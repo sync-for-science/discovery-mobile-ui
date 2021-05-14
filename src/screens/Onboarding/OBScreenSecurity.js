@@ -1,31 +1,21 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
-import OBHeader from './OBHeader';
-import OBNavigation from './OBNavigation';
+import OBTemplate from './OBTemplate';
 
 // wireframe page 4
-const OBScreenSecurity = () => {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.root}>
-        <OBHeader screenNumber={2}/>
-        <OBNavigation />
-      </View>
-    </SafeAreaView>
-  );
-};
+const OBScreenSecurity = () => (
+  <OBTemplate screenNumber={2}>
+    <View style={styles.default}>
+      <Text>hello</Text>
+    </View>
+  </OBTemplate>
+);
 
 export default OBScreenSecurity;
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  default: {
     flex: 1,
-    backgroundColor: 'white'
-  },
-  root: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: 'white'
   },
 });
