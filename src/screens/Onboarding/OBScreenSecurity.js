@@ -5,7 +5,7 @@ import OBTemplate from './OBTemplate';
 
 // wireframe page 4
 const OBScreenSecurity = () => (
-  <OBTemplate screenNumber={2}>
+  <OBTemplate screenNumber={1}>
     <View style={styles.default}>
       <Text>hello</Text>
     </View>

@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, View,
+  StyleSheet, Text, View,
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
-import OBNavigation from './OBNavigation';
+import OBTemplate from './OBTemplate';
 
 // wireframe page 3
 const OBScreenWelcome = () => {
@@ -13,47 +13,34 @@ const OBScreenWelcome = () => {
     h1, h2, h4, h5, alignCenter, italic,
   } = TextStyles;
   return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.root}>
-        <View style={styles.contentContainer}>
-          <View style={styles.descriptionContainer}>
-            <Text style={h1}>Welcome to Discovery</Text>
-            <View style={styles.logoContainer}>
-              <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
-            </View>
-            <Text style={[h4, alignCenter]}>
-              Use Discovery to explore your personal medical data
-            </Text>
+    <OBTemplate nextScreen="Security" firstScreen>
+      <View style={styles.contentContainer}>
+        <View style={styles.descriptionContainer}>
+          <Text style={h1}>Welcome to Discovery</Text>
+          <View style={styles.logoContainer}>
+            <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
           </View>
-          <View style={styles.singleWordsContainer}>
-            <Text style={h5}>ACCESS</Text>
-            <Text style={h5}>ORGANIZE</Text>
-            <Text style={h5}>EXPLORE</Text>
-            <Text style={h5}>USE</Text>
-          </View>
+          <Text style={[h4, alignCenter]}>
+            Use Discovery to explore your personal medical data
+          </Text>
         </View>
-        <OBNavigation nextScreen="Security" firstScreen />
+        <View style={styles.singleWordsContainer}>
+          <Text style={h5}>ACCESS</Text>
+          <Text style={h5}>ORGANIZE</Text>
+          <Text style={h5}>EXPLORE</Text>
+          <Text style={h5}>USE</Text>
+        </View>
       </View>
-    </SafeAreaView>
+    </OBTemplate>
   );
 };
 
 export default OBScreenWelcome;
 
 const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  root: {
-    flex: 1,
-    marginHorizontal: 20,
-    marginVertical: 40,
-    justifyContent: 'space-between',
-  },
   contentContainer: {
     flex: 1,
-    marginVertical: 60,
+    marginVertical: 40,
   },
   logoContainer: {
     height: 100,
