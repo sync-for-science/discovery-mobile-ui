@@ -13,23 +13,25 @@ const OBScreenWelcome = () => {
     h1, h2, h4, h5, alignCenter, italic,
   } = TextStyles;
   return (
-    <SafeAreaView style={styles.root}>
-      <View style={styles.contentContainer}>
-        <View style={styles.descriptionContainer}>
-          <Text style={h1}>Welcome to Discovery</Text>
-          <View style={styles.logoContainer}>
-            <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.root}>
+        <View style={styles.contentContainer}>
+          <View style={styles.descriptionContainer}>
+            <Text style={h1}>Welcome to Discovery</Text>
+            <View style={styles.logoContainer}>
+              <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
+            </View>
+            <Text style={[h4, alignCenter]}>Use Discovery to explore your personal medical data</Text>
           </View>
-          <Text style={[h4, alignCenter]}>Use Discovery to explore your personal medical data</Text>
+          <View style={styles.singleWordsContainer}>
+            <Text style={h5}>ACCESS</Text>
+            <Text style={h5}>ORGANIZE</Text>
+            <Text style={h5}>EXPLORE</Text>
+            <Text style={h5}>USE</Text>
+          </View>
         </View>
-        <View style={styles.singleWordsContainer}>
-          <Text style={h5}>ACCESS</Text>
-          <Text style={h5}>ORGANIZE</Text>
-          <Text style={h5}>EXPLORE</Text>
-          <Text style={h5}>USE</Text>
-        </View>
+        <OBNavigation nextScreen="Security" firstScreen />
       </View>
-      <OBNavigation nextScreen="Security" firstScreen />
     </SafeAreaView>
   );
 };
@@ -37,11 +39,16 @@ const OBScreenWelcome = () => {
 export default OBScreenWelcome;
 
 const styles = StyleSheet.create({
+  safeAreaView: {
+    flex: 1,
+    backgroundColor: 'white'
+  },
   root: {
     flex: 1,
     marginHorizontal: 20,
-    marginVertical: 60,
+    marginVertical: 40,
     justifyContent: 'space-between',
+    backgroundColor: 'pink'
   },
   contentContainer: {
     flex: 1,
