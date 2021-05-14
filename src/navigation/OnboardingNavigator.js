@@ -1,18 +1,18 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import OnboardingScreen1 from '../screens/Onboarding/OnboardingScreen1';
-import OnboardingScreen2 from '../screens/Onboarding/OnboardingScreen2';
+import OBScreenWelcome from '../screens/Onboarding/OBScreenWelcome';
+import OBScreenSecurity from '../screens/Onboarding/OBScreenSecurity';
 
 const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator
-    initialRouteName="OnboardingScreen1"
+    initialRouteName="Welcome"
     headerMode="none"
   >
-    <OnboardingStack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />
-    <OnboardingStack.Screen name="OnboardingScreen2" component={OnboardingScreen2} />
+    <OnboardingStack.Screen name="Welcome" component={OBScreenWelcome} />
+    <OnboardingStack.Screen name="Security" component={OBScreenSecurity} />
   </OnboardingStack.Navigator>
 );
 

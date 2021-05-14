@@ -5,7 +5,8 @@ import { useDispatch } from 'react-redux';
 
 import { actionTypes } from '../../redux/action-types';
 
-const OnboardingScreen2 = () => {
+// wireframe page 4
+const OBScreenSecurity = () => {
   const dispatch = useDispatch();
   return (
     <View style={styles.root}>
@@ -22,7 +23,7 @@ const OnboardingScreen2 = () => {
   );
 };
 
-export default OnboardingScreen2;
+export default OBScreenSecurity;
 
 const styles = StyleSheet.create({
   root: {

@@ -7,7 +7,8 @@ import { shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 
-const OnboardingScreen1 = ({ navigation }) => {
+// wireframe page 3
+const OBScreenWelcome = ({ navigation }) => {
   const {
     h1, h2, h3, h4, h5, alignCenter, italic,
   } = TextStyles;
@@ -37,11 +38,11 @@ const OnboardingScreen1 = ({ navigation }) => {
   );
 };
 
-OnboardingScreen1.propTypes = {
+OBScreenWelcome.propTypes = {
   navigation: shape({}).isRequired,
 };
 
-export default OnboardingScreen1;
+export default OBScreenWelcome;
 
 const styles = StyleSheet.create({
   root: {
