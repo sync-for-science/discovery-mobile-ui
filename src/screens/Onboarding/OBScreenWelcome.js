@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 40,
     justifyContent: 'space-between',
-    backgroundColor: 'pink'
   },
   contentContainer: {
     flex: 1,
