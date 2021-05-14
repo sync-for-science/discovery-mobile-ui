@@ -13,15 +13,12 @@ const OBHeader = ({ screenNumber }) => {
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < screenNumber; i++) {
-    filledMarkers.push(<View style={{
-      flex: 1, borderWidth: 1, borderColor: Colors.lightgrey2, backgroundColor: Colors.primary,
-    }}
-    />);
+    filledMarkers.push(<View style={styles.filledMarkers} />);
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < TOTAL_OB_SCREEN_COUNT - screenNumber; i++) {
-    emptyMakers.push(<View style={{ flex: 1, borderWidth: 1, borderColor: Colors.lightgrey2 }} />);
+    emptyMakers.push(<View style={styles.emptyMarkers} />);
   }
 
   return (
@@ -75,5 +72,16 @@ const styles = StyleSheet.create({
   },
   tempLogoText: {
     color: Colors.lightgrey,
+  },
+  filledMarkers: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Colors.lightgrey2,
+    backgroundColor: Colors.primary,
+  },
+  emptyMarkers: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Colors.lightgrey2,
   },
 });
