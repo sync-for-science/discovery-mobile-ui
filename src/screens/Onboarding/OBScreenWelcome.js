@@ -21,7 +21,9 @@ const OBScreenWelcome = () => {
             <View style={styles.logoContainer}>
               <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
             </View>
-            <Text style={[h4, alignCenter]}>Use Discovery to explore your personal medical data</Text>
+            <Text style={[h4, alignCenter]}>
+              Use Discovery to explore your personal medical data
+            </Text>
           </View>
           <View style={styles.singleWordsContainer}>
             <Text style={h5}>ACCESS</Text>
@@ -41,7 +43,7 @@ export default OBScreenWelcome;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   root: {
     flex: 1,
