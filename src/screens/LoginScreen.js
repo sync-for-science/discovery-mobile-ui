@@ -5,42 +5,58 @@ import {
   View,
   Image,
   StatusBar,
+  TouchableOpacity,
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
+import { useDispatch } from 'react-redux';
 
 import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
+import { actionTypes } from '../redux/action-types';
+import TextStyles from '../constants/TextStyles';
 
-const LoginScreen = () => (
-  <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.screen}
-    >
-      <View style={styles.discoveryContainer}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.slogo}
-            source={s4sLogo}
-            resizeMode="contain"
-          />
-          <View style={styles.descriptionContainer}>
-            <H2 style={styles.descriptionText}>Discovery Mobile</H2>
+const LoginScreen = () => {
+  const { h6 } = TextStyles;
+  const dispatch = useDispatch();
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      <View
+        contentInsetAdjustmentBehavior="automatic"
+        style={styles.screen}
+      >
+        <View style={styles.discoveryContainer}>
+          <View style={styles.logoContainer}>
+            <Image
+              style={styles.slogo}
+              source={s4sLogo}
+              resizeMode="contain"
+            />
+            <View style={styles.descriptionContainer}>
+              <H2 style={styles.descriptionText}>Discovery Mobile</H2>
+            </View>
           </View>
+          <Login />
+          {__DEV__
+          && (
+          <View style={styles.resetOnboardingContainer}>
+            <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
+              <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
+            </TouchableOpacity>
+          </View>
+          )}
         </View>
-        <Login />
       </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
       </View>
-    </View>
-  </SafeAreaView>
-);
+    </SafeAreaView>
+  );
+};
 
 export default LoginScreen;
 
@@ -78,5 +94,9 @@ const styles = StyleSheet.create({
   companyText: {
     color: Colors.lightgrey,
     paddingBottom: 5,
+  },
+  resetOnboardingContainer: {
+    alignItems: 'center',
+    marginTop: 10,
   },
 });

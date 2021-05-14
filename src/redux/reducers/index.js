@@ -393,6 +393,9 @@ export const isOnboardingCompleteReducer = (state = false, action) => {
     case actionTypes.COMPLETE_ONBOARDING: {
       return true;
     }
+    case actionTypes.RESET_ONBOARDING: {
+      return false;
+    }
     default:
       return state;
   }
