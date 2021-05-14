@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, TouchableOpacity, View,
+  SafeAreaView, StyleSheet, Text, View,
 } from 'react-native';
 
-import { shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
+import OBNavigation from './OBNavigation';
 
 // wireframe page 3
-const OBScreenWelcome = ({ navigation }) => {
+const OBScreenWelcome = () => {
   const {
-    h1, h2, h3, h4, h5, alignCenter, italic,
+    h1, h2, h4, h5, alignCenter, italic,
   } = TextStyles;
   return (
     <SafeAreaView style={styles.root}>
@@ -29,17 +29,9 @@ const OBScreenWelcome = ({ navigation }) => {
           <Text style={h5}>USE</Text>
         </View>
       </View>
-      <View style={styles.navigationContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('OnboardingScreen2')}>
-          <Text style={[h3, { color: Colors.primary }]}>Next</Text>
-        </TouchableOpacity>
-      </View>
+      <OBNavigation nextScreen="Security" firstScreen />
     </SafeAreaView>
   );
-};
-
-OBScreenWelcome.propTypes = {
-  navigation: shape({}).isRequired,
 };
 
 export default OBScreenWelcome;
