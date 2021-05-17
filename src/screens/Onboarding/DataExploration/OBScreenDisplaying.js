@@ -7,9 +7,9 @@ import TextStyles from '../../../constants/TextStyles';
 // wireframe page 13
 const SCREEN_NUMBER = 11;
 const SECTION_TITLE = 'Data Exploration';
-const NEXT_SCREEN = 'Displaying';
+const NEXT_SCREEN = 'Summary';
 
-const OBSCreenDisplaying = () => {
+const OBScreenDisplaying = () => {
   const {
     h5, body1, alignCenter, mb5,
   } = TextStyles;
@@ -37,7 +37,7 @@ const OBSCreenDisplaying = () => {
   );
 };
 
-export default OBSCreenDisplaying;
+export default OBScreenDisplaying;
 
 const styles = StyleSheet.create({
   default: {
