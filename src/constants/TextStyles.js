@@ -73,4 +73,19 @@ export default {
   bold: {
     fontStyle: 'bold',
   },
+  mb1: {
+    marginBottom: 4,
+  },
+  mb2: {
+    marginBottom: 8,
+  },
+  mb3: {
+    marginBottom: 12,
+  },
+  mb4: {
+    marginBottom: 16,
+  },
+  mb5: {
+    marginBottom: 20,
+  },
 };

@@ -23,7 +23,7 @@ const OBScreenWelcome = () => {
             <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
           </View>
           <Text style={[h4, alignCenter]}>
-            Use Discovery to explore your personal medical data
+            What a good time to take control of your medical data!
           </Text>
         </View>
         <View style={styles.singleWordsContainer}>
