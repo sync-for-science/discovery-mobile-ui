@@ -8,6 +8,7 @@ import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
 const SCREEN_NUMBER = 2;
+const SECTION_TITLE = 'Data Access';
 
 // wireframe page 4
 const OBScreenSecurity = () => {
@@ -15,7 +16,7 @@ const OBScreenSecurity = () => {
     h3, h5, alignCenter, mb5,
   } = TextStyles;
   return (
-    <OBTemplate screenNumber={SCREEN_NUMBER}>
+    <OBTemplate screenNumber={SCREEN_NUMBER} sectionTitle={SECTION_TITLE}>
       <View style={styles.default}>
         <Text style={[h3, mb5]}>Security</Text>
         <Text style={[h5, alignCenter, mb5]}>

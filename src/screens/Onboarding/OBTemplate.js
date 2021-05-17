@@ -10,7 +10,7 @@ import OBNavigation from './OBNavigation';
 const TOTAL_SCREEN_COUNT = 21;
 
 const OBTemplate = ({
-  screenNumber, nextScreen, children,
+  screenNumber, nextScreen, sectionTitle, children,
 }) => {
   const progressMarker = screenNumber - 1;
   const totalProgressMarkers = TOTAL_SCREEN_COUNT - 1;
@@ -23,6 +23,7 @@ const OBTemplate = ({
             <OBHeader
               progressMarker={progressMarker}
               totalProgressMarkers={totalProgressMarkers}
+              sectionTitle={sectionTitle}
             />
           )}
           {children}
@@ -40,7 +41,12 @@ const OBTemplate = ({
 OBTemplate.propTypes = {
   screenNumber: number.isRequired,
   nextScreen: string.isRequired,
+  sectionTitle: string,
   children: node.isRequired,
+};
+
+OBTemplate.defaultProps = {
+  sectionTitle: null,
 };
 
 export default OBTemplate;
