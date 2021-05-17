@@ -13,6 +13,7 @@ const OBTemplate = ({
   screenNumber, nextScreen, children,
 }) => {
   const progressMarker = screenNumber - 1;
+  const totalProgressMarkers = TOTAL_SCREEN_COUNT - 1;
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -21,7 +22,7 @@ const OBTemplate = ({
           {screenNumber > 1 && (
             <OBHeader
               progressMarker={progressMarker}
-              totalScreenCount={TOTAL_SCREEN_COUNT}
+              totalProgressMarkers={totalProgressMarkers}
             />
           )}
           {children}
