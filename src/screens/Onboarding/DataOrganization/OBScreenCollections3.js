@@ -5,14 +5,14 @@ import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 10
-const SCREEN_NUMBER = 8;
+// wireframe page 11
+const SCREEN_NUMBER = 9;
 const SECTION_TITLE = 'Data Organization';
 const NEXT_SCREEN = 'Collections3';
 
 const OBScreenCollection2 = () => {
   const {
-    h5, body1, alignCenter, mb5,
+    h5, body1, alignCenter, mb2, mb5,
   } = TextStyles;
   return (
     <OBTemplate
@@ -24,8 +24,11 @@ const OBScreenCollection2 = () => {
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Collections</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          Preview or edit a Collection by picking and choosing
-          relevant Records with a help of a Timeline.
+          Preview or edit Collection by sorting the relevant Records 
+          in a way that matters to your question.
+        </Text>
+        <Text style={[body1, alignCenter, mb2]}>
+          Access the notes for the Collection.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
