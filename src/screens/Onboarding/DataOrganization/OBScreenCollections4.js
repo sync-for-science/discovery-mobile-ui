@@ -5,30 +5,26 @@ import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 11
-const SCREEN_NUMBER = 9;
+// wireframe page 12
+const SCREEN_NUMBER = 10;
 const SECTION_TITLE = 'Data Organization';
 const NEXT_SCREEN = 'Collections4';
 
 const OBScreenCollection2 = () => {
   const {
-    h5, body1, alignCenter, mb2, mb5,
+    h5, body1, alignCenter, mb5,
   } = TextStyles;
   return (
     <OBTemplate
       screenNumber={SCREEN_NUMBER}
       sectionTitle={SECTION_TITLE}
       nextScreen={NEXT_SCREEN}
-      dotNav={[3, 4]}
+      dotNav={[4, 4]}
     >
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Collections</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          Preview or edit Collection by sorting the relevant Records
-          in a way that matters to your question.
-        </Text>
-        <Text style={[body1, alignCenter, mb2]}>
-          Access the notes for the Collection.
+          Add, remove or modify notes about the Collection
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
