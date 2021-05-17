@@ -6,18 +6,18 @@ import TextStyles from '../../constants/TextStyles';
 
 const TOTAL_OB_SCREEN_COUNT = 20;
 
-const OBHeader = ({ screenNumber }) => {
+const OBHeader = ({ progressMarker }) => {
   const {
     h3, h6, alignCenter, italic,
   } = TextStyles;
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < screenNumber; i++) {
+  for (let i = 0; i < progressMarker; i++) {
     filledMarkers.push(<View style={styles.filledMarkers} />);
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < TOTAL_OB_SCREEN_COUNT - screenNumber; i++) {
+  for (let i = 0; i < TOTAL_OB_SCREEN_COUNT - progressMarker; i++) {
     emptyMakers.push(<View style={styles.emptyMarkers} />);
   }
 
@@ -38,11 +38,7 @@ const OBHeader = ({ screenNumber }) => {
 };
 
 OBHeader.propTypes = {
-  screenNumber: number,
-};
-
-OBHeader.defaultProps = {
-  screenNumber: 0,
+  progressMarker: number.isRequired,
 };
 
 export default OBHeader;
