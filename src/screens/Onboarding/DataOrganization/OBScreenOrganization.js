@@ -7,7 +7,7 @@ import TextStyles from '../../../constants/TextStyles';
 // wireframe page 8
 const SCREEN_NUMBER = 6;
 const SECTION_TITLE = 'Data Organization';
-const NEXT_SCREEN = 'Structure';
+const NEXT_SCREEN = 'Collections1';
 
 const OBScreenOrganization = () => {
   const {
