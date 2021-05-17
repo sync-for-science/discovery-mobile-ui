@@ -4,12 +4,11 @@ import { StyleSheet, Text, View } from 'react-native';
 import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 
-const TOTAL_OB_SCREEN_COUNT = 20;
-
-const OBHeader = ({ progressMarker }) => {
+const OBHeader = ({ progressMarker, totalScreenCount }) => {
   const {
     h3, h6, alignCenter, italic,
   } = TextStyles;
+  const totalMarkerCount = totalScreenCount - 1;
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < progressMarker; i++) {
@@ -17,7 +16,7 @@ const OBHeader = ({ progressMarker }) => {
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < TOTAL_OB_SCREEN_COUNT - progressMarker; i++) {
+  for (let i = 0; i < totalMarkerCount - progressMarker; i++) {
     emptyMakers.push(<View style={styles.emptyMarkers} />);
   }
 
@@ -39,6 +38,7 @@ const OBHeader = ({ progressMarker }) => {
 
 OBHeader.propTypes = {
   progressMarker: number.isRequired,
+  totalScreenCount: number.isRequired,
 };
 
 export default OBHeader;
