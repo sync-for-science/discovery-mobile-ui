@@ -1,10 +1,11 @@
-import { number } from 'prop-types';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+
+import { number, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 
-const OBHeader = ({ progressMarker, totalProgressMarkers }) => {
+const OBHeader = ({ progressMarker, totalProgressMarkers, sectionTitle }) => {
   const {
     h3, h6, alignCenter, italic,
   } = TextStyles;
@@ -29,7 +30,7 @@ const OBHeader = ({ progressMarker, totalProgressMarkers }) => {
         <View style={styles.iconContainer}>
           <Text style={[h6, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
         </View>
-        <Text style={h3}>Logo Here</Text>
+        <Text style={h3}>{sectionTitle}</Text>
       </View>
     </View>
   );
@@ -38,6 +39,7 @@ const OBHeader = ({ progressMarker, totalProgressMarkers }) => {
 OBHeader.propTypes = {
   progressMarker: number.isRequired,
   totalProgressMarkers: number.isRequired,
+  sectionTitle: string.isRequired,
 };
 
 export default OBHeader;
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     marginTop: 20,
-    justifyContent: 'space-around',
+    justifyContent: 'center',
     alignItems: 'center',
   },
   iconContainer: {
@@ -64,6 +66,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.mediumgrey,
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: 20,
   },
   tempLogoText: {
     color: Colors.lightgrey,
