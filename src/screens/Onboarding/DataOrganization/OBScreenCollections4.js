@@ -8,7 +8,7 @@ import Colors from '../../../constants/Colors';
 // wireframe page 12
 const SCREEN_NUMBER = 10;
 const SECTION_TITLE = 'Data Organization';
-const NEXT_SCREEN = 'Collections4';
+const NEXT_SCREEN = 'Displaying';
 
 const OBScreenCollection2 = () => {
   const {
