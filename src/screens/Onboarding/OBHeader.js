@@ -12,12 +12,12 @@ const OBHeader = ({ progressMarker, totalProgressMarkers, sectionTitle }) => {
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < progressMarker; i++) {
-    filledMarkers.push(<View style={styles.filledMarkers} />);
+    filledMarkers.push(<View key={i} style={styles.filledMarkers} />);
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < totalProgressMarkers - progressMarker; i++) {
-    emptyMakers.push(<View style={styles.emptyMarkers} />);
+    emptyMakers.push(<View key={i} style={styles.emptyMarkers} />);
   }
 
   return (

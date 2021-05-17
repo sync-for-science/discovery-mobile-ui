@@ -7,6 +7,7 @@ import OBScreenInfo from '../screens/Onboarding/DataAccess/OBScreenInfo';
 import OBScreenProfile from '../screens/Onboarding/DataAccess/OBScreenProfile';
 import OBScreenStructure from '../screens/Onboarding/DataOrganization/OBScreenStructure';
 import OBScreenOrganization from '../screens/Onboarding/DataOrganization/OBScreenOrganization';
+import OBScreenCollections1 from '../screens/Onboarding/DataOrganization/OBScreenCollections1';
 
 const OnboardingStack = createStackNavigator();
 
@@ -21,6 +22,7 @@ const OnboardingNavigator = () => (
     <OnboardingStack.Screen name="Profile" component={OBScreenProfile} />
     <OnboardingStack.Screen name="Structure" component={OBScreenStructure} />
     <OnboardingStack.Screen name="Organization" component={OBScreenOrganization} />
+    <OnboardingStack.Screen name="Collections1" component={OBScreenCollections1} />
   </OnboardingStack.Navigator>
 );
 
