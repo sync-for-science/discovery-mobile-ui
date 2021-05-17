@@ -3,9 +3,9 @@ import {
   StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 
-import OBTemplate from './OBTemplate';
-import TextStyles from '../../constants/TextStyles';
-import Colors from '../../constants/Colors';
+import OBTemplate from '../OBTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import Colors from '../../../constants/Colors';
 
 const SCREEN_NUMBER = 2;
 
