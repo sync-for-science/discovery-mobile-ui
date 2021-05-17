@@ -24,7 +24,7 @@ const OBScreenCollection2 = () => {
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Collections</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          Preview or edit Collection by sorting the relevant Records 
+          Preview or edit Collection by sorting the relevant Records
           in a way that matters to your question.
         </Text>
         <Text style={[body1, alignCenter, mb2]}>
