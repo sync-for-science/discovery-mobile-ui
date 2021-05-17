@@ -10,7 +10,7 @@ import Colors from '../../../constants/Colors';
 // wireframe page 6
 const SCREEN_NUMBER = 4;
 const SECTION_TITLE = 'Data Access';
-const NEXT_SCREEN = 'Info';
+const NEXT_SCREEN = 'Structure';
 
 const OBScreenProfile = () => {
   const {
