@@ -4,16 +4,19 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { bool, string } from 'prop-types';
+import { number, string } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 
-const OBNavigation = ({ nextScreen, firstScreen, lastScreen }) => {
+const OBNavigation = ({ nextScreen, screenNumber, totalScreenCount }) => {
   const { h3, h6 } = TextStyles;
   const navigation = useNavigation();
-  const singleNavigationStyle = firstScreen || lastScreen ? styles.singleNav : {};
+  const isFirstScreen = screenNumber === 1;
+  const isLastScreen = screenNumber === totalScreenCount;
+  const singleNavigationStyle = isFirstScreen || isLastScreen ? styles.singleNav : {};
+
   const dispatch = useDispatch();
   return (
     <>
@@ -26,13 +29,13 @@ const OBNavigation = ({ nextScreen, firstScreen, lastScreen }) => {
         )}
       </View>
       <View style={[styles.root, singleNavigationStyle]}>
-        {!firstScreen
+        {!isFirstScreen
         && (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={[h3, { color: Colors.primary }]}>Back</Text>
         </TouchableOpacity>
         )}
-        {!lastScreen
+        {!isLastScreen
         && (
         <TouchableOpacity onPress={() => navigation.navigate(nextScreen)}>
           <Text style={[h3, { color: Colors.primary }]}>Next</Text>
@@ -45,13 +48,8 @@ const OBNavigation = ({ nextScreen, firstScreen, lastScreen }) => {
 
 OBNavigation.propTypes = {
   nextScreen: string.isRequired,
-  firstScreen: bool,
-  lastScreen: bool,
-};
-
-OBNavigation.defaultProps = {
-  firstScreen: false,
-  lastScreen: false,
+  screenNumber: number.isRequired,
+  totalScreenCount: number.isRequired,
 };
 
 export default OBNavigation;
