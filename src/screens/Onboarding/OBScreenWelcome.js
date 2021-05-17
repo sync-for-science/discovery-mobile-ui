@@ -7,13 +7,15 @@ import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import OBTemplate from './OBTemplate';
 
+const SCREEN_NUMBER = 1;
+
 // wireframe page 3
 const OBScreenWelcome = () => {
   const {
     h1, h2, h4, h5, alignCenter, italic,
   } = TextStyles;
   return (
-    <OBTemplate nextScreen="Security" firstScreen>
+    <OBTemplate nextScreen="Security" screenNumber={SCREEN_NUMBER}>
       <View style={styles.contentContainer}>
         <View style={styles.descriptionContainer}>
           <Text style={h1}>Welcome to Discovery</Text>
