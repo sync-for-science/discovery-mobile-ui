@@ -2,7 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import OBScreenWelcome from '../screens/Onboarding/OBScreenWelcome';
-import OBScreenSecurity from '../screens/Onboarding/OBScreenSecurity';
+import OBScreenSecurity from '../screens/Onboarding/DataAccess/OBScreenSecurity';
 
 const OnboardingStack = createStackNavigator();
 
