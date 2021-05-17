@@ -6,11 +6,11 @@ import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
 // wireframe page 9
-const SCREEN_NUMBER = 7;
+const SCREEN_NUMBER = 8;
 const SECTION_TITLE = 'Data Organization';
-const NEXT_SCREEN = 'Collections2';
+const NEXT_SCREEN = 'Collection2';
 
-const OBScreenCollections1 = () => {
+const OBScreenCollection2 = () => {
   const {
     h5, body1, alignCenter, mb5,
   } = TextStyles;
@@ -19,12 +19,13 @@ const OBScreenCollections1 = () => {
       screenNumber={SCREEN_NUMBER}
       sectionTitle={SECTION_TITLE}
       nextScreen={NEXT_SCREEN}
-      dotNav={[1, 4]}
+      dotNav={[2, 4]}
     >
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Collections</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          Create a new Collection or access an existing Collection.
+          Preview or edit a Collection by picking and choosing
+          relevant Records with a help of a Timeline.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -34,7 +35,7 @@ const OBScreenCollections1 = () => {
   );
 };
 
-export default OBScreenCollections1;
+export default OBScreenCollection2;
 
 const styles = StyleSheet.create({
   default: {
