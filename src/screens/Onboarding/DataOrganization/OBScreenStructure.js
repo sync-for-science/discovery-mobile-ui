@@ -5,10 +5,10 @@ import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 6
+// wireframe page 7
 const SCREEN_NUMBER = 5;
 const SECTION_TITLE = 'Data Organization';
-const NEXT_SCREEN = 'Structure';
+const NEXT_SCREEN = 'Organization';
 
 const OBScreenStructure = () => {
   const {
