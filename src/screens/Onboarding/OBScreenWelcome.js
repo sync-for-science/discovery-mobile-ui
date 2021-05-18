@@ -1,27 +1,30 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, Text, View, Image,
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import OBTemplate from './OBTemplate';
+import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
 const SCREEN_NUMBER = 1;
 
 // wireframe page 3
 const OBScreenWelcome = () => {
   const {
-    h1, h2, h4, h5, alignCenter, italic,
+    h2, h4, h5, alignCenter,
   } = TextStyles;
   return (
     <OBTemplate nextScreen="Security" screenNumber={SCREEN_NUMBER}>
       <View style={styles.contentContainer}>
         <View style={styles.descriptionContainer}>
-          <Text style={h1}>Welcome to Discovery</Text>
-          <View style={styles.logoContainer}>
-            <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
-          </View>
+          <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
+          <Image
+            style={styles.logo}
+            source={discoveryBasic}
+            resizeMode="contain"
+          />
           <Text style={[h4, alignCenter]}>
             What a good time to take control of your medical data!
           </Text>
@@ -42,14 +45,6 @@ export default OBScreenWelcome;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    marginVertical: 40,
-  },
-  logoContainer: {
-    height: 100,
-    width: 100,
-    backgroundColor: Colors.mediumgrey,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   tempLogoText: {
     color: Colors.lightgrey,
@@ -58,13 +53,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   singleWordsContainer: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
   },
   descriptionContainer: {
-    flex: 3,
+    flex: 2,
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  logo: {
+    height: 120,
   },
 });
