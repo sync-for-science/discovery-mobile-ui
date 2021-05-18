@@ -8,7 +8,7 @@ import Colors from '../../../constants/Colors';
 // wireframe page 18
 const SCREEN_NUMBER = 16;
 const SECTION_TITLE = 'Data Exploration';
-const NEXT_SCREEN = 'Catalog3';
+const NEXT_SCREEN = 'Use';
 
 const OBScreenCatalog3 = () => {
   const {
