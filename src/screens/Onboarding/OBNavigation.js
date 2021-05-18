@@ -70,13 +70,14 @@ const OBNavigation = ({
 };
 
 OBNavigation.propTypes = {
-  nextScreen: string.isRequired,
+  nextScreen: string,
   screenNumber: number.isRequired,
   totalScreenCount: number.isRequired,
   dotNav: arrayOf(number.isRequired),
 };
 
 OBNavigation.defaultProps = {
+  nextScreen: null,
   dotNav: null,
 };
 
