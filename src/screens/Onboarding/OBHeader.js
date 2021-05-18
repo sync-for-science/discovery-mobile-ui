@@ -1,15 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  StyleSheet, Text, View, Image,
+} from 'react-native';
 
 import { bool, number, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
+import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
 const OBHeader = ({
   progressMarker, totalProgressMarkers, sectionTitle, showHeaderLogo,
 }) => {
   const {
-    h3, h6, alignCenter, italic,
+    h3,
   } = TextStyles;
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
@@ -28,11 +31,13 @@ const OBHeader = ({
         {filledMarkers}
         {emptyMakers}
       </View>
-      <View style={styles.logoContainer}>
+      <View style={styles.titleContainer}>
         {showHeaderLogo && (
-          <View style={styles.iconContainer}>
-            <Text style={[h6, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
-          </View>
+          <Image
+            style={styles.logo}
+            source={discoveryBasic}
+            resizeMode="contain"
+          />
         )}
         <Text style={h3}>{sectionTitle}</Text>
       </View>
@@ -58,9 +63,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 10,
   },
-  logoContainer: {
+  titleContainer: {
     flexDirection: 'row',
-    width: '100%',
     marginTop: 20,
     justifyContent: 'center',
     alignItems: 'center',
@@ -86,5 +90,10 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: Colors.lightgrey2,
+  },
+  logo: {
+    height: 50,
+    width: 50,
+    marginRight: 8,
   },
 });
