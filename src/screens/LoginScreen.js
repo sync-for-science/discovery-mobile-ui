@@ -45,7 +45,6 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
-    backgroundColor: 'white',
   },
   screen: {
     flex: 1,
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   vermonsterContainer: {
-    marginTop: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
