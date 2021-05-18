@@ -12,7 +12,9 @@ let store;
 export default function StateProvider({ children }) {
   const authentication = useRecoilValue(authenticationState);
 
-  store = createStore(authentication);
+  if (!store) {
+    store = createStore(authentication);
+  }
 
   return (
     <Provider store={store}>
