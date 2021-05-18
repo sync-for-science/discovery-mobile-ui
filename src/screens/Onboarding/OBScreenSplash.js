@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet, Text, View, Image, SafeAreaView,
 } from 'react-native';
 
+import { shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import discoveryFull from '../../../assets/images/discovery-full-logo.png';
 import Colors from '../../constants/Colors';
 import vermonsterLogo from '../../../assets/images/vermonster-logo.png';
 
-const OBScreenSplash = () => {
+const OBScreenSplash = ({ navigation }) => {
   const {
     h5, mb4,
   } = TextStyles;
+
+  useEffect(() => {
+    setTimeout(() => navigation.navigate('Welcome'), 3000);
+  }, []);
+
   return (
     <SafeAreaView style={styles.root}>
       <Image
@@ -32,6 +38,10 @@ const OBScreenSplash = () => {
       </View>
     </SafeAreaView>
   );
+};
+
+OBScreenSplash.propTypes = {
+  navigation: shape({}).isRequired,
 };
 
 export default OBScreenSplash;
