@@ -20,14 +20,16 @@ import OBScreenCatalog3 from '../screens/Onboarding/DataExploration/OBScreenCata
 import OBScreenUse from '../screens/Onboarding/UseOfCollections/OBScreenUse';
 import OBScreenVideo from '../screens/Onboarding/VideoTutorial/OBScreenVideo';
 import OBScreenComplete from '../screens/Onboarding/OBScreenComplete';
+import OBScreenSplash from '../screens/Onboarding/OBScreenSplash';
 
 const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator
-    initialRouteName="Welcome"
+    initialRouteName="Splash"
     headerMode="none"
   >
+    <OnboardingStack.Screen name="Splash" component={OBScreenSplash} />
     <OnboardingStack.Screen name="Welcome" component={OBScreenWelcome} />
     <OnboardingStack.Screen name="Security" component={OBScreenSecurity} />
     <OnboardingStack.Screen name="Info" component={OBScreenInfo} />
