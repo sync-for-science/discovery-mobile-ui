@@ -42,6 +42,7 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   screen: {
     flex: 1,
