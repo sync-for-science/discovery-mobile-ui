@@ -8,6 +8,7 @@ import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
+import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
 import Colors from '../constants/Colors';
 
 const HomeTab = createBottomTabNavigator();
@@ -49,6 +50,10 @@ const CollectionStackScreen = () => (
     <CollectionsStack.Screen
       name="Catalog"
       component={CatalogScreen}
+    />
+    <CollectionsStack.Screen
+      name="CollectionDetails"
+      component={CollectionDetailsScreen}
     />
     <CollectionsStack.Screen
       name="Notes"

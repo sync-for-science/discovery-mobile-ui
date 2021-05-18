@@ -1,13 +1,14 @@
 import React from 'react';
 import { arrayOf, shape } from 'prop-types';
 import {
-  StyleSheet, View,
+  StyleSheet, View, TouchableOpacity, ScrollView,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { PanGestureHandler } from 'react-native-gesture-handler';
 import { connect } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
+import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
@@ -15,10 +16,15 @@ import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
+import Colors from '../../constants/Colors';
 
-const CatalogScreenHeader = ({ collection }) => (
+const CatalogScreenHeader = ({ collection, navigation }) => (
   <Header style={styles.header}>
-    <Left />
+    <Left>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
+      </TouchableOpacity>
+    </Left>
     <View>
       <Title style={styles.collectionLabel}>{collection?.label}</Title>
     </View>
@@ -30,25 +36,35 @@ const CatalogScreenHeader = ({ collection }) => (
 
 CatalogScreenHeader.propTypes = {
   collection: shape({}).isRequired,
+  navigation: shape({}).isRequired,
 };
 
 CatalogScreenHeader.defaultProps = {
 };
 
-const Catalog = ({ collection, selectedRecordsGroupedByType }) => (
-  <FilterDrawer>
-    <CatalogScreenHeader collection={collection} />
-    <Timeline />
-    <ResourceTypePicker />
-    <ScrollView style={styles.scrollView}>
-      <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
-    </ScrollView>
-  </FilterDrawer>
+const Catalog = ({ collection, selectedRecordsGroupedByType, navigation }) => (
+  <PanGestureHandler
+    activeOffsetX={-10}
+    failOffsetX={[-20, 0]}
+    onGestureEvent={() => navigation.navigate('CollectionDetails')}
+  >
+    <View style={styles.drawerContainer}>
+      <FilterDrawer>
+        <CatalogScreenHeader collection={collection} navigation={navigation} />
+        <Timeline />
+        <ResourceTypePicker />
+        <ScrollView style={styles.scrollView}>
+          <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
+        </ScrollView>
+      </FilterDrawer>
+    </View>
+  </PanGestureHandler>
 );
 
 Catalog.propTypes = {
   collection: shape({}).isRequired,
   selectedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
+  navigation: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -70,5 +86,8 @@ const styles = StyleSheet.create({
   collectionLabel: {
     color: 'black',
     fontSize: 18,
+  },
+  drawerContainer: {
+    flex: 1,
   },
 });

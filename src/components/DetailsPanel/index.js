@@ -1,12 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView,
+  StyleSheet, View, SafeAreaView, TouchableOpacity, ScrollView,
 } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
-import { FontAwesome } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { arrayOf, shape } from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -61,7 +60,11 @@ const DetailsPanel = ({
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
-        <Left />
+        <Left>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
+          </TouchableOpacity>
+        </Left>
         <View>
           <Title style={styles.headerText}>{collection?.label}</Title>
         </View>
