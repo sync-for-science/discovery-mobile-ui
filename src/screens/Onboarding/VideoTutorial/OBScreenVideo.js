@@ -10,7 +10,7 @@ import Colors from '../../../constants/Colors';
 // wireframe page 20
 const SCREEN_NUMBER = 18;
 const SECTION_TITLE = 'Video Tutorial';
-const NEXT_SCREEN = 'video';
+const NEXT_SCREEN = 'Complete';
 
 const OBScreenVideo = () => {
   const {
