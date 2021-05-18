@@ -43,7 +43,7 @@ const OBTemplate = ({
 
 OBTemplate.propTypes = {
   screenNumber: number.isRequired,
-  nextScreen: string.isRequired,
+  nextScreen: string,
   sectionTitle: string,
   children: node.isRequired,
   dotNav: arrayOf(number.isRequired),
@@ -54,6 +54,7 @@ OBTemplate.defaultProps = {
   sectionTitle: null,
   dotNav: null,
   showHeaderLogo: true,
+  nextScreen: null,
 };
 
 export default OBTemplate;
