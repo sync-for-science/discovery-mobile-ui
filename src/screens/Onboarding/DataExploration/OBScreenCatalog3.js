@@ -5,12 +5,12 @@ import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 17
-const SCREEN_NUMBER = 15;
+// wireframe page 18
+const SCREEN_NUMBER = 16;
 const SECTION_TITLE = 'Data Exploration';
 const NEXT_SCREEN = 'Catalog3';
 
-const OBScreenCatalog2 = () => {
+const OBScreenCatalog3 = () => {
   const {
     h5, body1, alignCenter, mb5,
   } = TextStyles;
@@ -19,12 +19,13 @@ const OBScreenCatalog2 = () => {
       screenNumber={SCREEN_NUMBER}
       sectionTitle={SECTION_TITLE}
       nextScreen={NEXT_SCREEN}
-      dotNav={[2, 3]}
+      dotNav={[3, 3]}
     >
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Catalog</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          Save a Record or entire Record Subtype in a Collection
+          Highlight medical events you are interested in, like the
+          times the example patient had high blood pressure and high body weight.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -34,7 +35,7 @@ const OBScreenCatalog2 = () => {
   );
 };
 
-export default OBScreenCatalog2;
+export default OBScreenCatalog3;
 
 const styles = StyleSheet.create({
   default: {
