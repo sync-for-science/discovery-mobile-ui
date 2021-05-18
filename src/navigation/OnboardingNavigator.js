@@ -18,6 +18,7 @@ import OBScreenCatalog1 from '../screens/Onboarding/DataExploration/OBScreenCata
 import OBScreenCatalog2 from '../screens/Onboarding/DataExploration/OBScreenCatalog2';
 import OBScreenCatalog3 from '../screens/Onboarding/DataExploration/OBScreenCatalog3';
 import OBScreenUse from '../screens/Onboarding/UseOfCollections/OBScreenUse';
+import OBScreenVideo from '../screens/Onboarding/VideoTutorial/OBScreenVideo';
 
 const OnboardingStack = createStackNavigator();
 
@@ -43,6 +44,7 @@ const OnboardingNavigator = () => (
     <OnboardingStack.Screen name="Catalog2" component={OBScreenCatalog2} />
     <OnboardingStack.Screen name="Catalog3" component={OBScreenCatalog3} />
     <OnboardingStack.Screen name="Use" component={OBScreenUse} />
+    <OnboardingStack.Screen name="Video" component={OBScreenVideo} />
   </OnboardingStack.Navigator>
 );
 

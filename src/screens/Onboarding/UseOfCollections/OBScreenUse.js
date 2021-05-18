@@ -7,7 +7,7 @@ import TextStyles from '../../../constants/TextStyles';
 // wireframe page 19
 const SCREEN_NUMBER = 17;
 const SECTION_TITLE = 'Use of Collections';
-const NEXT_SCREEN = 'Use';
+const NEXT_SCREEN = 'Video';
 
 const OBScreenUse = () => {
   const {

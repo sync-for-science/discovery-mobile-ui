@@ -1,16 +1,16 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import {
-  number, string, node, arrayOf,
+  number, string, node, arrayOf, bool,
 } from 'prop-types';
 
 import OBHeader from './OBHeader';
 import OBNavigation from './OBNavigation';
 
-const TOTAL_SCREEN_COUNT = 21;
+const TOTAL_SCREEN_COUNT = 18;
 
 const OBTemplate = ({
-  screenNumber, nextScreen, sectionTitle, dotNav, children,
+  screenNumber, nextScreen, sectionTitle, dotNav, children, showHeaderLogo,
 }) => {
   const progressMarker = screenNumber - 1;
   const totalProgressMarkers = TOTAL_SCREEN_COUNT - 1;
@@ -24,6 +24,7 @@ const OBTemplate = ({
               progressMarker={progressMarker}
               totalProgressMarkers={totalProgressMarkers}
               sectionTitle={sectionTitle}
+              showHeaderLogo={showHeaderLogo}
             />
           )}
           {children}
@@ -45,11 +46,13 @@ OBTemplate.propTypes = {
   sectionTitle: string,
   children: node.isRequired,
   dotNav: arrayOf(number.isRequired),
+  showHeaderLogo: bool,
 };
 
 OBTemplate.defaultProps = {
   sectionTitle: null,
   dotNav: null,
+  showHeaderLogo: false,
 };
 
 export default OBTemplate;
