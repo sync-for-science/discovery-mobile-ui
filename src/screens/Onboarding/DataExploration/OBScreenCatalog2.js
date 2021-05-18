@@ -5,12 +5,12 @@ import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 16
-const SCREEN_NUMBER = 14;
+// wireframe page 17
+const SCREEN_NUMBER = 15;
 const SECTION_TITLE = 'Data Exploration';
-const NEXT_SCREEN = 'Catalog';
+const NEXT_SCREEN = 'Catalog2';
 
-const OBScreenCatalog = () => {
+const OBScreenCatalog2 = () => {
   const {
     h5, body1, alignCenter, mb5,
   } = TextStyles;
@@ -19,13 +19,12 @@ const OBScreenCatalog = () => {
       screenNumber={SCREEN_NUMBER}
       sectionTitle={SECTION_TITLE}
       nextScreen={NEXT_SCREEN}
-      dotNav={[1, 3]}
+      dotNav={[2, 3]}
     >
       <View style={styles.default}>
         <Text style={[h5, mb5]}>Catalog</Text>
         <Text style={[body1, alignCenter, mb5]}>
-          You will be able to define the time window you are
-          interested in and filter the Record Types you want to look at.
+          Save a Record or entire Record Subtype in a Collection
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -35,7 +34,7 @@ const OBScreenCatalog = () => {
   );
 };
 
-export default OBScreenCatalog;
+export default OBScreenCatalog2;
 
 const styles = StyleSheet.create({
   default: {
