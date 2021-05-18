@@ -24,30 +24,27 @@ const LoginScreen = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <View
-        contentInsetAdjustmentBehavior="automatic"
         style={styles.screen}
       >
-        <View style={styles.discoveryContainer}>
-          <View style={styles.logoContainer}>
-            <Image
-              style={styles.slogo}
-              source={s4sLogo}
-              resizeMode="contain"
-            />
-            <View style={styles.descriptionContainer}>
-              <H2 style={styles.descriptionText}>Discovery Mobile</H2>
-            </View>
+        <View style={styles.logoContainer}>
+          <Image
+            style={styles.slogo}
+            source={s4sLogo}
+            resizeMode="contain"
+          />
+          <View style={styles.descriptionContainer}>
+            <H2 style={styles.descriptionText}>Discovery Mobile</H2>
           </View>
-          <Login />
-          {__DEV__
-          && (
-          <View style={styles.resetOnboardingContainer}>
-            <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
-              <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
-            </TouchableOpacity>
-          </View>
-          )}
         </View>
+        <Login />
+        {__DEV__
+        && (
+        <View style={styles.resetOnboardingContainer}>
+          <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
+            <Text style={[h6, styles.resetOnboardingButton]}>Reset Onboarding</Text>
+          </TouchableOpacity>
+        </View>
+        )}
       </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
@@ -98,5 +95,8 @@ const styles = StyleSheet.create({
   resetOnboardingContainer: {
     alignItems: 'center',
     marginTop: 10,
+  },
+  resetOnboardingButton: {
+    color: Colors.primary,
   },
 });
