@@ -46,7 +46,7 @@ const OBNavigation = ({
         </View>
       )}
       <View style={[styles.root, singleNavigationStyle]}>
-        {!isFirstScreen
+        {!isFirstScreen && !isLastScreen
         && (
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text style={[h3, { color: Colors.primary }]}>Back</Text>
@@ -56,6 +56,12 @@ const OBNavigation = ({
         && (
         <TouchableOpacity onPress={() => navigation.navigate(nextScreen)}>
           <Text style={[h3, { color: Colors.primary }]}>Next</Text>
+        </TouchableOpacity>
+        )}
+        {isLastScreen
+        && (
+        <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
+          <Text style={[h3, { color: Colors.primary }]}>Get Started</Text>
         </TouchableOpacity>
         )}
       </View>
