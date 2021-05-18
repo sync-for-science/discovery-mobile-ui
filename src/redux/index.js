@@ -11,8 +11,9 @@ import {
 } from './reducers';
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
+import { actionTypes } from './action-types';
 
-const createStore = () => {
+const createStore = (authentication) => {
   const epicMiddleware = createEpicMiddleware({
     dependencies: {
       fhirClient: new FhirClient(),
@@ -40,6 +41,11 @@ const createStore = () => {
   });
 
   epicMiddleware.run(rootEpic);
+
+  store.dispatch({
+    type: actionTypes.SET_AUTH,
+    payload: authentication, // identity comparison with MOCK_AUTH
+  });
 
   return store;
 };

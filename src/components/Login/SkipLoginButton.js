@@ -1,10 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { useSetRecoilState } from 'recoil';
 import { Button } from 'react-native';
 
-import { actionTypes } from '../../redux/action-types';
 import mockBundle from '../../../assets/mock_data/bundle-blake-eichmann.json';
+import { authenticationState } from '../../recoil';
 
 export const MOCK_BUNDLE = mockBundle;
 
@@ -13,34 +12,25 @@ export const MOCK_AUTH = {
   authResult: {
     accessToken: '',
     additionalParameters: {
-      patient: '',
+      patient: '86512c6f-caf6-41f4-9503-e4270b37b94f', // 'Mr. Blake Eichmann'
     },
   },
 };
 
 const showSkipLogin = process.env.NODE_ENV === 'development';
 
-const SkipLoginButton = ({ setMockAuth }) => {
+const SkipLoginButton = () => {
+  const setAuthentication = useSetRecoilState(authenticationState);
+
   if (showSkipLogin) {
     return (
       <Button
         title="Skip Login"
-        onPress={setMockAuth}
+        onPress={() => setAuthentication(MOCK_AUTH)}
       />
     );
   }
   return null;
 };
 
-SkipLoginButton.propTypes = {
-  setMockAuth: PropTypes.func.isRequired,
-};
-
-const mapDispatchToProps = {
-  setMockAuth: () => ({
-    type: actionTypes.SET_AUTH,
-    payload: MOCK_AUTH,
-  }),
-};
-
-export default connect(null, mapDispatchToProps)(SkipLoginButton);
+export default SkipLoginButton;
