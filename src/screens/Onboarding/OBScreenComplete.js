@@ -1,18 +1,19 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, Text, View, Image,
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import OBTemplate from './OBTemplate';
+import discoveryFull from '../../../assets/images/discovery-full-logo.png';
 
 // wireframe page 21
 const SCREEN_NUMBER = 19;
 
 const OBScreenComplete = () => {
   const {
-    h2, h4, alignCenter, italic,
+    h2, h4, alignCenter,
   } = TextStyles;
   return (
     <OBTemplate screenNumber={SCREEN_NUMBER}>
@@ -24,9 +25,11 @@ const OBScreenComplete = () => {
             take control of
             your medical data with
           </Text>
-          <View style={styles.logoContainer}>
-            <Text style={[h2, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
-          </View>
+          <Image
+            style={[styles.logo]}
+            source={discoveryFull}
+            resizeMode="contain"
+          />
         </View>
       </View>
     </OBTemplate>
@@ -40,13 +43,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 40,
   },
-  logoContainer: {
-    height: 100,
-    width: 100,
-    backgroundColor: Colors.mediumgrey,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   tempLogoText: {
     color: Colors.lightgrey,
   },
@@ -57,5 +53,8 @@ const styles = StyleSheet.create({
     flex: 3,
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  logo: {
+    height: 280,
   },
 });

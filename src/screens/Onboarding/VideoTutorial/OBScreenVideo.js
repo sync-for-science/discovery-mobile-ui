@@ -57,13 +57,6 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
-  logoContainer: {
-    height: 100,
-    width: 100,
-    backgroundColor: Colors.mediumgrey,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   tempLogoText: {
     color: Colors.lightgrey,
   },
