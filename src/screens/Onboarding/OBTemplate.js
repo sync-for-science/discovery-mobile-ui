@@ -14,7 +14,7 @@ const OBTemplate = ({
   screenNumber, nextScreen, sectionTitle, dotNav, children, showHeaderLogo,
 }) => {
   const progressMarker = screenNumber - 1;
-  const isFirstOrLast = screenNumber === 1 || screenNumber === TOTAL_SCREEN_COUNT
+  const isFirstOrLast = screenNumber === 1 || screenNumber === TOTAL_SCREEN_COUNT;
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
