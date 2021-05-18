@@ -20,8 +20,8 @@ const OBScreenComplete = () => {
         <View style={styles.descriptionContainer}>
           <Text style={[h2, alignCenter]}>THANK YOU [USER], YOU’RE ALL SET!</Text>
           <Text style={[h4, alignCenter]}>
-            You are now ready to 
-            take control of 
+            You are now ready to
+            take control of
             your medical data with
           </Text>
           <View style={styles.logoContainer}>
