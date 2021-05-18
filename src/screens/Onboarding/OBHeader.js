@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { number, string } from 'prop-types';
+import { bool, number, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 
-const OBHeader = ({ progressMarker, totalProgressMarkers, sectionTitle }) => {
+const OBHeader = ({
+  progressMarker, totalProgressMarkers, sectionTitle, showHeaderLogo,
+}) => {
   const {
     h3, h6, alignCenter, italic,
   } = TextStyles;
@@ -27,9 +29,11 @@ const OBHeader = ({ progressMarker, totalProgressMarkers, sectionTitle }) => {
         {emptyMakers}
       </View>
       <View style={styles.logoContainer}>
-        <View style={styles.iconContainer}>
-          <Text style={[h6, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
-        </View>
+        {showHeaderLogo && (
+          <View style={styles.iconContainer}>
+            <Text style={[h6, alignCenter, italic, styles.tempLogoText]}>LOGO HERE</Text>
+          </View>
+        )}
         <Text style={h3}>{sectionTitle}</Text>
       </View>
     </View>
@@ -40,6 +44,7 @@ OBHeader.propTypes = {
   progressMarker: number.isRequired,
   totalProgressMarkers: number.isRequired,
   sectionTitle: string.isRequired,
+  showHeaderLogo: bool.isRequired,
 };
 
 export default OBHeader;
