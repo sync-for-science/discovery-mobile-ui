@@ -7,13 +7,13 @@ import {
 import OBHeader from './OBHeader';
 import OBNavigation from './OBNavigation';
 
-const TOTAL_SCREEN_COUNT = 18;
+const TOTAL_SCREEN_COUNT = 19;
+const TOTAL_PROGRESS_MARKERS = 17;
 
 const OBTemplate = ({
   screenNumber, nextScreen, sectionTitle, dotNav, children, showHeaderLogo,
 }) => {
   const progressMarker = screenNumber - 1;
-  const totalProgressMarkers = TOTAL_SCREEN_COUNT - 1;
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -22,7 +22,7 @@ const OBTemplate = ({
           {screenNumber > 1 && (
             <OBHeader
               progressMarker={progressMarker}
-              totalProgressMarkers={totalProgressMarkers}
+              totalProgressMarkers={TOTAL_PROGRESS_MARKERS}
               sectionTitle={sectionTitle}
               showHeaderLogo={showHeaderLogo}
             />
