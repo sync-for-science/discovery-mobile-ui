@@ -85,4 +85,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
   },
+  resetOnboardingButton: {
+    color: Colors.primary,
+  },
 });
