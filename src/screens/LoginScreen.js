@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   vermonsterContainer: {
+    marginTop: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
