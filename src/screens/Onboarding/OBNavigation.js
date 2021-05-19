@@ -11,12 +11,15 @@ import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 
 const OBNavigation = ({
-  nextScreen, screenNumber, totalScreenCount, dotNav,
+  totalScreenCount, 
+  dotNav,
+  screenIndex,
+  handlePressNext,
+  handlePressBack
 }) => {
   const { h3, h6 } = TextStyles;
-  const navigation = useNavigation();
-  const isFirstScreen = screenNumber === 1;
-  const isLastScreen = screenNumber === totalScreenCount;
+  const isFirstScreen = screenIndex === 0;
+  const isLastScreen = screenIndex === totalScreenCount;
   const singleNavigationStyle = isFirstScreen || isLastScreen ? styles.singleNav : {};
   const currentDotNav = dotNav ? dotNav[0] : null;
   const maxDotNav = dotNav ? dotNav[1] : null;
@@ -48,13 +51,13 @@ const OBNavigation = ({
       <View style={[styles.root, singleNavigationStyle]}>
         {!isFirstScreen && !isLastScreen
         && (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={handlePressBack}>
           <Text style={[h3, { color: Colors.primary }]}>Back</Text>
         </TouchableOpacity>
         )}
         {!isLastScreen
         && (
-        <TouchableOpacity onPress={() => navigation.navigate(nextScreen)}>
+        <TouchableOpacity onPress={handlePressNext}>
           <Text style={[h3, { color: Colors.primary }]}>Next</Text>
         </TouchableOpacity>
         )}
