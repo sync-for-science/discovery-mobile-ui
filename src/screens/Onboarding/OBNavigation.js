@@ -11,11 +11,11 @@ import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 
 const OBNavigation = ({
-  totalScreenCount, 
+  totalScreenCount,
   dotNav,
   screenIndex,
   handlePressNext,
-  handlePressBack
+  handlePressBack,
 }) => {
   const { h3, h6 } = TextStyles;
   const isFirstScreen = screenIndex === 0;

@@ -1,19 +1,14 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, View, 
 } from 'react-native';
 
 import { bool, number, string } from 'prop-types';
 import Colors from '../../constants/Colors';
-import TextStyles from '../../constants/TextStyles';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
 const OBHeader = ({
-  progressMarker, totalProgressMarkers, sectionTitle, showHeaderLogo,
+  progressMarker, totalProgressMarkers, isFirstOrLast
 }) => {
-  const {
-    h3,
-  } = TextStyles;
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
   for (let i = 0; i < progressMarker; i++) {
@@ -27,20 +22,12 @@ const OBHeader = ({
 
   return (
     <View style={styles.root}>
-      <View style={styles.progressContainer}>
-        {filledMarkers}
-        {emptyMakers}
-      </View>
-      <View style={styles.titleContainer}>
-        {showHeaderLogo && (
-          <Image
-            style={styles.logo}
-            source={discoveryBasic}
-            resizeMode="contain"
-          />
-        )}
-        <Text style={h3}>{sectionTitle}</Text>
-      </View>
+      {!isFirstOrLast && (
+        <View style={styles.progressContainer}>
+          {filledMarkers}
+          {emptyMakers}
+        </View>
+      )}
     </View>
   );
 };
@@ -58,10 +45,11 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     marginBottom: 20,
+    height: 40
   },
   progressContainer: {
     flexDirection: 'row',
-    height: 10,
+    height: 10
   },
   titleContainer: {
     flexDirection: 'row',

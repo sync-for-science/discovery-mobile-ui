@@ -16,7 +16,7 @@ const OBScreenWelcome = () => {
     h2, h4, h5, alignCenter,
   } = TextStyles;
   return (
-    <OBTemplate nextScreen="Security" screenNumber={SCREEN_NUMBER}>
+    // <OBTemplate nextScreen="Security" screenNumber={SCREEN_NUMBER}>
       <View style={styles.contentContainer}>
         <View style={styles.descriptionContainer}>
           <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
@@ -36,7 +36,7 @@ const OBScreenWelcome = () => {
           <Text style={h5}>USE</Text>
         </View>
       </View>
-    </OBTemplate>
+    // </OBTemplate>
   );
 };
 
