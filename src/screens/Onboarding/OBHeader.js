@@ -7,16 +7,18 @@ import { bool, number, string } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const OBHeader = ({
-  progressMarker, totalProgressMarkers, isFirstOrLast
+  screenIndex, totalScreenCount
 }) => {
+  const isFirstOrLast = screenIndex === 0 || screenIndex === (totalScreenCount - 1)
+
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < progressMarker; i++) {
+  for (let i = 0; i < screenIndex; i++) {
     filledMarkers.push(<View key={i} style={styles.filledMarkers} />);
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < totalProgressMarkers - progressMarker; i++) {
+  for (let i = 0; i < totalScreenCount - screenIndex; i++) {
     emptyMakers.push(<View key={i} style={styles.emptyMarkers} />);
   }
 
