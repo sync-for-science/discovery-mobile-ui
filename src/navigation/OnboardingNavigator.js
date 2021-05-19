@@ -21,15 +21,17 @@ import OBScreenUse from '../screens/Onboarding/UseOfCollections/OBScreenUse';
 import OBScreenVideo from '../screens/Onboarding/VideoTutorial/OBScreenVideo';
 import OBScreenComplete from '../screens/Onboarding/OBScreenComplete';
 import OBScreenSplash from '../screens/Onboarding/OBScreenSplash';
+import OBScreenWalkthrough from '../screens/Onboarding/OBScreenWalkthrough';
 
 const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator
-    initialRouteName="Splash"
+    initialRouteName="Walkthrough"
     headerMode="none"
   >
     <OnboardingStack.Screen name="Splash" component={OBScreenSplash} />
+    <OnboardingStack.Screen name="Walkthrough" component={OBScreenWalkthrough} />
     <OnboardingStack.Screen name="Welcome" component={OBScreenWelcome} />
     <OnboardingStack.Screen name="Security" component={OBScreenSecurity} />
     <OnboardingStack.Screen name="Info" component={OBScreenInfo} />
