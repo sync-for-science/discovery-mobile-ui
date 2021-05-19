@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import {
-  SafeAreaView, StyleSheet, Text, View,
+  SafeAreaView, StyleSheet, View,
 } from 'react-native';
-import Swiper from 'react-native-swiper';
+import Swiper from 'react-native-web-swiper'
 import OBScreenSecurity from './DataAccess/OBScreenSecurity';
 
+import Colors from '../../constants/Colors'
 import OBHeader from './OBHeader';
-import OBNavigation from './OBNavigation';
 import OBScreenWelcome from './OBScreenWelcome'
 
 const TOTAL_SCREEN_COUNT = 18
@@ -14,45 +14,29 @@ const TOTAL_SCREEN_COUNT = 18
 const OBScreenWalkthrough = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
-  // const currentIndex = useRef(0)
-  // const currentIndex = swiperRef?.current?.state?.index
-  // console.log('swiperRef.current', swiperRef.current)
-  const handlePressNext = () => {
-    swiperRef.current.scrollBy(1, true);
-  };
-  const handlePressBack = () => {
-    swiperRef.current.scrollBy(-1, true);
-  };
-  // const isFirstOrLast = currentIndex.current === 0 || currentIndex.current === (TOTAL_SCREEN_COUNT - 1)
-  // console.log('currentIndex', currentIndex)
+
+  
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.root}>
         <OBHeader 
-          // isFirstOrLast={isFirstOrLast}
-          // screenIndex={currentIndex}
-          // progressMarker={currentIndex}
-          totalProgressMarkers={TOTAL_SCREEN_COUNT}
+          screenIndex={currentScreenIndex}
+          totalScreenCount={TOTAL_SCREEN_COUNT}
         />
         <Swiper
           ref={swiperRef}
+          from={0}
           loop={false}
-          index={0}
-          showsPagination={true}
-          paginationStyle={{backgroundColor: 'red', justifyContent: 'flex-end'}}
-          // showsButtons={true}
-          // buttonWrapperStyle={{backgroundColor: 'red', alignItems: 'flex-end'}}
-          // onIndexChanged={(index) => setCurrentScreenIndex(index)}
+          onIndexChanged={(index) => setCurrentScreenIndex(index)}
+          controlsProps={{
+            dotsPos: false,
+            nextTitleStyle: styles.navButton,
+            prevTitleStyle: styles.navButton
+          }}
         >
           <OBScreenWelcome />
           <OBScreenSecurity />
         </Swiper>
-        <OBNavigation
-          // screenIndex={currentScreenIndex}
-          handlePressNext={handlePressNext}
-          handlePressBack={handlePressBack}
-          totalScreenCount={TOTAL_SCREEN_COUNT}
-        />
       </View>
     </SafeAreaView>
   );
@@ -69,4 +53,9 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 20,
   },
+  navButton: {
+    fontSize: 24, 
+    fontWeight: '700', 
+    color: Colors.primary
+  }
 });
