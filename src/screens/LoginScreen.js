@@ -51,10 +51,9 @@ const styles = StyleSheet.create({
   },
   slogo: {
     height: 70,
-    marginVertical: 32,
+    marginVertical: 16,
   },
   logoContainer: {
-    marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -65,6 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   vermonsterContainer: {
+    marginTop: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
