@@ -7,7 +7,7 @@ import { number } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const OBHeader = ({
-  totalProgressPositions, progressPosition
+  totalProgressPositions, progressPosition,
 }) => {
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
@@ -39,7 +39,7 @@ OBHeader.propTypes = {
 
 OBHeader.defaultProps = {
   progressPosition: null,
-}
+};
 
 export default OBHeader;
 

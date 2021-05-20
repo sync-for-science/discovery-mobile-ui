@@ -3,12 +3,12 @@ import {
   SafeAreaView, StyleSheet, View,
 } from 'react-native';
 import Swiper from 'react-native-web-swiper';
-import OBScreenSecurity from './DataAccess/OBScreenSecurity';
 
 import Colors from '../../constants/Colors';
 import OBHeader from './OBHeader';
 import OBWelcome from './OBWelcome';
 import OBBenefits from './OBBenefits';
+import OBSecurity from './OBSecurity';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
@@ -16,14 +16,12 @@ const getProgressPosition = (index) => {
   switch (index) {
     case 0:
     case 1:
-      return null
     case 2:
-      return 1
+      return null;
     default:
       return null;
   }
-
-}
+};
 
 const OBScreenWalkthrough = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -49,7 +47,7 @@ const OBScreenWalkthrough = () => {
         >
           <OBWelcome />
           <OBBenefits />
-          <OBScreenSecurity />
+          <OBSecurity />
         </Swiper>
       </View>
     </SafeAreaView>
