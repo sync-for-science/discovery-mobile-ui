@@ -28,6 +28,8 @@ const getProgressPosition = (index) => {
       return 2;
     case 5:
       return 3;
+    case 6:
+      return 3;
     default:
       return null;
   }

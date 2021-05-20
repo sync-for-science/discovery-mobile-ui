@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text, View, Image,
 } from 'react-native';
+import { AntDesign } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
@@ -22,9 +23,12 @@ const OBProvider2 = () => {
         />
         <Text style={[h2, alignCenter, mb5]}>Data Access</Text>
       </View>
-      <Text style={[h4, alignCenter, mb5]}>
-        Success
-      </Text>
+      <View style={[styles.successContainer, mb5]}>
+        <AntDesign name="checkcircle" size={24} color={Colors.primary} />
+        <Text style={[h4, alignCenter, styles.successText]}>
+          Success
+        </Text>
+      </View>
       <View style={styles.flashContainer}>
         <Text style={[alignCenter, styles.body]}>
           You have successfully connected to your Provider and Discovery
@@ -77,5 +81,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 20,
     padding: 10,
+  },
+  successContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  successText: {
+    marginLeft: 10,
   },
 });
