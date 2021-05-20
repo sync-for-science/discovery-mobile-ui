@@ -46,7 +46,6 @@ export default OBHeader;
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    marginBottom: 20,
     height: 40,
   },
   progressContainer: {
