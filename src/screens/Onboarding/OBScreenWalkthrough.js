@@ -7,7 +7,7 @@ import OBScreenSecurity from './DataAccess/OBScreenSecurity';
 
 import Colors from '../../constants/Colors'
 import OBHeader from './OBHeader';
-import OBScreenWelcome from './OBScreenWelcome'
+import OBWelcome from './OBWelcome'
 
 const TOTAL_SCREEN_COUNT = 18
 
@@ -34,7 +34,7 @@ const OBScreenWalkthrough = () => {
             prevTitleStyle: styles.navButton
           }}
         >
-          <OBScreenWelcome />
+          <OBWelcome />
           <OBScreenSecurity />
         </Swiper>
       </View>
