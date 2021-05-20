@@ -51,5 +51,6 @@ const styles = StyleSheet.create({
   },
   body: {
     fontSize: 18,
+    lineHeight: 24,
   },
 });
