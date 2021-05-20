@@ -12,6 +12,7 @@ import OBSecurity from './OBSecurity';
 import OBPersonal1 from './DataAccess/OBPersonal1';
 import OBPersonal2 from './DataAccess/OBPersonal2';
 import OBProvider1 from './DataAccess/OBProvider1';
+import OBProvider2 from './DataAccess/OBProvider2';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
@@ -60,6 +61,7 @@ const OBScreenWalkthrough = () => {
           <OBPersonal1 />
           <OBPersonal2 />
           <OBProvider1 />
+          <OBProvider2 />
         </Swiper>
       </View>
     </SafeAreaView>
