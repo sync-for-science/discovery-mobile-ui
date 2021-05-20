@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
-  SafeAreaView, StyleSheet, View,
+  SafeAreaView, StyleSheet,
 } from 'react-native';
 import Swiper from 'react-native-web-swiper';
 
@@ -46,33 +46,31 @@ const OBScreenWalkthrough = () => {
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
-      <View style={styles.root}>
-        <OBHeader
-          progressPosition={getProgressPosition(currentScreenIndex)}
-          totalProgressPositions={TOTAL_PROGRESS_POSITIONS}
-        />
-        <Swiper
-          ref={swiperRef}
-          from={0}
-          loop={false}
-          onIndexChanged={(index) => setCurrentScreenIndex(index)}
-          controlsProps={{
-            dotsPos: false,
-            nextTitleStyle: styles.navButton,
-            prevTitleStyle: styles.navButton,
-          }}
-        >
-          <OBWelcome />
-          <OBBenefits />
-          <OBSecurity />
-          <OBPersonal1 />
-          <OBPersonal2 />
-          <OBProvider1 />
-          <OBProvider2 />
-          <OBFamiliar />
-          <OBProviderData />
-        </Swiper>
-      </View>
+      <OBHeader
+        progressPosition={getProgressPosition(currentScreenIndex)}
+        totalProgressPositions={TOTAL_PROGRESS_POSITIONS}
+      />
+      <Swiper
+        ref={swiperRef}
+        from={0}
+        loop={false}
+        onIndexChanged={(index) => setCurrentScreenIndex(index)}
+        controlsProps={{
+          dotsPos: false,
+          nextTitleStyle: styles.navButton,
+          prevTitleStyle: styles.navButton,
+        }}
+      >
+        <OBWelcome />
+        <OBBenefits />
+        <OBSecurity />
+        <OBPersonal1 />
+        <OBPersonal2 />
+        <OBProvider1 />
+        <OBProvider2 />
+        <OBFamiliar />
+        <OBProviderData />
+      </Swiper>
     </SafeAreaView>
   );
 };
@@ -83,10 +81,6 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  root: {
-    flex: 1,
-    margin: 20,
   },
   navButton: {
     fontSize: 24,

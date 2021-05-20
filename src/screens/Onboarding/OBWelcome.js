@@ -40,6 +40,7 @@ export default OBWelcome;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+    paddingHorizontal: 20,
   },
   tempLogoText: {
     color: Colors.lightgrey,
