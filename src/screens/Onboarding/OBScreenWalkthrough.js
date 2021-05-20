@@ -2,24 +2,23 @@ import React, { useRef, useState } from 'react';
 import {
   SafeAreaView, StyleSheet, View,
 } from 'react-native';
-import Swiper from 'react-native-web-swiper'
+import Swiper from 'react-native-web-swiper';
 import OBScreenSecurity from './DataAccess/OBScreenSecurity';
 
-import Colors from '../../constants/Colors'
+import Colors from '../../constants/Colors';
 import OBHeader from './OBHeader';
-import OBWelcome from './OBWelcome'
+import OBWelcome from './OBWelcome';
 
-const TOTAL_SCREEN_COUNT = 18
+const TOTAL_SCREEN_COUNT = 18;
 
 const OBScreenWalkthrough = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
 
-  
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.root}>
-        <OBHeader 
+        <OBHeader
           screenIndex={currentScreenIndex}
           totalScreenCount={TOTAL_SCREEN_COUNT}
         />
@@ -31,7 +30,7 @@ const OBScreenWalkthrough = () => {
           controlsProps={{
             dotsPos: false,
             nextTitleStyle: styles.navButton,
-            prevTitleStyle: styles.navButton
+            prevTitleStyle: styles.navButton,
           }}
         >
           <OBWelcome />
@@ -54,8 +53,8 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   navButton: {
-    fontSize: 24, 
-    fontWeight: '700', 
-    color: Colors.primary
-  }
+    fontSize: 24,
+    fontWeight: '700',
+    color: Colors.primary,
+  },
 });

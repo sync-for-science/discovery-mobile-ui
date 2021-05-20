@@ -2,18 +2,17 @@ import React from 'react';
 import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-import { arrayOf, number, string } from 'prop-types';
+import { arrayOf, func, number } from 'prop-types';
 import { useDispatch } from 'react-redux';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 
 const OBNavigation = ({
+  screenIndex,
   totalScreenCount,
   dotNav,
-  screenIndex,
   handlePressNext,
   handlePressBack,
 }) => {
@@ -73,14 +72,14 @@ const OBNavigation = ({
 };
 
 OBNavigation.propTypes = {
-  nextScreen: string,
-  screenNumber: number.isRequired,
+  screenIndex: number.isRequired,
   totalScreenCount: number.isRequired,
   dotNav: arrayOf(number.isRequired),
+  handlePressBack: func.isRequired,
+  handlePressNext: func.isRequired,
 };
 
 OBNavigation.defaultProps = {
-  nextScreen: null,
   dotNav: null,
 };
 

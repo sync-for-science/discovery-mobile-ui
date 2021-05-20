@@ -3,13 +3,8 @@ import {
   StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 
-import OBTemplate from '../OBTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-
-const SCREEN_NUMBER = 2;
-const SECTION_TITLE = 'Data Access';
-const NEXT_SCREEN = 'Info';
 
 // wireframe page 4
 const OBScreenSecurity = () => {

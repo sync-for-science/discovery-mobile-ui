@@ -10,28 +10,28 @@ import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 // wireframe page 3
 const OBWelcome = () => {
   const {
-    h2, h4, alignCenter, mb5
+    h2, h4, alignCenter, mb5,
   } = TextStyles;
   return (
-      <View style={styles.contentContainer}>
-        <View style={styles.descriptionContainer}>
-          <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
-          <Image
-            style={styles.logo}
-            source={discoveryBasic}
-            resizeMode="contain"
-          />
-          <Text style={[styles.body, alignCenter]}>
-            Use Discovery to leverage your digital medical records
-          </Text>
-        </View>
-        <View style={styles.singleWordsContainer}>
-          <Text style={[h4, mb5]}>ACCESS</Text>
-          <Text style={[h4, mb5]}>ORGANIZE</Text>
-          <Text style={[h4, mb5]}>EXPLORE</Text>
-          <Text style={[h4, mb5]}>USE</Text>
-        </View>
+    <View style={styles.contentContainer}>
+      <View style={styles.descriptionContainer}>
+        <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
+        <Image
+          style={styles.logo}
+          source={discoveryBasic}
+          resizeMode="contain"
+        />
+        <Text style={[styles.body, alignCenter]}>
+          Use Discovery to leverage your digital medical records
+        </Text>
       </View>
+      <View style={styles.singleWordsContainer}>
+        <Text style={[h4, mb5]}>ACCESS</Text>
+        <Text style={[h4, mb5]}>ORGANIZE</Text>
+        <Text style={[h4, mb5]}>EXPLORE</Text>
+        <Text style={[h4, mb5]}>USE</Text>
+      </View>
+    </View>
   );
 };
 
@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
     height: 120,
   },
   body: {
-    fontSize: 24
-  }
+    fontSize: 24,
+  },
 });

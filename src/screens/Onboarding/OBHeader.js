@@ -1,15 +1,15 @@
 import React from 'react';
 import {
-  StyleSheet, View, 
+  StyleSheet, View,
 } from 'react-native';
 
-import { bool, number, string } from 'prop-types';
+import { number } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const OBHeader = ({
-  screenIndex, totalScreenCount
+  screenIndex, totalScreenCount,
 }) => {
-  const isFirstOrLast = screenIndex === 0 || screenIndex === (totalScreenCount - 1)
+  const isFirstOrLast = screenIndex === 0 || screenIndex === (totalScreenCount - 1);
 
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
@@ -35,10 +35,8 @@ const OBHeader = ({
 };
 
 OBHeader.propTypes = {
-  progressMarker: number.isRequired,
-  totalProgressMarkers: number.isRequired,
-  sectionTitle: string.isRequired,
-  showHeaderLogo: bool.isRequired,
+  screenIndex: number.isRequired,
+  totalScreenCount: number.isRequired,
 };
 
 export default OBHeader;
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     flexDirection: 'row',
-    height: 10
+    height: 10,
   },
   titleContainer: {
     flexDirection: 'row',
