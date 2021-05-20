@@ -1,15 +1,16 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, Button,
+  StyleSheet, Text, View, Image, TextInput,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
+import Colors from '../../../constants/Colors';
 
-// wireframe page 6
+// wireframe page 7
 const OBPersonal1 = () => {
   const {
-    h2, h4, alignCenter, mb5,
+    h2, h4, alignCenter, mb2, mb5,
   } = TextStyles;
   return (
     <View style={styles.root}>
@@ -24,10 +25,14 @@ const OBPersonal1 = () => {
       <Text style={[h4, alignCenter, mb5]}>
         Personal Information
       </Text>
-      <Text style={[styles.body, alignCenter, mb5]}>
-        Discovery will ask for your name and date of birth to make
-        sure it is pulling the right data from your Provider.
-      </Text>
+      <View style={styles.formContainer}>
+        <Text style={mb2}>Name</Text>
+        <TextInput style={styles.textInput} />
+        <Text style={mb2}>Family Name</Text>
+        <TextInput style={styles.textInput} />
+        <Text style={mb2}>Date of Birth</Text>
+        <TextInput style={styles.textInput} />
+      </View>
     </View>
   );
 };
@@ -51,5 +56,15 @@ const styles = StyleSheet.create({
   },
   body: {
     fontSize: 18,
+  },
+  formContainer: {
+    width: '100%',
+  },
+  textInput: {
+    padding: 8,
+    borderWidth: 1,
+    borderColor: Colors.lightgrey,
+    borderRadius: 8,
+    marginBottom: 20,
   },
 });
