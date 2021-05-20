@@ -2,7 +2,6 @@ import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
 import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
 
-import authReducer from '../features/auth/authSlice';
 import {
   flattenedResourcesReducer,
   associationsReducer,
@@ -21,7 +20,6 @@ const createStore = (authentication) => {
   });
 
   const rootReducer = combineReducers({
-    auth: authReducer,
     resources: flattenedResourcesReducer,
     associations: associationsReducer,
     activeCollectionId: activeCollectionIdReducer,
