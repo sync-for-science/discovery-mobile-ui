@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Button,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
@@ -31,7 +31,9 @@ const CollectionsListScreen = ({
         <Left style={styles.logoutContainer}>
           {__DEV__ && (
             <Logout>
-              <Button title="Logout" />
+              <TouchableOpacity>
+                <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
+              </TouchableOpacity>
             </Logout>
           )}
         </Left>
