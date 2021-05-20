@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
   root: {
     width: '100%',
     height: 40,
+    paddingHorizontal: 20,
+    marginTop: 20,
   },
   progressContainer: {
     flexDirection: 'row',
