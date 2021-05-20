@@ -8,8 +8,22 @@ import OBScreenSecurity from './DataAccess/OBScreenSecurity';
 import Colors from '../../constants/Colors';
 import OBHeader from './OBHeader';
 import OBWelcome from './OBWelcome';
+import OBBenefits from './OBBenefits';
 
-const TOTAL_SCREEN_COUNT = 18;
+const TOTAL_PROGRESS_POSITIONS = 18;
+
+const getProgressPosition = (index) => {
+  switch (index) {
+    case 0:
+    case 1:
+      return null
+    case 2:
+      return 1
+    default:
+      return null;
+  }
+
+}
 
 const OBScreenWalkthrough = () => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
@@ -19,8 +33,8 @@ const OBScreenWalkthrough = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.root}>
         <OBHeader
-          screenIndex={currentScreenIndex}
-          totalScreenCount={TOTAL_SCREEN_COUNT}
+          progressPosition={getProgressPosition(currentScreenIndex)}
+          totalProgressPositions={TOTAL_PROGRESS_POSITIONS}
         />
         <Swiper
           ref={swiperRef}
@@ -34,6 +48,7 @@ const OBScreenWalkthrough = () => {
           }}
         >
           <OBWelcome />
+          <OBBenefits />
           <OBScreenSecurity />
         </Swiper>
       </View>
