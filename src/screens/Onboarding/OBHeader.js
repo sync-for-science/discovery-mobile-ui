@@ -7,24 +7,22 @@ import { number } from 'prop-types';
 import Colors from '../../constants/Colors';
 
 const OBHeader = ({
-  screenIndex, totalScreenCount,
+  totalProgressPositions, progressPosition
 }) => {
-  const isFirstOrLast = screenIndex === 0 || screenIndex === (totalScreenCount - 1);
-
   const filledMarkers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < screenIndex; i++) {
+  for (let i = 0; i < progressPosition; i++) {
     filledMarkers.push(<View key={i} style={styles.filledMarkers} />);
   }
   const emptyMakers = [];
   // eslint-disable-next-line no-plusplus
-  for (let i = 0; i < totalScreenCount - screenIndex; i++) {
+  for (let i = 0; i < totalProgressPositions - progressPosition; i++) {
     emptyMakers.push(<View key={i} style={styles.emptyMarkers} />);
   }
 
   return (
     <View style={styles.root}>
-      {!isFirstOrLast && (
+      {progressPosition && (
         <View style={styles.progressContainer}>
           {filledMarkers}
           {emptyMakers}
@@ -35,9 +33,13 @@ const OBHeader = ({
 };
 
 OBHeader.propTypes = {
-  screenIndex: number.isRequired,
-  totalScreenCount: number.isRequired,
+  progressPosition: number,
+  totalProgressPositions: number.isRequired,
 };
+
+OBHeader.defaultProps = {
+  progressPosition: null,
+}
 
 export default OBHeader;
 
