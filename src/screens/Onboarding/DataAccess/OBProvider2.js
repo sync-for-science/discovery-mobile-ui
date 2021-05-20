@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput
+  StyleSheet, Text, View, Image
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 8
-const OBProvider1 = () => {
+// wireframe page 10
+const OBProvider2 = () => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -23,28 +23,23 @@ const OBProvider1 = () => {
         <Text style={[h2, alignCenter, mb5]}>Data Access</Text>
       </View>
       <Text style={[h4, alignCenter, mb5]}>
-        Provider
+        Success
       </Text>
       <View style={styles.warningContainer}>
-        <Text style={alignCenter}>
-          In this first version of Discovery, you can only pull 
-          records from one provider.
+        <Text style={[alignCenter, styles.body]}>
+          You have successfully connected to your Provider and Discovery 
+          will be able to pull your data.
         </Text>
       </View>
-      <Text style={[alignCenter, mb5]}>
-        You will need a patient portal account for the provider 
-        you select in the drop-down list.
+      <Text style={[alignCenter, mb5, styles.body]}>
+        If you wish to change the Provider you are accessing data from, 
+        you can always do that from your Profile in the app.
       </Text>
-      <Text style={[alignCenter, mb5]}>
-        You will be then redirected to your Patient Portal where 
-        you login to approve sharing with Discovery.
-      </Text>
-      <TextInput style={styles.textInput} placeholder="Select Provider"/>
     </View>
   );
 };
 
-export default OBProvider1;
+export default OBProvider2;
 
 const styles = StyleSheet.create({
   root: {
