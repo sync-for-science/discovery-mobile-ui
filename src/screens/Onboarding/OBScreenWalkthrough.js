@@ -9,6 +9,7 @@ import OBHeader from './OBHeader';
 import OBWelcome from './OBWelcome';
 import OBBenefits from './OBBenefits';
 import OBSecurity from './OBSecurity';
+import OBPersonal1 from './DataAccess/OBPersonal1';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
@@ -18,6 +19,8 @@ const getProgressPosition = (index) => {
     case 1:
     case 2:
       return null;
+    case 3:
+      return 1;
     default:
       return null;
   }
@@ -48,6 +51,7 @@ const OBScreenWalkthrough = () => {
           <OBWelcome />
           <OBBenefits />
           <OBSecurity />
+          <OBPersonal1 />
         </Swiper>
       </View>
     </SafeAreaView>
