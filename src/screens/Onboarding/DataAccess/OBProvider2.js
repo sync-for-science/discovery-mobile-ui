@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image
+  StyleSheet, Text, View, Image,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
@@ -25,14 +25,14 @@ const OBProvider2 = () => {
       <Text style={[h4, alignCenter, mb5]}>
         Success
       </Text>
-      <View style={styles.warningContainer}>
+      <View style={styles.flashContainer}>
         <Text style={[alignCenter, styles.body]}>
-          You have successfully connected to your Provider and Discovery 
+          You have successfully connected to your Provider and Discovery
           will be able to pull your data.
         </Text>
       </View>
       <Text style={[alignCenter, mb5, styles.body]}>
-        If you wish to change the Provider you are accessing data from, 
+        If you wish to change the Provider you are accessing data from,
         you can always do that from your Profile in the app.
       </Text>
     </View>
@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
   },
-  warningContainer: {
+  flashContainer: {
     width: '100%',
     borderWidth: 1,
     borderColor: Colors.primary,
     borderRadius: 16,
     marginBottom: 20,
-    padding: 10
-  }
+    padding: 10,
+  },
 });
