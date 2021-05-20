@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, BackHandler,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { shape, func } from 'prop-types';
+import { shape } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
-import { useFocusEffect } from '@react-navigation/native';
-
-import { clearAuth } from '../features/auth/authSlice';
 import Colors from '../constants/Colors';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
-import { actionTypes } from '../redux/action-types';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
 
 const CollectionsListScreen = ({
   navigation,
   collections,
-  clearAuthAction,
-  clearPatientDataAction,
 }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
 
@@ -29,34 +23,11 @@ const CollectionsListScreen = ({
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
   };
 
-  const clearData = () => {
-    clearAuthAction();
-    clearPatientDataAction();
-  };
-
-  const handleLogout = () => {
-    clearData();
-  };
-
-  useFocusEffect(
-    React.useCallback(() => {
-      BackHandler.addEventListener('hardwareBackPress', clearData);
-
-      return () => BackHandler.removeEventListener('hardwareBackPress', clearData);
-    }, []),
-  );
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
-        <Left style={styles.logoutContainer}>
-          {__DEV__ && (
-          <TouchableOpacity onPress={handleLogout}>
-            <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
-          </TouchableOpacity>
-          )}
-        </Left>
+        <Left />
         <Body>
           <Title style={styles.headerText}>Collections</Title>
         </Body>
@@ -89,22 +60,13 @@ const CollectionsListScreen = ({
 CollectionsListScreen.propTypes = {
   navigation: shape({}).isRequired,
   collections: shape({}).isRequired,
-  clearAuthAction: func.isRequired,
-  clearPatientDataAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collections: state.collections,
 });
 
-const mapDispatchToProps = {
-  clearAuthAction: clearAuth,
-  clearPatientDataAction: () => ({
-    type: actionTypes.CLEAR_PATIENT_DATA,
-  }),
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CollectionsListScreen);
+export default connect(mapStateToProps, null)(CollectionsListScreen);
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -120,11 +82,5 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 18,
-  },
-  logoutContainer: {
-    marginLeft: 5,
-  },
-  logoutIcon: {
-    transform: [{ scaleX: -1 }],
   },
 });
