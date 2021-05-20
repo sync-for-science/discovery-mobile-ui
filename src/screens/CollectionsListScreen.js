@@ -7,12 +7,11 @@ import { shape } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
-import Logout from '../components/Login/Logout';
 
 const CollectionsListScreen = ({
   navigation,
@@ -28,15 +27,7 @@ const CollectionsListScreen = ({
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
-        <Left style={styles.logoutContainer}>
-          {__DEV__ && (
-            <Logout>
-              <TouchableOpacity>
-                <FontAwesome name="sign-out" size={24} color={Colors.headerIcon} style={styles.logoutIcon} />
-              </TouchableOpacity>
-            </Logout>
-          )}
-        </Left>
+        <Left />
         <Body>
           <Title style={styles.headerText}>Collections</Title>
         </Body>
@@ -91,11 +82,5 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 18,
-  },
-  logoutContainer: {
-    marginLeft: 5,
-  },
-  logoutIcon: {
-    transform: [{ scaleX: -1 }],
   },
 });
