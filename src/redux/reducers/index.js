@@ -119,7 +119,7 @@ const createNewCollectionRecord = () => ({
   //   2 -- focused
 });
 
-const defaultCollection = createCollection();
+let defaultCollection = createCollection();
 
 const preloadCollections = {
   [defaultCollection.id]: defaultCollection,
@@ -146,9 +146,11 @@ const createNote = (text) => {
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      const newDefaultCollection = createCollection();
+      const { id } = defaultCollection;
+      defaultCollection = createCollection();
+      defaultCollection.id = id;
       return {
-        [newDefaultCollection.id]: newDefaultCollection,
+        [defaultCollection.id]: defaultCollection,
       };
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
@@ -375,7 +377,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 export const activeCollectionIdReducer = (state = null, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
-      return null;
+      return defaultCollection.id;
     }
     case actionTypes.SELECT_COLLECTION: {
       return action.payload;
