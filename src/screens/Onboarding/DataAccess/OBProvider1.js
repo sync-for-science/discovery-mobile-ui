@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput
+  StyleSheet, Text, View, Image, TextInput,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
@@ -25,21 +25,21 @@ const OBProvider1 = () => {
       <Text style={[h4, alignCenter, mb5]}>
         Provider
       </Text>
-      <View style={styles.warningContainer}>
-        <Text style={alignCenter}>
-          In this first version of Discovery, you can only pull 
+      <View style={styles.flashContainer}>
+        <Text style={[alignCenter, styles.body]}>
+          In this first version of Discovery, you can only pull
           records from one provider.
         </Text>
       </View>
-      <Text style={[alignCenter, mb5]}>
-        You will need a patient portal account for the provider 
+      <Text style={[alignCenter, mb5, styles.body]}>
+        You will need a patient portal account for the provider
         you select in the drop-down list.
       </Text>
-      <Text style={[alignCenter, mb5]}>
-        You will be then redirected to your Patient Portal where 
+      <Text style={[alignCenter, mb5, styles.body]}>
+        You will be then redirected to your Patient Portal where
         you login to approve sharing with Discovery.
       </Text>
-      <TextInput style={styles.textInput} placeholder="Select Provider"/>
+      <TextInput style={styles.textInput} placeholder="Select Provider" />
     </View>
   );
 };
@@ -75,12 +75,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 20,
   },
-  warningContainer: {
+  flashContainer: {
     width: '100%',
     borderWidth: 1,
     borderColor: Colors.primary,
     borderRadius: 16,
     marginBottom: 20,
-    padding: 10
-  }
+    padding: 10,
+  },
 });
