@@ -19,7 +19,7 @@ const OBProviderData = () => {
           source={discoveryBasic}
           resizeMode="contain"
         />
-        <Text style={[h2, alignCenter, mb5]}>Data Access</Text>
+        <Text style={[h2, alignCenter, mb5]}>Data Organization</Text>
       </View>
       <Text style={[h4, alignCenter, mb5]}>
         Provider Data
