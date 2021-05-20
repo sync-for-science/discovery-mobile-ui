@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
+  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity, Button,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { shape } from 'prop-types';
@@ -30,7 +30,9 @@ const CollectionsListScreen = ({
       <Header style={styles.header}>
         <Left style={styles.logoutContainer}>
           {__DEV__ && (
-            <Logout />
+            <Logout>
+              <Button title="Logout" />
+            </Logout>
           )}
         </Left>
         <Body>

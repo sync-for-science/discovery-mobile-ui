@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar,
+  StyleSheet, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -18,7 +18,9 @@ const ProfileScreen = () => (
       <Demographics />
       <Data />
     </ScrollView>
-    <Logout />
+    <Logout>
+      <Button title="Logout" />
+    </Logout>
   </SafeAreaView>
 );
 
