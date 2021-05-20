@@ -12,21 +12,21 @@ import { actionTypes } from '../../redux/action-types';
 const Logout = ({
   clearAuthAction, clearPatientDataAction,
 }) => {
-  const clearData = () => {
+  const handleLogout = () => {
     clearAuthAction();
     clearPatientDataAction();
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      BackHandler.addEventListener('hardwareBackPress', clearData);
+      BackHandler.addEventListener('hardwareBackPress', handleLogout);
 
-      return () => BackHandler.removeEventListener('hardwareBackPress', clearData);
+      return () => BackHandler.removeEventListener('hardwareBackPress', handleLogout);
     }, []),
   );
 
   return (
-    <Button title="Logout" onPress={clearData} />
+    <Button title="Logout" onPress={handleLogout} />
   );
 };
 
