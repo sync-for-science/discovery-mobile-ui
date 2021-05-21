@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
   filledMarkers: {
     flex: 1,
     borderWidth: 1,
-    borderColor: Colors.lightgrey2,
-    backgroundColor: Colors.primary,
+    borderColor: Colors.logoBlue,
+    backgroundColor: Colors.logoBlue,
   },
   emptyMarkers: {
     flex: 1,
