@@ -3,23 +3,75 @@ import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 
-import { arrayOf, func, number } from 'prop-types';
+import {
+  arrayOf, func, number, bool,
+} from 'prop-types';
 import { useDispatch } from 'react-redux';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
 
+const { h3, h6 } = TextStyles;
+
+const NavButtons = ({
+  isFirstScreen,
+  isLastScreen,
+  handlePressNext,
+  handlePressBack,
+  dispatch,
+}) => {
+  if (isFirstScreen) {
+    return (
+      <View style={[styles.root, styles.rightNav]}>
+        <TouchableOpacity onPress={handlePressNext}>
+          <Text style={[h3, styles.navButton]}>Next</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  if (isLastScreen) {
+    return (
+      <View style={[styles.root, styles.centerNav]}>
+        <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
+          <Text style={[h3, styles.navButton]}>Get Started</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  return (
+    <View style={[styles.root, styles.splitNav]}>
+      <TouchableOpacity onPress={handlePressBack}>
+        <Text style={[h3, styles.navButton]}>Back</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={handlePressNext}>
+        <Text style={[h3, styles.navButton]}>Next</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+NavButtons.propTypes = {
+  isFirstScreen: bool,
+  isLastScreen: bool,
+  handlePressBack: func.isRequired,
+  handlePressNext: func.isRequired,
+  dispatch: func.isRequired,
+};
+
+NavButtons.defaultProps = {
+  isFirstScreen: false,
+  isLastScreen: false,
+};
+
 const OBNavigation = ({
-  screenIndex,
-  totalScreenCount,
+  isFirstScreen,
+  isLastScreen,
   dotNav,
   handlePressNext,
   handlePressBack,
 }) => {
-  const { h3, h6 } = TextStyles;
-  const isFirstScreen = screenIndex === 0;
-  const isLastScreen = screenIndex === totalScreenCount;
-  const singleNavigationStyle = isFirstScreen || isLastScreen ? styles.singleNav : {};
   const currentDotNav = dotNav ? dotNav[0] : null;
   const maxDotNav = dotNav ? dotNav[1] : null;
 
@@ -45,39 +97,28 @@ const OBNavigation = ({
       <View style={styles.dotNavContainer}>
         {navDots}
       </View>
-      <View style={[styles.root, singleNavigationStyle]}>
-        {!isFirstScreen && !isLastScreen
-        && (
-        <TouchableOpacity onPress={handlePressBack}>
-          <Text style={[h3, styles.navButton]}>Back</Text>
-        </TouchableOpacity>
-        )}
-        {!isLastScreen
-        && (
-        <TouchableOpacity onPress={handlePressNext}>
-          <Text style={[h3, styles.navButton]}>Next</Text>
-        </TouchableOpacity>
-        )}
-        {isLastScreen
-        && (
-        <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
-          <Text style={[h3, styles.navButton]}>Get Started</Text>
-        </TouchableOpacity>
-        )}
-      </View>
+      <NavButtons
+        isFirstScreen={isFirstScreen}
+        isLastScreen={isLastScreen}
+        handlePressBack={handlePressBack}
+        handlePressNext={handlePressNext}
+        dispatch={dispatch}
+      />
     </>
   );
 };
 
 OBNavigation.propTypes = {
-  screenIndex: number.isRequired,
-  totalScreenCount: number.isRequired,
+  isFirstScreen: bool,
+  isLastScreen: bool,
   dotNav: arrayOf(number.isRequired),
   handlePressBack: func.isRequired,
   handlePressNext: func.isRequired,
 };
 
 OBNavigation.defaultProps = {
+  isFirstScreen: null,
+  isLastScreen: null,
   dotNav: null,
 };
 
@@ -89,8 +130,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
-  singleNav: {
+  centerNav: {
     justifyContent: 'center',
+  },
+  rightNav: {
+    justifyContent: 'flex-end',
+  },
+  splitNav: {
+    justifyContent: 'space-between',
   },
   skipOnboarding: {
     alignItems: 'center',

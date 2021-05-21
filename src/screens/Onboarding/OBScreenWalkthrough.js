@@ -30,11 +30,12 @@ import OBCatalog3 from './DataExploration/OBCatalog3';
 import OBVideo from './OBVideo';
 import OBComplete from './OBComplete';
 
-const TOTAL_PROGRESS_POSITIONS = 12;
+const TOTAL_PROGRESS_POSITIONS = 11;
 
 const getNavData = (index) => {
   switch (index) {
     case 0:
+      return { isFirstScreen: true };
     case 1:
     case 2:
       return {};
@@ -54,27 +55,27 @@ const getNavData = (index) => {
     case 10:
       return { progress: 6, dotNav: [1, 4] };
     case 11:
-      return { progress: 7, dotNav: [2, 4] };
+      return { progress: 6, dotNav: [2, 4] };
     case 12:
-      return { progress: 7, dotNav: [3, 4] };
+      return { progress: 6, dotNav: [3, 4] };
     case 13:
-      return { progress: 7, dotNav: [4, 4] };
+      return { progress: 6, dotNav: [4, 4] };
     case 14:
-      return { progress: 8 };
+      return { progress: 7 };
     case 15:
-      return { progress: 9 };
+      return { progress: 8 };
     case 16:
-      return { progress: 10 };
+      return { progress: 9 };
     case 17:
-      return { progress: 11, dotNav: [1, 3] };
+      return { progress: 10, dotNav: [1, 3] };
     case 18:
-      return { progress: 11, dotNav: [2, 3] };
+      return { progress: 10, dotNav: [2, 3] };
     case 19:
-      return { progress: 11, dotNav: [3, 3] };
+      return { progress: 10, dotNav: [3, 3] };
     case 20:
-      return { progress: 12 };
+      return { progress: 11 };
     case 21:
-      return {};
+      return { isLastScreen: true };
     default:
       return {};
   }
@@ -121,8 +122,8 @@ const OBScreenWalkthrough = () => {
         <OBComplete />
       </Swiper>
       <OBNavigation
-        screenIndex={currentScreenIndex}
-        totalScreenCount={20}
+        isFirstScreen={getNavData(currentScreenIndex).isFirstScreen}
+        isLastScreen={getNavData(currentScreenIndex).isLastScreen}
         dotNav={getNavData(currentScreenIndex).dotNav}
         handlePressNext={() => swiperRef.current.goToNext()}
         handlePressBack={() => swiperRef.current.goToPrev()}
