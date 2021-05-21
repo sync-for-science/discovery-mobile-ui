@@ -7,8 +7,8 @@ import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 19
-const OBSummary = () => {
+// wireframe page 120
+const OBUpdates = () => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -24,11 +24,11 @@ const OBSummary = () => {
           <Text style={[h2, alignCenter, mb5]}>Data Exploration</Text>
         </View>
         <Text style={[h4, alignCenter, mb5]}>
-          Summary
+          Updates
         </Text>
         <Text style={[alignCenter, mb5, styles.body]}>
-          You will be able to see a high level Summary of your data,
-          organized by Record Categories, Providers and Practitioners.
+          You will be able to see what is latest in your data by selecting
+          a corresponding automatically generated Collection.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -38,7 +38,7 @@ const OBSummary = () => {
   );
 };
 
-export default OBSummary;
+export default OBUpdates;
 
 const styles = StyleSheet.create({
   root: {
