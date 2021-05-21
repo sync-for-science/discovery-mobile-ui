@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
-import OBSectionCoverTemplate from './OBSectionCoverTemplate';
+import OBSectionCoverTemplate from './components/OBSectionCoverTemplate';
 
 // wireframe page 11
 const OBFamiliar = () => {

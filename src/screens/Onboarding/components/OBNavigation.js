@@ -7,9 +7,9 @@ import {
   arrayOf, func, number, bool,
 } from 'prop-types';
 import { useDispatch } from 'react-redux';
-import TextStyles from '../../constants/TextStyles';
-import Colors from '../../constants/Colors';
-import { actionTypes } from '../../redux/action-types';
+import TextStyles from '../../../constants/TextStyles';
+import Colors from '../../../constants/Colors';
+import { actionTypes } from '../../../redux/action-types';
 
 const { h3, h6 } = TextStyles;
 

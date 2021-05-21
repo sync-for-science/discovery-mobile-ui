@@ -4,8 +4,8 @@ import {
 } from 'react-native';
 import { node, string } from 'prop-types';
 
-import TextStyles from '../../constants/TextStyles';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
+import TextStyles from '../../../constants/TextStyles';
+import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 
 const OBSectionCoverTemplate = ({ title, children }) => {
   const {

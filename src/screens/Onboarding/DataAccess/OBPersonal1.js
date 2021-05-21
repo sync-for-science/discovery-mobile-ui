@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
-import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
+import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 
 // wireframe page 6
 const OBPersonal1 = () => {
