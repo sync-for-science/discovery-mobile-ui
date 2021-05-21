@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
+import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 
 // wireframe page 8
 const OBProvider1 = () => {

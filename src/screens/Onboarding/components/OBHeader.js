@@ -2,9 +2,9 @@ import React from 'react';
 import {
   StyleSheet, View,
 } from 'react-native';
-
 import { number } from 'prop-types';
-import Colors from '../../constants/Colors';
+
+import Colors from '../../../constants/Colors';
 
 const OBHeader = ({
   totalProgressPositions, progressPosition,

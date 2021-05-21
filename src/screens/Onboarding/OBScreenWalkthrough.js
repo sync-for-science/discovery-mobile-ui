@@ -5,7 +5,7 @@ import {
 import Swiper from 'react-native-web-swiper';
 
 import Colors from '../../constants/Colors';
-import OBHeader from './OBHeader';
+import OBHeader from './components/OBHeader';
 import OBWelcome from './OBWelcome';
 import OBBenefits from './OBBenefits';
 import OBSecurity from './OBSecurity';
@@ -17,7 +17,7 @@ import OBFamiliar from './OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
 import OBYourData from './DataOrganization/OBYourData';
 import OBCollections1 from './DataOrganization/OBCollections1';
-import OBNavigation from './OBNavigation';
+import OBNavigation from './components/OBNavigation';
 import OBCollections2 from './DataOrganization/OBCollections2';
 import OBCollections3 from './DataOrganization/OBCollections3';
 import OBCollections4 from './DataOrganization/OBCollections4';

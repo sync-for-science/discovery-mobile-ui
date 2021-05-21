@@ -5,9 +5,9 @@ import {
 import { bool, node, string } from 'prop-types';
 import { AntDesign } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
-import Colors from '../../constants/Colors';
-import TextStyles from '../../constants/TextStyles';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
+import Colors from '../../../constants/Colors';
+import TextStyles from '../../../constants/TextStyles';
+import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 
 const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
