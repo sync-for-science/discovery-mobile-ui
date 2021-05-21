@@ -7,8 +7,8 @@ import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 16
-const OBCollections3 = () => {
+// wireframe page 17
+const OBCollections4 = () => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -27,8 +27,15 @@ const OBCollections3 = () => {
           Collections
         </Text>
         <Text style={[alignCenter, mb5, styles.body]}>
-          Preview or edit Collection by sorting the relevant Records in
-          a way that matters to your question.
+          You will be able to add notes to a Collection that can have 
+          many purposes: wrapping meaning around the Records, logging 
+          personal information, or journaling. 
+        </Text>
+        <Text style={[alignCenter, mb5, styles.body]}>
+          Access the notes for the Collection.
+        </Text>
+        <Text style={[alignCenter, mb5, styles.body]}>
+          Add, remove or modify notes about the Collection.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -38,7 +45,7 @@ const OBCollections3 = () => {
   );
 };
 
-export default OBCollections3;
+export default OBCollections4;
 
 const styles = StyleSheet.create({
   root: {
