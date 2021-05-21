@@ -4,6 +4,7 @@ import { useRecoilValue } from 'recoil';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
+import LoadingIndicator from './src/components/LoadingIndicator';
 import createStore from './src/redux';
 import { authenticationState } from './src/recoil';
 import { actionTypes } from './src/redux/action-types';
@@ -44,7 +45,7 @@ export default function StateProvider({ children }) {
   return (
     <Provider store={store}>
       <PersistGate
-        loading={null}
+        loading={<LoadingIndicator />}
         persistor={persistor}
       >
         { children }
