@@ -3,8 +3,8 @@ import {
   StyleSheet, Text, Button,
 } from 'react-native';
 
-import TextStyles from '../../constants/TextStyles';
-import OBSectionCoverTemplate from './components/OBSectionCoverTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
 // wireframe page 5
 const OBSecurity = () => {

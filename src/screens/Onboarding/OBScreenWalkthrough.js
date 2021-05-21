@@ -6,14 +6,14 @@ import Swiper from 'react-native-web-swiper';
 
 import Colors from '../../constants/Colors';
 import OBHeader from './components/OBHeader';
-import OBWelcome from './OBWelcome';
-import OBBenefits from './OBBenefits';
-import OBSecurity from './OBSecurity';
+import OBWelcome from './sections/OBWelcome';
+import OBBenefits from './sections/OBBenefits';
+import OBSecurity from './sections/OBSecurity';
 import OBPersonal1 from './DataAccess/OBPersonal1';
 import OBPersonal2 from './DataAccess/OBPersonal2';
 import OBProvider1 from './DataAccess/OBProvider1';
 import OBProvider2 from './DataAccess/OBProvider2';
-import OBFamiliar from './OBFamiliar';
+import OBFamiliar from './sections/OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
 import OBYourData from './DataOrganization/OBYourData';
 import OBCollections1 from './DataOrganization/OBCollections1';
@@ -27,8 +27,8 @@ import OBUpdates from './DataExploration/OBUpdates';
 import OBCatalog1 from './DataExploration/OBCatalog1';
 import OBCatalog2 from './DataExploration/OBCatalog2';
 import OBCatalog3 from './DataExploration/OBCatalog3';
-import OBVideo from './OBVideo';
-import OBComplete from './OBComplete';
+import OBVideo from './sections/OBVideo';
+import OBComplete from './sections/OBComplete';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
