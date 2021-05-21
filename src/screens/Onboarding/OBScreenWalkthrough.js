@@ -25,6 +25,7 @@ import OBDisplaying from './DataOrganization/OBDisplaying';
 import OBSummary from './DataExploration/OBSummary';
 import OBUpdates from './DataExploration/OBUpdates';
 import OBCatalog1 from './DataExploration/OBCatalog1';
+import OBCatalog2 from './DataExploration/OBCatalog2';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
@@ -63,6 +64,8 @@ const getNavData = (index) => {
       return { progress: 10 };
     case 17:
       return { progress: 11, dotNav: [1, 3] };
+    case 18:
+      return { progress: 11, dotNav: [2, 3] };
     default:
       return {};
   }
@@ -103,6 +106,7 @@ const OBScreenWalkthrough = () => {
         <OBSummary />
         <OBUpdates />
         <OBCatalog1 />
+        <OBCatalog2 />
       </Swiper>
       <OBNavigation
         screenIndex={currentScreenIndex}
