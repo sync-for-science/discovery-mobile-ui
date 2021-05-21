@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
-import OBSectionTemplate from './OBSectionTemplate';
+import OBSectionCoverTemplate from './OBSectionCoverTemplate';
 
 // wireframe page 5
 const OBSecurity = () => {
@@ -12,7 +12,7 @@ const OBSecurity = () => {
     alignCenter, mb5,
   } = TextStyles;
   return (
-    <OBSectionTemplate title="Security">
+    <OBSectionCoverTemplate title="Security">
       <Text style={[styles.body, alignCenter, mb5]}>
         Discovery pulls your medical records from your
         providers in a secure encrypted  manner.
@@ -26,7 +26,7 @@ const OBSecurity = () => {
         application or service.
       </Text>
       <Button title="Read more about safety" />
-    </OBSectionTemplate>
+    </OBSectionCoverTemplate>
   );
 };
 
