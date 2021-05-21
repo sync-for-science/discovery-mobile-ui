@@ -42,11 +42,9 @@ const OBNavigation = ({
           </TouchableOpacity>
         </View>
       )}
-      {dotNav && (
-        <View style={styles.dotNavContainer}>
-          {navDots}
-        </View>
-      )}
+      <View style={styles.dotNavContainer}>
+        {navDots}
+      </View>
       <View style={[styles.root, singleNavigationStyle]}>
         {!isFirstScreen && !isLastScreen
         && (
@@ -99,14 +97,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   dotNavFilled: {
-    height: 8,
+    height: '100%',
     width: 8,
     backgroundColor: Colors.logoBlue,
     borderRadius: 4,
     marginHorizontal: 4,
   },
   dotNavEmpty: {
-    height: 8,
+    height: '100%',
     width: 8,
     borderRadius: 4,
     borderWidth: 1,
@@ -116,6 +114,7 @@ const styles = StyleSheet.create({
   dotNavContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    height: 8,
   },
   navButton: {
     color: Colors.logoBlue,
