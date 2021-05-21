@@ -3,9 +3,9 @@ import {
   StyleSheet, Text, View, Image,
 } from 'react-native';
 
-import TextStyles from '../../constants/TextStyles';
-import Colors from '../../constants/Colors';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
+import TextStyles from '../../../constants/TextStyles';
+import Colors from '../../../constants/Colors';
+import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 
 // wireframe page 3
 const OBWelcome = () => {
