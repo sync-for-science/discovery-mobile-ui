@@ -17,32 +17,33 @@ import OBFamiliar from './OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
 import OBYourData from './DataOrganization/OBYourData';
 import OBCollections1 from './DataOrganization/OBCollections1';
+import OBNavigation from './OBNavigation';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
-const getProgressPosition = (index) => {
+const getNavData = (index) => {
   switch (index) {
     case 0:
     case 1:
     case 2:
-      return null;
+      return {};
     case 3:
-      return 1;
+      return { progress: 1 };
     case 4:
-      return 2;
+      return { progress: 2 };
     case 5:
     case 6:
-      return 3;
+      return { progress: 3 };
     case 7:
-      return null;
+      return {};
     case 8:
-      return 4;
+      return { progress: 4 };
     case 9:
-      return 5;
+      return { progress: 5 };
     case 10:
-      return 6;
+      return { progress: 6, dotNav: [1, 4] };
     default:
-      return null;
+      return {};
   }
 };
 
@@ -53,7 +54,7 @@ const OBScreenWalkthrough = () => {
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <OBHeader
-        progressPosition={getProgressPosition(currentScreenIndex)}
+        progressPosition={getNavData(currentScreenIndex).progress}
         totalProgressPositions={TOTAL_PROGRESS_POSITIONS}
       />
       <Swiper
@@ -61,11 +62,7 @@ const OBScreenWalkthrough = () => {
         from={0}
         loop={false}
         onIndexChanged={(index) => setCurrentScreenIndex(index)}
-        controlsProps={{
-          dotsPos: false,
-          nextTitleStyle: styles.navButton,
-          prevTitleStyle: styles.navButton,
-        }}
+        controlsEnabled={false}
       >
         <OBWelcome />
         <OBBenefits />
@@ -79,7 +76,13 @@ const OBScreenWalkthrough = () => {
         <OBYourData />
         <OBCollections1 />
       </Swiper>
-
+      <OBNavigation
+        screenIndex={currentScreenIndex}
+        totalScreenCount={20}
+        dotNav={getNavData(currentScreenIndex).dotNav}
+        handlePressNext={() => swiperRef.goToNext()}
+        handlePressBack={() => swiperRef.goToPrev()}
+      />
     </SafeAreaView>
   );
 };

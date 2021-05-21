@@ -6,7 +6,6 @@ import {
 import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
-import OBDotNav from '../OBDotNav';
 
 // wireframe page 14
 const OBScreenCollections1 = () => {
@@ -34,7 +33,6 @@ const OBScreenCollections1 = () => {
           <Text>Image</Text>
         </View>
       </View>
-      <OBDotNav current={1} max={4} />
     </View>
   );
 };
