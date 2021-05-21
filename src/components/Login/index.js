@@ -6,7 +6,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 
 import { authenticationState } from '../../recoil';
@@ -17,6 +16,7 @@ import {
 
 import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
 import SkipLoginButton from './SkipLoginButton';
+import LoadingIndicator from '../LoadingIndicator';
 
 const Login = () => {
   const setAuthentication = useSetRecoilState(authenticationState);
@@ -45,11 +45,7 @@ const Login = () => {
 
   return (
     <View style={styles.body}>
-      { loading && (
-        <View style={styles.spinnerContainer}>
-          <ActivityIndicator size="large" color={Colors.primary} />
-        </View>
-      )}
+      { loading && (<LoadingIndicator />)}
       { !loading && (
         <>
           <PatientPicker
@@ -81,9 +77,6 @@ export default Login;
 const styles = StyleSheet.create({
   body: {
     alignItems: 'center',
-  },
-  spinnerContainer: {
-    margin: 16,
   },
   login: {
     backgroundColor: Colors.primary,
