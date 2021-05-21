@@ -7,8 +7,8 @@ import TextStyles from '../../../constants/TextStyles';
 import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 20
-const OBUpdates = () => {
+// wireframe page 21
+const OBCatalog1 = () => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -24,11 +24,11 @@ const OBUpdates = () => {
           <Text style={[h2, alignCenter, mb5]}>Data Exploration</Text>
         </View>
         <Text style={[h4, alignCenter, mb5]}>
-          Updates
+          Catalog
         </Text>
         <Text style={[alignCenter, mb5, styles.body]}>
-          You will be able to see what is latest in your data by selecting
-          a corresponding automatically generated Collection.
+          You will be able to define the time window you are interested
+          in and filter the Record Types you want to look at.
         </Text>
         <View style={styles.image}>
           <Text>Image</Text>
@@ -38,7 +38,7 @@ const OBUpdates = () => {
   );
 };
 
-export default OBUpdates;
+export default OBCatalog1;
 
 const styles = StyleSheet.create({
   root: {
