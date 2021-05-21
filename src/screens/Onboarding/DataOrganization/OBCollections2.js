@@ -8,7 +8,7 @@ import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
 
 // wireframe page 15
-const OBScreenCollections1 = () => {
+const OBCollections2 = () => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -38,7 +38,7 @@ const OBScreenCollections1 = () => {
   );
 };
 
-export default OBScreenCollections1;
+export default OBCollections2;
 
 const styles = StyleSheet.create({
   root: {
