@@ -27,8 +27,8 @@ const OBWelcome = () => {
       </View>
       <View style={styles.singleWordsContainer}>
         <Text style={[h4, mb5]}>ACCESS</Text>
-        <Text style={[h4, mb5]}>ORGANIZE</Text>
         <Text style={[h4, mb5]}>EXPLORE</Text>
+        <Text style={[h4, mb5]}>ORGANIZE</Text>
         <Text style={[h4, mb5]}>USE</Text>
       </View>
     </View>
