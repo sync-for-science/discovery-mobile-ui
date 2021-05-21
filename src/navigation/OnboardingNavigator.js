@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import OBScreenSplash from '../screens/Onboarding/OBScreenSplash';
-import OBScreenWalkthrough from '../screens/Onboarding/OBScreenWalkthrough';
+import OBSplashScreen from '../screens/Onboarding/OBSplashScreen';
+import OBWalkthroughScreen from '../screens/Onboarding/OBWalkthroughScreen';
 
 const OnboardingStack = createStackNavigator();
 
@@ -11,8 +11,8 @@ const OnboardingNavigator = () => (
     initialRouteName="Walkthrough"
     headerMode="none"
   >
-    <OnboardingStack.Screen name="Splash" component={OBScreenSplash} />
-    <OnboardingStack.Screen name="Walkthrough" component={OBScreenWalkthrough} />
+    <OnboardingStack.Screen name="Splash" component={OBSplashScreen} />
+    <OnboardingStack.Screen name="Walkthrough" component={OBWalkthroughScreen} />
   </OnboardingStack.Navigator>
 );
 
