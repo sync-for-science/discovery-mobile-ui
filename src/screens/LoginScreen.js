@@ -16,23 +16,18 @@ import Colors from '../constants/Colors';
 const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View
-      contentInsetAdjustmentBehavior="automatic"
-      style={styles.screen}
-    >
-      <View style={styles.discoveryContainer}>
-        <View style={styles.logoContainer}>
-          <Image
-            style={styles.slogo}
-            source={s4sLogo}
-            resizeMode="contain"
-          />
-          <View style={styles.descriptionContainer}>
-            <H2 style={styles.descriptionText}>Discovery Mobile</H2>
-          </View>
+    <View style={styles.screen}>
+      <View style={styles.logoContainer}>
+        <Image
+          style={styles.slogo}
+          source={s4sLogo}
+          resizeMode="contain"
+        />
+        <View style={styles.descriptionContainer}>
+          <H2 style={styles.descriptionText}>Discovery Mobile</H2>
         </View>
-        <Login />
       </View>
+      <Login />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
@@ -51,16 +46,14 @@ const styles = StyleSheet.create({
   },
   screen: {
     flex: 1,
-  },
-  discoveryContainer: {
+    padding: 10,
     justifyContent: 'space-between',
   },
   slogo: {
     height: 70,
-    marginVertical: 32,
+    marginVertical: 16,
   },
   logoContainer: {
-    marginTop: 32,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: '200',
   },
   vermonsterContainer: {
-    height: '25%',
+    marginTop: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },
