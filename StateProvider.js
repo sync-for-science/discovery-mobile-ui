@@ -19,9 +19,12 @@ export default function StateProvider({ children }) {
     }
     store.dispatch({
       type: actionTypes.SET_AUTH,
-      payload: authentication, // identity comparison with MOCK_AUTH
+      payload: authentication,
     });
     return () => {
+      store.dispatch({
+        type: actionTypes.CLEAR_PATIENT_DATA,
+      });
     };
   }, [authentication]);
 
