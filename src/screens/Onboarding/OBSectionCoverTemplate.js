@@ -7,7 +7,7 @@ import { node, string } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
-const OBSectionTemplate = ({ title, children }) => {
+const OBSectionCoverTemplate = ({ title, children }) => {
   const {
     h2, alignCenter, mb5,
   } = TextStyles;
@@ -24,12 +24,12 @@ const OBSectionTemplate = ({ title, children }) => {
   );
 };
 
-OBSectionTemplate.propTypes = {
+OBSectionCoverTemplate.propTypes = {
   title: string.isRequired,
   children: node.isRequired,
 };
 
-export default OBSectionTemplate;
+export default OBSectionCoverTemplate;
 
 const styles = StyleSheet.create({
   root: {
