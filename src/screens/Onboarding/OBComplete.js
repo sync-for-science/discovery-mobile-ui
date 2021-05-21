@@ -7,14 +7,14 @@ import TextStyles from '../../constants/TextStyles';
 import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../constants/Colors';
 
-// wireframe page 24
-const OBVideo = () => {
+// wireframe page 25
+const OBComplete = () => {
   const {
     h2, alignCenter, mb5,
   } = TextStyles;
   return (
     <View style={styles.root}>
-      <Text style={[h2, alignCenter, mb5]}>Video Tutorial</Text>
+      <Text style={[h2, alignCenter, mb5]}>THANK YOU [USER], YOU’RE ALL SET!</Text>
       <Image
         style={[styles.logo, mb5]}
         source={discoveryBasic}
@@ -30,7 +30,7 @@ const OBVideo = () => {
   );
 };
 
-export default OBVideo;
+export default OBComplete;
 
 const styles = StyleSheet.create({
   root: {
