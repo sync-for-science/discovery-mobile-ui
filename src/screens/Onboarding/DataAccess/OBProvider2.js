@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import OBInfoTemplate from '../OBInfoTemplate';
+import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
 
 // wireframe page 10
 const OBProvider2 = () => {
@@ -13,7 +13,7 @@ const OBProvider2 = () => {
     alignCenter, mb5,
   } = TextStyles;
   return (
-    <OBInfoTemplate title="Data Access" subTitle="Success" showSuccess>
+    <OBSectionBodyTemplate title="Data Access" subTitle="Success" showSuccess>
       <View style={styles.flashContainer}>
         <Text style={[alignCenter, styles.body]}>
           You have successfully connected to your Provider and Discovery
@@ -24,36 +24,8 @@ const OBProvider2 = () => {
         If you wish to change the Provider you are accessing data from,
         you can always do that from your Profile in the app.
       </Text>
-    </OBInfoTemplate>
+    </OBSectionBodyTemplate>
   );
-  // return (
-  //   <View style={styles.root}>
-  //     <View style={styles.titleContainer}>
-  //       <Image
-  //         style={[styles.logo, mb5]}
-  //         source={discoveryBasic}
-  //         resizeMode="contain"
-  //       />
-  //       <Text style={[h2, alignCenter, mb5]}>Data Access</Text>
-  //     </View>
-  //     <View style={[styles.successContainer, mb5]}>
-  //       <AntDesign name="checkcircle" size={24} color={Colors.primary} />
-  //       <Text style={[h4, alignCenter, styles.successText]}>
-  //         Success
-  //       </Text>
-  //     </View>
-  //     <View style={styles.flashContainer}>
-  //       <Text style={[alignCenter, styles.body]}>
-  //         You have successfully connected to your Provider and Discovery
-  //         will be able to pull your data.
-  //       </Text>
-  //     </View>
-  //     <Text style={[alignCenter, mb5, styles.body]}>
-  //       If you wish to change the Provider you are accessing data from,
-  //       you can always do that from your Profile in the app.
-  //     </Text>
-  //   </View>
-  // );
 };
 
 export default OBProvider2;

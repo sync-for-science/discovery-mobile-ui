@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import OBInfoTemplate from '../OBInfoTemplate';
+import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
 
 // wireframe page 8
 const OBProvider1 = () => {
@@ -13,7 +13,7 @@ const OBProvider1 = () => {
     alignCenter, mb5,
   } = TextStyles;
   return (
-    <OBInfoTemplate title="Data Access" subTitle="Provider">
+    <OBSectionBodyTemplate title="Data Access" subTitle="Provider">
       <View style={styles.flashContainer}>
         <Text style={[alignCenter, styles.body]}>
           In this first version of Discovery, you can only pull
@@ -29,7 +29,7 @@ const OBProvider1 = () => {
         you login to approve sharing with Discovery.
       </Text>
       <TextInput style={styles.textInput} placeholder="Select Provider" />
-    </OBInfoTemplate>
+    </OBSectionBodyTemplate>
   );
 };
 

@@ -9,7 +9,7 @@ import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
-const OBInfoTemplate = ({
+const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
 }) => {
   const {
@@ -43,18 +43,18 @@ const OBInfoTemplate = ({
   );
 };
 
-OBInfoTemplate.propTypes = {
+OBSectionBodyTemplate.propTypes = {
   title: string.isRequired,
   subTitle: string.isRequired,
   children: node.isRequired,
   showSuccess: bool,
 };
 
-OBInfoTemplate.defaultProps = {
+OBSectionBodyTemplate.defaultProps = {
   showSuccess: false,
 };
 
-export default OBInfoTemplate;
+export default OBSectionBodyTemplate;
 
 const styles = StyleSheet.create({
   root: {
