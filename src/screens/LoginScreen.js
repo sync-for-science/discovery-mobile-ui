@@ -34,21 +34,23 @@ return (
         <OnboardingToggleButton />
       </Suspense>
       {__DEV__
-          && (
-          <View style={styles.resetOnboardingContainer}>
-            <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
-              <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
-            </TouchableOpacity>
+        && (
+        <View style={styles.resetOnboardingContainer}>
+          <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
+            <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
+          </TouchableOpacity>
+
           </View>
           )}
+        </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
       </View>
-    </View>
-  </SafeAreaView>
-)};
+    </SafeAreaView>
+  );
+};
 
 export default LoginScreen;
 
