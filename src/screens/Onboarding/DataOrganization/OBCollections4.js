@@ -27,9 +27,9 @@ const OBCollections4 = () => {
           Collections
         </Text>
         <Text style={[alignCenter, mb5, styles.body]}>
-          You will be able to add notes to a Collection that can have 
-          many purposes: wrapping meaning around the Records, logging 
-          personal information, or journaling. 
+          You will be able to add notes to a Collection that can have
+          many purposes: wrapping meaning around the Records, logging
+          personal information, or journaling.
         </Text>
         <Text style={[alignCenter, mb5, styles.body]}>
           Access the notes for the Collection.
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 20,
   },
   body: {
