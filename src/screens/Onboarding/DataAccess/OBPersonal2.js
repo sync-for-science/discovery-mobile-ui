@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import OBInfoTemplate from '../OBInfoTemplate';
+import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
 
 // wireframe page 7
 const OBPersonal1 = () => {
@@ -13,7 +13,7 @@ const OBPersonal1 = () => {
     mb2,
   } = TextStyles;
   return (
-    <OBInfoTemplate title="Data Access" subTitle="Personal Information">
+    <OBSectionBodyTemplate title="Data Access" subTitle="Personal Information">
       <View style={styles.formContainer}>
         <Text style={mb2}>Name</Text>
         <TextInput style={styles.textInput} />
@@ -22,7 +22,7 @@ const OBPersonal1 = () => {
         <Text style={mb2}>Date of Birth</Text>
         <TextInput style={styles.textInput} />
       </View>
-    </OBInfoTemplate>
+    </OBSectionBodyTemplate>
   );
 };
 

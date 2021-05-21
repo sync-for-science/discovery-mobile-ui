@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
-import OBInfoTemplate from '../OBInfoTemplate';
+import OBSectionBodyTemplate from '../OBSectionBodyTemplate';
 
 // wireframe page 6
 const OBPersonal1 = () => {
@@ -13,7 +13,7 @@ const OBPersonal1 = () => {
   } = TextStyles;
 
   return (
-    <OBInfoTemplate
+    <OBSectionBodyTemplate
       title="Data Access"
       subTitle="Personal Information"
     >
@@ -21,7 +21,7 @@ const OBPersonal1 = () => {
         Discovery will ask for your name and date of birth to make
         sure it is pulling the right data from your Provider.
       </Text>
-    </OBInfoTemplate>
+    </OBSectionBodyTemplate>
   );
 };
 
