@@ -15,6 +15,7 @@ import OBProvider1 from './DataAccess/OBProvider1';
 import OBProvider2 from './DataAccess/OBProvider2';
 import OBFamiliar from './OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
+import OBYourData from './DataOrganization/OBYourData';
 
 const TOTAL_PROGRESS_POSITIONS = 18;
 
@@ -35,6 +36,8 @@ const getProgressPosition = (index) => {
       return null;
     case 8:
       return 4;
+    case 9:
+      return 5;
     default:
       return null;
   }
@@ -70,6 +73,7 @@ const OBScreenWalkthrough = () => {
         <OBProvider2 />
         <OBFamiliar />
         <OBProviderData />
+        <OBYourData />
       </Swiper>
     </SafeAreaView>
   );
