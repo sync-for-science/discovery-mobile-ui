@@ -2,12 +2,16 @@ import React from 'react';
 import {
   StyleSheet, Text, View, Image,
 } from 'react-native';
-import { node, string } from 'prop-types';
+import { bool, node, string } from 'prop-types';
+import { AntDesign } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
 
-const OBInfoTemplate = ({ title, subTitle, children }) => {
+const OBInfoTemplate = ({
+  title, subTitle, showSuccess, children,
+}) => {
   const {
     h2, h4, alignCenter, mb5,
   } = TextStyles;
@@ -15,15 +19,25 @@ const OBInfoTemplate = ({ title, subTitle, children }) => {
     <View style={styles.root}>
       <View style={styles.titleContainer}>
         <Image
-          style={[styles.logo, mb5]}
+          style={[styles.logo]}
           source={discoveryBasic}
           resizeMode="contain"
         />
-        <Text style={[h2, alignCenter, mb5]}>{title}</Text>
+        <Text style={[h2, alignCenter]}>{title}</Text>
       </View>
-      <Text style={[h4, alignCenter, mb5]}>
-        {subTitle}
-      </Text>
+      <View style={[styles.subTitleContainer, mb5]}>
+        {showSuccess && (
+          <AntDesign
+            name="checkcircle"
+            style={styles.successIcon}
+            size={24}
+            color={Colors.logoBlue}
+          />
+        )}
+        <Text style={[h4, alignCenter]}>
+          {subTitle}
+        </Text>
+      </View>
       {children}
     </View>
   );
@@ -33,6 +47,11 @@ OBInfoTemplate.propTypes = {
   title: string.isRequired,
   subTitle: string.isRequired,
   children: node.isRequired,
+  showSuccess: bool,
+};
+
+OBInfoTemplate.defaultProps = {
+  showSuccess: false,
 };
 
 export default OBInfoTemplate;
@@ -53,5 +72,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     justifyContent: 'center',
+  },
+  subTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  successIcon: {
+    marginRight: 10,
   },
 });

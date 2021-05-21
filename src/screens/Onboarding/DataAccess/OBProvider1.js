@@ -1,30 +1,19 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, TextInput,
+  StyleSheet, Text, View, TextInput,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
-import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
+import OBInfoTemplate from '../OBInfoTemplate';
 
 // wireframe page 8
 const OBProvider1 = () => {
   const {
-    h2, h4, alignCenter, mb5,
+    alignCenter, mb5,
   } = TextStyles;
   return (
-    <View style={styles.root}>
-      <View style={styles.titleContainer}>
-        <Image
-          style={[styles.logo, mb5]}
-          source={discoveryBasic}
-          resizeMode="contain"
-        />
-        <Text style={[h2, alignCenter, mb5]}>Data Access</Text>
-      </View>
-      <Text style={[h4, alignCenter, mb5]}>
-        Provider
-      </Text>
+    <OBInfoTemplate title="Data Access" subTitle="Provider">
       <View style={styles.flashContainer}>
         <Text style={[alignCenter, styles.body]}>
           In this first version of Discovery, you can only pull
@@ -40,35 +29,16 @@ const OBProvider1 = () => {
         you login to approve sharing with Discovery.
       </Text>
       <TextInput style={styles.textInput} placeholder="Select Provider" />
-    </View>
+    </OBInfoTemplate>
   );
 };
 
 export default OBProvider1;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    height: 60,
-    width: 60,
-    marginRight: 10,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    justifyContent: 'center',
-  },
   body: {
     fontSize: 18,
     lineHeight: 24,
-  },
-  formContainer: {
-    width: '100%',
   },
   textInput: {
     width: '100%',
