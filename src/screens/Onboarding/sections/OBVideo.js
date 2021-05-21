@@ -1,49 +1,31 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text, View,
 } from 'react-native';
 
-import TextStyles from '../../../constants/TextStyles';
-import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
+import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
 // wireframe page 24
-const OBVideo = () => {
-  const {
-    h2, alignCenter, mb5,
-  } = TextStyles;
-  return (
-    <View style={styles.root}>
-      <Text style={[h2, alignCenter, mb5]}>Video Tutorial</Text>
-      <Image
-        style={[styles.logo, mb5]}
-        source={discoveryBasic}
-        resizeMode="contain"
-      />
-      <Text style={[styles.body, alignCenter, mb5]}>
-        See how Discovery works on a fictitious patient!
-      </Text>
-      <View style={styles.image}>
-        <Text>Video</Text>
-      </View>
+const OBVideo = () => (
+  <OBSectionCoverTemplate title="Video Tutorial">
+    <Text style={styles.body}>
+      See how Discovery works on a fictitious patient!
+    </Text>
+    <View style={styles.image}>
+      <Text>Video</Text>
     </View>
-  );
-};
+  </OBSectionCoverTemplate>
+);
 
 export default OBVideo;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    height: 60,
-  },
   body: {
     fontSize: 18,
     lineHeight: 24,
+    textAlign: 'center',
+    marginBottom: 20,
   },
   image: {
     width: '100%',
