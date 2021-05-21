@@ -31,36 +31,9 @@ const OBProvider2 = () => {
 export default OBProvider2;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    height: 60,
-    width: 60,
-    marginRight: 10,
-  },
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    justifyContent: 'center',
-  },
   body: {
     fontSize: 18,
     lineHeight: 24,
-  },
-  formContainer: {
-    width: '100%',
-  },
-  textInput: {
-    width: '100%',
-    padding: 8,
-    borderWidth: 1,
-    borderColor: Colors.lightgrey,
-    borderRadius: 8,
-    marginBottom: 20,
   },
   flashContainer: {
     width: '100%',
@@ -69,12 +42,5 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     marginBottom: 20,
     padding: 10,
-  },
-  successContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  successText: {
-    marginLeft: 10,
   },
 });
