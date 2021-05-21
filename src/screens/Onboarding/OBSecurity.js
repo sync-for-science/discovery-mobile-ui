@@ -1,24 +1,18 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image, Button,
+  StyleSheet, Text, Button,
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
+import OBSectionTemplate from './OBSectionTemplate';
 
 // wireframe page 5
 const OBSecurity = () => {
   const {
-    h2, alignCenter, mb5,
+    alignCenter, mb5,
   } = TextStyles;
   return (
-    <View style={styles.root}>
-      <Text style={[h2, alignCenter, mb5]}>Security</Text>
-      <Image
-        style={[styles.logo, mb5]}
-        source={discoveryBasic}
-        resizeMode="contain"
-      />
+    <OBSectionTemplate title="Security">
       <Text style={[styles.body, alignCenter, mb5]}>
         Discovery pulls your medical records from your
         providers in a secure encrypted  manner.
@@ -32,21 +26,13 @@ const OBSecurity = () => {
         application or service.
       </Text>
       <Button title="Read more about safety" />
-    </View>
+    </OBSectionTemplate>
   );
 };
 
 export default OBSecurity;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    height: 60,
-  },
   body: {
     fontSize: 18,
     lineHeight: 24,
