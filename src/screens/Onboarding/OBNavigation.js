@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
   singleNav: {
     justifyContent: 'center',
