@@ -38,7 +38,7 @@ const OBNavigation = ({
       {__DEV__ && (
         <View style={styles.skipOnboarding}>
           <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
-            <Text style={[h6, { color: Colors.primary }]}>Skip Onboarding</Text>
+            <Text style={[h6, styles.navButton]}>Skip Onboarding</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -51,19 +51,19 @@ const OBNavigation = ({
         {!isFirstScreen && !isLastScreen
         && (
         <TouchableOpacity onPress={handlePressBack}>
-          <Text style={[h3, { color: Colors.primary }]}>Back</Text>
+          <Text style={[h3, styles.navButton]}>Back</Text>
         </TouchableOpacity>
         )}
         {!isLastScreen
         && (
         <TouchableOpacity onPress={handlePressNext}>
-          <Text style={[h3, { color: Colors.primary }]}>Next</Text>
+          <Text style={[h3, styles.navButton]}>Next</Text>
         </TouchableOpacity>
         )}
         {isLastScreen
         && (
         <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
-          <Text style={[h3, { color: Colors.primary }]}>Get Started</Text>
+          <Text style={[h3, styles.navButton]}>Get Started</Text>
         </TouchableOpacity>
         )}
       </View>
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   dotNavFilled: {
     height: 8,
     width: 8,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.logoBlue,
     borderRadius: 4,
     marginHorizontal: 4,
   },
@@ -116,5 +116,8 @@ const styles = StyleSheet.create({
   dotNavContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  navButton: {
+    color: Colors.logoBlue,
   },
 });
