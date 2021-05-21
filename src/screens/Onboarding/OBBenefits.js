@@ -1,24 +1,18 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text,
 } from 'react-native';
 
 import TextStyles from '../../constants/TextStyles';
-import discoveryBasic from '../../../assets/images/discovery-basic-logo.png';
+import OBSectionTemplate from './OBSectionTemplate';
 
 // wireframe page 4
 const OBBenefits = () => {
   const {
-    h2, alignCenter, mb5,
+    alignCenter, mb5,
   } = TextStyles;
   return (
-    <View style={styles.root}>
-      <Text style={[h2, alignCenter, mb5]}>Benefits of using Discovery</Text>
-      <Image
-        style={[styles.logo, mb5]}
-        source={discoveryBasic}
-        resizeMode="contain"
-      />
+    <OBSectionTemplate title="Benefits of using Discovery">
       <Text style={[styles.body, alignCenter, mb5]}>
         Discovery enables you to organize your digital medical records in
         collections - just like you organize digital photos in albums.
@@ -31,21 +25,13 @@ const OBBenefits = () => {
         You can add any number of notes to a collection to journal
         your health concerns or for doctor visits.
       </Text>
-    </View>
+    </OBSectionTemplate>
   );
 };
 
 export default OBBenefits;
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  logo: {
-    height: 60,
-  },
   body: {
     fontSize: 18,
     lineHeight: 24,
