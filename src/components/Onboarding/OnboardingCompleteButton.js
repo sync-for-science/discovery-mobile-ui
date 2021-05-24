@@ -16,7 +16,7 @@ const OnboardingCompleteButton = () => {
 
   useEffect(() => {
     const getOnboardingState = async () => {
-      setRecoilOnboardingState(await Storage.getIsOnboardingComplete())
+      setRecoilOnboardingState(await Storage.getOnboardingState())
     }
     getOnboardingState()
   }, [])
