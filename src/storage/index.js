@@ -16,7 +16,7 @@ const setOnboardingState = async (isCompleted) => {
 const getOnboardingState = async () => {
   try {
     const value = await AsyncStorage.getItem(KEYS.IS_ONBOARDING_COMPLETE);
-    if (value !== undefined) {
+    if (value) {
       return JSON.parse(value);
     }
     return false;

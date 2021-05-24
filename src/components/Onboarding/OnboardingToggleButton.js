@@ -8,7 +8,7 @@ import { recoilOnboardingState as rOnboardingState } from '../../recoil';
 import Storage from '../../storage';
 import Colors from '../../constants/Colors';
 
-const OnboardingCompleteButton = () => {
+const OnboardingToggleButton = () => {
   const [recoilOnboardingState, setRecoilOnboardingState] = useRecoilState(rOnboardingState);
 
   const handleOnboardingToggle = (isCompleted) => {
@@ -37,7 +37,7 @@ const OnboardingCompleteButton = () => {
   );
 };
 
-export default OnboardingCompleteButton;
+export default OnboardingToggleButton;
 
 const styles = StyleSheet.create({
   root: {
