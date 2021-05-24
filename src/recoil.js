@@ -10,12 +10,12 @@ export const authenticationState = atom({
 });
 
 const atomForRecoilOnboardingState = atom({
-  key: `atomForRecoilOnboardingState`,
+  key: 'atomForRecoilOnboardingState',
   default: false,
 });
 
 export const recoilOnboardingState = selector({
   key: 'recoilOnboardingState',
-  get: ({get}) => get(atomForRecoilOnboardingState),
-  set: ({set}, isCompleted) => set(atomForRecoilOnboardingState, isCompleted)
-})
+  get: ({ get }) => get(atomForRecoilOnboardingState),
+  set: ({ set }, isCompleted) => set(atomForRecoilOnboardingState, isCompleted),
+});
