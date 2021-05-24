@@ -39,7 +39,7 @@ export default function StateProvider({ children }) {
   }, [authentication]);
 
   if (!store) {
-    return null;
+    return <LoadingIndicator />;
   }
 
   return (
