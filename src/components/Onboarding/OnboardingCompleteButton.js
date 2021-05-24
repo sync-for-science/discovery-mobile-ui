@@ -1,33 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
+import { useRecoilState } from 'recoil'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
+import { getOnboardingState } from '../../recoil'
 import Storage from '../../storage'
 import Colors from '../../constants/Colors'
 
 const OnboardingCompleteButton = () => {
-  const [isOnboardingComplete, setIsOnboardingComplete] = useState(null)
-  const onboardingDisplayText = isOnboardingComplete ? "isOnboardingComplete: true" : "isOnboardingComplete: false"
-  const onboardingButtonText = isOnboardingComplete ? "Reset Onboarding" : 'Complete Onboarding'
+  const [onboardingState, setOnboardingState] = useRecoilState(getOnboardingState)
 
-  const handleCheck = async () => {
-    console.log('getIsOnboardingComplete()', await Storage.getIsOnboardingComplete())
+  const handleOnboardingToggle = (isCompleted) => {
+    Storage.setOnboardingState(isCompleted)
+    setOnboardingState(isCompleted)
   }
-
-  const handleCompleteOnboarding = () => {
-    Storage.completeOnboarding()
-    setIsOnboardingComplete(true)
-  }
-
-  const handleResetOnboarding = () => {
-    Storage.resetOnboarding()
-    setIsOnboardingComplete(false)
-  }
-
-  const onboardingPress = isOnboardingComplete ? handleResetOnboarding : handleCompleteOnboarding
 
   useEffect(() => {
     const getIsOnboardingComplete = async () => {
-      setIsOnboardingComplete(await Storage.getIsOnboardingComplete())
+      setOnboardingState(await Storage.getIsOnboardingComplete())
     }
     getIsOnboardingComplete()
   }, [])
@@ -35,12 +24,8 @@ const OnboardingCompleteButton = () => {
   return (
     <View style={styles.root}>
       <View style={styles.onboardingContainer}>
-        <Text>{onboardingDisplayText}</Text>
-        <TouchableOpacity style={styles.onboardingButton} onPress={onboardingPress}>
-            <Text style={styles.onboardingButtonText}>{onboardingButtonText}</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.onboardingButton} onPress={handleCheck}>
-            <Text style={styles.onboardingButtonText}>Check</Text>
+        <TouchableOpacity style={styles.onboardingButton} onPress={() => handleOnboardingToggle(!onboardingState)}>
+            <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(onboardingState)}`}</Text>
         </TouchableOpacity>
       </View>
     </View>

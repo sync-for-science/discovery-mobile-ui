@@ -21,6 +21,15 @@ const resetOnboarding = async () => {
   }
 }
 
+const setOnboardingState = async (isCompleted) => {
+  try {
+    AsyncStorage.setItem(KEYS.IS_ONBOARDING_COMPLETE, JSON.stringify(isCompleted))
+  } catch (e) {
+    console.warn(`AsyncStorage "setOnboardingState" failed.`)
+  }
+}
+
+
 const getIsOnboardingComplete = async () => {
   try {
     const value = await AsyncStorage.getItem(KEYS.IS_ONBOARDING_COMPLETE)
@@ -35,6 +44,7 @@ const getIsOnboardingComplete = async () => {
 export default {
   completeOnboarding, 
   resetOnboarding,
-  getIsOnboardingComplete
+  getIsOnboardingComplete,
+  setOnboardingState
 }
 
