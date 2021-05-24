@@ -1,32 +1,19 @@
 import { cloneElement } from 'react';
-import { element, func } from 'prop-types';
-import { connect } from 'react-redux';
+import { element } from 'prop-types';
+import { useResetRecoilState } from 'recoil';
 
-import { clearAuth } from '../../features/auth/authSlice';
-import { actionTypes } from '../../redux/action-types';
+import { authenticationState } from '../../recoil';
 
 const Logout = ({
-  children, clearAuthAction, clearPatientDataAction,
+  children,
 }) => {
-  const handleLogout = () => {
-    clearAuthAction();
-    clearPatientDataAction();
-  };
+  const resetAuthentication = useResetRecoilState(authenticationState);
 
-  return cloneElement(children, { onPress: handleLogout });
+  return cloneElement(children, { onPress: resetAuthentication });
 };
 
 Logout.propTypes = {
   children: element.isRequired,
-  clearAuthAction: func.isRequired,
-  clearPatientDataAction: func.isRequired,
 };
 
-const mapDispatchToProps = {
-  clearAuthAction: clearAuth,
-  clearPatientDataAction: () => ({
-    type: actionTypes.CLEAR_PATIENT_DATA,
-  }),
-};
-
-export default connect(null, mapDispatchToProps)(Logout);
+export default Logout;

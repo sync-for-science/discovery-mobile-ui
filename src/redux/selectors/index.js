@@ -15,8 +15,6 @@ import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
 
-export const authSelector = (state) => state.auth.authResult;
-
 const resourcesSelector = (state) => state.resources;
 
 export const resourceByIdSelector = (state, ownProps) => state.resources[ownProps.resourceId];

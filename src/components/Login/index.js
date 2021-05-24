@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func } from 'prop-types';
+import { useSetRecoilState } from 'recoil';
 import {
   Alert,
   StyleSheet,
@@ -8,9 +8,8 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
-import { connect } from 'react-redux';
 
-import { setAuth } from '../../features/auth/authSlice';
+import { authenticationState } from '../../recoil';
 import Colors from '../../constants/Colors';
 import {
   authAsync, buildFhirIssUrl,
@@ -19,9 +18,8 @@ import {
 import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
 import SkipLoginButton from './SkipLoginButton';
 
-const Login = ({
-  setAuthAction,
-}) => {
+const Login = () => {
+  const setAuthentication = useSetRecoilState(authenticationState);
   const [loading, setLoading] = useState(false);
   const [mockPatientId, setPatientId] = useState(DEFAULT_PATIENT_ID);
   const fhirIss = buildFhirIssUrl(mockPatientId);
@@ -32,7 +30,7 @@ const Login = ({
       const authResponse = await authAsync(fhirIss);
       if (authResponse) {
         setLoading(false);
-        setAuthAction({
+        setAuthentication({
           baseUrl: fhirIss,
           authResult: authResponse,
         });
@@ -73,17 +71,12 @@ const Login = ({
 };
 
 Login.propTypes = {
-  setAuthAction: func.isRequired,
 };
 
 Login.defaultProps = {
 };
 
-const mapDispatchToProps = {
-  setAuthAction: setAuth,
-};
-
-export default connect(null, mapDispatchToProps)(Login);
+export default Login;
 
 const styles = StyleSheet.create({
   body: {

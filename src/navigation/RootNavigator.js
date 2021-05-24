@@ -1,28 +1,24 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useRecoilValue } from 'recoil';
 import { NavigationContainer } from '@react-navigation/native';
-import { shape } from 'prop-types';
 
 import UnauthorizedNavigator from './UnauthorizedNavigator';
 import AuthorizedNavigator from './AuthorizedNavigator';
-import { authSelector } from '../redux/selectors';
+import { authenticationState } from '../recoil';
 
-const RootNavigator = ({ authResult }) => (
-  <NavigationContainer>
-    {!authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
-  </NavigationContainer>
-);
+const RootNavigator = () => {
+  const authentication = useRecoilValue(authenticationState);
+  return (
+    <NavigationContainer>
+      {!authentication.authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
+    </NavigationContainer>
+  );
+};
 
 RootNavigator.propTypes = {
-  authResult: shape({}),
 };
 
 RootNavigator.defaultProps = {
-  authResult: null,
 };
 
-const mapStateToProps = (state) => ({
-  authResult: authSelector(state),
-});
-
-export default connect(mapStateToProps, null)(RootNavigator);
+export default RootNavigator;
