@@ -1,6 +1,4 @@
-import { get } from 'react-native/Libraries/Utilities/PixelRatio';
 import { atom, selector } from 'recoil';
-import Storage from './storage'
 
 // eslint-disable-next-line import/prefer-default-export
 export const authenticationState = atom({
@@ -10,22 +8,14 @@ export const authenticationState = atom({
     authResult: null,
   },
 });
-// // eslint-disable-next-line import/prefer-default-export
-// export const authenticationState = atom({
-//   key: 'authenticationState',
-//   default: {
-//     baseUrl: null,
-//     authResult: null,
-//   },
-// });
 
-const atomForOnboardingState = atom({
-  key: `atomForOnboardingState`,
+const atomForRecoilOnboardingState = atom({
+  key: `atomForRecoilOnboardingState`,
   default: false,
 });
 
-export const getOnboardingState = selector({
-  key: 'getOnboardingState',
-  get: ({get}) => get(atomForOnboardingState),
-  set: ({set}, isCompleted) => set(atomForOnboardingState, isCompleted)
+export const recoilOnboardingState = selector({
+  key: 'recoilOnboardingState',
+  get: ({get}) => get(atomForRecoilOnboardingState),
+  set: ({set}, isCompleted) => set(atomForRecoilOnboardingState, isCompleted)
 })

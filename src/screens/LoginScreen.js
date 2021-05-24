@@ -29,9 +29,7 @@ const LoginScreen = () => (
         </View>
       </View>
       <Login />
-      <Suspense fallback={<Text>Loading..</Text>}>
-        <OnboardingCompleteButton />
-      </Suspense>
+      <OnboardingCompleteButton />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>

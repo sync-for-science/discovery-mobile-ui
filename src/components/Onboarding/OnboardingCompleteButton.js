@@ -2,30 +2,30 @@ import React, {useEffect} from 'react'
 import { useRecoilState } from 'recoil'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 
-import { getOnboardingState } from '../../recoil'
+import { recoilOnboardingState as rOnboardingState } from '../../recoil'
 import Storage from '../../storage'
 import Colors from '../../constants/Colors'
 
 const OnboardingCompleteButton = () => {
-  const [onboardingState, setOnboardingState] = useRecoilState(getOnboardingState)
+  const [recoilOnboardingState, setRecoilOnboardingState] = useRecoilState(rOnboardingState)
 
   const handleOnboardingToggle = (isCompleted) => {
     Storage.setOnboardingState(isCompleted)
-    setOnboardingState(isCompleted)
+    setRecoilOnboardingState(isCompleted)
   }
 
   useEffect(() => {
-    const getIsOnboardingComplete = async () => {
-      setOnboardingState(await Storage.getIsOnboardingComplete())
+    const getOnboardingState = async () => {
+      setRecoilOnboardingState(await Storage.getIsOnboardingComplete())
     }
-    getIsOnboardingComplete()
+    getOnboardingState()
   }, [])
 
   return (
     <View style={styles.root}>
       <View style={styles.onboardingContainer}>
-        <TouchableOpacity style={styles.onboardingButton} onPress={() => handleOnboardingToggle(!onboardingState)}>
-            <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(onboardingState)}`}</Text>
+        <TouchableOpacity style={styles.onboardingButton} onPress={() => handleOnboardingToggle(!recoilOnboardingState)}>
+            <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(recoilOnboardingState)}`}</Text>
         </TouchableOpacity>
       </View>
     </View>
