@@ -8,8 +8,11 @@ const OnboardingStack = createStackNavigator();
 
 const OnboardingNavigator = () => (
   <OnboardingStack.Navigator
-    initialRouteName="Walkthrough"
+    initialRouteName="Splash"
     headerMode="none"
+    options={{
+      gesturesEnabled: false
+    }}
   >
     <OnboardingStack.Screen name="Splash" component={OBSplashScreen} />
     <OnboardingStack.Screen name="Walkthrough" component={OBWalkthroughScreen} />
