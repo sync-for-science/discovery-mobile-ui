@@ -16,9 +16,7 @@ export default function StateProvider({ children }) {
   const authentication = useRecoilValue(authenticationState);
 
   useEffect(() => {
-    const { patient: patientId } = authentication.tokenResponse.additionalParameters;
-
-    const persistenceItems = createStore(patientId);
+    const persistenceItems = createStore(authentication);
     store = persistenceItems.store;
     persistor = persistenceItems.persistor;
 

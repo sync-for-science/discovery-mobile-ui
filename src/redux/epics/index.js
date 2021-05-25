@@ -1,7 +1,7 @@
 import { from, of } from 'rxjs';
 import { combineEpics, ofType } from 'redux-observable';
 import {
-  catchError, map as rxMap, concatMap, mergeMap, switchMap, takeUntil, repeat,
+  catchError, map as rxMap, concatMap, mergeMap, takeUntil, repeat,
 } from 'rxjs/operators';
 import { pathEq, flatten } from 'ramda';
 
@@ -22,11 +22,7 @@ const handleError = (error, message, type) => {
 const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.SET_AUTH),
   // delay(5000), // e.g.: for debugging -- import delay from rxjs/operators
-  switchMap(({ payload }) => {
-    const { accessToken, additionalParameters: { patient: patientId } } = payload.tokenResponse;
-    // For "Skip Login", an instance is needed to resolve mock-data contained resources:
-    fhirClient.initialize(payload.baseUrl, accessToken);
-
+  concatMap(({ payload }) => {
     if (payload === MOCK_AUTH) {
       return Promise.resolve({
         type: actionTypes.FHIR_FETCH_SUCCESS,
@@ -34,14 +30,19 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
       });
     }
 
-    return from(fhirClient.queryPatient(patientId)).pipe(
-      rxMap((result) => ({
-        type: actionTypes.FHIR_FETCH_SUCCESS,
-        payload: result,
-      })),
-      catchError((error) => handleError(error, 'from(fhirClient.queryPatient(patientId)).pipe', actionTypes.FHIR_FETCH_ERROR)),
-    );
+    return from(fhirClient.queryPatient())
+      .pipe(
+        mergeMap((requestFn) => from(requestFn()).pipe(
+          rxMap((result) => ({
+            type: actionTypes.FHIR_FETCH_SUCCESS,
+            payload: result,
+          })),
+          catchError((error) => handleError(error, 'Error in queryPatient', actionTypes.FHIR_FETCH_ERROR)),
+        )),
+      );
   }),
+  takeUntil(action$.pipe(ofType(actionTypes.CLEAR_PATIENT_DATA))),
+  repeat(),
   catchError((error) => handleError(error, 'Error in initializeFhirClient switchMap')),
 );
 

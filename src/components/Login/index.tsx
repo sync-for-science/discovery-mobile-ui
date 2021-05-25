@@ -1,67 +1,30 @@
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React from 'react';
 import {
-  Alert,
   StyleSheet,
-  Text,
   View,
-  TouchableOpacity,
 } from 'react-native';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { authenticationState } from '../../recoil';
 import Colors from '../../constants/Colors';
-import {
-  authAsync, buildFhirIssUrl,
-} from '../../resources/fhirAuth';
-
-import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
-import SkipLoginButton from './SkipLoginButton';
-import LoadingIndicator from '../LoadingIndicator';
+import LoginButton from './LoginButton';
+import EndpointPicker from './EndpointPicker';
+import { selectedEndpointIdState, baseUrlState, endpointBundleState } from '../../recoil';
 
 const Login = () => {
-  const setAuthentication = useSetRecoilState(authenticationState);
-  const [loading, setLoading] = useState(false);
-  const [mockPatientId, setPatientId] = useState(DEFAULT_PATIENT_ID);
-  const fhirIss = buildFhirIssUrl(mockPatientId);
-
-  const handleLogin = async () => {
-    setLoading(true);
-    try {
-      const tokenResponse = await authAsync(fhirIss);
-      if (tokenResponse) {
-        setLoading(false);
-        setAuthentication({
-          baseUrl: fhirIss,
-          tokenResponse,
-        });
-      }
-    } catch (error) {
-      console.error('AppAuth Error:', error); // eslint-disable-line no-console
-      Alert.alert('Login Error', 'You must log in to use Discovery', [{ text: 'OK' }]);
-      // enable patient-picker and login buttons to render:
-      setLoading(false);
-    }
-  };
+  const endpointBundle = useRecoilValue(endpointBundleState);
+  const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
+  const baseUrl = useRecoilValue(baseUrlState);
 
   return (
     <View style={styles.body}>
-      { loading && (<LoadingIndicator />)}
-      { !loading && (
-        <>
-          <PatientPicker
-            loading={loading}
-            patientId={mockPatientId}
-            setPatientId={setPatientId}
-          />
-          <SkipLoginButton />
-          <TouchableOpacity
-            style={styles.login}
-            onPress={handleLogin}
-          >
-            <Text style={styles.loginText}>Login</Text>
-          </TouchableOpacity>
-        </>
-      )}
+      <EndpointPicker
+        loading={false}
+        prompt="Select a hospital system / clinic / portal: "
+        endpoints={endpointBundle.entry}
+        selectedValue={endpointId as string}
+        onChange={setEndpointId}
+      />
+      {baseUrl && <LoginButton baseUrl={baseUrl} />}
     </View>
   );
 };
