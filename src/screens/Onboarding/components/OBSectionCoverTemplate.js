@@ -5,7 +5,7 @@ import {
 import { node, string } from 'prop-types';
 
 import TextStyles from '../../../constants/TextStyles';
-import LogoBasic from '../../../icons/LogoBasic'
+import LogoBasic from '../../../icons/LogoBasic';
 
 const OBSectionCoverTemplate = ({ title, children }) => {
   const {
@@ -15,7 +15,7 @@ const OBSectionCoverTemplate = ({ title, children }) => {
     <View style={styles.root}>
       <Text style={[h2, alignCenter, mb5]}>{title}</Text>
       <View style={styles.logoContainer}>
-        <LogoBasic height={60} width={60}/>
+        <LogoBasic height={60} width={60} />
       </View>
       {children}
     </View>
@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logoContainer: {
-    marginBottom: 20
+    marginBottom: 20,
   },
 });
