@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import LogoBasic from '../../../icons/LogoBasic'
+import LogoBasic from '../../../icons/LogoBasic';
 
 // wireframe page 25
 const OBComplete = () => {
@@ -16,7 +16,7 @@ const OBComplete = () => {
     <View style={styles.root}>
       <Text style={[h2, alignCenter, mb5]}>THANK YOU [USER], YOU’RE ALL SET!</Text>
       <View style={styles.logoContainer}>
-        <LogoBasic height={60} width={60}/>
+        <LogoBasic height={60} width={60} />
       </View>
       <Text style={[styles.body, alignCenter, mb5]}>
         See how Discovery works on a fictitious patient!
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logoContainer: {
-    marginBottom: 20
+    marginBottom: 20,
   },
   body: {
     fontSize: 18,

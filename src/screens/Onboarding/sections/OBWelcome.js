@@ -5,7 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import LogoBasic from '../../../icons/LogoBasic'
+import LogoBasic from '../../../icons/LogoBasic';
 
 // wireframe page 3
 const OBWelcome = () => {
@@ -16,7 +16,7 @@ const OBWelcome = () => {
     <View style={styles.contentContainer}>
       <View style={styles.descriptionContainer}>
         <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
-        <LogoBasic height={120} width={120}/>
+        <LogoBasic height={120} width={120} />
         <Text style={[styles.body, alignCenter]}>
           Use Discovery to leverage your digital medical records
         </Text>

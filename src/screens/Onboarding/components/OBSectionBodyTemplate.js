@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View
+  StyleSheet, Text, View,
 } from 'react-native';
 import { bool, node, string } from 'prop-types';
 import { AntDesign } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../../constants/Colors';
 import TextStyles from '../../../constants/TextStyles';
-import LogoBasic from '../../../icons/LogoBasic'
+import LogoBasic from '../../../icons/LogoBasic';
 
 const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
@@ -19,7 +19,7 @@ const OBSectionBodyTemplate = ({
     <View style={styles.root}>
       <View style={styles.titleContainer}>
         <View style={styles.logoContainer}>
-          <LogoBasic height={60} width={60}/>
+          <LogoBasic height={60} width={60} />
         </View>
         <Text style={[h2, alignCenter]}>{title}</Text>
       </View>

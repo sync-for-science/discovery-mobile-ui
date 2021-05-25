@@ -7,7 +7,7 @@ import { node, shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import vermonsterLogo from '../../../assets/images/vermonster-logo.png';
-import LogoFull from '../../icons/LogoFull'
+import LogoFull from '../../icons/LogoFull';
 
 const FadeInView = ({ children }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -47,7 +47,7 @@ const OBScreenSplash = ({ navigation }) => {
     <SafeAreaView style={styles.root}>
       <FadeInView>
         <View style={styles.logoContainer}>
-          <LogoFull height={280} width={280}/>
+          <LogoFull height={280} width={280} />
         </View>
         <View style={styles.companyLogosContainer}>
           <Text style={[h5, mb4]}>Powered By</Text>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     flex: 3,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   companyLogosContainer: {
     flex: 1,
