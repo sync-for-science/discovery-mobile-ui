@@ -9,7 +9,6 @@ import {
   associationsReducer,
   collectionsReducer,
   activeCollectionIdReducer,
-  isOnboardingCompleteReducer,
 } from './reducers';
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
@@ -26,7 +25,6 @@ const createStore = (patientId) => {
     associations: associationsReducer,
     activeCollectionId: activeCollectionIdReducer,
     collections: collectionsReducer,
-    isOnboardingComplete: isOnboardingCompleteReducer,
   });
 
   const persistReducerConfig = {

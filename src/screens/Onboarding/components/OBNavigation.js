@@ -6,10 +6,8 @@ import {
 import {
   arrayOf, func, number, bool,
 } from 'prop-types';
-import { useDispatch } from 'react-redux';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import { actionTypes } from '../../../redux/action-types';
 
 const { h3, h6 } = TextStyles;
 
@@ -18,7 +16,6 @@ const NavButtons = ({
   isLastScreen,
   handlePressNext,
   handlePressBack,
-  dispatch,
 }) => {
   if (isFirstScreen) {
     return (
@@ -33,7 +30,7 @@ const NavButtons = ({
   if (isLastScreen) {
     return (
       <View style={[styles.root, styles.centerNav]}>
-        <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
+        <TouchableOpacity onPress={() => {}}>
           <Text style={[h3, styles.navButton]}>Get Started</Text>
         </TouchableOpacity>
       </View>
@@ -57,7 +54,6 @@ NavButtons.propTypes = {
   isLastScreen: bool,
   handlePressBack: func.isRequired,
   handlePressNext: func.isRequired,
-  dispatch: func.isRequired,
 };
 
 NavButtons.defaultProps = {
@@ -84,12 +80,11 @@ const OBNavigation = ({
     }
   }
 
-  const dispatch = useDispatch();
   return (
     <>
       {__DEV__ && (
         <View style={styles.skipOnboarding}>
-          <TouchableOpacity onPress={() => dispatch({ type: actionTypes.COMPLETE_ONBOARDING })}>
+          <TouchableOpacity onPress={() => {}}>
             <Text style={[h6, styles.navButton]}>Skip Onboarding</Text>
           </TouchableOpacity>
         </View>
@@ -102,7 +97,6 @@ const OBNavigation = ({
         isLastScreen={isLastScreen}
         handlePressBack={handlePressBack}
         handlePressNext={handlePressNext}
-        dispatch={dispatch}
       />
     </>
   );

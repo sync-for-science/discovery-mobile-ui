@@ -9,7 +9,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as Linking from 'expo-linking';
-import { useDispatch } from 'react-redux';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
@@ -20,7 +19,6 @@ import TextStyles from '../constants/TextStyles';
 
 const LoginScreen = () => {
   const { h6 } = TextStyles;
-  const dispatch = useDispatch();
 
 return (
   <SafeAreaView style={styles.safeAreaView}>
