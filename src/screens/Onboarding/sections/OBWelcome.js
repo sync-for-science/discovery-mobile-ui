@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text, View,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
+import LogoBasic from '../../../icons/LogoBasic'
 
 // wireframe page 3
 const OBWelcome = () => {
@@ -16,11 +16,7 @@ const OBWelcome = () => {
     <View style={styles.contentContainer}>
       <View style={styles.descriptionContainer}>
         <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
-        <Image
-          style={styles.logo}
-          source={discoveryBasic}
-          resizeMode="contain"
-        />
+        <LogoBasic height={120} width={120}/>
         <Text style={[styles.body, alignCenter]}>
           Use Discovery to leverage your digital medical records
         </Text>
@@ -56,9 +52,6 @@ const styles = StyleSheet.create({
     height: '50%',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },
-  logo: {
-    height: 120,
   },
   body: {
     fontSize: 24,
