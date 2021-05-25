@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text, View,
 } from 'react-native';
 import { node, string } from 'prop-types';
 
 import TextStyles from '../../../constants/TextStyles';
-import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
+import LogoBasic from '../../../icons/LogoBasic'
 
 const OBSectionCoverTemplate = ({ title, children }) => {
   const {
@@ -14,11 +14,9 @@ const OBSectionCoverTemplate = ({ title, children }) => {
   return (
     <View style={styles.root}>
       <Text style={[h2, alignCenter, mb5]}>{title}</Text>
-      <Image
-        style={[styles.logo, mb5]}
-        source={discoveryBasic}
-        resizeMode="contain"
-      />
+      <View style={styles.logoContainer}>
+        <LogoBasic height={60} width={60}/>
+      </View>
       {children}
     </View>
   );
@@ -37,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  logo: {
-    height: 60,
+  logoContainer: {
+    marginBottom: 20
   },
 });

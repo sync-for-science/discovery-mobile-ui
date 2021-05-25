@@ -5,9 +5,9 @@ import {
 
 import { node, shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
-import discoveryFull from '../../../assets/images/discovery-full-logo.png';
 import Colors from '../../constants/Colors';
 import vermonsterLogo from '../../../assets/images/vermonster-logo.png';
+import LogoFull from '../../icons/LogoFull'
 
 const FadeInView = ({ children }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -40,17 +40,15 @@ const OBScreenSplash = ({ navigation }) => {
   } = TextStyles;
 
   useEffect(() => {
-    setTimeout(() => navigation.navigate('Welcome'), 3000);
+    setTimeout(() => navigation.navigate('Walkthrough'), 3000);
   }, []);
 
   return (
     <SafeAreaView style={styles.root}>
       <FadeInView>
-        <Image
-          style={styles.discoverylogo}
-          source={discoveryFull}
-          resizeMode="contain"
-        />
+        <View style={styles.logoContainer}>
+          <LogoFull height={280} width={280}/>
+        </View>
         <View style={styles.companyLogosContainer}>
           <Text style={[h5, mb4]}>Powered By</Text>
           <View style={styles.harvard}>
@@ -79,9 +77,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
   },
-  discoverylogo: {
+  logoContainer: {
     flex: 3,
-    height: 280,
+    justifyContent: 'center'
   },
   companyLogosContainer: {
     flex: 1,

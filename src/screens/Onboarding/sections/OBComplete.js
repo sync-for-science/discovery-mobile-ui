@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, Image,
+  StyleSheet, Text, View,
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
-import discoveryBasic from '../../../../assets/images/discovery-basic-logo.png';
 import Colors from '../../../constants/Colors';
+import LogoBasic from '../../../icons/LogoBasic'
 
 // wireframe page 25
 const OBComplete = () => {
@@ -15,11 +15,9 @@ const OBComplete = () => {
   return (
     <View style={styles.root}>
       <Text style={[h2, alignCenter, mb5]}>THANK YOU [USER], YOU’RE ALL SET!</Text>
-      <Image
-        style={[styles.logo, mb5]}
-        source={discoveryBasic}
-        resizeMode="contain"
-      />
+      <View style={styles.logoContainer}>
+        <LogoBasic height={60} width={60}/>
+      </View>
       <Text style={[styles.body, alignCenter, mb5]}>
         See how Discovery works on a fictitious patient!
       </Text>
@@ -38,8 +36,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 20,
   },
-  logo: {
-    height: 60,
+  logoContainer: {
+    marginBottom: 20
   },
   body: {
     fontSize: 18,
