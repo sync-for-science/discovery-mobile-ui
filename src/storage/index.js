@@ -42,7 +42,7 @@ const getOnboardingToggleCount = async () => {
     if (value) {
       return JSON.parse(value);
     }
-    return value;
+    return 0;
   } catch (e) {
     console.warn('AsyncStorage "getOnboardingState" failed.'); // eslint-disable-line no-console
   }

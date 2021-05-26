@@ -1,8 +1,9 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, Button
 } from 'react-native';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import * as Updates from 'expo-updates';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import Storage from '../../storage';
 import Colors from '../../constants/Colors';
@@ -15,6 +16,11 @@ const OnboardingToggleButton = () => {
   const handleOnboardingToggle = (isCompleted) => {
     Storage.setOnboardingState(isCompleted);
     setIsOnboardingComplete(isCompleted);
+  };
+
+  const handleClearAsyncStorage = async () => {
+    await AsyncStorage.clear();
+    Updates.reloadAsync();
   };
 
   return (
@@ -30,6 +36,7 @@ const OnboardingToggleButton = () => {
           Times Onboarding Button Toggled:
           {onboardingToggleCount}
         </Text>
+        <Button title="Reset Async Storage" onPress={handleClearAsyncStorage} />
       </View>
     </View>
   );
