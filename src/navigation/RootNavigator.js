@@ -12,25 +12,18 @@ const RootNavigator = () => {
   const [recoilOnboardingState, setRecoilOnboardingState] = useRecoilState(rOnboardingState);
 
   useEffect(() => {
-    console.log('useEffect here')
     const getOnboardingState = async () => {
-      console.log('useEffect getOnboardingState')
       setRecoilOnboardingState(await Storage.getOnboardingState());
     };
-    console.log('useEffect after getOnboardingState')
     getOnboardingState();
 
-    return () => {
-      console.log('before cleanup')
-      setRecoilOnboardingState(false);
-      console.log('after cleanup')
-    }
   }, []);
-
+  
   const handleOnboardingToggle = (isCompleted) => {
     Storage.setOnboardingState(isCompleted);
     setRecoilOnboardingState(isCompleted);
   };
+  
   return (
     <NavigationContainer>
       {!authentication.authResult ? <UnauthorizedNavigator
