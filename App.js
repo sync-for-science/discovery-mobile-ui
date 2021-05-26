@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
-
 import { LogBox, View } from 'react-native';
 import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
