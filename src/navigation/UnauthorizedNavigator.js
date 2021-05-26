@@ -7,7 +7,7 @@ import LoginScreen from '../screens/LoginScreen';
 const UnauthorizedStack = createStackNavigator();
 
 const UnauthorizedNavigator = ({
-  recoilOnboardingState,
+  isOnboardingComplete,
   handleOnboardingToggle,
 }) => (
   <UnauthorizedStack.Navigator headerMode="none">
@@ -19,7 +19,7 @@ const UnauthorizedNavigator = ({
     >
       {() => (
         <LoginScreen
-          recoilOnboardingState={recoilOnboardingState}
+          isOnboardingComplete={isOnboardingComplete}
           handleOnboardingToggle={handleOnboardingToggle}
         />
       )}
@@ -28,7 +28,7 @@ const UnauthorizedNavigator = ({
 );
 
 UnauthorizedNavigator.propTypes = {
-  recoilOnboardingState: bool.isRequired,
+  isOnboardingComplete: bool.isRequired,
   handleOnboardingToggle: func.isRequired,
 };
 

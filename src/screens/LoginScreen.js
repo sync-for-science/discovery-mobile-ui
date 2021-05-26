@@ -15,7 +15,7 @@ import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 
-const LoginScreen = ({ recoilOnboardingState, handleOnboardingToggle }) => (
+const LoginScreen = ({ isOnboardingComplete, handleOnboardingToggle }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
@@ -31,7 +31,7 @@ const LoginScreen = ({ recoilOnboardingState, handleOnboardingToggle }) => (
       </View>
       <Login />
       <OnboardingToggleButton
-        recoilOnboardingState={recoilOnboardingState}
+        isOnboardingComplete={isOnboardingComplete}
         handleOnboardingToggle={handleOnboardingToggle}
       />
       <View style={styles.vermonsterContainer}>
@@ -44,7 +44,7 @@ const LoginScreen = ({ recoilOnboardingState, handleOnboardingToggle }) => (
 );
 
 LoginScreen.propTypes = {
-  recoilOnboardingState: bool.isRequired,
+  isOnboardingComplete: bool.isRequired,
   handleOnboardingToggle: func.isRequired,
 };
 

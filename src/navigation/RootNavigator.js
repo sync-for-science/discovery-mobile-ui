@@ -5,29 +5,29 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 import Storage from '../storage';
 import UnauthorizedNavigator from './UnauthorizedNavigator';
 import AuthorizedNavigator from './AuthorizedNavigator';
-import { authenticationState, recoilOnboardingState as rOnboardingState } from '../recoil';
+import { authenticationState, onboardingState } from '../recoil';
 
 const RootNavigator = () => {
   const authentication = useRecoilValue(authenticationState);
-  const [recoilOnboardingState, setRecoilOnboardingState] = useRecoilState(rOnboardingState);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState);
 
   useEffect(() => {
     const getOnboardingState = async () => {
-      setRecoilOnboardingState(await Storage.getOnboardingState());
+      setIsOnboardingComplete(await Storage.getOnboardingState());
     };
     getOnboardingState();
   }, []);
 
   const handleOnboardingToggle = (isCompleted) => {
     Storage.setOnboardingState(isCompleted);
-    setRecoilOnboardingState(isCompleted);
+    setIsOnboardingComplete(isCompleted);
   };
 
   return (
     <NavigationContainer>
       {!authentication?.authResult ? (
         <UnauthorizedNavigator
-          recoilOnboardingState={recoilOnboardingState}
+          isOnboardingComplete={isOnboardingComplete}
           handleOnboardingToggle={handleOnboardingToggle}
         />
       ) : <AuthorizedNavigator />}

@@ -9,13 +9,13 @@ export const authenticationState = atom({
   },
 });
 
-const atomForRecoilOnboardingState = atom({
-  key: 'atomForRecoilOnboardingState',
+const atomForOnboardingState = atom({
+  key: 'atomForOnboardingState',
   default: false,
 });
 
-export const recoilOnboardingState = selector({
-  key: 'recoilOnboardingState',
-  get: ({ get }) => get(atomForRecoilOnboardingState),
-  set: ({ set }, isCompleted) => set(atomForRecoilOnboardingState, isCompleted),
+export const onboardingState = selector({
+  key: 'onboardingState',
+  get: ({ get }) => get(atomForOnboardingState),
+  set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted),
 });

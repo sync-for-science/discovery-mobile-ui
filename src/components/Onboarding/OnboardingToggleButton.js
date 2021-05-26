@@ -6,21 +6,21 @@ import {
 
 import Colors from '../../constants/Colors';
 
-const OnboardingToggleButton = ({ recoilOnboardingState, handleOnboardingToggle }) => (
+const OnboardingToggleButton = ({ isOnboardingComplete, handleOnboardingToggle }) => (
   <View style={styles.root}>
     <View style={styles.onboardingContainer}>
       <TouchableOpacity
         style={styles.onboardingButton}
-        onPress={() => handleOnboardingToggle(!recoilOnboardingState)}
+        onPress={() => handleOnboardingToggle(!isOnboardingComplete)}
       >
-        <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(recoilOnboardingState)}`}</Text>
+        <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(isOnboardingComplete)}`}</Text>
       </TouchableOpacity>
     </View>
   </View>
 );
 
 OnboardingToggleButton.propTypes = {
-  recoilOnboardingState: bool.isRequired,
+  isOnboardingComplete: bool.isRequired,
   handleOnboardingToggle: func.isRequired,
 };
 
