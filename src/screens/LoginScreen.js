@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
+import { bool, func } from 'prop-types';
 
 import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
@@ -41,6 +42,11 @@ const LoginScreen = ({ recoilOnboardingState, handleOnboardingToggle }) => (
     </View>
   </SafeAreaView>
 );
+
+LoginScreen.propTypes = {
+  recoilOnboardingState: bool.isRequired,
+  handleOnboardingToggle: func.isRequired,
+};
 
 export default LoginScreen;
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { bool, func } from 'prop-types';
+
 import LoginScreen from '../screens/LoginScreen';
 
 const UnauthorizedStack = createStackNavigator();
@@ -11,14 +13,23 @@ const UnauthorizedNavigator = ({
   <UnauthorizedStack.Navigator headerMode="none">
     <UnauthorizedStack.Screen
       name="PreAuth"
-      // component={() => <LoginScreen/>}
       options={{
         title: 'Discovery Mobile App',
       }}
     >
-      {() => <LoginScreen recoilOnboardingState={recoilOnboardingState} handleOnboardingToggle={handleOnboardingToggle} />}
+      {() => (
+        <LoginScreen
+          recoilOnboardingState={recoilOnboardingState}
+          handleOnboardingToggle={handleOnboardingToggle}
+        />
+      )}
     </UnauthorizedStack.Screen>
   </UnauthorizedStack.Navigator>
 );
+
+UnauthorizedNavigator.propTypes = {
+  recoilOnboardingState: bool.isRequired,
+  handleOnboardingToggle: func.isRequired,
+};
 
 export default UnauthorizedNavigator;
