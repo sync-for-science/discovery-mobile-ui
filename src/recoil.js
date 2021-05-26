@@ -41,5 +41,5 @@ const atomForOnboardingToggleCount = atom({
 export const onboardingToggleCount = selector({
   key: 'onboardingToggleCount',
   get: ({ get }) => get(atomForOnboardingToggleCount),
-  set: ({ set }, newCount) => set(atomForOnboardingToggleCount, newCount)}
-);
+  set: ({ set }, newCount) => set(atomForOnboardingToggleCount, newCount),
+});

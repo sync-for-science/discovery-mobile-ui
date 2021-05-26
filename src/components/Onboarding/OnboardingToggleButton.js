@@ -26,6 +26,10 @@ const OnboardingToggleButton = () => {
         >
           <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(isOnboardingComplete)}`}</Text>
         </TouchableOpacity>
+        <Text>
+          Times Onboarding Button Toggled:
+          {onboardingToggleCount}
+        </Text>
       </View>
     </View>
   );

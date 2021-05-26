@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEYS = {
   IS_ONBOARDING_COMPLETE: 'IS_ONBOARDING_COMPLETE',
-  ONBOARDING_TOGGLE_COUNT: 'ONBOARDING_TOGGLE_COUNT'
+  ONBOARDING_TOGGLE_COUNT: 'ONBOARDING_TOGGLE_COUNT',
 };
 
 const setOnboardingState = async (isCompleted) => {
@@ -53,5 +53,5 @@ export default {
   getOnboardingState,
   setOnboardingState,
   setOnboardingToggleCount,
-  getOnboardingToggleCount
+  getOnboardingToggleCount,
 };
