@@ -4,15 +4,18 @@ import LoginScreen from '../screens/LoginScreen';
 
 const UnauthorizedStack = createStackNavigator();
 
-const UnauthorizedNavigator = () => (
+const UnauthorizedNavigator = ({recoilOnboardingState, setRecoilOnboardingState,
+  handleOnboardingToggle}) => (
   <UnauthorizedStack.Navigator headerMode="none">
     <UnauthorizedStack.Screen
       name="PreAuth"
-      component={LoginScreen}
+      // component={() => <LoginScreen/>}
       options={{
         title: 'Discovery Mobile App',
       }}
-    />
+    >
+      {() => <LoginScreen recoilOnboardingState={recoilOnboardingState} handleOnboardingToggle={handleOnboardingToggle}/>}
+    </UnauthorizedStack.Screen>
   </UnauthorizedStack.Navigator>
 );
 
