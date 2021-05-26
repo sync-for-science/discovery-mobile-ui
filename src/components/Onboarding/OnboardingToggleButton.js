@@ -21,6 +21,10 @@ const OnboardingToggleButton = () => {
       setRecoilOnboardingState(await Storage.getOnboardingState());
     };
     getOnboardingState();
+
+    return () => {
+      setRecoilOnboardingState(false);
+    }
   }, []);
 
   return (
