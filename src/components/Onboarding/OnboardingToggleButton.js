@@ -30,6 +30,11 @@ const OnboardingToggleButton = () => {
     Updates.reloadAsync();
   };
 
+  const handleClearAsyncStorage = async () => {
+    await AsyncStorage.clear();
+    Updates.reloadAsync();
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.onboardingContainer}>
