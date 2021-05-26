@@ -14,7 +14,7 @@ import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 
-const LoginScreen = ({recoilOnboardingState, handleOnboardingToggle}) => (
+const LoginScreen = ({ recoilOnboardingState, handleOnboardingToggle }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
@@ -29,7 +29,10 @@ const LoginScreen = ({recoilOnboardingState, handleOnboardingToggle}) => (
         </View>
       </View>
       <Login />
-      <OnboardingToggleButton recoilOnboardingState={recoilOnboardingState} handleOnboardingToggle={handleOnboardingToggle}/>
+      <OnboardingToggleButton
+        recoilOnboardingState={recoilOnboardingState}
+        handleOnboardingToggle={handleOnboardingToggle}
+      />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>

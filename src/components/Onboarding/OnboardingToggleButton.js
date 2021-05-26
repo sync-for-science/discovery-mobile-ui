@@ -1,24 +1,27 @@
 import React from 'react';
+import { bool, func } from 'prop-types';
 import {
-  StyleSheet, Text, View, TouchableOpacity
+  StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 
 import Colors from '../../constants/Colors';
 
-const OnboardingToggleButton = ({recoilOnboardingState, handleOnboardingToggle}) => {
-
-  return (
-    <View style={styles.root}>
-      <View style={styles.onboardingContainer}>
-        <TouchableOpacity
-          style={styles.onboardingButton}
-          onPress={() => handleOnboardingToggle(!recoilOnboardingState)}
-        >
-          <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(recoilOnboardingState)}`}</Text>
-        </TouchableOpacity>
-      </View>
+const OnboardingToggleButton = ({ recoilOnboardingState, handleOnboardingToggle }) => (
+  <View style={styles.root}>
+    <View style={styles.onboardingContainer}>
+      <TouchableOpacity
+        style={styles.onboardingButton}
+        onPress={() => handleOnboardingToggle(!recoilOnboardingState)}
+      >
+        <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(recoilOnboardingState)}`}</Text>
+      </TouchableOpacity>
     </View>
-  );
+  </View>
+);
+
+OnboardingToggleButton.propTypes = {
+  recoilOnboardingState: bool.isRequired,
+  handleOnboardingToggle: func.isRequired,
 };
 
 export default OnboardingToggleButton;

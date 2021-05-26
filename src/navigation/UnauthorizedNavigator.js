@@ -4,8 +4,10 @@ import LoginScreen from '../screens/LoginScreen';
 
 const UnauthorizedStack = createStackNavigator();
 
-const UnauthorizedNavigator = ({recoilOnboardingState, setRecoilOnboardingState,
-  handleOnboardingToggle}) => (
+const UnauthorizedNavigator = ({
+  recoilOnboardingState,
+  handleOnboardingToggle,
+}) => (
   <UnauthorizedStack.Navigator headerMode="none">
     <UnauthorizedStack.Screen
       name="PreAuth"
@@ -14,7 +16,7 @@ const UnauthorizedNavigator = ({recoilOnboardingState, setRecoilOnboardingState,
         title: 'Discovery Mobile App',
       }}
     >
-      {() => <LoginScreen recoilOnboardingState={recoilOnboardingState} handleOnboardingToggle={handleOnboardingToggle}/>}
+      {() => <LoginScreen recoilOnboardingState={recoilOnboardingState} handleOnboardingToggle={handleOnboardingToggle} />}
     </UnauthorizedStack.Screen>
   </UnauthorizedStack.Navigator>
 );
