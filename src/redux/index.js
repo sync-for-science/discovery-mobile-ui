@@ -1,6 +1,8 @@
 import { combineReducers, compose, configureStore } from '@reduxjs/toolkit';
 import { createEpicMiddleware } from 'redux-observable';
 import thunk from 'redux-thunk';
+import { persistReducer, persistStore } from 'redux-persist';
+import { AsyncStorage } from 'react-native';
 
 import {
   flattenedResourcesReducer,
@@ -11,7 +13,7 @@ import {
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
 
-const createStore = () => {
+const createStore = (patientId) => {
   const epicMiddleware = createEpicMiddleware({
     dependencies: {
       fhirClient: new FhirClient(),
@@ -25,8 +27,15 @@ const createStore = () => {
     collections: collectionsReducer,
   });
 
+  const persistReducerConfig = {
+    version: '0.1.0',
+    key: `root-${patientId}`,
+    storage: AsyncStorage,
+    whitelist: ['activeCollectionId', 'collections'],
+  };
+
   const store = configureStore({
-    reducer: rootReducer,
+    reducer: persistReducer(persistReducerConfig, rootReducer),
     middleware: compose([
       thunk,
       epicMiddleware,
@@ -39,7 +48,20 @@ const createStore = () => {
 
   epicMiddleware.run(rootEpic);
 
-  return store;
+  const callback = () => {
+    // callback function will be called after rehydration is finished.
+  };
+
+  const persistConfig = {
+    // manualPersist: true,
+  };
+
+  const persistor = persistStore(store, persistConfig, callback);
+
+  return {
+    store,
+    persistor,
+  };
 };
 
 export default createStore;

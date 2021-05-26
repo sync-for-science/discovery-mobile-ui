@@ -46,7 +46,13 @@ export const activeCollectionResourceTypeFiltersSelector = createSelector(
 
 export const activeCollectionDateRangeFilterSelector = createSelector(
   [activeCollectionSelector],
-  (activeCollection) => activeCollection.dateRangeFilter,
+  (activeCollection) => {
+    const { dateRangeStart, dateRangeEnd } = activeCollection.dateRangeFilter;
+    return ({
+      dateRangeStart: dateRangeStart ? new Date(dateRangeStart) : undefined,
+      dateRangeEnd: dateRangeEnd ? new Date(dateRangeEnd) : undefined,
+    });
+  },
 );
 
 export const activeCollectionMarkedResourcesSelector = createSelector(
@@ -249,16 +255,23 @@ export const dateRangeForAllRecordsSelector = createSelector(
 
 // returns Array of (picked fields from) _all_ records, flagged with responsiveness to each filter:
 const allRecordsWithFilterResponseSelector = createSelector(
-  [allValidRecordsSortedByDateSelector, activeCollectionSelector, dateRangeForAllRecordsSelector],
-  (items, activeCollection, dateRangeForAllRecords) => {
+  [
+    allValidRecordsSortedByDateSelector,
+    activeCollectionSelector,
+    dateRangeForAllRecordsSelector,
+    activeCollectionDateRangeFilterSelector,
+  ],
+  (items, activeCollection, dateRangeForAllRecords, activeCollectionDateRangeFilter) => {
     const { minimumDate, maximumDate } = dateRangeForAllRecords;
     const {
       resourceTypeFilters,
       showCollectionOnly,
       showMarkedOnly,
       records,
-      dateRangeFilter: { dateRangeStart = minimumDate, dateRangeEnd = maximumDate },
     } = activeCollection;
+
+    // eslint-disable-next-line max-len
+    const { dateRangeStart = minimumDate, dateRangeEnd = maximumDate } = activeCollectionDateRangeFilter;
 
     return items.map(({
       id, type, subType, timelineDate,
