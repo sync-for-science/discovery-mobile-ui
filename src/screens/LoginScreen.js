@@ -6,8 +6,10 @@ import {
   StatusBar,
   ActivityIndicator,
   Text,
+  Button
 } from 'react-native';
 import * as Linking from 'expo-linking';
+import * as Updates from 'expo-updates';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
@@ -25,6 +27,7 @@ const LoginScreen = () => (
       <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
         <OnboardingToggleButton />
       </Suspense>
+      <Button title="Reset Async Storage" onPress={() => Updates.reloadAsync()} />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
