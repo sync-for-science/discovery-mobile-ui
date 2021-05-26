@@ -4,13 +4,15 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import UnauthorizedNavigator from './UnauthorizedNavigator';
 import AuthorizedNavigator from './AuthorizedNavigator';
+import OnboardingNavigator from './OnboardingNavigator'
 import { authenticationState } from '../recoil';
 
 const RootNavigator = () => {
   const authentication = useRecoilValue(authenticationState);
   return (
     <NavigationContainer>
-      {!authentication.authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
+      <OnboardingNavigator />
+      {/* {!authentication.authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />} */}
     </NavigationContainer>
   );
 };
