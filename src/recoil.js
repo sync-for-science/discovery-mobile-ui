@@ -17,6 +17,7 @@ export const storageOnboardingState = selector({
   get: async () => Storage.getOnboardingState(),
 });
 
+
 export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => {
   const atomForOnboardingState = atom({
     key: 'atomForOnboardingState',
