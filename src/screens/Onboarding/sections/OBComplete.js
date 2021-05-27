@@ -18,7 +18,7 @@ const OBComplete = () => {
       <View style={styles.logoContainer}>
         <LogoBasic height={60} width={60} />
       </View>
-      <Text style={[styles.body, alignCenter, mb5]}>
+      <Text style={styles.body}>
         See how Discovery works on a fictitious patient!
       </Text>
       <View style={styles.image}>
@@ -42,6 +42,8 @@ const styles = StyleSheet.create({
   body: {
     fontSize: 18,
     lineHeight: 24,
+    textAlign: 'center',
+    marginBottom: 20,
   },
   image: {
     width: '100%',
