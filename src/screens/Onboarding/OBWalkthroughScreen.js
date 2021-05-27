@@ -11,7 +11,7 @@ import OBBenefits from './sections/OBBenefits';
 import OBSecurity from './sections/OBSecurity';
 import OBPersonal1 from './DataAccess/OBPersonal1';
 import OBDataAccess3 from './DataAccess/OBDataAccess3';
-import OBProvider2 from './DataAccess/OBProvider2';
+import OBDataAccess4 from './DataAccess/OBDataAccess4';
 import OBFamiliar from './sections/OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
 import OBYourData from './DataOrganization/OBYourData';
@@ -131,9 +131,9 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBDataAccess1 />
         {/* <OBDataAccess2 /> */}
         <OBDataAccess3 />
+        <OBDataAccess4 />
 
         <OBPersonal1 />
-        <OBProvider2 />
         <OBFamiliar />
         <OBProviderData />
         <OBYourData />
