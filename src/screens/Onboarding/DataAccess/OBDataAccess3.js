@@ -11,7 +11,7 @@ const OBDataAccess3 = () => (
   <OBSectionBodyTemplate title="Data Access" subTitle="Connect to Provider">
     <View style={styles.flashContainer}>
       <Text style={[styles.body, styles.flashText]}>
-        You can pull medical Records from only one Provider for which 
+        You can pull medical Records from only one Provider for which
         you have a patient portal account.
       </Text>
     </View>

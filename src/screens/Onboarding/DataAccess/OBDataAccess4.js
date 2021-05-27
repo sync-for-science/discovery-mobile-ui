@@ -6,9 +6,9 @@ import {
 import Colors from '../../../constants/Colors';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 
-// wireframe page 10
-const OBProvider2 = () => (
-  <OBSectionBodyTemplate title="Data Access" subTitle="Success" showSuccess>
+// wireframe page 23
+const OBDataAccess4 = () => (
+  <OBSectionBodyTemplate title="Data Access" subTitle="Success!" showSuccess>
     <View style={styles.flashContainer}>
       <Text style={[styles.body, styles.flashText]}>
         You have successfully connected to your Provider and Discovery
@@ -16,13 +16,13 @@ const OBProvider2 = () => (
       </Text>
     </View>
     <Text style={styles.body}>
-      If you wish to change the Provider you are accessing data from,
-      you can always do that from your Profile in the app.
+      If you wish to change the Provider, you can always
+      do that from your Profile page.
     </Text>
   </OBSectionBodyTemplate>
 );
 
-export default OBProvider2;
+export default OBDataAccess4;
 
 const styles = StyleSheet.create({
   body: {
