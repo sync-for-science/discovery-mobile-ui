@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { memoizeWith, identity } from 'ramda';
 
 import Storage from './storage';
 
@@ -16,14 +17,7 @@ export const storageOnboardingState = selector({
   get: async () => Storage.getOnboardingState(),
 });
 
-const recoilAtomsCache = {};
-const memoize = (f) => (...args) => {
-  const cacheKey = args.join('-');
-  recoilAtomsCache[cacheKey] = recoilAtomsCache[cacheKey] ?? f(...args);
-  return recoilAtomsCache[cacheKey];
-};
-
-export const onboardingState = memoize((storageIsOnboardingComplete) => {
+export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => {
   const atomForOnboardingState = atom({
     key: 'atomForOnboardingState',
     default: undefined,
