@@ -7,6 +7,7 @@ import { node, shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
 import vermonsterLogo from '../../../assets/images/logos/vermonster-logo.png';
+import harvardLogo from '../../../assets/images/logos/harvard-dbmi-logo.png';
 import LogoFull from '../../icons/LogoFull';
 
 const FadeInView = ({ children }) => {
@@ -50,10 +51,12 @@ const OBScreenSplash = ({ navigation }) => {
           <LogoFull height={280} width={280} />
         </View>
         <View style={styles.companyLogosContainer}>
-          <Text style={[h5, mb4]}>Powered By</Text>
-          <View style={styles.harvard}>
-            <Text>Harvard Logo</Text>
-          </View>
+          <Text style={[h5, mb4, styles.powered]}>Powered By</Text>
+          <Image
+            style={styles.harvard}
+            source={harvardLogo}
+            resizeMode="contain"
+          />
           <Image
             style={styles.vermonster}
             source={vermonsterLogo}
@@ -86,20 +89,19 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
   },
-  harvard: {
-    width: '80%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.lightgrey2,
-    marginBottom: 12,
-  },
   vermonster: {
-    height: 50,
+    height: 30,
+  },
+  harvard: {
+    height: 40,
+    marginBottom: 16,
   },
   animatedView: {
     alignItems: 'center',
     width: '100%',
     flex: 1,
+  },
+  powered: {
+    color: Colors.darkgrey,
   },
 });
