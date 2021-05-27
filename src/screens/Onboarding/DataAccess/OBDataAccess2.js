@@ -7,8 +7,8 @@ import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 
-// wireframe page 7
-const OBPersonal1 = () => {
+// wireframe page 20
+const OBDataAccess2 = () => {
   const {
     mb2,
   } = TextStyles;
@@ -26,7 +26,7 @@ const OBPersonal1 = () => {
   );
 };
 
-export default OBPersonal1;
+export default OBDataAccess2;
 
 const styles = StyleSheet.create({
   formContainer: {

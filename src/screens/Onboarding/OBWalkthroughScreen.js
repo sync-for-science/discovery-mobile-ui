@@ -10,7 +10,6 @@ import OBWelcome from './sections/OBWelcome';
 import OBBenefits from './sections/OBBenefits';
 import OBSecurity from './sections/OBSecurity';
 import OBPersonal1 from './DataAccess/OBPersonal1';
-import OBPersonal2 from './DataAccess/OBPersonal2';
 import OBProvider1 from './DataAccess/OBProvider1';
 import OBProvider2 from './DataAccess/OBProvider2';
 import OBFamiliar from './sections/OBFamiliar';
@@ -41,6 +40,7 @@ import OBKeyFeatures4 from './KeyFeatures/OBKeyFeatures4';
 import OBKeyFeatures5 from './KeyFeatures/OBKeyFeatures5';
 import OBKeyFeatures6 from './KeyFeatures/OBKeyFeatures6';
 import OBDataAccess from './sections/OBDataAccess';
+import OBDataAccess1 from './DataAccess/OBDataAccess1';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -79,9 +79,9 @@ const getNavData = (index) => {
     case 15:
       return { progress: 8 };
     case 16:
-      return { progress: 9 };
+      return { progress: 9, dotNav: [1, 4] };
     case 17:
-      return { progress: 10, dotNav: [1, 3] };
+      return { progress: 9, dotNav: [2, 4] };
     case 18:
       return { progress: 10, dotNav: [2, 3] };
     case 19:
@@ -128,8 +128,9 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBVideo />
         <OBSecurity />
         <OBDataAccess />
+        <OBDataAccess1 />
+        {/* <OBDataAccess2 /> */}
         <OBPersonal1 />
-        <OBPersonal2 />
         <OBProvider1 />
         <OBProvider2 />
         <OBFamiliar />
