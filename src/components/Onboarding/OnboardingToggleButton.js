@@ -8,13 +8,15 @@ import { useRecoilValue, useRecoilState } from 'recoil';
 
 import Storage from '../../storage';
 import Colors from '../../constants/Colors';
-import { onboardingState, storageOnboardingState, storageOnboardingToggleCount, onboardingToggleCount } from '../../recoil';
+import {
+  onboardingState, storageOnboardingState, storageOnboardingToggleCount, onboardingToggleCount,
+} from '../../recoil';
 
 const OnboardingToggleButton = () => {
   const storageIsOBComplete = useRecoilValue(storageOnboardingState);
   const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState(storageIsOBComplete)); // eslint-disable-line max-len
   const storageOBToggleCount = useRecoilValue(storageOnboardingToggleCount);
-  const [obToggleCount, setOnboardingToggleCount] = useRecoilState(onboardingToggleCount(storageOBToggleCount));
+  const [obToggleCount, setOnboardingToggleCount] = useRecoilState(onboardingToggleCount(storageOBToggleCount)); // eslint-disable-line max-len
 
   const handleOnboardingToggle = ({ isCompleted, newCount }) => {
     Storage.setOnboardingState(isCompleted);

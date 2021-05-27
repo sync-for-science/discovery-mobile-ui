@@ -17,7 +17,6 @@ export const storageOnboardingState = selector({
   get: async () => Storage.getOnboardingState(),
 });
 
-
 export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => {
   const atomForOnboardingState = atom({
     key: 'atomForOnboardingState',
@@ -47,9 +46,9 @@ export const onboardingToggleCount = memoizeWith(identity, (storageOBToggleCount
 
   return selector({
     key: 'onboardingToggleCount',
-    get: ({ get }) => get(atomForOnboardingToggleCount) === undefined 
-      ? storageOBToggleCount 
-      : get(atomForOnboardingToggleCount),
+    get: ({ get }) => (get(atomForOnboardingToggleCount) === undefined
+      ? storageOBToggleCount
+      : get(atomForOnboardingToggleCount)),
     set: ({ set }, newCount) => set(atomForOnboardingToggleCount, newCount),
-  })
+  });
 });
