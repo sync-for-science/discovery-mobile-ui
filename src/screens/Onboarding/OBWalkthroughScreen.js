@@ -31,6 +31,7 @@ import OBVideo from './sections/OBVideo';
 import OBComplete from './sections/OBComplete';
 import OBMainConceptsSection from './sections/OBMainConceptsSection';
 import OBMainConcepts1 from './MainConcepts/MainConcepts1';
+import OBMainConcepts2 from './MainConcepts/MainConcepts2';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -45,7 +46,7 @@ const getNavData = (index) => {
     case 3:
       return { progress: 3, dotNav: [1, 3] };
     case 4:
-      return { progress: 2 };
+      return { progress: 3, dotNav: [2, 3] };
     case 5:
     case 6:
       return { progress: 3 };
@@ -105,6 +106,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBBenefits />
         <OBMainConceptsSection />
         <OBMainConcepts1 />
+        <OBMainConcepts2 />
         <OBSecurity />
         <OBPersonal1 />
         <OBPersonal2 />
