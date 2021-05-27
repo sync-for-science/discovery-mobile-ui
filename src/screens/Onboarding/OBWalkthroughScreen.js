@@ -5,7 +5,6 @@ import {
 import Swiper from 'react-native-web-swiper';
 import { func } from 'prop-types';
 
-import Colors from '../../constants/Colors';
 import OBHeader from './components/OBHeader';
 import OBWelcome from './sections/OBWelcome';
 import OBBenefits from './sections/OBBenefits';
@@ -144,10 +143,5 @@ const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  navButton: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: Colors.primary,
   },
 });

@@ -54,23 +54,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 10,
   },
-  titleContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    height: 75,
-    width: 75,
-    backgroundColor: Colors.mediumgrey,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 20,
-  },
-  tempLogoText: {
-    color: Colors.lightgrey,
-  },
   filledMarkers: {
     flex: 1,
     borderWidth: 1,
@@ -81,10 +64,5 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderColor: Colors.lightgrey2,
-  },
-  logo: {
-    height: 50,
-    width: 50,
-    marginRight: 8,
   },
 });
