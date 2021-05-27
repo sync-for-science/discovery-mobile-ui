@@ -5,6 +5,7 @@ import {
 
 import TextStyles from '../../../constants/TextStyles';
 import LogoBasic from '../../../icons/LogoBasic';
+import Colors from '../../../constants/Colors';
 
 // wireframe page 3
 const OBWelcome = () => {
@@ -13,12 +14,16 @@ const OBWelcome = () => {
   } = TextStyles;
   return (
     <View style={styles.contentContainer}>
-      <View style={styles.descriptionContainer}>
-        <Text style={[h2, alignCenter]}>Welcome to Discovery</Text>
+      <View style={styles.logoAndDescriptionContainer}>
+        <View style={styles.welcomeContainer}>
+          <Text style={[h2, alignCenter, styles.welcomeText]}>Welcome to Discovery</Text>
+        </View>
         <LogoBasic height={120} width={120} />
-        <Text style={[styles.body, alignCenter]}>
-          Use Discovery to leverage your digital medical records
-        </Text>
+        <View style={styles.descriptionContainer}>
+          <Text style={[styles.body, alignCenter]}>
+            Use Discovery to inspect your medical Records!
+          </Text>
+        </View>
       </View>
       <View style={styles.singleWordsContainer}>
         <Text style={[h4, mb5]}>ACCESS</Text>
@@ -35,16 +40,26 @@ export default OBWelcome;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 20,
+  },
+  welcomeContainer: {
+    width: '100%',
+    padding: 8,
+    backgroundColor: Colors.logoBlue,
+  },
+  welcomeText: {
+    color: 'white',
   },
   singleWordsContainer: {
     alignItems: 'center',
     paddingTop: 50,
   },
-  descriptionContainer: {
+  logoAndDescriptionContainer: {
     height: '50%',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  descriptionContainer: {
+    paddingHorizontal: 20,
   },
   body: {
     fontSize: 24,
