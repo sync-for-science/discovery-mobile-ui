@@ -6,28 +6,24 @@ import {
 import Colors from '../../../constants/Colors';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 
-// wireframe page 8
-const OBProvider1 = () => (
-  <OBSectionBodyTemplate title="Data Access" subTitle="Provider">
+// wireframe page 21
+const OBDataAccess3 = () => (
+  <OBSectionBodyTemplate title="Data Access" subTitle="Connect to Provider">
     <View style={styles.flashContainer}>
       <Text style={[styles.body, styles.flashText]}>
-        In this first version of Discovery, you can only pull
-        records from one provider.
+        You can pull medical Records from only one Provider for which 
+        you have a patient portal account.
       </Text>
     </View>
     <Text style={styles.body}>
-      You will need a patient portal account for the provider
-      you select in the drop-down list.
-    </Text>
-    <Text style={styles.body}>
-      You will be then redirected to your Patient Portal where
-      you login to approve sharing with Discovery.
+      Upon selecting a Provider, you will be redirected to your patient portal
+      where you will login to approve sharing with Discovery.
     </Text>
     <TextInput style={styles.textInput} placeholder="Select Provider" />
   </OBSectionBodyTemplate>
 );
 
-export default OBProvider1;
+export default OBDataAccess3;
 
 const styles = StyleSheet.create({
   body: {

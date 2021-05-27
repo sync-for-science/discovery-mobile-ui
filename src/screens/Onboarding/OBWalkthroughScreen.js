@@ -10,7 +10,7 @@ import OBWelcome from './sections/OBWelcome';
 import OBBenefits from './sections/OBBenefits';
 import OBSecurity from './sections/OBSecurity';
 import OBPersonal1 from './DataAccess/OBPersonal1';
-import OBProvider1 from './DataAccess/OBProvider1';
+import OBDataAccess3 from './DataAccess/OBDataAccess3';
 import OBProvider2 from './DataAccess/OBProvider2';
 import OBFamiliar from './sections/OBFamiliar';
 import OBProviderData from './DataOrganization/OBProviderData';
@@ -79,11 +79,11 @@ const getNavData = (index) => {
     case 15:
       return { progress: 8 };
     case 16:
-      return { progress: 9, dotNav: [1, 4] };
+      return { progress: 9, dotNav: [1, 3] };
     case 17:
-      return { progress: 9, dotNav: [2, 4] };
+      return { progress: 9, dotNav: [2, 3] };
     case 18:
-      return { progress: 10, dotNav: [2, 3] };
+      return { progress: 9, dotNav: [3, 3] };
     case 19:
       return { progress: 10, dotNav: [3, 3] };
     case 20:
@@ -130,8 +130,9 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBDataAccess />
         <OBDataAccess1 />
         {/* <OBDataAccess2 /> */}
+        <OBDataAccess3 />
+
         <OBPersonal1 />
-        <OBProvider1 />
         <OBProvider2 />
         <OBFamiliar />
         <OBProviderData />
