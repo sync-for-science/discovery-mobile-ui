@@ -2,12 +2,14 @@ import React from 'react';
 import {
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
-
 import {
   arrayOf, func, number, bool,
 } from 'prop-types';
+import { useRecoilState } from 'recoil';
+
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
+import { onboardingState, storageOnboardingState } from '../../../recoil';
 
 const { h3, h6 } = TextStyles;
 
@@ -67,6 +69,7 @@ const OBNavigation = ({
   dotNav,
   handlePressNext,
   handlePressBack,
+  handleOnboardingState
 }) => {
   const currentDotNav = dotNav ? dotNav[0] : null;
   const maxDotNav = dotNav ? dotNav[1] : null;
@@ -84,7 +87,7 @@ const OBNavigation = ({
     <>
       {__DEV__ && (
         <View style={styles.skipOnboarding}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => handleOnboardingState(true)}>
             <Text style={[h6, styles.navButton]}>Skip Onboarding</Text>
           </TouchableOpacity>
         </View>

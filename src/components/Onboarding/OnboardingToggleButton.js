@@ -13,17 +13,7 @@ import {
 } from '../../recoil';
 
 const OnboardingToggleButton = () => {
-  const storageIsOBComplete = useRecoilValue(storageOnboardingState);
-  const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState(storageIsOBComplete)); // eslint-disable-line max-len
-  const storageOBToggleCount = useRecoilValue(storageOnboardingToggleCount);
-  const [obToggleCount, setOnboardingToggleCount] = useRecoilState(onboardingToggleCount(storageOBToggleCount)); // eslint-disable-line max-len
-
-  const handleOnboardingToggle = ({ isCompleted, newCount }) => {
-    Storage.setOnboardingState(isCompleted);
-    setIsOnboardingComplete(isCompleted);
-    Storage.setOnboardingToggleCount(newCount);
-    setOnboardingToggleCount(newCount);
-  };
+  
 
   const handleClearAsyncStorage = async () => {
     await AsyncStorage.clear();
@@ -38,19 +28,6 @@ const OnboardingToggleButton = () => {
   return (
     <View style={styles.root}>
       <View style={styles.onboardingContainer}>
-        <TouchableOpacity
-          style={styles.onboardingButton}
-          onPress={() => handleOnboardingToggle({
-            isCompleted: !isOnboardingComplete,
-            newCount: obToggleCount + 1,
-          })}
-        >
-          <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(isOnboardingComplete)}`}</Text>
-        </TouchableOpacity>
-        <Text style={{ marginTop: 10 }}>
-          Times Onboarding Button Toggled:
-          {obToggleCount}
-        </Text>
         <Button title="Reset Async Storage" onPress={handleClearAsyncStorage} />
       </View>
     </View>

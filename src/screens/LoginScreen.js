@@ -14,7 +14,6 @@ import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 import DiscoveryLogo from '../../assets/images/discover-logo.svg';
-import { actionTypes } from '../redux/action-types';
 import TextStyles from '../constants/TextStyles';
 
 const LoginScreen = () => {
@@ -34,7 +33,7 @@ return (
       {__DEV__
         && (
         <View style={styles.resetOnboardingContainer}>
-          <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
+          <TouchableOpacity onPress={() => handleOnboardingState(false)}>
             <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
           </TouchableOpacity>
 
