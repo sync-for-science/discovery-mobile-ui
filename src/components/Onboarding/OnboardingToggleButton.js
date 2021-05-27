@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import * as Updates from 'expo-updates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useRecoilValue, useRecoilState} from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 import Storage from '../../storage';
 import Colors from '../../constants/Colors';
