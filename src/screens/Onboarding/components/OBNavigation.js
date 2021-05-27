@@ -17,7 +17,6 @@ const NavButtons = ({
   isLastScreen,
   handlePressNext,
   handlePressBack,
-  handleOnboardingState,
 }) => {
   if (isFirstScreen) {
     return (
@@ -30,13 +29,7 @@ const NavButtons = ({
   }
 
   if (isLastScreen) {
-    return (
-      <View style={[styles.root, styles.centerNav]}>
-        <TouchableOpacity onPress={() => handleOnboardingState(true)}>
-          <Text style={[h3, styles.navButton]}>Get Started</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    return <View style={styles.root} />;
   }
 
   return (
@@ -56,7 +49,6 @@ NavButtons.propTypes = {
   isLastScreen: bool,
   handlePressBack: func.isRequired,
   handlePressNext: func.isRequired,
-  handleOnboardingState: func.isRequired,
 };
 
 NavButtons.defaultProps = {
@@ -127,6 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+    height: 30,
   },
   centerNav: {
     justifyContent: 'center',
