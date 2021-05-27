@@ -10,9 +10,7 @@ const RootNavigator = () => {
   const authentication = useRecoilValue(authenticationState);
   return (
     <NavigationContainer>
-      {!authentication?.authResult ? (
-        <UnauthorizedNavigator />
-      ) : <AuthorizedNavigator />}
+      {!authentication?.authResult ? <UnauthorizedNavigator /> : <AuthorizedNavigator />}
     </NavigationContainer>
   );
 };
