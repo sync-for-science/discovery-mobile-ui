@@ -5,6 +5,7 @@ import {
   View,
   StatusBar,
   Text,
+  Button,
 } from 'react-native';
 import * as Linking from 'expo-linking';
 import { func } from 'prop-types';
@@ -12,11 +13,8 @@ import { func } from 'prop-types';
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
-import TextStyles from '../constants/TextStyles';
 
 const LoginScreen = ({ handleOnboardingState }) => {
-  const { h6 } = TextStyles;
-
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
@@ -24,17 +22,11 @@ const LoginScreen = ({ handleOnboardingState }) => {
         <View style={styles.logoContainer}>
           <DiscoveryLogo height={75} width={300} fill="black" />
         </View>
+      </View>
+      <View>
         <Login />
+        {__DEV__ && <Button title="Reset Onboarding" onPress={() => handleOnboardingState(false)} /> }
         <ResetAsyncStorageButton />
-        {__DEV__
-        && (
-        <View style={styles.resetOnboardingContainer}>
-          <TouchableOpacity onPress={() => handleOnboardingState(false)}>
-            <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
-          </TouchableOpacity>
-
-        </View>
-        )}
       </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
@@ -42,8 +34,8 @@ const LoginScreen = ({ handleOnboardingState }) => {
         <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
       </View>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 LoginScreen.propTypes = {
   handleOnboardingState: func.isRequired,
@@ -75,16 +67,5 @@ const styles = StyleSheet.create({
   companyText: {
     color: Colors.lightgrey,
     paddingBottom: 5,
-  },
-  activityIndicator: {
-    width: '100%',
-    alignItems: 'center',
-  },
-  resetOnboardingContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  resetOnboardingButton: {
-    color: Colors.primary,
   },
 });
