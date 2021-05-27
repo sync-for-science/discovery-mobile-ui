@@ -6,21 +6,23 @@ import {
   StatusBar,
   ActivityIndicator,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 import * as Linking from 'expo-linking';
+import { useDispatch } from 'react-redux';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 import DiscoveryLogo from '../../assets/images/discover-logo.svg';
+import { actionTypes } from '../redux/action-types';
+import TextStyles from '../constants/TextStyles';
 
-const OnboardingFallback = () => (
-  <View style={styles.onboardingFallback}>
-    <Text>Loading Onboarding Toggle Button...</Text>
-  </View>
-);
+const LoginScreen = () => {
+  const { h6 } = TextStyles;
+  const dispatch = useDispatch();
 
-const LoginScreen = () => (
+return (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
@@ -31,6 +33,14 @@ const LoginScreen = () => (
       <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
         <OnboardingToggleButton />
       </Suspense>
+      {__DEV__
+          && (
+          <View style={styles.resetOnboardingContainer}>
+            <TouchableOpacity onPress={() => dispatch({ type: actionTypes.RESET_ONBOARDING })}>
+              <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
+            </TouchableOpacity>
+          </View>
+          )}
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
@@ -38,7 +48,7 @@ const LoginScreen = () => (
       </View>
     </View>
   </SafeAreaView>
-);
+)};
 
 export default LoginScreen;
 
@@ -70,5 +80,9 @@ const styles = StyleSheet.create({
   activityIndicator: {
     width: '100%',
     alignItems: 'center',
+  },
+  resetOnboardingContainer: {
+    alignItems: 'center',
+    marginTop: 10,
   },
 });
