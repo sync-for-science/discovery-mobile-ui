@@ -2,8 +2,8 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { func } from 'prop-types';
 
-import OBSplashScreen from '../screens/Onboarding/OBSplashScreen';
-import OBWalkthroughScreen from '../screens/Onboarding/OBWalkthroughScreen';
+import OBSplashScreen from '../screens/OBSplashScreen';
+import OBWalkthroughScreen from '../screens/OBWalkthroughScreen';
 
 const OnboardingStack = createStackNavigator();
 

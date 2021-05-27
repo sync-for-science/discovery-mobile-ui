@@ -4,11 +4,11 @@ import {
 } from 'react-native';
 
 import { node, shape } from 'prop-types';
-import TextStyles from '../../constants/TextStyles';
-import Colors from '../../constants/Colors';
-import vermonsterLogo from '../../../assets/images/logos/vermonster-logo.png';
-import harvardLogo from '../../../assets/images/logos/harvard-dbmi-logo.png';
-import LogoFull from '../../icons/LogoFull';
+import TextStyles from '../constants/TextStyles';
+import Colors from '../constants/Colors';
+import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
+import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
+import LogoFull from '../icons/LogoFull';
 
 const FadeInView = ({ children }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
