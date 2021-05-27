@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import Storage from './storage'
+import Storage from './storage';
 
 // eslint-disable-next-line import/prefer-default-export
 export const authenticationState = atom({
@@ -13,8 +13,8 @@ export const authenticationState = atom({
 
 export const storageOnboardingState = selector({
   key: 'storageOnboardingState',
-  get: async () => await Storage.getOnboardingState()
-})
+  get: async () => Storage.getOnboardingState(),
+});
 
 const recoilAtomsCache = {};
 const memoize = (f) => (...args) => {
@@ -31,10 +31,10 @@ export const onboardingState = memoize((storageIsOnboardingComplete) => {
 
   return selector({
     key: 'onboardingState',
-    get: ({ get }) =>  {
-      // if atomForOnboardingState is undefined aka default then use storage value
-      return get(atomForOnboardingState) === undefined ? storageIsOnboardingComplete : get(atomForOnboardingState)
-    },
-    set: ({ set }, isCompleted) => {console.log('isCompleted', isCompleted); return set(atomForOnboardingState, isCompleted)},
-  })
+    // if atomForOnboardingState is undefined aka default then use storage value
+    get: ({ get }) => (get(atomForOnboardingState) === undefined
+      ? storageIsOnboardingComplete
+      : get(atomForOnboardingState)),
+    set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted),
+  });
 });

@@ -8,11 +8,9 @@ import Storage from '../../storage';
 import Colors from '../../constants/Colors';
 import { onboardingState, storageOnboardingState } from '../../recoil';
 
-
 const OnboardingToggleButton = () => {
-  const storageIsOnboardingComplete = useRecoilValue(storageOnboardingState);
-  const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState(storageIsOnboardingComplete))
-
+  const storageIsOBComplete = useRecoilValue(storageOnboardingState);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState(storageIsOBComplete)); // eslint-disable-line max-len
 
   const handleOnboardingToggle = (isCompleted) => {
     Storage.setOnboardingState(isCompleted);
@@ -20,17 +18,18 @@ const OnboardingToggleButton = () => {
   };
 
   return (
-  <View style={styles.root}>
-    <View style={styles.onboardingContainer}>
-      <TouchableOpacity
-        style={styles.onboardingButton}
-        onPress={() => handleOnboardingToggle(!isOnboardingComplete)}
-      >
-        <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(isOnboardingComplete)}`}</Text>
-      </TouchableOpacity>
+    <View style={styles.root}>
+      <View style={styles.onboardingContainer}>
+        <TouchableOpacity
+          style={styles.onboardingButton}
+          onPress={() => handleOnboardingToggle(!isOnboardingComplete)}
+        >
+          <Text style={styles.onboardingButtonText}>{`Onboarding Completed: ${JSON.stringify(isOnboardingComplete)}`}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  </View>
-)};
+  );
+};
 
 export default OnboardingToggleButton;
 

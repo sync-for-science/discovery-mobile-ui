@@ -8,14 +8,13 @@ import {
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
-import { bool, func } from 'prop-types';
 
 import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 
-const LoginScreen = ({ isOnboardingComplete, handleOnboardingToggle }) => (
+const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
@@ -30,10 +29,7 @@ const LoginScreen = ({ isOnboardingComplete, handleOnboardingToggle }) => (
         </View>
       </View>
       <Login />
-      <OnboardingToggleButton
-        isOnboardingComplete={isOnboardingComplete}
-        handleOnboardingToggle={handleOnboardingToggle}
-      />
+      <OnboardingToggleButton />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
@@ -42,11 +38,6 @@ const LoginScreen = ({ isOnboardingComplete, handleOnboardingToggle }) => (
     </View>
   </SafeAreaView>
 );
-
-LoginScreen.propTypes = {
-  isOnboardingComplete: bool.isRequired,
-  handleOnboardingToggle: func.isRequired,
-};
 
 export default LoginScreen;
 

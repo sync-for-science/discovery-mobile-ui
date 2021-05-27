@@ -32,7 +32,7 @@ export default function App() {
 
   return (
     <RecoilRoot>
-      <Suspense fallback={<View><Text>Loading</Text></View>} >
+      <Suspense fallback={<View><Text>Loading</Text></View>}>
         <RootNavigator />
       </Suspense>
     </RecoilRoot>
