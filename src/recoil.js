@@ -33,7 +33,7 @@ export const onboardingState = memoize((storageIsOnboardingComplete) => {
     key: 'onboardingState',
     get: ({ get }) =>  {
       // if atomForOnboardingState is undefined aka default then use storage value
-      return get(atomForOnboardingState) ? storageIsOnboardingComplete : get(atomForOnboardingState)
+      return get(atomForOnboardingState) === undefined ? storageIsOnboardingComplete : get(atomForOnboardingState)
     },
     set: ({ set }, isCompleted) => {console.log('isCompleted', isCompleted); return set(atomForOnboardingState, isCompleted)},
   })

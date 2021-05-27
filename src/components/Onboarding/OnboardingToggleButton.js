@@ -1,12 +1,25 @@
 import React from 'react';
-import { bool, func } from 'prop-types';
 import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
+import Storage from '../../storage';
 import Colors from '../../constants/Colors';
+import { onboardingState, storageOnboardingState } from '../../recoil';
 
-const OnboardingToggleButton = ({ isOnboardingComplete, handleOnboardingToggle }) => (
+
+const OnboardingToggleButton = () => {
+  const storageIsOnboardingComplete = useRecoilValue(storageOnboardingState);
+  const [isOnboardingComplete, setIsOnboardingComplete] = useRecoilState(onboardingState(storageIsOnboardingComplete))
+
+
+  const handleOnboardingToggle = (isCompleted) => {
+    Storage.setOnboardingState(isCompleted);
+    setIsOnboardingComplete(isCompleted);
+  };
+
+  return (
   <View style={styles.root}>
     <View style={styles.onboardingContainer}>
       <TouchableOpacity
@@ -17,12 +30,7 @@ const OnboardingToggleButton = ({ isOnboardingComplete, handleOnboardingToggle }
       </TouchableOpacity>
     </View>
   </View>
-);
-
-OnboardingToggleButton.propTypes = {
-  isOnboardingComplete: bool.isRequired,
-  handleOnboardingToggle: func.isRequired,
-};
+)};
 
 export default OnboardingToggleButton;
 
