@@ -37,6 +37,7 @@ import OBKeyFeatures from './sections/OBKeyFeatures';
 import OBKeyFeatures1 from './KeyFeatures/OBKeyFeatures1';
 import OBKeyFeatures2 from './KeyFeatures/OBKeyFeatures2';
 import OBKeyFeatures3 from './KeyFeatures/OBKeyFeatures3';
+import OBKeyFeatures4 from './KeyFeatures/OBKeyFeatures4';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -61,9 +62,9 @@ const getNavData = (index) => {
     case 8:
       return { progress: 5, dotNav: [2, 6] };
     case 9:
-      return { progress: 5 };
+      return { progress: 5, dotNav: [3, 6] };
     case 10:
-      return { progress: 6, dotNav: [1, 4] };
+      return { progress: 5, dotNav: [4, 6] };
     case 11:
       return { progress: 6, dotNav: [2, 4] };
     case 12:
@@ -118,6 +119,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBKeyFeatures1 />
         <OBKeyFeatures2 />
         <OBKeyFeatures3 />
+        <OBKeyFeatures4 />
         <OBSecurity />
         <OBPersonal1 />
         <OBPersonal2 />
