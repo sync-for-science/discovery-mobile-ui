@@ -72,7 +72,7 @@ const getNavData = (index) => {
     case 12:
       return { progress: 5, dotNav: [6, 6] };
     case 13:
-      return { progress: 6, dotNav: [4, 4] };
+      return { progress: 6 };
     case 14:
       return { progress: 7 };
     case 15:
@@ -124,6 +124,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBKeyFeatures4 />
         <OBKeyFeatures5 />
         <OBKeyFeatures6 />
+        <OBVideo />
         <OBSecurity />
         <OBPersonal1 />
         <OBPersonal2 />
@@ -142,7 +143,6 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBCatalog1 />
         <OBCatalog2 />
         <OBCatalog3 />
-        <OBVideo />
         <OBComplete />
       </Swiper>
       <OBNavigation
