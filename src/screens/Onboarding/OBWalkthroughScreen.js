@@ -28,21 +28,6 @@ import OBDataAccess3 from './DataAccess/OBDataAccess3';
 import OBDataAccess4 from './DataAccess/OBDataAccess4';
 import OBComplete from './sections/OBComplete';
 
-import OBPersonal1 from './DataAccess/OBPersonal1';
-import OBFamiliar from './sections/OBFamiliar';
-import OBProviderData from './DataOrganization/OBProviderData';
-import OBYourData from './DataOrganization/OBYourData';
-import OBCollections1 from './DataOrganization/OBCollections1';
-import OBCollections2 from './DataOrganization/OBCollections2';
-import OBCollections3 from './DataOrganization/OBCollections3';
-import OBCollections4 from './DataOrganization/OBCollections4';
-import OBDisplaying from './DataOrganization/OBDisplaying';
-import OBSummary from './DataExploration/OBSummary';
-import OBUpdates from './DataExploration/OBUpdates';
-import OBCatalog1 from './DataExploration/OBCatalog1';
-import OBCatalog2 from './DataExploration/OBCatalog2';
-import OBCatalog3 from './DataExploration/OBCatalog3';
-
 const TOTAL_PROGRESS_POSITIONS = 10;
 
 const getNavData = (index) => {
@@ -93,7 +78,6 @@ const getNavData = (index) => {
 };
 
 const OBScreenWalkthrough = ({ handleOnboardingState }) => {
-  console.log('handleOnboardingState2', handleOnboardingState);
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
 
