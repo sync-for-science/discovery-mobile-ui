@@ -5,11 +5,9 @@ import {
 import {
   arrayOf, func, number, bool,
 } from 'prop-types';
-import { useRecoilState } from 'recoil';
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
-import { onboardingState, storageOnboardingState } from '../../../recoil';
 
 const { h3, h6 } = TextStyles;
 
@@ -111,6 +109,7 @@ OBNavigation.propTypes = {
   dotNav: arrayOf(number.isRequired),
   handlePressBack: func.isRequired,
   handlePressNext: func.isRequired,
+  handleOnboardingState: func.isRequired,
 };
 
 OBNavigation.defaultProps = {

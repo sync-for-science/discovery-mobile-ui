@@ -1,5 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { func } from 'prop-types';
 
 import OBSplashScreen from '../screens/Onboarding/OBSplashScreen';
 import OBWalkthroughScreen from '../screens/Onboarding/OBWalkthroughScreen';
@@ -20,5 +21,9 @@ const OnboardingNavigator = ({ handleOnboardingState }) => (
     </OnboardingStack.Screen>
   </OnboardingStack.Navigator>
 );
+
+OnboardingNavigator.propTypes = {
+  handleOnboardingState: func.isRequired,
+};
 
 export default OnboardingNavigator;
