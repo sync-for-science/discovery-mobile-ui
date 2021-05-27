@@ -14,6 +14,12 @@ import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 import DiscoveryLogo from '../../assets/images/discover-logo.svg';
 
+const OnboardingFallback = () => (
+  <View style={styles.onboardingFallback}>
+    <Text>Loading Onboarding Toggle Button...</Text>
+  </View>
+)
+
 const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
