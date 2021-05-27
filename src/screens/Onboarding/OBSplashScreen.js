@@ -6,7 +6,7 @@ import {
 import { node, shape } from 'prop-types';
 import TextStyles from '../../constants/TextStyles';
 import Colors from '../../constants/Colors';
-import vermonsterLogo from '../../../assets/images/vermonster-logo.png';
+import vermonsterLogo from '../../../assets/images/logos/vermonster-logo.png';
 import LogoFull from '../../icons/LogoFull';
 
 const FadeInView = ({ children }) => {
