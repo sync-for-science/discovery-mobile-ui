@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 
 import TextStyles from '../../../constants/TextStyles';
-import Colors from '../../../constants/Colors';
 import LogoBasic from '../../../icons/LogoBasic';
 
 // wireframe page 3
@@ -37,12 +36,6 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     paddingHorizontal: 20,
-  },
-  tempLogoText: {
-    color: Colors.lightgrey,
-  },
-  navigationContainer: {
-    alignItems: 'center',
   },
   singleWordsContainer: {
     alignItems: 'center',

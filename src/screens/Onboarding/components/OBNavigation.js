@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   StyleSheet, Text, TouchableOpacity, View,
 } from 'react-native';
 import {
@@ -9,7 +10,7 @@ import {
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 
-const { h3, h6 } = TextStyles;
+const { h3 } = TextStyles;
 
 const NavButtons = ({
   isFirstScreen,
@@ -85,9 +86,7 @@ const OBNavigation = ({
     <>
       {__DEV__ && (
         <View style={styles.skipOnboarding}>
-          <TouchableOpacity onPress={() => handleOnboardingState(true)}>
-            <Text style={[h6, styles.navButton]}>Skip Onboarding</Text>
-          </TouchableOpacity>
+          <Button title="Skip Onboarding" onPress={() => handleOnboardingState(true)} />
         </View>
       )}
       <View style={styles.dotNavContainer}>
