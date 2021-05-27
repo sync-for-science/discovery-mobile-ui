@@ -6,28 +6,9 @@ import Swiper from 'react-native-web-swiper';
 import { func } from 'prop-types';
 
 import OBHeader from './components/OBHeader';
+import OBNavigation from './components/OBNavigation';
 import OBWelcome from './sections/OBWelcome';
 import OBBenefits from './sections/OBBenefits';
-import OBSecurity from './sections/OBSecurity';
-import OBPersonal1 from './DataAccess/OBPersonal1';
-import OBDataAccess3 from './DataAccess/OBDataAccess3';
-import OBDataAccess4 from './DataAccess/OBDataAccess4';
-import OBFamiliar from './sections/OBFamiliar';
-import OBProviderData from './DataOrganization/OBProviderData';
-import OBYourData from './DataOrganization/OBYourData';
-import OBCollections1 from './DataOrganization/OBCollections1';
-import OBNavigation from './components/OBNavigation';
-import OBCollections2 from './DataOrganization/OBCollections2';
-import OBCollections3 from './DataOrganization/OBCollections3';
-import OBCollections4 from './DataOrganization/OBCollections4';
-import OBDisplaying from './DataOrganization/OBDisplaying';
-import OBSummary from './DataExploration/OBSummary';
-import OBUpdates from './DataExploration/OBUpdates';
-import OBCatalog1 from './DataExploration/OBCatalog1';
-import OBCatalog2 from './DataExploration/OBCatalog2';
-import OBCatalog3 from './DataExploration/OBCatalog3';
-import OBVideo from './sections/OBVideo';
-import OBComplete from './sections/OBComplete';
 import OBMainConceptsSection from './sections/OBMainConceptsSection';
 import OBMainConcepts1 from './MainConcepts/MainConcepts1';
 import OBMainConcepts2 from './MainConcepts/MainConcepts2';
@@ -39,10 +20,30 @@ import OBKeyFeatures3 from './KeyFeatures/OBKeyFeatures3';
 import OBKeyFeatures4 from './KeyFeatures/OBKeyFeatures4';
 import OBKeyFeatures5 from './KeyFeatures/OBKeyFeatures5';
 import OBKeyFeatures6 from './KeyFeatures/OBKeyFeatures6';
+import OBVideo from './sections/OBVideo';
+import OBSecurity from './sections/OBSecurity';
 import OBDataAccess from './sections/OBDataAccess';
 import OBDataAccess1 from './DataAccess/OBDataAccess1';
+import OBDataAccess3 from './DataAccess/OBDataAccess3';
+import OBDataAccess4 from './DataAccess/OBDataAccess4';
+import OBComplete from './sections/OBComplete';
 
-const TOTAL_PROGRESS_POSITIONS = 11;
+import OBPersonal1 from './DataAccess/OBPersonal1';
+import OBFamiliar from './sections/OBFamiliar';
+import OBProviderData from './DataOrganization/OBProviderData';
+import OBYourData from './DataOrganization/OBYourData';
+import OBCollections1 from './DataOrganization/OBCollections1';
+import OBCollections2 from './DataOrganization/OBCollections2';
+import OBCollections3 from './DataOrganization/OBCollections3';
+import OBCollections4 from './DataOrganization/OBCollections4';
+import OBDisplaying from './DataOrganization/OBDisplaying';
+import OBSummary from './DataExploration/OBSummary';
+import OBUpdates from './DataExploration/OBUpdates';
+import OBCatalog1 from './DataExploration/OBCatalog1';
+import OBCatalog2 from './DataExploration/OBCatalog2';
+import OBCatalog3 from './DataExploration/OBCatalog3';
+
+const TOTAL_PROGRESS_POSITIONS = 10;
 
 const getNavData = (index) => {
   switch (index) {
@@ -85,17 +86,14 @@ const getNavData = (index) => {
     case 18:
       return { progress: 9, dotNav: [3, 3] };
     case 19:
-      return { progress: 10, dotNav: [3, 3] };
-    case 20:
-      return { progress: 11 };
-    case 21:
-      return { isLastScreen: true };
+      return { progress: 10, isLastScreen: true };
     default:
       return {};
   }
 };
 
 const OBScreenWalkthrough = ({ handleOnboardingState }) => {
+  console.log('handleOnboardingState2', handleOnboardingState);
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
 
@@ -132,22 +130,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         {/* <OBDataAccess2 /> */}
         <OBDataAccess3 />
         <OBDataAccess4 />
-
-        <OBPersonal1 />
-        <OBFamiliar />
-        <OBProviderData />
-        <OBYourData />
-        <OBCollections1 />
-        <OBCollections2 />
-        <OBCollections3 />
-        <OBCollections4 />
-        <OBDisplaying />
-        <OBSummary />
-        <OBUpdates />
-        <OBCatalog1 />
-        <OBCatalog2 />
-        <OBCatalog3 />
-        <OBComplete />
+        <OBComplete handleOnboardingState={handleOnboardingState} />
       </Swiper>
       <OBNavigation
         isFirstScreen={getNavData(currentScreenIndex).isFirstScreen}
