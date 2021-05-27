@@ -69,7 +69,7 @@ const OBNavigation = ({
   dotNav,
   handlePressNext,
   handlePressBack,
-  handleOnboardingState
+  handleOnboardingState,
 }) => {
   const currentDotNav = dotNav ? dotNav[0] : null;
   const maxDotNav = dotNav ? dotNav[1] : null;

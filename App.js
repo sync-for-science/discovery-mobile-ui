@@ -32,7 +32,7 @@ export default function App() {
 
   return (
     <RecoilRoot>
-      <Suspense fallback={<View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><ActivityIndicator /></View>}>
+      <Suspense fallback={<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><ActivityIndicator /></View>}>
         <RootNavigator />
       </Suspense>
     </RecoilRoot>
