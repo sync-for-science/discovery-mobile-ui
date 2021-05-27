@@ -12,6 +12,7 @@ import * as Linking from 'expo-linking';
 import Login from '../components/Login';
 import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
+import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 
 const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
@@ -28,6 +29,7 @@ const LoginScreen = () => (
         </View>
       </View>
       <Login />
+      <OnboardingToggleButton />
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
