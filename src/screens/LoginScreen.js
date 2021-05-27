@@ -7,6 +7,7 @@ import {
   Text,
 } from 'react-native';
 import * as Linking from 'expo-linking';
+import { func } from 'prop-types';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
@@ -42,6 +43,10 @@ const LoginScreen = ({ handleOnboardingState }) => {
       </View>
     </SafeAreaView>
   );
+};
+
+LoginScreen.propTypes = {
+  handleOnboardingState: func.isRequired,
 };
 
 export default LoginScreen;

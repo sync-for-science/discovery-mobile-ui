@@ -3,6 +3,7 @@ import {
   SafeAreaView, StyleSheet,
 } from 'react-native';
 import Swiper from 'react-native-web-swiper';
+import { func } from 'prop-types';
 
 import Colors from '../../constants/Colors';
 import OBHeader from './components/OBHeader';
@@ -131,6 +132,10 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
       />
     </SafeAreaView>
   );
+};
+
+OBScreenWalkthrough.propTypes = {
+  handleOnboardingState: func.isRequired,
 };
 
 export default OBScreenWalkthrough;

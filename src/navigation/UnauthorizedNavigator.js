@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { func } from 'prop-types';
+
 import LoginScreen from '../screens/LoginScreen';
 
 const UnauthorizedStack = createStackNavigator();
@@ -16,5 +18,9 @@ const UnauthorizedNavigator = ({ handleOnboardingState }) => (
     </UnauthorizedStack.Screen>
   </UnauthorizedStack.Navigator>
 );
+
+UnauthorizedNavigator.propTypes = {
+  handleOnboardingState: func.isRequired,
+};
 
 export default UnauthorizedNavigator;
