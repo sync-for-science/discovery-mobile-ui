@@ -81,7 +81,7 @@ const getNavData = (index) => {
   }
 };
 
-const OBScreenWalkthrough = ({handleOnboardingState}) => {
+const OBScreenWalkthrough = ({ handleOnboardingState }) => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
 

@@ -4,7 +4,7 @@ import LoginScreen from '../screens/LoginScreen';
 
 const UnauthorizedStack = createStackNavigator();
 
-const UnauthorizedNavigator = ({handleOnboardingState}) => (
+const UnauthorizedNavigator = ({ handleOnboardingState }) => (
   <UnauthorizedStack.Navigator headerMode="none">
     <UnauthorizedStack.Screen
       name="PreAuth"

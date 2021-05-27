@@ -1,45 +1,40 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   StatusBar,
-  ActivityIndicator,
   Text,
-  TouchableOpacity,
 } from 'react-native';
 import * as Linking from 'expo-linking';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
-import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
-import DiscoveryLogo from '../../assets/images/discover-logo.svg';
+import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
 import TextStyles from '../constants/TextStyles';
 
-const LoginScreen = () => {
+const LoginScreen = ({ handleOnboardingState }) => {
   const { h6 } = TextStyles;
 
-return (
-  <SafeAreaView style={styles.safeAreaView}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-    <View style={styles.screen}>
-      <View style={styles.logoContainer}>
-        <DiscoveryLogo height={75} width={300} fill="black" />
-      </View>
-      <Login />
-      <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
-        <OnboardingToggleButton />
-      </Suspense>
-      {__DEV__
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+      <View style={styles.screen}>
+        <View style={styles.logoContainer}>
+          <DiscoveryLogo height={75} width={300} fill="black" />
+        </View>
+        <Login />
+        <ResetAsyncStorageButton />
+        {__DEV__
         && (
         <View style={styles.resetOnboardingContainer}>
           <TouchableOpacity onPress={() => handleOnboardingState(false)}>
             <Text style={[h6, { color: Colors.primary }]}>Reset Onboarding</Text>
           </TouchableOpacity>
 
-          </View>
-          )}
         </View>
+        )}
+      </View>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
