@@ -7,18 +7,17 @@ import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
 // wireframe page 4
 const OBBenefits = () => (
-  <OBSectionCoverTemplate title="Benefits of using Discovery">
+  <OBSectionCoverTemplate title="Benefits">
     <Text style={styles.body}>
-      Discovery enables you to organize your digital medical records in
-      collections - just like you organize digital photos in albums.
+      Organize your medical Records in Collections just like you
+      organize photos in albums.
     </Text>
     <Text style={styles.body}>
-      You create collections by adding or removing medical records
-      and you can later add or remove records, too.
+      Add Notes to journal your health concerns.
     </Text>
     <Text style={styles.body}>
-      You can add any number of notes to a collection to journal
-      your health concerns or for doctor visits.
+      Use your Collections during doctor visits for context,
+      evidence, and reminders.
     </Text>
   </OBSectionCoverTemplate>
 );

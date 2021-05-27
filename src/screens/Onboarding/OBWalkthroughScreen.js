@@ -37,6 +37,7 @@ const getNavData = (index) => {
     case 0:
       return { isFirstScreen: true };
     case 1:
+      return { progress: 1 };
     case 2:
       return {};
     case 3:
