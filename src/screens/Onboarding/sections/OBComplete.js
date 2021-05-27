@@ -18,12 +18,7 @@ const OBComplete = () => {
       <View style={styles.logoContainer}>
         <LogoBasic height={60} width={60} />
       </View>
-      <Text style={styles.body}>
-        See how Discovery works on a fictitious patient!
-      </Text>
-      <View style={styles.image}>
-        <Text>Video</Text>
-      </View>
+
     </View>
   );
 };

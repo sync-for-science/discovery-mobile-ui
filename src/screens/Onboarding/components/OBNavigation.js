@@ -17,6 +17,7 @@ const NavButtons = ({
   isLastScreen,
   handlePressNext,
   handlePressBack,
+  handleOnboardingState,
 }) => {
   if (isFirstScreen) {
     return (
@@ -31,7 +32,7 @@ const NavButtons = ({
   if (isLastScreen) {
     return (
       <View style={[styles.root, styles.centerNav]}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => handleOnboardingState(true)}>
           <Text style={[h3, styles.navButton]}>Get Started</Text>
         </TouchableOpacity>
       </View>
@@ -55,6 +56,7 @@ NavButtons.propTypes = {
   isLastScreen: bool,
   handlePressBack: func.isRequired,
   handlePressNext: func.isRequired,
+  handleOnboardingState: func.isRequired,
 };
 
 NavButtons.defaultProps = {
@@ -97,6 +99,7 @@ const OBNavigation = ({
         isLastScreen={isLastScreen}
         handlePressBack={handlePressBack}
         handlePressNext={handlePressNext}
+        handleOnboardingState={handleOnboardingState}
       />
     </>
   );
