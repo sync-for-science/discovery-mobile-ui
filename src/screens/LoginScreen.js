@@ -9,7 +9,6 @@ import {
   Button
 } from 'react-native';
 import * as Linking from 'expo-linking';
-import * as Updates from 'expo-updates';
 
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
