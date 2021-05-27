@@ -33,6 +33,7 @@ import OBMainConceptsSection from './sections/OBMainConceptsSection';
 import OBMainConcepts1 from './MainConcepts/MainConcepts1';
 import OBMainConcepts2 from './MainConcepts/MainConcepts2';
 import OBMainConcepts3 from './MainConcepts/MainConcepts3';
+import OBKeyFeatures from './sections/OBKeyFeatures';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -110,6 +111,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBMainConcepts1 />
         <OBMainConcepts2 />
         <OBMainConcepts3 />
+        <OBKeyFeatures />
         <OBSecurity />
         <OBPersonal1 />
         <OBPersonal2 />
