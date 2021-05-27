@@ -29,7 +29,7 @@ import OBCatalog2 from './DataExploration/OBCatalog2';
 import OBCatalog3 from './DataExploration/OBCatalog3';
 import OBVideo from './sections/OBVideo';
 import OBComplete from './sections/OBComplete';
-import OBMainConcepts from './sections/OBMainConcepts';
+import OBMainConceptsSection from './sections/OBMainConceptsSection';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -102,7 +102,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
       >
         <OBWelcome />
         <OBBenefits />
-        <OBMainConcepts />
+        <OBMainConceptsSection />
         <OBSecurity />
         <OBPersonal1 />
         <OBPersonal2 />

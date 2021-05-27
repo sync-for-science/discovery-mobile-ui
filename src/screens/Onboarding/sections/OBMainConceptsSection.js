@@ -6,7 +6,7 @@ import {
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
 // wireframe page 5
-const OBMainConcepts = () => (
+const OBMainConceptsSection = () => (
   <OBSectionCoverTemplate title="Main Concepts">
     <Text style={styles.body}>
       Discovery is a simple application that relies on three main
@@ -18,7 +18,7 @@ const OBMainConcepts = () => (
   </OBSectionCoverTemplate>
 );
 
-export default OBMainConcepts;
+export default OBMainConceptsSection;
 
 const styles = StyleSheet.create({
   body: {
