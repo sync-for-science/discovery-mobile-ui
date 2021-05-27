@@ -81,7 +81,7 @@ const getNavData = (index) => {
   }
 };
 
-const OBScreenWalkthrough = () => {
+const OBScreenWalkthrough = ({handleOnboardingState}) => {
   const [currentScreenIndex, setCurrentScreenIndex] = useState(0);
   const swiperRef = useRef(null);
 
@@ -127,6 +127,7 @@ const OBScreenWalkthrough = () => {
         dotNav={getNavData(currentScreenIndex).dotNav}
         handlePressNext={() => swiperRef.current.goToNext()}
         handlePressBack={() => swiperRef.current.goToPrev()}
+        handleOnboardingState={handleOnboardingState}
       />
     </SafeAreaView>
   );

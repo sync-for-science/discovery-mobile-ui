@@ -6,7 +6,7 @@ import OBWalkthroughScreen from '../screens/Onboarding/OBWalkthroughScreen';
 
 const OnboardingStack = createStackNavigator();
 
-const OnboardingNavigator = () => (
+const OnboardingNavigator = ({handleOnboardingState}) => (
   <OnboardingStack.Navigator
     initialRouteName="Splash"
     headerMode="none"
@@ -15,7 +15,9 @@ const OnboardingNavigator = () => (
     }}
   >
     <OnboardingStack.Screen name="Splash" component={OBSplashScreen} />
-    <OnboardingStack.Screen name="Walkthrough" component={OBWalkthroughScreen} />
+    <OnboardingStack.Screen name="Walkthrough">
+      {() => <OBWalkthroughScreen handleOnboardingState={handleOnboardingState}/>}
+    </OnboardingStack.Screen>
   </OnboardingStack.Navigator>
 );
 
