@@ -40,6 +40,7 @@ import OBKeyFeatures3 from './KeyFeatures/OBKeyFeatures3';
 import OBKeyFeatures4 from './KeyFeatures/OBKeyFeatures4';
 import OBKeyFeatures5 from './KeyFeatures/OBKeyFeatures5';
 import OBKeyFeatures6 from './KeyFeatures/OBKeyFeatures6';
+import OBDataAccess from './sections/OBDataAccess';
 
 const TOTAL_PROGRESS_POSITIONS = 11;
 
@@ -126,6 +127,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBKeyFeatures6 />
         <OBVideo />
         <OBSecurity />
+        <OBDataAccess />
         <OBPersonal1 />
         <OBPersonal2 />
         <OBProvider1 />

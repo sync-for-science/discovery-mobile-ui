@@ -5,20 +5,16 @@ import {
 
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
-// wireframe page 5
+// wireframe page 17
 const OBSecurity = () => (
   <OBSectionCoverTemplate title="Security">
     <Text style={styles.body}>
-      Discovery pulls your medical records from your
-      providers in a secure encrypted  manner.
+      Discovery gets your medical Records using a secure digital protocol.
     </Text>
     <Text style={styles.body}>
-      Your records are kept encrypted on the phone and
-      are only visible while using the Discovery App.
-    </Text>
-    <Text style={styles.body}>
-      They are never copied or shared with any other
-      application or service.
+      Your Records are then kept encrypted on your phone and are only
+      visible while using Discovery and are never copied or shared
+      with any other application or service.
     </Text>
     <Button title="Read more about safety" />
   </OBSectionCoverTemplate>
