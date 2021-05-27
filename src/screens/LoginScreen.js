@@ -25,7 +25,7 @@ const LoginScreen = ({ handleOnboardingState }) => {
       </View>
       <View>
         <Login />
-        {__DEV__ && <Button title="Reset Onboarding" color="red" onPress={() => handleOnboardingState(false)} /> }
+        <Button title="Reset Onboarding" color="red" onPress={() => handleOnboardingState(false)} />
         <ResetAsyncStorageButton />
       </View>
       <View style={styles.vermonsterContainer}>
