@@ -6,11 +6,11 @@ import {
 import Colors from '../../../constants/Colors';
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 
-// wireframe page 24
+// wireframe page 16
 const OBVideo = () => (
   <OBSectionCoverTemplate title="Video Tutorial">
     <Text style={styles.body}>
-      See how Discovery works on a fictitious patient!
+      See Discovery demonstrated in the following video
     </Text>
     <View style={styles.image}>
       <Text>Video</Text>
