@@ -13,7 +13,7 @@ const ResetAsyncStorage = () => {
 
   return (
     <View style={styles.root}>
-      <Button title="Reset Async Storage" onPress={handleClearAsyncStorage} />
+      <Button title="Reset Async Storage" color="red" onPress={handleClearAsyncStorage} />
     </View>
   );
 };
