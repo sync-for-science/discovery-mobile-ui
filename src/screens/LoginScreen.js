@@ -18,7 +18,7 @@ const OnboardingFallback = () => (
   <View style={styles.onboardingFallback}>
     <Text>Loading Onboarding Toggle Button...</Text>
   </View>
-)
+);
 
 const LoginScreen = () => (
   <SafeAreaView style={styles.safeAreaView}>
