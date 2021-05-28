@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Image,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
@@ -29,7 +30,9 @@ const LoginScreen = () => (
         </View>
       </View>
       <Login />
-      <OnboardingToggleButton />
+      <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
+        <OnboardingToggleButton />
+      </Suspense>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
@@ -73,5 +76,9 @@ const styles = StyleSheet.create({
   companyText: {
     color: Colors.lightgrey,
     paddingBottom: 5,
+  },
+  activityIndicator: {
+    width: '100%',
+    alignItems: 'center',
   },
 });
