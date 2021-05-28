@@ -11,8 +11,8 @@ const OnboardingNavigator = ({ handleOnboardingState }) => (
   <OnboardingStack.Navigator
     initialRouteName="Splash"
     headerMode="none"
-    options={{
-      gesturesEnabled: false,
+    screenOptions={{
+      gestureEnabled: false,
     }}
   >
     <OnboardingStack.Screen name="Splash" component={OBSplashScreen} />
