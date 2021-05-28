@@ -3,15 +3,13 @@ import {
   SafeAreaView,
   StyleSheet,
   View,
-  Image,
   StatusBar,
   ActivityIndicator,
+  Text,
 } from 'react-native';
-import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
 
 import Login from '../components/Login';
-import s4sLogo from '../../assets/images/s4s-logo.png';
 import Colors from '../constants/Colors';
 import OnboardingToggleButton from '../components/Onboarding/OnboardingToggleButton';
 import DiscoveryLogo from '../../assets/images/discover-logo.svg';
@@ -22,14 +20,6 @@ const LoginScreen = () => (
     <View style={styles.screen}>
       <View style={styles.logoContainer}>
         <DiscoveryLogo height={75} width={300} fill="black" />
-        <Image
-          style={styles.slogo}
-          source={s4sLogo}
-          resizeMode="contain"
-        />
-        <View style={styles.descriptionContainer}>
-          <H2 style={styles.descriptionText}>Discovery Mobile</H2>
-        </View>
       </View>
       <Login />
       <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
@@ -49,25 +39,18 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   safeAreaView: {
     flex: 1,
+    backgroundColor: 'white',
   },
   screen: {
     flex: 1,
     padding: 10,
     justifyContent: 'space-between',
   },
-  slogo: {
-    height: 70,
-    marginVertical: 16,
-  },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  descriptionContainer: {
-    alignItems: 'center',
-  },
-  descriptionText: {
-    fontWeight: '200',
+    height: 70,
+    marginTop: 40,
   },
   vermonsterContainer: {
     marginTop: 16,
