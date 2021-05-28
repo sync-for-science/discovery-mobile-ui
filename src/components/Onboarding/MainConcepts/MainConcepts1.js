@@ -1,10 +1,13 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, Text,
 } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import Colors from '../../../constants/Colors';
+import DataHierarchy from '../../../../assets/images/screenshots/screenshot-data-hierarchy.svg';
+import TextStyles from '../../../constants/TextStyles';
 
 // wireframe page 6
 const OBMainConcepts1 = () => (
@@ -19,20 +22,18 @@ const OBMainConcepts1 = () => (
     <Text style={styles.body}>
       Records have a specific finding with date, values, active status, etc.
     </Text>
-    <View style={styles.image}>
-      <Text>Image</Text>
-    </View>
+    <DataHierarchy height={hp('32%')} width={hp('100%')} />
   </OBSectionBodyTemplate>
 );
 
 export default OBMainConcepts1;
 
+const { body3, alignCenter, mb5 } = TextStyles;
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
-    textAlign: 'center',
-    marginBottom: 20,
+    ...body3,
+    ...alignCenter,
+    ...mb5,
   },
   image: {
     width: '100%',

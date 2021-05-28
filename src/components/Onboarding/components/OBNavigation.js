@@ -77,7 +77,7 @@ const OBNavigation = ({
   }
 
   return (
-    <>
+    <View style={styles.navContainer}>
       {__DEV__ && (
         <View style={styles.skipOnboarding}>
           <Button title="Skip Onboarding" onPress={() => handleOnboardingState(true)} />
@@ -93,7 +93,7 @@ const OBNavigation = ({
         handlePressNext={handlePressNext}
         handleOnboardingState={handleOnboardingState}
       />
-    </>
+    </View>
   );
 };
 
@@ -156,5 +156,8 @@ const styles = StyleSheet.create({
   },
   navButton: {
     color: Colors.logoBlue,
+  },
+  navContainer: {
+    marginBottom: 20,
   },
 });

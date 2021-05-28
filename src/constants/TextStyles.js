@@ -1,39 +1,51 @@
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+
+// console.log('Dimensions', Dimensions.get('window').height * 0.01)
+
 export default {
   h1: {
-    fontSize: 36,
+    fontSize: hp('4.5%'),
     fontWeight: '700',
   },
   h2: {
-    fontSize: 32,
+    fontSize: hp('4.0%'),
     fontWeight: '700',
   },
   h3: {
-    fontSize: 28,
+    fontSize: hp('3.5%'),
     fontWeight: '700',
   },
   h4: {
-    fontSize: 24,
+    fontSize: hp('3.0%'),
     fontWeight: '600',
   },
   h5: {
-    fontSize: 20,
+    fontSize: hp('2.5%'),
     fontWeight: '600',
   },
   h6: {
-    fontSize: 16,
+    fontSize: hp('2.0%'),
     fontWeight: '600',
   },
   subtitle1: {
+    fontSize: hp('1.5%'),
     fontWeight: '600',
   },
   subtitle2: {
+    fontSize: hp('1.5%'),
     fontStyle: 'italic',
   },
   body1: {
-    // intentionally left empty
+    fontSize: hp('1.5%'),
+    lineHeight: hp('2.1%'),
   },
   body2: {
-    fontSize: 12,
+    fontSize: hp('1.2%'),
+    lineHeight: hp('1.8%'),
+  },
+  body3: { // onboarding body text
+    fontSize: hp('2.0%'),
+    lineHeight: hp('2.8%'),
   },
   alignLeft: {
     textAlign: 'left',
@@ -60,18 +72,18 @@ export default {
     fontStyle: 'bold',
   },
   mb1: {
-    marginBottom: 4,
+    marginBottom: hp('0.4%'),
   },
   mb2: {
-    marginBottom: 8,
+    marginBottom: hp('0.8%'),
   },
   mb3: {
-    marginBottom: 12,
+    marginBottom: hp('1.2%'),
   },
   mb4: {
-    marginBottom: 16,
+    marginBottom: hp('1.6%'),
   },
   mb5: {
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
 };
