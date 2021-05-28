@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -29,7 +29,9 @@ const LoginScreen = () => (
         </View>
       </View>
       <Login />
-      <OnboardingToggleButton />
+      <Suspense fallback={<View />}>
+        <OnboardingToggleButton />
+      </Suspense>
       <View style={styles.vermonsterContainer}>
         <Text style={styles.companyText}>Powered by</Text>
         <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
