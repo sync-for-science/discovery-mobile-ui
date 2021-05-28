@@ -13,29 +13,28 @@ import { func } from 'prop-types';
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
+import DiscoveryLogo from '../../assets/images/logos/discover-logo.svg';
 
-const LoginScreen = ({ handleOnboardingState }) => {
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <View style={styles.screen}>
-        <View style={styles.logoContainer}>
-          <DiscoveryLogo height={75} width={300} fill="black" />
-        </View>
+const LoginScreen = ({ handleOnboardingState }) => (
+  <SafeAreaView style={styles.safeAreaView}>
+    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+    <View style={styles.screen}>
+      <View style={styles.logoContainer}>
+        <DiscoveryLogo height={75} width={300} fill="black" />
       </View>
-      <View>
-        <Login />
-        <Button title="Reset Onboarding" color="red" onPress={() => handleOnboardingState(false)} />
-        <ResetAsyncStorageButton />
-      </View>
-      <View style={styles.vermonsterContainer}>
-        <Text style={styles.companyText}>Powered by</Text>
-        <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
-        <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
-      </View>
-    </SafeAreaView>
-  )
-}
+    </View>
+    <View>
+      <Login />
+      <Button title="Reset Onboarding" color="red" onPress={() => handleOnboardingState(false)} />
+      <ResetAsyncStorageButton />
+    </View>
+    <View style={styles.vermonsterContainer}>
+      <Text style={styles.companyText}>Powered by</Text>
+      <Text style={styles.companyText} onPress={() => Linking.openURL('http://vermonster.com')}>Vermonster LLC</Text>
+      <Text style={styles.companyText} onPress={() => Linking.openURL('https://fire.ly')}>Firely BV</Text>
+    </View>
+  </SafeAreaView>
+);
 
 LoginScreen.propTypes = {
   handleOnboardingState: func.isRequired,
