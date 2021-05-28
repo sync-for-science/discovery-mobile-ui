@@ -5,6 +5,7 @@ import {
   View,
   Image,
   StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import { H2, Text } from 'native-base';
 import * as Linking from 'expo-linking';
@@ -29,7 +30,7 @@ const LoginScreen = () => (
         </View>
       </View>
       <Login />
-      <Suspense fallback={<View />}>
+      <Suspense fallback={<View style={styles.activityIndicator}><ActivityIndicator /></View>}>
         <OnboardingToggleButton />
       </Suspense>
       <View style={styles.vermonsterContainer}>
@@ -75,5 +76,9 @@ const styles = StyleSheet.create({
   companyText: {
     color: Colors.lightgrey,
     paddingBottom: 5,
+  },
+  activityIndicator: {
+    width: '100%',
+    alignItems: 'center',
   },
 });
