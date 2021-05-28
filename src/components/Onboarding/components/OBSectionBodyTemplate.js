@@ -13,17 +13,17 @@ const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
 }) => {
   const {
-    h2, h4, alignCenter, mb5,
+    h3, h5, alignCenter, mb4,
   } = TextStyles;
   return (
     <View style={styles.root}>
       <View style={styles.titleContainer}>
         <View style={styles.logoContainer}>
-          <LogoBasic height={60} width={60} />
+          <LogoBasic height={50} width={50} />
         </View>
-        <Text style={[h2, alignCenter]}>{title}</Text>
+        <Text style={[h3, alignCenter]}>{title}</Text>
       </View>
-      <View style={[styles.subTitleContainer, mb5]}>
+      <View style={[styles.subTitleContainer, mb4]}>
         {showSuccess && (
           <AntDesign
             name="checkcircle"
@@ -32,7 +32,7 @@ const OBSectionBodyTemplate = ({
             color={Colors.logoBlue}
           />
         )}
-        <Text style={[h4, alignCenter]}>
+        <Text style={[h5, alignCenter]}>
           {subTitle}
         </Text>
       </View>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 8,
     justifyContent: 'center',
   },
   subTitleContainer: {

@@ -74,18 +74,18 @@ export default {
     fontStyle: 'bold',
   },
   mb1: {
-    marginBottom: 4,
+    marginBottom: hp('0.4%'),
   },
   mb2: {
-    marginBottom: 8,
+    marginBottom: hp('0.8%'),
   },
   mb3: {
-    marginBottom: 12,
+    marginBottom: hp('1.2%'),
   },
   mb4: {
-    marginBottom: 16,
+    marginBottom: hp('1.6%'),
   },
   mb5: {
-    marginBottom: 20,
+    marginBottom: hp('2%'),
   },
 };
