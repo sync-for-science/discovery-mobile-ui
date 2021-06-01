@@ -1,7 +1,5 @@
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-// console.log('Dimensions', Dimensions.get('window').height * 0.01)
-
 export default {
   h1: {
     fontSize: hp('4.5%'),
