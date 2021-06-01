@@ -6,11 +6,11 @@ import {
 import {
   arrayOf, func, number, bool,
 } from 'prop-types';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions'
 import Colors from '../../../constants/Colors';
-
-const { h3 } = TextStyles;
 
 const NavButtons = ({
   isFirstScreen,
@@ -22,7 +22,7 @@ const NavButtons = ({
     return (
       <View style={[styles.root, styles.rightNav]}>
         <TouchableOpacity onPress={handlePressNext}>
-          <Text style={[h3, styles.navButton]}>Next</Text>
+          <Text style={styles.navButton}>Next</Text>
         </TouchableOpacity>
       </View>
     );
@@ -35,10 +35,10 @@ const NavButtons = ({
   return (
     <View style={[styles.root, styles.splitNav]}>
       <TouchableOpacity onPress={handlePressBack}>
-        <Text style={[h3, styles.navButton]}>Back</Text>
+        <Text style={styles.navButton}>Back</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={handlePressNext}>
-        <Text style={[h3, styles.navButton]}>Next</Text>
+        <Text style={styles.navButton}>Next</Text>
       </TouchableOpacity>
     </View>
   );
@@ -114,12 +114,15 @@ OBNavigation.defaultProps = {
 
 export default OBNavigation;
 
+const { h4 } = TextStyles;
+const { rd1, rd2, rd5 } = ResponsiveDimensions
+
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    height: 30,
+    paddingHorizontal: rd5,
+    height: hp('4%'),
   },
   centerNav: {
     justifyContent: 'center',
@@ -132,32 +135,33 @@ const styles = StyleSheet.create({
   },
   skipOnboarding: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
   dotNavFilled: {
     height: '100%',
-    width: 8,
+    width: rd2,
     backgroundColor: Colors.logoBlue,
-    borderRadius: 4,
-    marginHorizontal: 4,
+    borderRadius: rd1,
+    marginHorizontal: rd1,
   },
   dotNavEmpty: {
     height: '100%',
-    width: 8,
-    borderRadius: 4,
+    width: rd2,
+    borderRadius: rd1,
     borderWidth: 1,
     borderColor: Colors.lightgrey,
-    marginHorizontal: 4,
+    marginHorizontal: rd1,
   },
   dotNavContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    height: 8,
+    height: rd2,
   },
   navButton: {
+    ...h4,
     color: Colors.logoBlue,
   },
   navContainer: {
-    marginBottom: 20,
+    marginBottom: rd5,
   },
 });

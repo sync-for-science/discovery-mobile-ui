@@ -5,7 +5,7 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
-import Spacing from '../../../constants/Spacing';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 import LogoBasic from '../../../icons/LogoBasic';
 import Colors from '../../../constants/Colors';
 
@@ -37,14 +37,14 @@ export default OBWelcome;
 const {
   h2, h4, h5,
 } = TextStyles;
-const { s3, s5 } = Spacing;
+const { rd3, rd5 } = ResponsiveDimensions;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
   },
   welcomeContainer: {
     width: '100%',
-    padding: s3,
+    padding: rd3,
     backgroundColor: Colors.logoBlue,
   },
   welcomeText: {
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   singleWords: {
     ...h4,
-    marginBottom: s5,
+    marginBottom: rd5,
   },
   logoAndDescriptionContainer: {
     height: '50%',
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionContainer: {
-    paddingHorizontal: s5,
+    paddingHorizontal: rd5,
   },
   body: {
     ...h5,
