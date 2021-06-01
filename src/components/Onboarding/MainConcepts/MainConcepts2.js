@@ -1,10 +1,13 @@
 import React from 'react';
 import {
-  StyleSheet, Text, View,
+  StyleSheet, Text,
 } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
-import Colors from '../../../constants/Colors';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
+import CollectionExample from '../../../../assets/images/screenshots/screenshot-collection.svg';
 
 // wireframe page 7
 const OBMainConcepts2 = () => (
@@ -19,26 +22,18 @@ const OBMainConcepts2 = () => (
     <Text style={styles.body}>
       Access any Collection you want, at any time.
     </Text>
-    <View style={styles.image}>
-      <Text>Image</Text>
-    </View>
+    <CollectionExample height={hp('25%')} width={hp('100%')} />
   </OBSectionBodyTemplate>
 );
 
 export default OBMainConcepts2;
 
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    backgroundColor: Colors.lightgrey2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: rd5,
   },
 });
