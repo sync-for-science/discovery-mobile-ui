@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 17
 const OBSecurity = () => (
@@ -22,11 +24,13 @@ const OBSecurity = () => (
 
 export default OBSecurity;
 
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
 });
