@@ -5,6 +5,8 @@ import {
 
 import Colors from '../../../constants/Colors';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 21
 const OBDataAccess3 = () => (
@@ -25,28 +27,32 @@ const OBDataAccess3 = () => (
 
 export default OBDataAccess3;
 
+const { body3 } = TextStyles;
+const {
+  rd2, rd3, rd4, rd5,
+} = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
   textInput: {
     width: '100%',
-    padding: 8,
+    padding: rd2,
     borderWidth: 1,
     borderColor: Colors.lightgrey,
-    borderRadius: 8,
-    marginBottom: 20,
+    borderRadius: rd2,
+    marginBottom: rd5,
   },
   flashContainer: {
     width: '100%',
     borderWidth: 1,
     borderColor: Colors.primary,
-    borderRadius: 16,
-    marginBottom: 20,
-    padding: 10,
+    borderRadius: rd4,
+    marginBottom: rd5,
+    padding: rd3,
   },
   flashText: {
     marginBottom: 0,

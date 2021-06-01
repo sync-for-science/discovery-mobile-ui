@@ -29,4 +29,3 @@ const styles = StyleSheet.create({
     marginBottom: rd5,
   },
 });
-;
