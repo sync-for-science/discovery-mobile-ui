@@ -2,15 +2,20 @@ import React from 'react';
 import {
   StyleSheet, Text, View, TextInput,
 } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../../constants/Colors';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
+import ConnectToProvider from '../../../../assets/images/screenshots/screenshot-connect-to-provider.svg';
 
 // wireframe page 21
 const OBDataAccess3 = () => (
   <OBSectionBodyTemplate title="Data Access" subTitle="Connect to Provider">
+    <View style={styles.connectProvider}>
+      <ConnectToProvider height={hp('5%')} width={hp('100%')} />
+    </View>
     <View style={styles.flashContainer}>
       <Text style={[styles.body, styles.flashText]}>
         You can pull medical Records from only one Provider for which
@@ -56,5 +61,8 @@ const styles = StyleSheet.create({
   },
   flashText: {
     marginBottom: 0,
+  },
+  connectProvider: {
+    marginBottom: rd5,
   },
 });
