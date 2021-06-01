@@ -2,6 +2,7 @@ import React from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
 import LogoBasic from '../../../icons/LogoBasic';
@@ -9,27 +10,24 @@ import Colors from '../../../constants/Colors';
 
 // wireframe page 3
 const OBWelcome = () => {
-  const {
-    h2, h4, alignCenter, mb5,
-  } = TextStyles;
   return (
     <View style={styles.contentContainer}>
       <View style={styles.logoAndDescriptionContainer}>
         <View style={styles.welcomeContainer}>
-          <Text style={[h2, alignCenter, styles.welcomeText]}>Welcome to Discovery</Text>
+          <Text style={styles.welcomeText}>Welcome to Discovery</Text>
         </View>
-        <LogoBasic height={120} width={120} />
+        <LogoBasic height={hp('15%')} width={hp('15%')} />
         <View style={styles.descriptionContainer}>
-          <Text style={[styles.body, alignCenter]}>
+          <Text style={styles.body}>
             Use Discovery to inspect your medical Records!
           </Text>
         </View>
       </View>
       <View style={styles.singleWordsContainer}>
-        <Text style={[h4, mb5]}>ACCESS</Text>
-        <Text style={[h4, mb5]}>EXPLORE</Text>
-        <Text style={[h4, mb5]}>ORGANIZE</Text>
-        <Text style={[h4, mb5]}>USE</Text>
+        <Text style={styles.singleWords}>ACCESS</Text>
+        <Text style={styles.singleWords}>EXPLORE</Text>
+        <Text style={styles.singleWords}>ORGANIZE</Text>
+        <Text style={styles.singleWords}>USE</Text>
       </View>
     </View>
   );
@@ -37,6 +35,9 @@ const OBWelcome = () => {
 
 export default OBWelcome;
 
+const {
+  h2, h4, h5, mb5,
+} = TextStyles;
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
@@ -47,11 +48,17 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.logoBlue,
   },
   welcomeText: {
+    ...h2,
+    textAlign: 'center',
     color: 'white',
   },
   singleWordsContainer: {
     alignItems: 'center',
     paddingTop: 50,
+  },
+  singleWords: {
+    ...h4,
+    ...mb5
   },
   logoAndDescriptionContainer: {
     height: '50%',
@@ -62,6 +69,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   body: {
-    fontSize: 24,
+    ...h5,
+    fontWeight: '400',
+    textAlign: 'center',
   },
 });
