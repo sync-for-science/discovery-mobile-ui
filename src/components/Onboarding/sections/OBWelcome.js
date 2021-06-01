@@ -11,11 +11,13 @@ import Colors from '../../../constants/Colors';
 
 // wireframe page 3
 const OBWelcome = () => (
-  <View style={styles.contentContainer}>
-    <View style={styles.logoAndDescriptionContainer}>
-      <View style={styles.welcomeContainer}>
+  <View style={styles.root}>
+    <View style={styles.welcomeBannerContainer}>
+      <View style={styles.welcomeBanner}>
         <Text style={styles.welcomeText}>Welcome to Discovery</Text>
       </View>
+    </View>
+    <View style={styles.logoAndDescriptionContainer}>
       <LogoBasic height={hp('15%')} width={hp('15%')} />
       <View style={styles.descriptionContainer}>
         <Text style={styles.body}>
@@ -38,11 +40,15 @@ const {
   h2, h4, h5,
 } = TextStyles;
 const { rd3, rd5 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
-  contentContainer: {
+  root: {
     flex: 1,
   },
-  welcomeContainer: {
+  welcomeBannerContainer: {
+    height: hp('12%'),
+  },
+  welcomeBanner: {
     width: '100%',
     padding: rd3,
     backgroundColor: Colors.logoBlue,
@@ -61,7 +67,7 @@ const styles = StyleSheet.create({
     marginBottom: rd5,
   },
   logoAndDescriptionContainer: {
-    height: '50%',
+    height: hp('25%'),
     justifyContent: 'space-between',
     alignItems: 'center',
   },
