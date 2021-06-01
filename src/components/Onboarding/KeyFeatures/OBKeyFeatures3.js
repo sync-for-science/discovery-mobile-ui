@@ -5,6 +5,8 @@ import {
 
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import OBBullet from '../components/OBBullet';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 12
 const OBKeyFeatures3 = () => (
@@ -26,11 +28,13 @@ const OBKeyFeatures3 = () => (
 
 export default OBKeyFeatures3;
 
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   header: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
 });

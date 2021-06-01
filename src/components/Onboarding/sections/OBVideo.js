@@ -2,9 +2,12 @@ import React from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../../constants/Colors';
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 16
 const OBVideo = () => (
@@ -20,18 +23,21 @@ const OBVideo = () => (
 
 export default OBVideo;
 
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
   image: {
     width: '100%',
-    height: 200,
+    height: hp('25%'),
     backgroundColor: Colors.lightgrey2,
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
+
