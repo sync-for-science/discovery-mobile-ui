@@ -30,6 +30,7 @@ export default OBMainConcepts2;
 
 const { body3 } = TextStyles;
 const { rd5 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   body: {
     ...body3,
