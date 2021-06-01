@@ -3,6 +3,7 @@ import {
   StyleSheet, View,
 } from 'react-native';
 import { number } from 'prop-types';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../../constants/Colors';
 
@@ -46,9 +47,9 @@ export default OBHeader;
 const styles = StyleSheet.create({
   root: {
     width: '100%',
-    height: 40,
+    height: hp('4%'),
+    justifyContent: 'center',
     paddingHorizontal: 20,
-    marginTop: 20,
   },
   progressContainer: {
     flexDirection: 'row',
