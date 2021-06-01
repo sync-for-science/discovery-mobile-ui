@@ -9,7 +9,7 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
-import ResponsiveDimensions from '../../../constants/ResponsiveDimensions'
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 import Colors from '../../../constants/Colors';
 
 const NavButtons = ({
@@ -115,7 +115,7 @@ OBNavigation.defaultProps = {
 export default OBNavigation;
 
 const { h4 } = TextStyles;
-const { rd1, rd2, rd5 } = ResponsiveDimensions
+const { rd1, rd2, rd5 } = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {

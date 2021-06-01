@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  StyleSheet, Text, View, Image, SafeAreaView, Animated
+  StyleSheet, Text, View, Image, SafeAreaView, Animated,
 } from 'react-native';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { node, shape } from 'prop-types';
 
 import TextStyles from '../constants/TextStyles';
-import ResponsiveDimensions from '../constants/ResponsiveDimensions'
+import ResponsiveDimensions from '../constants/ResponsiveDimensions';
 import Colors from '../constants/Colors';
 import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
 import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
@@ -38,10 +38,6 @@ FadeInView.propTypes = {
 };
 
 const OBScreenSplash = ({ navigation }) => {
-  const {
-    h5, mb4,
-  } = TextStyles;
-
   useEffect(() => {
     setTimeout(() => navigation.navigate('Walkthrough'), 3000);
   }, []);
@@ -54,7 +50,7 @@ const OBScreenSplash = ({ navigation }) => {
             <LogoFull height={hp('21%')} width={hp('21%')} />
           </View>
           <View style={styles.companyLogosContainer}>
-            <Text style={[h5, mb4, styles.powered]}>Powered By</Text>
+            <Text style={styles.powered}>Powered By</Text>
             <Image
               style={styles.harvard}
               source={harvardLogo}
@@ -78,7 +74,10 @@ OBScreenSplash.propTypes = {
 
 export default OBScreenSplash;
 
-const { rd5 } = ResponsiveDimensions
+const { h5 } = TextStyles;
+const {
+  rd4, rd5, rd7, rd8,
+} = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   logoContainer: {
     paddingTop: hp('16%'),
@@ -97,14 +96,14 @@ const styles = StyleSheet.create({
   companyLogosContainer: {
     width: '100%',
     alignItems: 'center',
-    marginBottom: rd5
+    marginBottom: rd8,
   },
   vermonster: {
-    height: 30,
+    height: rd7,
   },
   harvard: {
-    height: 40,
-    marginBottom: 16,
+    height: rd8,
+    marginBottom: rd4,
   },
   animatedView: {
     alignItems: 'center',
@@ -112,6 +111,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   powered: {
+    ...h5,
+    marginBottom: rd5,
     color: Colors.darkgrey,
+    fontWeight: '300',
   },
 });
