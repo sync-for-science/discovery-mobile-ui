@@ -5,7 +5,6 @@ import {
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
-import Colors from '../../../constants/Colors';
 import DataHierarchy from '../../../../assets/images/screenshots/screenshot-data-hierarchy.svg';
 import TextStyles from '../../../constants/TextStyles';
 
@@ -34,12 +33,5 @@ const styles = StyleSheet.create({
     ...body3,
     ...alignCenter,
     ...mb5,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    backgroundColor: Colors.lightgrey2,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
