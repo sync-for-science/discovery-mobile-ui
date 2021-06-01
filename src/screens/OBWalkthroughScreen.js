@@ -9,7 +9,7 @@ import OBHeader from '../components/Onboarding/components/OBHeader';
 import OBNavigation from '../components/Onboarding/components/OBNavigation';
 import OBWelcome from '../components/Onboarding/sections/OBWelcome';
 import OBBenefits from '../components/Onboarding/sections/OBBenefits';
-import OBMainConceptsSection from '../components/Onboarding/sections/OBMainConceptsSection';
+import OBMainConcepts from '../components/Onboarding/sections/OBMainConcepts';
 import OBMainConcepts1 from '../components/Onboarding/MainConcepts/MainConcepts1';
 import OBMainConcepts2 from '../components/Onboarding/MainConcepts/MainConcepts2';
 import OBMainConcepts3 from '../components/Onboarding/MainConcepts/MainConcepts3';
@@ -96,7 +96,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
       >
         <OBWelcome />
         <OBBenefits />
-        <OBMainConceptsSection />
+        <OBMainConcepts />
         <OBMainConcepts1 />
         <OBMainConcepts2 />
         <OBMainConcepts3 />

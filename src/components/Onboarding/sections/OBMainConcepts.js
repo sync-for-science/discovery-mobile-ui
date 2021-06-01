@@ -4,9 +4,11 @@ import {
 } from 'react-native';
 
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
+import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 5
-const OBMainConceptsSection = () => (
+const OBMainConcepts = () => (
   <OBSectionCoverTemplate title="Main Concepts">
     <Text style={styles.body}>
       Discovery is a simple application that relies on three main
@@ -18,13 +20,14 @@ const OBMainConceptsSection = () => (
   </OBSectionCoverTemplate>
 );
 
-export default OBMainConceptsSection;
+export default OBMainConcepts;
 
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
 const styles = StyleSheet.create({
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: rd5,
   },
 });
