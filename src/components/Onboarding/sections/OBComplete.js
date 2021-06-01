@@ -8,36 +8,37 @@ import { func } from 'prop-types';
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
 import LogoBasic from '../../../icons/LogoBasic';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 24
-const OBComplete = ({ handleOnboardingState }) => {
-  const {
-    h2, alignCenter,
-  } = TextStyles;
-  return (
-    <View style={styles.root}>
-      <View style={styles.thankYouContainer}>
-        <Text style={[h2, alignCenter, styles.thankYouText]}>Thank you Jonathan,</Text>
-        <Text style={[h2, alignCenter, styles.thankYouText]}>you&apos;re all set!</Text>
-      </View>
-      <TouchableOpacity onPress={() => handleOnboardingState(true)}>
-        <View style={styles.logoContainer}>
-          <LogoBasic height={150} width={150} />
-        </View>
-        <View style={styles.tapToStartContainer}>
-          <MaterialCommunityIcons name="chevron-double-up" size={60} color={Colors.logoBlue} />
-          <Text style={[styles.body, styles.tapToStartText]}>Tap to Start</Text>
-        </View>
-      </TouchableOpacity>
+const OBComplete = ({ handleOnboardingState }) => (
+  <View style={styles.root}>
+    <View style={styles.thankYouContainer}>
+      <Text style={styles.thankYouText}>Thank you Jonathan,</Text>
+      <Text style={styles.thankYouText}>you&apos;re all set!</Text>
     </View>
-  );
-};
+    <TouchableOpacity onPress={() => handleOnboardingState(true)}>
+      <View style={styles.logoContainer}>
+        <LogoBasic height={150} width={150} />
+      </View>
+      <View style={styles.tapToStartContainer}>
+        <MaterialCommunityIcons name="chevron-double-up" size={60} color={Colors.logoBlue} />
+        <Text style={[styles.body, styles.tapToStartText]}>Tap to Start</Text>
+      </View>
+    </TouchableOpacity>
+  </View>
+);
 
 OBComplete.propTypes = {
   handleOnboardingState: func.isRequired,
 };
 
 export default OBComplete;
+
+const { h2, body3 } = TextStyles;
+const {
+  rd2, rd3, rd5, rd6,
+} = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {
@@ -46,29 +47,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoContainer: {
-    marginBottom: 8,
+    marginBottom: rd2,
   },
   body: {
-    fontSize: 18,
-    lineHeight: 24,
+    ...body3,
     textAlign: 'center',
-    marginBottom: 20,
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    backgroundColor: Colors.lightgrey2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginBottom: rd5,
   },
   thankYouContainer: {
     width: '100%',
     backgroundColor: Colors.logoBlue,
-    padding: 8,
-    marginBottom: 24,
+    padding: rd3,
+    marginBottom: rd6,
+
   },
   thankYouText: {
+    ...h2,
     color: 'white',
+    textAlign: 'center',
   },
   tapToStartContainer: {
     justifyContent: 'center',
