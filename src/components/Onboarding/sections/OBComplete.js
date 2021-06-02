@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { func } from 'prop-types';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
 import Colors from '../../../constants/Colors';
@@ -19,7 +20,7 @@ const OBComplete = ({ handleOnboardingState }) => (
     </View>
     <TouchableOpacity onPress={() => handleOnboardingState(true)}>
       <View style={styles.logoContainer}>
-        <LogoBasic height={150} width={150} />
+        <LogoBasic height={hp('18%')} width={hp('18%')} />
       </View>
       <View style={styles.tapToStartContainer}>
         <MaterialCommunityIcons name="chevron-double-up" size={60} color={Colors.logoBlue} />

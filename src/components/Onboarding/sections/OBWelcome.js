@@ -18,7 +18,9 @@ const OBWelcome = () => (
       </View>
     </View>
     <View style={styles.logoAndDescriptionContainer}>
-      <LogoBasic height={hp('15%')} width={hp('15%')} />
+      <View style={styles.logoContainer}>
+        <LogoBasic height={hp('18%')} width={hp('18%')} />
+      </View>
       <View style={styles.descriptionContainer}>
         <Text style={styles.body}>
           Use Discovery to inspect your medical Records!
@@ -39,14 +41,14 @@ export default OBWelcome;
 const {
   h2, h4, body4,
 } = TextStyles;
-const { rd3, rd5 } = ResponsiveDimensions;
+const { rd3, rd5, rd7 } = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
   welcomeBannerContainer: {
-    height: hp('12%'),
+    height: hp('17%'),
   },
   welcomeBanner: {
     width: '100%',
@@ -77,5 +79,8 @@ const styles = StyleSheet.create({
   body: {
     ...body4,
     textAlign: 'center',
+  },
+  logoContainer: {
+    marginBottom: rd7,
   },
 });
