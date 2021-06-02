@@ -9,36 +9,34 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Colors from '../../../constants/Colors';
 import TextStyles from '../../../constants/TextStyles';
 import LogoBasic from '../../../icons/LogoBasic';
-import ResponsiveDimensions from '../../../constants/ResponsiveDimensions'
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
-}) => {
-  return (
-    <View style={styles.root}>
-      <View style={styles.titleContainer}>
-        <View style={styles.logoContainer}>
-          <LogoBasic height={hp('5%')} width={hp('5%')} />
-        </View>
-        <Text style={styles.titleText}>{title}</Text>
+}) => (
+  <View style={styles.root}>
+    <View style={styles.titleContainer}>
+      <View style={styles.logoContainer}>
+        <LogoBasic height={hp('5%')} width={hp('5%')} />
       </View>
-      <View style={[styles.subTitleContainer, mb4]}>
-        {showSuccess && (
-          <AntDesign
-            name="checkcircle"
-            style={styles.successIcon}
-            size={24}
-            color={Colors.logoBlue}
-          />
-        )}
-        <Text style={[h5, alignCenter]}>
-          {subTitle}
-        </Text>
-      </View>
-      {children}
+      <Text style={styles.titleText}>{title}</Text>
     </View>
-  );
-};
+    <View style={[styles.subTitleContainer, mb4]}>
+      {showSuccess && (
+      <AntDesign
+        name="checkcircle"
+        style={styles.successIcon}
+        size={24}
+        color={Colors.logoBlue}
+      />
+      )}
+      <Text style={[h5, alignCenter]}>
+        {subTitle}
+      </Text>
+    </View>
+    {children}
+  </View>
+);
 
 OBSectionBodyTemplate.propTypes = {
   title: string.isRequired,
@@ -56,7 +54,7 @@ export default OBSectionBodyTemplate;
 const {
   h3, h5, alignCenter, mb4,
 } = TextStyles;
-const { rd2, rd4, rd5 } = ResponsiveDimensions
+const { rd2, rd4, rd5 } = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {
@@ -76,7 +74,7 @@ const styles = StyleSheet.create({
   },
   titleText: {
     ...h3,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   subTitleContainer: {
     flexDirection: 'row',

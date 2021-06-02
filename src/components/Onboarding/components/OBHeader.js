@@ -6,6 +6,7 @@ import { number } from 'prop-types';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../../constants/Colors';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 const OBHeader = ({
   totalProgressPositions, progressPosition,
@@ -44,16 +45,18 @@ OBHeader.defaultProps = {
 
 export default OBHeader;
 
+const { rd3, rd6 } = ResponsiveDimensions;
+
 const styles = StyleSheet.create({
   root: {
     width: '100%',
     height: hp('4%'),
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: rd6,
   },
   progressContainer: {
     flexDirection: 'row',
-    height: 10,
+    height: rd3,
   },
   filledMarkers: {
     flex: 1,
