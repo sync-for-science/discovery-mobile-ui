@@ -24,12 +24,12 @@ const OBKeyFeatures2 = () => (
 
 export default OBKeyFeatures2;
 
-const { body3 } = TextStyles;
+const { body4 } = TextStyles;
 const { rd5 } = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   header: {
-    ...body3,
+    ...body4,
     textAlign: 'center',
     marginBottom: rd5,
   },

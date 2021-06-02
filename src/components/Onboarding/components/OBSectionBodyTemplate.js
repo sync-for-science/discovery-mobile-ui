@@ -30,7 +30,7 @@ const OBSectionBodyTemplate = ({
         color={Colors.logoBlue}
       />
       )}
-      <Text style={[h5, alignCenter]}>
+      <Text style={styles.subTitleText}>
         {subTitle}
       </Text>
     </View>
@@ -52,7 +52,7 @@ OBSectionBodyTemplate.defaultProps = {
 export default OBSectionBodyTemplate;
 
 const {
-  h3, h5, alignCenter, mb4,
+  h3, h4, mb4,
 } = TextStyles;
 const { rd2, rd4, rd5 } = ResponsiveDimensions;
 
@@ -82,5 +82,9 @@ const styles = StyleSheet.create({
   },
   successIcon: {
     marginRight: rd2,
+  },
+  subTitleText: {
+    ...h4,
+    textAlign: 'center',
   },
 });

@@ -37,7 +37,7 @@ const OBWelcome = () => (
 export default OBWelcome;
 
 const {
-  h2, h4, h5,
+  h2, h4, body4,
 } = TextStyles;
 const { rd3, rd5 } = ResponsiveDimensions;
 
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: rd5,
   },
   body: {
-    ...h5,
-    fontWeight: '400',
+    ...body4,
     textAlign: 'center',
   },
 });
