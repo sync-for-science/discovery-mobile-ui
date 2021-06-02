@@ -32,3 +32,23 @@ export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplet
     set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted),
   });
 });
+
+export const storageOnboardingToggleCount = selector({
+  key: 'storageOnboardingToggleCount',
+  get: async () => Storage.getOnboardingToggleCount(),
+});
+
+export const onboardingToggleCount = memoizeWith(identity, (storageOBToggleCount) => {
+  const atomForOnboardingToggleCount = atom({
+    key: 'atomForOnboardingToggleCount',
+    default: undefined,
+  });
+
+  return selector({
+    key: 'onboardingToggleCount',
+    get: ({ get }) => (get(atomForOnboardingToggleCount) === undefined
+      ? storageOBToggleCount
+      : get(atomForOnboardingToggleCount)),
+    set: ({ set }, newCount) => set(atomForOnboardingToggleCount, newCount),
+  });
+});
