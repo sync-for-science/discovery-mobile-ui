@@ -47,7 +47,7 @@ const OBScreenSplash = ({ navigation }) => {
       <FadeInView>
         <View style={styles.fadeIntoView}>
           <View style={styles.logoContainer}>
-            <LogoFull height={hp('21%')} width={hp('21%')} />
+            <LogoFull height={hp('26%')} width={hp('26%')} />
           </View>
           <View style={styles.companyLogosContainer}>
             <Text style={styles.powered}>Powered By</Text>
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   logoContainer: {
-    paddingTop: hp('16%'),
+    paddingTop: hp('21%'),
   },
   companyLogosContainer: {
     width: '100%',
