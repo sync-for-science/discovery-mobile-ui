@@ -22,11 +22,11 @@ const OBMainConcepts = () => (
 
 export default OBMainConcepts;
 
-const { body3 } = TextStyles;
+const { body4 } = TextStyles;
 const { rd5 } = ResponsiveDimensions;
 const styles = StyleSheet.create({
   body: {
-    ...body3,
+    ...body4,
     textAlign: 'center',
     marginBottom: rd5,
   },

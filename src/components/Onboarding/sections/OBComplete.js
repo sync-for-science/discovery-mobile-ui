@@ -35,7 +35,7 @@ OBComplete.propTypes = {
 
 export default OBComplete;
 
-const { h2, body3 } = TextStyles;
+const { h2, body4 } = TextStyles;
 const {
   rd2, rd3, rd5, rd6,
 } = ResponsiveDimensions;
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginBottom: rd2,
   },
   body: {
-    ...body3,
+    ...body4,
     textAlign: 'center',
     marginBottom: rd5,
   },
