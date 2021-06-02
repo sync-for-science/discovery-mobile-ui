@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto';
 import React, { useState, useEffect, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
 import {
