@@ -3,6 +3,7 @@ import {
   StyleSheet, Text, View,
 } from 'react-native';
 import { node, string } from 'prop-types';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
 import LogoBasic from '../../../icons/LogoBasic';
@@ -15,7 +16,7 @@ const OBSectionCoverTemplate = ({ title, children }) => {
     <View style={styles.root}>
       <Text style={[h2, alignCenter, mb5]}>{title}</Text>
       <View style={styles.logoContainer}>
-        <LogoBasic height={60} width={60} />
+        <LogoBasic height={hp('8%')} width={hp('8%')} />
       </View>
       {children}
     </View>
