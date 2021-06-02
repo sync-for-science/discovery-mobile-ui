@@ -2,9 +2,8 @@ import React from 'react';
 import {
   StyleSheet, Text, View,
 } from 'react-native';
-import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import YoutubePlayer from 'react-native-youtube-iframe';
 
-import Colors from '../../../constants/Colors';
 import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
@@ -15,8 +14,11 @@ const OBVideo = () => (
     <Text style={styles.body}>
       See Discovery demonstrated in the following video
     </Text>
-    <View style={styles.image}>
-      <Text>Video</Text>
+    <View style={styles.videoContainer}>
+      <YoutubePlayer
+        height={250}
+        videoId="lYfkl-HXfuU"
+      />
     </View>
   </OBSectionCoverTemplate>
 );
@@ -32,11 +34,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: rd5,
   },
-  image: {
+  videoContainer: {
     width: '100%',
-    height: hp('25%'),
-    backgroundColor: Colors.lightgrey2,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
 });
