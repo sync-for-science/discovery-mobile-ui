@@ -4,24 +4,23 @@ import {
 } from 'react-native';
 import { bool, node, string } from 'prop-types';
 import { AntDesign } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../../constants/Colors';
 import TextStyles from '../../../constants/TextStyles';
 import LogoBasic from '../../../icons/LogoBasic';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions'
 
 const OBSectionBodyTemplate = ({
   title, subTitle, showSuccess, children,
 }) => {
-  const {
-    h3, h5, alignCenter, mb4,
-  } = TextStyles;
   return (
     <View style={styles.root}>
       <View style={styles.titleContainer}>
         <View style={styles.logoContainer}>
-          <LogoBasic height={50} width={50} />
+          <LogoBasic height={hp('5%')} width={hp('5%')} />
         </View>
-        <Text style={[h3, alignCenter]}>{title}</Text>
+        <Text style={styles.titleText}>{title}</Text>
       </View>
       <View style={[styles.subTitleContainer, mb4]}>
         {showSuccess && (
@@ -54,26 +53,36 @@ OBSectionBodyTemplate.defaultProps = {
 
 export default OBSectionBodyTemplate;
 
+const {
+  h3, h5, alignCenter, mb4,
+} = TextStyles;
+const { rd2, rd4, rd5 } = ResponsiveDimensions
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: rd5,
   },
   logoContainer: {
-    marginRight: 10,
+    marginRight: rd4,
   },
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
-    justifyContent: 'center',
+    marginBottom: rd2,
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  titleText: {
+    ...h3,
+    textAlign: 'center'
   },
   subTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   successIcon: {
-    marginRight: 10,
+    marginRight: rd2,
   },
 });
