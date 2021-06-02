@@ -1,19 +1,15 @@
 import React from 'react';
-import {
-  StyleSheet, Text,
-} from 'react-native';
 
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import OBBullet from '../components/OBBullet';
-import TextStyles from '../../../constants/TextStyles';
-import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 12
 const OBKeyFeatures3 = () => (
-  <OBSectionBodyTemplate title="Key Features" subTitle="Collections">
-    <Text style={styles.header}>
-      Analyze Collection
-    </Text>
+  <OBSectionBodyTemplate
+    title="Key Features"
+    subTitle="Collections"
+    subTitle2="Analyze Collection"
+  >
     <OBBullet number={1} text="View a Collection with the support of the Timeline." />
     <OBBullet
       number={2}
@@ -27,14 +23,3 @@ const OBKeyFeatures3 = () => (
 );
 
 export default OBKeyFeatures3;
-
-const { body4 } = TextStyles;
-const { rd5 } = ResponsiveDimensions;
-
-const styles = StyleSheet.create({
-  header: {
-    ...body4,
-    textAlign: 'center',
-    marginBottom: rd5,
-  },
-});

@@ -12,7 +12,7 @@ import LogoBasic from '../../../icons/LogoBasic';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 const OBSectionBodyTemplate = ({
-  title, subTitle, showSuccess, children,
+  title, subTitle, subTitle2, showSuccess, children,
 }) => (
   <View style={styles.root}>
     <View style={styles.titleContainer}>
@@ -21,18 +21,27 @@ const OBSectionBodyTemplate = ({
       </View>
       <Text style={styles.titleText}>{title}</Text>
     </View>
-    <View style={styles.subTitleContainer}>
-      {showSuccess && (
-      <AntDesign
-        name="checkcircle"
-        style={styles.successIcon}
-        size={24}
-        color={Colors.logoBlue}
-      />
+    <View style={styles.subTitlesContainer}>
+      <View style={styles.subTitleContainer}>
+        {showSuccess && (
+        <AntDesign
+          name="checkcircle"
+          style={styles.successIcon}
+          size={24}
+          color={Colors.logoBlue}
+        />
+        )}
+        <Text style={styles.subTitleText}>
+          {subTitle}
+        </Text>
+      </View>
+      {subTitle2 && (
+        <View style={styles.subTitle2Container}>
+          <Text style={styles.subTitle2Text}>
+            {subTitle2}
+          </Text>
+        </View>
       )}
-      <Text style={styles.subTitleText}>
-        {subTitle}
-      </Text>
     </View>
     {children}
   </View>
@@ -41,21 +50,23 @@ const OBSectionBodyTemplate = ({
 OBSectionBodyTemplate.propTypes = {
   title: string.isRequired,
   subTitle: string.isRequired,
+  subTitle2: string,
   children: node.isRequired,
   showSuccess: bool,
 };
 
 OBSectionBodyTemplate.defaultProps = {
   showSuccess: false,
+  subTitle2: null,
 };
 
 export default OBSectionBodyTemplate;
 
 const {
-  h3, h4,
+  h3, h4, body4,
 } = TextStyles;
 const {
-  rd1, rd2, rd4, rd5,
+  rd1, rd2, rd3, rd4, rd5,
 } = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
@@ -70,7 +81,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: rd2,
+    marginVertical: rd3,
     justifyContent: 'flex-start',
     width: '100%',
   },
@@ -81,7 +92,6 @@ const styles = StyleSheet.create({
   subTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: rd1,
   },
   successIcon: {
     marginRight: rd2,
@@ -89,5 +99,16 @@ const styles = StyleSheet.create({
   subTitleText: {
     ...h4,
     textAlign: 'center',
+  },
+  subTitle2Container: {
+    marginTop: rd1,
+  },
+  subTitle2Text: {
+    ...body4,
+    textAlign: 'center',
+  },
+  subTitlesContainer: {
+    marginBottom: rd5,
+    alignItems: 'center',
   },
 });
