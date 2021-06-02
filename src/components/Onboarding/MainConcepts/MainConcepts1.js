@@ -7,6 +7,7 @@ import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import DataHierarchy from '../../../../assets/images/screenshots/screenshot-data-hierarchy.svg';
 import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
 // wireframe page 6
 const OBMainConcepts1 = () => (
@@ -27,11 +28,12 @@ const OBMainConcepts1 = () => (
 
 export default OBMainConcepts1;
 
-const { body3, alignCenter, mb5 } = TextStyles;
+const { body3 } = TextStyles;
+const { rd5 } = ResponsiveDimensions;
 const styles = StyleSheet.create({
   body: {
     ...body3,
-    ...alignCenter,
-    ...mb5,
+    textAlign: 'center',
+    marginBottom: rd5,
   },
 });
