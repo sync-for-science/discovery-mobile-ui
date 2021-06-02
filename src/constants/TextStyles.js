@@ -45,6 +45,10 @@ export default {
     fontSize: hp('2.0%'),
     lineHeight: hp('2.8%'),
   },
+  body4: { // onboarding subtitle text
+    fontSize: hp('2.5%'),
+    lineHeight: hp('3.5%'),
+  },
   alignLeft: {
     textAlign: 'left',
   },
