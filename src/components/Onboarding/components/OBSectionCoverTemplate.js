@@ -6,22 +6,18 @@ import { node, string } from 'prop-types';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import TextStyles from '../../../constants/TextStyles';
+import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 import LogoBasic from '../../../icons/LogoBasic';
 
-const OBSectionCoverTemplate = ({ title, children }) => {
-  const {
-    h2, alignCenter, mb5,
-  } = TextStyles;
-  return (
-    <View style={styles.root}>
-      <Text style={[h2, alignCenter, mb5]}>{title}</Text>
-      <View style={styles.logoContainer}>
-        <LogoBasic height={hp('8%')} width={hp('8%')} />
-      </View>
-      {children}
+const OBSectionCoverTemplate = ({ title, children }) => (
+  <View style={styles.root}>
+    <Text style={styles.titleText}>{title}</Text>
+    <View style={styles.logoContainer}>
+      <LogoBasic height={hp('8%')} width={hp('8%')} />
     </View>
-  );
-};
+    {children}
+  </View>
+);
 
 OBSectionCoverTemplate.propTypes = {
   title: string.isRequired,
@@ -30,13 +26,23 @@ OBSectionCoverTemplate.propTypes = {
 
 export default OBSectionCoverTemplate;
 
+const { rd5 } = ResponsiveDimensions;
+const {
+  h2,
+} = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: rd5,
   },
   logoContainer: {
-    marginBottom: 20,
+    marginBottom: rd5,
+  },
+  titleText: {
+    ...h2,
+    marginBottom: rd5,
+    textAlign: 'center',
   },
 });
