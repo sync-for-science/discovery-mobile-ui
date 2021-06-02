@@ -21,7 +21,7 @@ const OBSectionBodyTemplate = ({
       </View>
       <Text style={styles.titleText}>{title}</Text>
     </View>
-    <View style={[styles.subTitleContainer, mb4]}>
+    <View style={styles.subTitleContainer}>
       {showSuccess && (
       <AntDesign
         name="checkcircle"
@@ -52,9 +52,11 @@ OBSectionBodyTemplate.defaultProps = {
 export default OBSectionBodyTemplate;
 
 const {
-  h3, h4, mb4,
+  h3, h4,
 } = TextStyles;
-const { rd2, rd4, rd5 } = ResponsiveDimensions;
+const {
+  rd1, rd2, rd4, rd5,
+} = ResponsiveDimensions;
 
 const styles = StyleSheet.create({
   root: {
@@ -79,6 +81,7 @@ const styles = StyleSheet.create({
   subTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: rd1,
   },
   successIcon: {
     marginRight: rd2,
