@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
   body: {
     ...body3,
-    width: wp('75%'),
+    width: wp('80%'),
     textAlign: 'left',
   },
   bulletContainer: {
@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
   },
   bulletIconContainer: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
 });
