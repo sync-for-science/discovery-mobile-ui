@@ -3,7 +3,7 @@
     "name": "Discovery Mobile",
     "slug": "discovery-mobile-ui",
     "owner": "sync-for-science",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,13 +18,16 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "edu.s4s.discovery-mobile",
-      "buildNumber": "0.1.0",
-      "supportsTablet": true
+      "bundleIdentifier": "com.s4s.discoverymobile",
+      "buildNumber": "0.1.2",
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
     },
     "android": {
-      "package": "edu.s4s.discovery-mobile",
-      "versionCode": 1,
+      "package": "com.s4s.discoverymobile",
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
