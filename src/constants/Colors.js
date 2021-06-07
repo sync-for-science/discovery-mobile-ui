@@ -10,13 +10,15 @@ const blue3 = '#143263';
 const blue4 = '#4a8fe4';
 const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
-const blue7 = '#9dc3e6';
+const blue7 = '#9dc3e6'; // eslint-disable-line no-unused-vars
 const blue8 = '#e0eafa';
 const blue9 = '#28b0f0';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
 const yellow3 = '#FFF2CC';
 const red1 = 'red';
+const purple1 = '#7030A0';
+const purple2 = '#EAB9FF';
 
 export default {
   primary: blue1,
@@ -37,8 +39,8 @@ export default {
   collectionUnselected: gray3,
   fullyFocused: blue4,
   fullyMarked: blue4,
-  hasFocused: blue4,
-  hasMarked: blue7,
+  hasFocused: purple1,
+  hasMarked: purple2,
   unmarked: gray3,
   countIcon: gray5,
   screenBackground: gray4,
