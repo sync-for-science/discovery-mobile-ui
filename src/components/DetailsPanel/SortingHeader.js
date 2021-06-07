@@ -89,6 +89,8 @@ export default connect(null, mapDispatchToProps)(SortingHeader);
 const styles = StyleSheet.create({
   root: {
     width: '100%',
+    backgroundColor: Colors.sortingHeaderBackground,
+    marginBottom: 8,
   },
   buttonContainer: {
     width: '100%',
@@ -105,8 +107,6 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     paddingBottom: 15,
     alignItems: 'center',
-    borderBottomColor: Colors.mediumgrey,
-    borderBottomWidth: 1,
   },
   descriptionText: {
     fontStyle: 'italic',

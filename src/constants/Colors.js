@@ -15,6 +15,7 @@ const blue8 = '#e0eafa';
 const blue9 = '#28b0f0';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
+const yellow3 = '#FFF2CC';
 const red1 = 'red';
 
 export default {
@@ -55,4 +56,5 @@ export default {
   headerBackground: yellow1,
   notesHeaderBackground: gray2,
   editNotesContainer: gray2,
+  sortingHeaderBackground: yellow3,
 };
