@@ -53,4 +53,5 @@ export default {
   markedsegmentControl: blue4,
   logoBlue: blue9,
   headerBackground: yellow1,
+  notesHeaderBackground: gray2,
 };

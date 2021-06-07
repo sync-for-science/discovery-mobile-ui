@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.headerBackground,
     alignItems: 'center',
     elevation: 0,
-    height: 50
+    height: 50,
   },
   headerText: {
     fontSize: 18,

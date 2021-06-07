@@ -205,9 +205,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.notesHeaderBackground,
     alignItems: 'center',
     elevation: 0,
+    height: 50,
   },
   headerText: {
     fontSize: 18,
