@@ -52,4 +52,5 @@ export default {
   collectionSegmentControl: yellow1,
   markedsegmentControl: blue4,
   logoBlue: blue9,
+  headerBackground: yellow1,
 };

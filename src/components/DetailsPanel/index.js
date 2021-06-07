@@ -114,9 +114,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.headerBackground,
     alignItems: 'center',
     elevation: 0,
+    height: 50
   },
   headerText: {
     fontSize: 18,

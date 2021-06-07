@@ -76,9 +76,10 @@ export default connect(mapStateToProps, null)(Catalog);
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.headerBackground,
     alignItems: 'center',
     elevation: 0,
+    height: 50
   },
   scrollView: {
     flex: 1,
