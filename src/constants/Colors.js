@@ -12,6 +12,7 @@ const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
 const blue7 = '#9dc3e6';
 const blue8 = '#e0eafa';
+const blue9 = '#28b0f0';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
 const red1 = 'red';
@@ -42,7 +43,7 @@ export default {
   screenBackground: gray4,
   destructive: red1,
   disabled: gray6,
-  resourceCardBorder: gray5,
+  resourceCardBorder: blue9,
   expandTimeline: gray6,
   dash: gray6,
   headerIcon: gray6,
@@ -50,4 +51,5 @@ export default {
   editingBackground: blue8,
   collectionSegmentControl: yellow1,
   markedsegmentControl: blue4,
+  logoBlue: blue9,
 };

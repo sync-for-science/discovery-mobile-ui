@@ -164,7 +164,6 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    // backgroundColor: 'pink',
     flex: 1,
   },
   headerText: {
