@@ -54,4 +54,5 @@ export default {
   logoBlue: blue9,
   headerBackground: yellow1,
   notesHeaderBackground: gray2,
+  editNotesContainer: gray2,
 };

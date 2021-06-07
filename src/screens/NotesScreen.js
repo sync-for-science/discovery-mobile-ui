@@ -102,7 +102,7 @@ const NotesScreen = ({
     }
   }, []);
 
-  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
+  const newNoteIconColor = showNoteInput ? Colors.darkgrey2 : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
   // const headerTitle = isResourceNotes ? resource.subType : collection.label;
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   textInputContainer: {
     paddingHorizontal: 10,
     paddingBottom: 10,
-    backgroundColor: Colors.lightgrey,
+    backgroundColor: Colors.editNotesContainer,
     flexDirection: 'row',
   },
   textInput: {
@@ -237,7 +237,7 @@ const styles = StyleSheet.create({
   noteEditingActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.lightgrey,
+    backgroundColor: Colors.editNotesContainer,
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,
