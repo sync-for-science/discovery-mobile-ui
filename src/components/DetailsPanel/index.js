@@ -7,16 +7,22 @@ import {
 } from 'native-base';
 import { FontAwesome, Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { arrayOf, shape } from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import SortingHeader from './SortingHeader';
 import { sortFields } from '../../constants/sorting';
 import DateAccordionsContainer from '../DateAccordionContainer/DateAccordionsContainer';
-import { activeCollectionSelector, savedRecordsGroupedByTypeSelector, activeCollectionResourceIdsSelector } from '../../redux/selectors';
+import {
+  activeCollectionSelector,
+  savedRecordsGroupedByTypeSelector,
+  activeCollectionResourceIdsSelector,
+  savedRecordsSelector,
+} from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
 import BaseText from '../Generic/BaseText';
+import HeaderCountIcon from '../Icons/HeaderCountIcon';
 
 const DetailsPanel = ({
   navigation, collection, savedRecordsGroupedByType, savedRecords,
@@ -25,6 +31,7 @@ const DetailsPanel = ({
   const { RECORD_TYPE, RECORD_DATE, TIME_SAVED } = sortFields;
   const hasSavedRecords = Object.entries(savedRecords).length > 0;
   const hasMultipleSavedRecords = Object.entries(savedRecords).length > 1;
+  const savedItemsCount = useSelector(savedRecordsSelector).length;
 
   const handlePressNoteIcon = () => {
     navigation.navigate('Notes');
@@ -65,7 +72,8 @@ const DetailsPanel = ({
             <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Left>
-        <View>
+        <View style={styles.headerTitleContainer}>
+          <HeaderCountIcon count={savedItemsCount} outline />
           <Title style={styles.headerText}>{collection?.label}</Title>
         </View>
         <Right>
@@ -130,5 +138,9 @@ const styles = StyleSheet.create({
   },
   zeroStateText: {
     fontStyle: 'italic',
+  },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

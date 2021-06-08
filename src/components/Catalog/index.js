@@ -13,14 +13,14 @@ import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-ex
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
-import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector, savedItemsSelector } from '../../redux/selectors';
+import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector, savedRecordsSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
 import Colors from '../../constants/Colors';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
 
 const CatalogScreenHeader = ({ collection, navigation }) => {
-  const collectionCount = useSelector(savedItemsSelector).length;
+  const savedRecords = useSelector(savedRecordsSelector).length;
   return (
     <Header style={styles.header}>
       <Left>
@@ -29,7 +29,7 @@ const CatalogScreenHeader = ({ collection, navigation }) => {
         </TouchableOpacity>
       </Left>
       <View style={styles.headerTitleContainer}>
-        <HeaderCountIcon count={collectionCount} outline />
+        <HeaderCountIcon count={savedRecords} outline />
         <Title style={styles.collectionLabel}>{collection?.label}</Title>
       </View>
       <Right>
