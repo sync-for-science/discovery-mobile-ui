@@ -17,6 +17,7 @@ import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
 import Colors from '../../constants/Colors';
+import HeaderCount from '../Icons/HeaderCount';
 
 const CatalogScreenHeader = ({ collection, navigation }) => (
   <Header style={styles.header}>
@@ -25,7 +26,8 @@ const CatalogScreenHeader = ({ collection, navigation }) => (
         <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
     </Left>
-    <View>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+      <HeaderCount count={10} outline />
       <Title style={styles.collectionLabel}>{collection?.label}</Title>
     </View>
     <Right>
