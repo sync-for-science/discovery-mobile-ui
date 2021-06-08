@@ -26,14 +26,19 @@ const Login = () => {
 
   useEffect(() => {
     setLoading(true);
-    const fhirClient = new FhirKitClient({ baseUrl: BASE_URL });
-    fhirClient.smartAuthMetadata().then((fkcResult) => {
+    const fhirClient = new FhirKitClient({ baseUrl });
+    const authMetadataRequest = fhirClient.smartAuthMetadata();
+    authMetadataRequest.then((fkcResult) => {
       setLoading(false);
       const { authorizeUrl: auth, tokenUrl: tok } = fkcResult;
       setAuthorizeUrl(auth);
       setTokenUrl(tok);
     });
-  }, []);
+    authMetadataRequest.catch((error) => {
+      setLoading(false);
+      console.error(String(error));
+    });
+  }, [baseUrl]);
 
   if (!authorizeUrl || !tokenUrl) {
     return <LoadingIndicator />;

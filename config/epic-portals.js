@@ -1,5 +1,9 @@
 export default [
   {
+    organization: 'Epic Sandbox',
+    baseUrl: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/',
+  },
+  {
     organization: 'Akron Children\'s Hospital',
     baseUrl: 'https://haiku-canto-prod.chmca.org/ARR-FHIR-PRD/api/FHIR/R4/',
   },
