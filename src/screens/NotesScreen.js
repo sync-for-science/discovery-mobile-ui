@@ -19,6 +19,7 @@ import Colors from '../constants/Colors';
 import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
 import CollectionNotes from '../components/CollectionNotes';
+import HeaderCountIcon from '../components/Icons/HeaderCountIcon';
 
 const NotesScreen = ({
   resource,
@@ -104,30 +105,26 @@ const NotesScreen = ({
 
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
-  const headerStyle = [styles.header];
-  const headerTextStyle = [styles.headerText];
-  if (isResourceNotes) {
-    headerStyle.push(styles.recordNotesHeader);
-    headerTextStyle.push(styles.recordHeaderText);
-  }
-  // const headerTitle = isResourceNotes ? resource.subType : collection.label;
-  const iconColor = isResourceNotes ? 'white' : 'black';
+  const noteCount = isResourceNotes
+    ? collection.records[resource.id]?.notes && Object.keys(collection.records[resource?.id]?.notes).length // eslint-disable-line max-len
+    : Object.keys(collection.notes).length;
 
   return (
     <SafeAreaView style={styles.root}>
-      <Header style={headerStyle}>
+      <Header style={styles.header}>
         <Left>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Entypo name="chevron-thin-left" size={20} color={iconColor} />
+            <Entypo name="chevron-thin-left" size={20} color='black' />
           </TouchableOpacity>
         </Left>
-        <View>
-          <Title style={headerTextStyle}>Notes</Title>
+        <View style={styles.headerTitleContainer}>
+          {noteCount && <HeaderCountIcon count={noteCount} outline />}
+          <Title style={styles.headerText}><Text>Notes</Text></Title>
         </View>
         <Right>
           {!showNoteInput && (
             <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-              <Feather name="plus-square" size={24} color={iconColor} />
+              <Feather name="plus-square" size={24} color='black' />
             </TouchableOpacity>
           )}
         </Right>
@@ -269,5 +266,9 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     paddingHorizontal: 16,
     backgroundColor: Colors.collectionYellow,
+  },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

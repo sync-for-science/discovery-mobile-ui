@@ -74,4 +74,8 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
 });

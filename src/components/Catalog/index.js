@@ -98,6 +98,6 @@ const styles = StyleSheet.create({
   },
   headerTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

@@ -29,7 +29,7 @@ export default HeaderCountIcon;
 
 const styles = StyleSheet.create({
   container: {
-    marginRight: 8,
+    marginRight: 4,
   },
   containerOutline: {
     borderColor: 'black',
