@@ -35,7 +35,7 @@ export default connect(mapStateToProps, null)(TypeFilterTitle);
 
 const styles = StyleSheet.create({
   title: {
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
     color: 'white',
     marginBottom: 8,
     padding: 8,

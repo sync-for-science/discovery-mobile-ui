@@ -21,7 +21,7 @@ const purple1 = '#7030A0';
 const purple2 = '#EAB9FF';
 
 export default {
-  primary: blue1,
+  primary: blue9,
   primaryLight: blue2,
   primaryLight2: blue5,
   primaryDark: blue3,
