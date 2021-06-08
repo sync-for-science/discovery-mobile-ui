@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { bool, number } from 'prop-types';
 
-const HeaderCount = ({ count, outline }) => {
+const HeaderCountIcon = ({ count, outline }) => {
   const containerStyle = [styles.container];
   const textStyle = [styles.text];
   if (outline) {
@@ -16,16 +16,16 @@ const HeaderCount = ({ count, outline }) => {
   );
 };
 
-HeaderCount.propTypes = {
+HeaderCountIcon.propTypes = {
   count: number.isRequired,
   outline: bool,
 };
 
-HeaderCount.defaultProps = {
+HeaderCountIcon.defaultProps = {
   outline: false,
 };
 
-export default HeaderCount;
+export default HeaderCountIcon;
 
 const styles = StyleSheet.create({
   container: {
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
     borderRadius: 4,
-    padding: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
   },
   text: {
     fontWeight: '700',

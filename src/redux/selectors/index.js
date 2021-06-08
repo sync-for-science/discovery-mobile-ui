@@ -429,7 +429,7 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-const savedItemsSelector = createSelector(
+export const savedItemsSelector = createSelector(
   [allRecordsWithFilterResponseSelector],
   (resources) => resources
     .filter(({ passesFilters: { inCollection } }) => inCollection),
