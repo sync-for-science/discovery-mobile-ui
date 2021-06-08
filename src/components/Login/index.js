@@ -11,13 +11,16 @@ import LoadingIndicator from '../LoadingIndicator';
 
 // import PatientPicker, { DEFAULT_PATIENT_ID } from './PatientPicker';
 import LoginButton from './LoginButton';
+import OrganizationPicker from './OrganizationPicker';
 // import SkipLoginButton from './SkipLoginButton';
+import epicOrganizations from '../../../config/epic-portals';
 
 // https://open.epic.com/MyApps/Endpoints
 const { BASE_URL } = Constants.manifest.extra;
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [baseUrl, setBaseUrl] = useState(epicOrganizations[0].baseUrl);
   const [authorizeUrl, setAuthorizeUrl] = useState(false);
   const [tokenUrl, setTokenUrl] = useState(false);
 
@@ -41,6 +44,12 @@ const Login = () => {
       { loading && (<LoadingIndicator />)}
       { !loading && (
         <>
+          <OrganizationPicker
+            loading={loading}
+            organizations={epicOrganizations}
+            selectedValue={baseUrl}
+            onChange={(url) => { console.info('OrganizationPicker: ', url); setBaseUrl(url); }}
+          />
           <LoginButton
             setLoading={setLoading}
             baseUrl={BASE_URL}
