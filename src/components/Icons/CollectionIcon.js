@@ -62,6 +62,7 @@ const CollectionIcon = ({
 
   return (
     <TouchableOpacity
+      style={styles.bookmarkContainer}
       onPress={handlePress}
       disabled={showCollectionOnly}
     >
@@ -107,6 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 0.5,
     borderColor: Colors.collectionUnselected,
+    marginLeft: 10,
   },
   hasResource: {
     borderColor: Colors.collectionIcon,
@@ -117,5 +119,8 @@ const styles = StyleSheet.create({
     borderColor: Colors.collectionIconDisabled,
     backgroundColor: Colors.collectionIconDisabled,
     borderWidth: 2,
+  },
+  bookmarkContainer: {
+    marginLeft: 4,
   },
 });

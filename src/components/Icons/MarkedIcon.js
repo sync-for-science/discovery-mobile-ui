@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     width: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 10,
     marginLeft: 5,
   },
   fullyMarked: {
