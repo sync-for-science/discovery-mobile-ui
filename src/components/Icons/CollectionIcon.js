@@ -4,8 +4,9 @@ import {
 import React from 'react';
 import { StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { connect } from 'react-redux';
-import Colors from '../../constants/Colors';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
+import Colors from '../../constants/Colors';
 import { activeCollectionResourceIdsSelector, activeCollectionShowCollectionOnlySelector } from '../../redux/selectors';
 import { addResourceToCollection, removeResourceFromCollection } from '../../redux/action-creators';
 
@@ -35,16 +36,36 @@ const CollectionIcon = ({
 
   const textStyle = showCollectionOnly ? styles.textDisabled : styles.text;
 
+  // eslint-disable-next-line no-nested-ternary
+  const iconColor = resourceCount
+    ? showCollectionOnly
+      ? Colors.collectionIconDisabled
+      : Colors.collectionIcon
+    : Colors.lightgrey;
+
+  const iconType = resourceCount ? 'bookmark' : 'bookmark-outline';
+
+  if (showCount) {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.base,
+          iconStyle,
+        ]}
+        onPress={handlePress}
+        disabled={showCollectionOnly}
+      >
+        <Text style={textStyle}>{iconCount}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <TouchableOpacity
-      style={[
-        styles.base,
-        iconStyle,
-      ]}
       onPress={handlePress}
       disabled={showCollectionOnly}
     >
-      <Text style={textStyle}>{iconCount}</Text>
+      <Ionicons name={iconType} size={28} color={iconColor} />
     </TouchableOpacity>
   );
 };
