@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView, StyleSheet, View, TouchableOpacity,
-  ScrollView, TextInput, KeyboardAvoidingView, Alert,
+  ScrollView, TextInput, KeyboardAvoidingView, Alert, Text,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -145,7 +145,9 @@ const NotesScreen = ({
         {!isResourceNotes && (
           <>
             <View style={styles.collectionHeaderContainer}>
-              <BaseText variant="title">{collection.label}</BaseText>
+              <View style={styles.collectionLabelContainer}>
+                <Text>{collection.label}</Text>
+              </View>
             </View>
             <CollectionNotes
               editNoteId={editNoteId}
@@ -261,5 +263,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
+  },
+  collectionLabelContainer: {
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.collectionYellow,
   },
 });
