@@ -102,7 +102,7 @@ const NotesScreen = ({
     }
   }, []);
 
-  const newNoteIconColor = showNoteInput ? Colors.darkgrey2 : Colors.primary;
+  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : 'black';
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
   const headerStyle = [styles.header];

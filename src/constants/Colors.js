@@ -51,7 +51,7 @@ export default {
   resourceCardBorder: blue9,
   expandTimeline: gray6,
   dash: gray6,
-  headerIcon: gray6,
+  headerIcon: 'black',
   accordionChevronIcon: gray6,
   editingBackground: blue8,
   collectionSegmentControl: yellow1,
