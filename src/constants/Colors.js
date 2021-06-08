@@ -35,6 +35,7 @@ export default {
   darkgrey2: gray6,
   baseText: gray3,
   divider: gray1,
+  collectionYellow: yellow1,
   collectionIcon: yellow1,
   collectionIconDisabled: yellow2,
   collectionUnselected: gray3,
