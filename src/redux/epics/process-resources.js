@@ -81,12 +81,14 @@ const getTimelineDate = (resource) => {
 };
 
 const STATUSES_OK = ['200 OK', '201 Created'];
-const MAX_DEPTH = 4;
+const MAX_DEPTH = 5;
 
 const flattenResources = (result, resource, depth = 0) => {
   if (depth > MAX_DEPTH) {
     return;
   }
+  console.info('resource: ', JSON.stringify(resource, null, 2));
+
   const { id, resourceType } = resource;
   if (resourceType === 'Bundle') {
     if (!resource.entry) {
