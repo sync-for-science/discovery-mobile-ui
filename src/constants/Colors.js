@@ -57,7 +57,7 @@ export default {
   markedsegmentControl: blue4,
   logoBlue: blue9,
   headerBackground: yellow1,
-  notesHeaderBackground: gray2,
+  recordNotesHeaderBackground: blue9,
   editNotesContainer: gray2,
   sortingHeaderBackground: yellow3,
 };

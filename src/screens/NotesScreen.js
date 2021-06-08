@@ -105,11 +105,15 @@ const NotesScreen = ({
   const newNoteIconColor = showNoteInput ? Colors.darkgrey2 : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
+  const headerStyle = [styles.header];
+  if (isResourceNotes) {
+    headerStyle.push(styles.recordNotesHeader);
+  }
   // const headerTitle = isResourceNotes ? resource.subType : collection.label;
 
   return (
     <SafeAreaView style={styles.root}>
-      <Header style={styles.header}>
+      <Header style={headerStyle}>
         <Left>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
@@ -205,10 +209,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: Colors.notesHeaderBackground,
+    backgroundColor: Colors.headerBackground,
     alignItems: 'center',
     elevation: 0,
     height: 50,
+  },
+  recordNotesHeader: {
+    backgroundColor: Colors.recordNotesHeaderBackground,
   },
   headerText: {
     fontSize: 18,
