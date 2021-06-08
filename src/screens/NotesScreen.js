@@ -102,7 +102,6 @@ const NotesScreen = ({
     }
   }, []);
 
-  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : 'black';
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
   const headerStyle = [styles.header];
@@ -123,9 +122,11 @@ const NotesScreen = ({
           <Title style={styles.headerText}>Notes</Title>
         </View>
         <Right>
-          <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-            <Entypo name="squared-plus" size={24} color={newNoteIconColor} />
-          </TouchableOpacity>
+          {!showNoteInput && (
+            <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
+              <Entypo name="squared-plus" size={24} color="black" />
+            </TouchableOpacity>
+          )}
         </Right>
       </Header>
       <ScrollView>
