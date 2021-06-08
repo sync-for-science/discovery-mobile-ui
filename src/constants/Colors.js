@@ -4,7 +4,8 @@ const gray3 = '#5e5e5e';
 const gray4 = '#f2f2f2'; // default screen background
 const gray5 = '#ECECEC';
 const gray6 = '#8c8c8c';
-const blue1 = '#3477e3';
+// blue1 === OLD PRIMARY
+const blue1 = '#3477e3'; // eslint-disable-line no-unused-vars
 const blue2 = '#c7d7f0';
 const blue3 = '#143263';
 const blue4 = '#4a8fe4';

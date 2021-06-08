@@ -203,8 +203,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.editingBackground,
   },
   noteTextContainer: {
-    borderLeftWidth: 2, 
-    borderLeftColor: Colors.lightgrey, 
-    paddingLeft: 6
-  }
+    borderLeftWidth: 2,
+    borderLeftColor: Colors.lightgrey,
+    paddingLeft: 6,
+  },
 });
