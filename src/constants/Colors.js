@@ -14,6 +14,7 @@ const blue6 = '#4a648f';
 const blue7 = '#9dc3e6'; // eslint-disable-line no-unused-vars
 const blue8 = '#e0eafa';
 const blue9 = '#28b0f0';
+const blue10 = '#B3DEF2';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
 const yellow3 = '#FFF2CC';
@@ -48,7 +49,7 @@ export default {
   screenBackground: gray4,
   destructive: red1,
   disabled: gray6,
-  resourceCardBorder: blue9,
+  resourceCardBorder: blue10,
   expandTimeline: gray6,
   dash: gray6,
   headerIcon: 'black',
