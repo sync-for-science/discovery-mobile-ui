@@ -69,7 +69,9 @@ const Note = ({
             </TouchableOpacity>
           </View>
         </View>
-        <Text>{note.text}</Text>
+        <View style={styles.noteTextContainer}>
+          <Text>{note.text}</Text>
+        </View>
       </View>
     </View>
   );
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     color: Colors.darkgrey2,
   },
   headerContainer: {
-    marginBottom: 5,
+    marginBottom: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -200,4 +202,9 @@ const styles = StyleSheet.create({
   editing: {
     backgroundColor: Colors.editingBackground,
   },
+  noteTextContainer: {
+    borderLeftWidth: 2, 
+    borderLeftColor: Colors.lightgrey, 
+    paddingLeft: 6
+  }
 });
