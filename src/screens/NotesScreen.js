@@ -111,7 +111,7 @@ const NotesScreen = ({
     headerTextStyle.push(styles.recordHeaderText);
   }
   // const headerTitle = isResourceNotes ? resource.subType : collection.label;
-  console.log('headerTextStyle', headerTextStyle);
+  const newNoteIconColor = isResourceNotes ? 'white' : 'black';
 
   return (
     <SafeAreaView style={styles.root}>
@@ -127,7 +127,7 @@ const NotesScreen = ({
         <Right>
           {!showNoteInput && (
             <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-              <Entypo name="squared-plus" size={24} color="black" />
+              <Entypo name="squared-plus" size={24} color={newNoteIconColor} />
             </TouchableOpacity>
           )}
         </Right>
