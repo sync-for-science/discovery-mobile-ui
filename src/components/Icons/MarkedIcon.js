@@ -14,6 +14,8 @@ import {
   activeCollectionShowMarkedOnlySelector,
 } from '../../redux/selectors';
 import { UNMARKED, FOCUSED } from '../../constants/marked-status';
+import MarkedIconSVG from '../../../assets/icons/marked-icon.svg';
+import MarkedIconOutlineSVG from '../../../assets/icons/marked-icon-outline.svg';
 
 const MarkedIcon = ({
   subType,
@@ -73,16 +75,34 @@ const MarkedIcon = ({
     textStyle = textStyles.unmarked;
   }
 
+  const markedIconFill = showMarkedOnly ? Colors.hasMarkedDisabled : null;
+
+  const markedIconDisplay = markedOrFocusedCount
+    ? <MarkedIconSVG height={25} width={25} fill={markedIconFill} />
+    : <MarkedIconOutlineSVG height={25} width={25} />;
+
+  if (isAccordion) {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.base,
+          iconStyle,
+        ]}
+        onPress={handlePress}
+        disabled={showMarkedOnly}
+      >
+        <Text style={[textStyles.base, textStyle]}>{iconCount}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   return (
     <TouchableOpacity
-      style={[
-        styles.base,
-        iconStyle,
-      ]}
+      style={styles.base}
       onPress={handlePress}
       disabled={showMarkedOnly}
     >
-      <Text style={[textStyles.base, textStyle]}>{iconCount}</Text>
+      {markedIconDisplay}
     </TouchableOpacity>
   );
 };

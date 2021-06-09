@@ -44,6 +44,7 @@ export default {
   fullyMarked: purple1,
   hasFocused: purple1,
   hasMarked: purple2,
+  hasMarkedDisabled: blue5,
   unmarked: gray3,
   countIcon: gray5,
   screenBackground: gray4,
