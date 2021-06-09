@@ -105,10 +105,13 @@ const NotesScreen = ({
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
   const headerStyle = [styles.header];
+  const headerTextStyle = [styles.headerText];
   if (isResourceNotes) {
     headerStyle.push(styles.recordNotesHeader);
+    headerTextStyle.push(styles.recordHeaderText);
   }
   // const headerTitle = isResourceNotes ? resource.subType : collection.label;
+  console.log('headerTextStyle', headerTextStyle);
 
   return (
     <SafeAreaView style={styles.root}>
@@ -119,7 +122,7 @@ const NotesScreen = ({
           </TouchableOpacity>
         </Left>
         <View>
-          <Title style={styles.headerText}>Notes</Title>
+          <Title style={headerTextStyle}>Notes</Title>
         </View>
         <Right>
           {!showNoteInput && (
@@ -220,6 +223,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 18,
+  },
+  recordHeaderText: {
+    color: 'white',
   },
   textInputContainer: {
     paddingHorizontal: 10,
