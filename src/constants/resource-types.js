@@ -15,13 +15,13 @@ export const TYPES_SORTED_BY_LABEL = Object.entries(PLURAL_RESOURCE_TYPES)
   .map(([type]) => type);
 
 export const SINGULAR_RESOURCE_TYPES = {
-  'vital-signs': 'Vital sign',
-  CarePlan: 'Care plan',
+  'vital-signs': 'Vital Sign',
+  CarePlan: 'Care Plan',
   Condition: 'Condition',
   DiagnosticReport: 'Diagnostic Report',
   Encounter: 'Encounter',
   Immunization: 'Immunization',
   MedicationRequest: 'Prescription',
   Procedure: 'Procedure',
-  laboratory: 'Lab result',
+  laboratory: 'Lab Result',
 };
