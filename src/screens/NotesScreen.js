@@ -7,7 +7,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
@@ -127,7 +127,8 @@ const NotesScreen = ({
         <Right>
           {!showNoteInput && (
             <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-              <Entypo name="squared-plus" size={24} color={newNoteIconColor} />
+              <Feather name="plus-square" size={24} color={newNoteIconColor} />
+              {/* <Entypo name="squared-plus" size={24} color={newNoteIconColor} /> */}
             </TouchableOpacity>
           )}
         </Right>
