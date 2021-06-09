@@ -1,6 +1,6 @@
 import React from 'react';
 import { bool, shape, string } from 'prop-types';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 import BaseText from '../Generic/BaseText';
 import { getResourceDate } from '../../resources/fhirReader';
@@ -15,24 +15,26 @@ const CardHeader = ({
   const resourceDate = getResourceDate(resource);
   const displayType = SINGULAR_RESOURCE_TYPES[resource.type];
 
-  if (fromDetailsPanel) {
+  if (fromDetailsPanel || fromNotesScreen) {
     return (
-      <>
-        <BaseText style={styles.typeLabel}>{displayType}</BaseText>
-        <View style={styles.rightIconsContainer}>
+      <View style={styles.fromContainer}>
+        <View style={styles.typePillContainer}>
+          <View style={styles.typeTextContainer}>
+            <Text style={styles.typeLabel}>{displayType}</Text>
+          </View>
+        </View>
+        <View style={styles.rightFromContainer}>
           <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>
+          {fromDetailsPanel && (
           <CollectionIcon
             showCount={false}
             collectionId={collectionId}
             resourceIds={[resourceId]}
           />
+          )}
         </View>
-      </>
+      </View>
     );
-  }
-
-  if (fromNotesScreen) {
-    return <BaseText style={styles.resourceDate}>{resourceDate}</BaseText>;
   }
 
   return (
@@ -79,11 +81,36 @@ const styles = StyleSheet.create({
   rightIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'flex-end',
+    flex: 1,
   },
   resourceDate: {
     marginRight: 10,
   },
   typeLabel: {
-    textTransform: 'uppercase',
+    fontWeight: '700',
+  },
+  typeTextContainer: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  fromContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flex: 1,
+  },
+  typePillContainer: {
+    width: '40%',
+    alignItems: 'flex-start',
+  },
+  rightFromContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
   },
 });
