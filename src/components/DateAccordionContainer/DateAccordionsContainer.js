@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -8,7 +8,6 @@ import {
   arrayOf, bool, string, shape, number,
 } from 'prop-types';
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
-import BaseText from '../Generic/BaseText';
 import Colors from '../../constants/Colors';
 import DateAccordionContent from './DateAccordionContent';
 
@@ -24,9 +23,9 @@ const DateAccordion = ({
     return (
       <View style={styles.header}>
         {chevronIcon}
-        <BaseText variant="title" style={styles.headerText}>
+        <Text style={styles.headerText}>
           {item.title}
-        </BaseText>
+        </Text>
       </View>
     );
   };
@@ -91,7 +90,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   headerText: {
-    textTransform: 'uppercase',
     marginLeft: 5,
   },
 });
