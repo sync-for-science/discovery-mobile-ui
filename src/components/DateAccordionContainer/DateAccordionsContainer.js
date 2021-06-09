@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { StyleSheet, View, Text } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-
 import {
   arrayOf, bool, string, shape, number,
 } from 'prop-types';
+
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
-import DateAccordionContent from './DateAccordionContent';
+import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 
 const DateAccordion = ({
   date, types, fromDetailsPanel, expanded,
@@ -37,7 +37,11 @@ const DateAccordion = ({
       expanded={expanded}
       renderHeader={renderHeader}
       renderContent={(item) => (
-        <DateAccordionContent item={item} fromDetailsPanel={fromDetailsPanel} />
+        <SubTypeAccordionsContainer
+          data={item.content}
+          fromDetailsPanel={fromDetailsPanel}
+          fromDateAccordion
+        />
       )}
     />
   );

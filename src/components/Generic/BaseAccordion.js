@@ -21,16 +21,20 @@ import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
 
 const AccordionHeader = ({
-  item, expanded, fromDetailsPanel, activeCollectionId,
+  item, expanded, fromDetailsPanel, activeCollectionId, fromDateAccordion,
 }) => {
   const { headerLabel, headerCount, resourceIds } = item;
+  const headerStyle = [styles.header];
+  if (fromDetailsPanel && fromDateAccordion) {
+    headerStyle.push({ paddingLeft: 30 });
+  }
 
   const chevronIcon = expanded
     ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
     : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
 
   return (
-    <View style={styles.header}>
+    <View style={headerStyle}>
       <View style={styles.headerTextContainer}>
         <View style={styles.leftIconContainer}>
           {chevronIcon}
@@ -72,10 +76,12 @@ AccordionHeader.propTypes = {
   expanded: bool.isRequired,
   fromDetailsPanel: bool,
   activeCollectionId: string.isRequired,
+  fromDateAccordion: bool,
 };
 
 AccordionHeader.defaultProps = {
   fromDetailsPanel: false,
+  fromDateAccordion: false,
 };
 
 const ResourceCards = ({ item, activeCollectionId, fromDetailsPanel }) => item.resourceIds.map(
@@ -100,12 +106,13 @@ ResourceCards.defaultProps = {
   fromDetailsPanel: false,
 };
 
-const SubTypeAccordion = ({
+const BaseAccordion = ({
   headerCount,
   resourceIds,
   activeCollectionId,
   headerLabel,
   fromDetailsPanel,
+  fromDateAccordion,
 }) => {
   const dataArray = [{ headerLabel, headerCount, resourceIds }];
 
@@ -121,6 +128,7 @@ const SubTypeAccordion = ({
             expanded={expanded}
             fromDetailsPanel={fromDetailsPanel}
             activeCollectionId={activeCollectionId}
+            fromDateAccordion={fromDateAccordion}
           />
         )}
         renderContent={(item) => (
@@ -135,23 +143,25 @@ const SubTypeAccordion = ({
   );
 };
 
-SubTypeAccordion.propTypes = {
+BaseAccordion.propTypes = {
   headerCount: number.isRequired,
   resourceIds: arrayOf(string.isRequired).isRequired,
   activeCollectionId: string.isRequired,
   headerLabel: string.isRequired,
   fromDetailsPanel: bool,
+  fromDateAccordion: bool,
 };
 
-SubTypeAccordion.defaultProps = {
+BaseAccordion.defaultProps = {
   fromDetailsPanel: false,
+  fromDateAccordion: false,
 };
 
 const mapStateToProps = (state) => ({
   activeCollectionId: activeCollectionIdSelector(state),
 });
 
-export default connect(mapStateToProps, null)(SubTypeAccordion);
+export default connect(mapStateToProps, null)(BaseAccordion);
 
 const styles = StyleSheet.create({
   header: {

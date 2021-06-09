@@ -7,15 +7,20 @@ import { shape, arrayOf, bool } from 'prop-types';
 import BaseAccordion from '../Generic/BaseAccordion';
 import { PLURAL_RESOURCE_TYPES } from '../../constants/resource-types';
 
-const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
-  <View>
-    { data.map(({ type, subTypes }, index) => {
-      const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
-      return (
-        <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
-          {fromDetailsPanel
+const SubTypeAccordionsContainer = ({ data, fromDetailsPanel, fromDateAccordion }) => {
+  const typeTextContainerStyles = [styles.typeTextContainer];
+  if (fromDateAccordion) {
+    typeTextContainerStyles.push({ marginLeft: 30 });
+  }
+  return (
+    <View>
+      { data.map(({ type, subTypes }, index) => {
+        const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
+        return (
+          <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
+            {fromDetailsPanel
                 && (
-                <View style={styles.typeTextContainer}>
+                <View style={typeTextContainerStyles}>
                   <View style={styles.typeTextPill}>
                     <Text style={styles.typeText}>
                       {PLURAL_RESOURCE_TYPES[type]}
@@ -23,32 +28,36 @@ const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
                   </View>
                 </View>
                 )}
-          <View style={styles.root}>
-            <View style={styles.container}>
-              {subTypes.map(({ subType, recordIds }) => (
-                <BaseAccordion
-                  key={subType}
-                  headerLabel={subType}
-                  resourceIds={recordIds}
-                  headerCount={recordIds.length}
-                  fromDetailsPanel={fromDetailsPanel}
-                />
-              ))}
+            <View style={styles.root}>
+              <View style={styles.container}>
+                {subTypes.map(({ subType, recordIds }) => (
+                  <BaseAccordion
+                    key={subType}
+                    headerLabel={subType}
+                    resourceIds={recordIds}
+                    headerCount={recordIds.length}
+                    fromDetailsPanel={fromDetailsPanel}
+                    fromDateAccordion={fromDateAccordion}
+                  />
+                ))}
+              </View>
             </View>
           </View>
-        </View>
-      );
-    })}
-  </View>
-);
+        );
+      })}
+    </View>
+  );
+};
 
 SubTypeAccordionsContainer.propTypes = {
   data: arrayOf(shape({})).isRequired,
   fromDetailsPanel: bool,
+  fromDateAccordion: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   fromDetailsPanel: false,
+  fromDateAccordion: false,
 };
 
 export default SubTypeAccordionsContainer;
