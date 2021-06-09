@@ -1,24 +1,26 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, Text,
 } from 'react-native';
 import { shape, arrayOf, bool } from 'prop-types';
 
 import BaseAccordion from '../Generic/BaseAccordion';
-import BaseText from '../Generic/BaseText';
+import { PLURAL_RESOURCE_TYPES } from '../../constants/resource-types';
 
 const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
   <View>
-    { data.map(({ type, label, subTypes }, index) => {
+    { data.map(({ type, subTypes }, index) => {
       const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
       return (
         <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
           {fromDetailsPanel
                 && (
                 <View style={styles.typeTextContainer}>
-                  <BaseText variant="title" style={styles.typeText}>
-                    {label}
-                  </BaseText>
+                  <View style={styles.typeTextPill}>
+                    <Text style={styles.typeText}>
+                      {PLURAL_RESOURCE_TYPES[type]}
+                    </Text>
+                  </View>
                 </View>
                 )}
           <View style={styles.root}>
@@ -68,8 +70,16 @@ const styles = StyleSheet.create({
   },
   typeTextContainer: {
     marginLeft: 5,
+    alignItems: 'flex-start',
   },
   typeText: {
-    textTransform: 'uppercase',
+    fontWeight: '700',
+  },
+  typeTextPill: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 20,
   },
 });
