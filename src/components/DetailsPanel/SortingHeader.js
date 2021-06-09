@@ -109,6 +109,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionText: {
-    fontStyle: 'italic',
+    color: 'black',
   },
 });

@@ -18,7 +18,7 @@ const ResourceCardNoteActions = ({
     return (
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
         <Entypo name="squared-plus" size={24} color={Colors.darkgrey2} />
-        <BaseText variant="title" style={styles.buttonText}>Add Note</BaseText>
+        <BaseText variant="title" style={styles.buttonText}>Add Notes</BaseText>
       </TouchableOpacity>
     );
   }
