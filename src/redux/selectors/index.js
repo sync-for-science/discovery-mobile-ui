@@ -503,7 +503,7 @@ export const savedRecordsBySavedDaySelector = createSelector(
         const { passesFilters: { dateSaved } } = record;
         const formattedDay = formatDate(dateSaved);
         return produce(acc, (draft) => {
-        // eslint-disable-next-line no-param-reassign
+          // eslint-disable-next-line no-param-reassign
           draft[formattedDay] = draft[formattedDay] ?? [];
           draft[formattedDay].push(record.id);
         });

@@ -2,6 +2,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
 import { clone } from 'ramda';
+import { compareAsc } from 'date-fns';
 
 import { actionTypes } from '../action-types';
 import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
@@ -82,15 +83,24 @@ const defaultDetailsPanelSortingState = {
 //   .filter(([, v]) => v)
 //   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
-const createCollection = (label = 'Untitled Collection') => {
+export const createCollection = (options = {}) => {
+  const {
+    label = 'Untitled Collection',
+    id = uuidv4(),
+    preBuilt = false,
+    showCollectionOnly = false,
+    selectedResourceType = TYPES_SORTED_BY_LABEL[0],
+    resourceIds = [],
+  } = options;
   const timeCreated = new Date();
 
   return {
-    id: uuidv4(),
+    id,
+    preBuilt,
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
-    selectedResourceType: TYPES_SORTED_BY_LABEL[0],
+    selectedResourceType,
     resourceTypeFilters: TYPES_SORTED_BY_LABEL
       .reduce((acc, resourceType) => ({
         ...acc,
@@ -100,10 +110,15 @@ const createCollection = (label = 'Untitled Collection') => {
       dateRangeStart: undefined,
       dateRangeEnd: undefined,
     },
-    showCollectionOnly: false,
+    showCollectionOnly,
     showMarkedOnly: false,
     focusedSubtype: '',
-    records: {},
+    records: resourceIds.reduce((acc, rid) => {
+      acc[rid] = acc[rid] ?? createNewCollectionRecord();
+      acc[rid].saved = true;
+      acc[rid].dateSaved = new Date();
+      return acc;
+    }, {}),
     detailsPanelSortingState: defaultDetailsPanelSortingState,
     notes: {},
   };
@@ -143,6 +158,8 @@ const createNote = (text) => {
   };
 };
 
+const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
@@ -152,6 +169,39 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return {
         [defaultCollection.id]: defaultCollection,
       };
+    }
+    case actionTypes.BUILD_DEFAULT_COLLECTIONS: {
+      return produce(state, (draft) => {
+        const resources = action.payload;
+        const sortedResources = Object.values(resources).sort(sortByDate);
+        // eslint-disable-next-line no-param-reassign
+        draft.lastEncounters = createCollection({
+          id: 'lastEncounters',
+          label: 'Last 3 Encounters',
+          preBuilt: true,
+          showCollectionOnly: true,
+          selectedResourceType: 'Encounter',
+          resourceIds: sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id),
+        });
+        // eslint-disable-next-line no-param-reassign
+        draft.lastVitalSigns = createCollection({
+          id: 'lastVitalSigns',
+          label: 'Last 5 Vital Signs',
+          preBuilt: true,
+          showCollectionOnly: true,
+          selectedResourceType: 'vital-signs',
+          resourceIds: sortedResources.filter((item) => item.type === 'vital-signs').slice(0, 5).map(({ id }) => id),
+        });
+        // eslint-disable-next-line no-param-reassign
+        draft.lastLabResults = createCollection({
+          id: 'lastLabResults',
+          label: 'Last 5 Lab Results',
+          preBuilt: true,
+          showCollectionOnly: true,
+          selectedResourceType: 'laboratory',
+          resourceIds: sortedResources.filter((item) => item.type === 'laboratory').slice(0, 5).map(({ id }) => id),
+        });
+      });
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
       const { collectionId, resourceIds } = action.payload;
@@ -246,7 +296,9 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_COLLECTION: {
-      const newCollection = createCollection(action.payload);
+      const newCollection = createCollection({
+        label: action.payload,
+      });
       return {
         ...state,
         [newCollection.id]: newCollection,
