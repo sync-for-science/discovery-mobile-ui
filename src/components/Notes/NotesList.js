@@ -14,7 +14,13 @@ import Colors from '../../constants/Colors';
 import { formatDateTime } from '../../resources/fhirReader';
 
 const Note = ({
-  resourceId, note, deleteNoteAction, handleEditNote, fromNotesScreen, editNoteId,
+  resourceId,
+  note,
+  deleteNoteAction,
+  handleEditNote,
+  fromNotesScreen,
+  editNoteId,
+  isCollectionNotes,
 }) => {
   const navigation = useNavigation();
   const displayDate = formatDateTime(note.dateCreated);
@@ -48,6 +54,12 @@ const Note = ({
     }
   };
 
+  const noteTextContainerStyles = [styles.noteTextContainer];
+
+  if (isCollectionNotes) {
+    noteTextContainerStyles.push(styles.collectionNoteTextContainer);
+  }
+
   return (
     <View style={[styles.noteContainer, editingStyle]}>
       <View style={styles.noteContent}>
@@ -69,7 +81,9 @@ const Note = ({
             </TouchableOpacity>
           </View>
         </View>
-        <Text>{note.text}</Text>
+        <View style={noteTextContainerStyles}>
+          <Text>{note.text}</Text>
+        </View>
       </View>
     </View>
   );
@@ -82,6 +96,7 @@ Note.propTypes = {
   handleEditNote: func,
   fromNotesScreen: bool,
   editNoteId: string,
+  isCollectionNotes: bool.isRequired,
 };
 
 Note.defaultProps = {
@@ -115,6 +130,7 @@ const NotesList = ({
         handleEditNote={handleEditNote}
         fromNotesScreen={fromNotesScreen}
         editNoteId={editNoteId}
+        isCollectionNotes={isCollectionNotes}
       />
     );
   });
@@ -180,7 +196,7 @@ const styles = StyleSheet.create({
     color: Colors.darkgrey2,
   },
   headerContainer: {
-    marginBottom: 5,
+    marginBottom: 6,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -199,5 +215,13 @@ const styles = StyleSheet.create({
   },
   editing: {
     backgroundColor: Colors.editingBackground,
+  },
+  noteTextContainer: {
+    borderLeftWidth: 2,
+    borderLeftColor: Colors.primary,
+    paddingLeft: 6,
+  },
+  collectionNoteTextContainer: {
+    borderLeftColor: Colors.collectionYellow,
   },
 });

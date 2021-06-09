@@ -7,7 +7,7 @@ import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Entypo, Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { func, shape } from 'prop-types';
 import { resourceByRoutePropsSelector, activeCollectionSelector } from '../redux/selectors';
@@ -102,26 +102,34 @@ const NotesScreen = ({
     }
   }, []);
 
-  const newNoteIconColor = showNoteInput ? Colors.mediumgrey : Colors.primary;
   const hasTextValue = text.length > 0;
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
+  const headerStyle = [styles.header];
+  const headerTextStyle = [styles.headerText];
+  if (isResourceNotes) {
+    headerStyle.push(styles.recordNotesHeader);
+    headerTextStyle.push(styles.recordHeaderText);
+  }
   // const headerTitle = isResourceNotes ? resource.subType : collection.label;
+  const iconColor = isResourceNotes ? 'white' : 'black';
 
   return (
     <SafeAreaView style={styles.root}>
-      <Header style={styles.header}>
+      <Header style={headerStyle}>
         <Left>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
+            <Entypo name="chevron-thin-left" size={20} color={iconColor} />
           </TouchableOpacity>
         </Left>
         <View>
-          <Title style={styles.headerText}>Notes</Title>
+          <Title style={headerTextStyle}>Notes</Title>
         </View>
         <Right>
-          <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-            <Entypo name="squared-plus" size={24} color={newNoteIconColor} />
-          </TouchableOpacity>
+          {!showNoteInput && (
+            <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
+              <Feather name="plus-square" size={24} color={iconColor} />
+            </TouchableOpacity>
+          )}
         </Right>
       </Header>
       <ScrollView>
@@ -205,17 +213,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: 'white',
+    backgroundColor: Colors.headerBackground,
     alignItems: 'center',
     elevation: 0,
+    height: 50,
+  },
+  recordNotesHeader: {
+    backgroundColor: Colors.recordNotesHeaderBackground,
   },
   headerText: {
     fontSize: 18,
   },
+  recordHeaderText: {
+    color: 'white',
+  },
   textInputContainer: {
     paddingHorizontal: 10,
     paddingBottom: 10,
-    backgroundColor: Colors.lightgrey,
+    backgroundColor: Colors.editNotesContainer,
     flexDirection: 'row',
   },
   textInput: {
@@ -236,7 +251,7 @@ const styles = StyleSheet.create({
   noteEditingActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: Colors.lightgrey,
+    backgroundColor: Colors.editNotesContainer,
     alignItems: 'center',
     paddingHorizontal: 10,
     paddingVertical: 5,

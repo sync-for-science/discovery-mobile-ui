@@ -24,7 +24,7 @@ const Timeline = ({ handleOpenDrawer }) => {
             <MaterialCommunityIcons
               name="filter-outline"
               size={24}
-              color={Colors.headerIcon}
+              color={Colors.primary}
             />
           </TouchableOpacity>
         </Left>

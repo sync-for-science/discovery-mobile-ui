@@ -98,7 +98,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ResourceTypePicker);
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: Colors.lightgrey2,
+    backgroundColor: Colors.logoBlue,
     borderColor: 'gray',
     flexDirection: 'row',
     paddingHorizontal: 5,

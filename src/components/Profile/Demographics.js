@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     padding: 5,
-    backgroundColor: Colors.secondary,
+    backgroundColor: Colors.primary,
   },
   headingText: {
     color: 'white',

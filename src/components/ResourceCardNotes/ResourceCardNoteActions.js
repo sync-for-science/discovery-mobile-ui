@@ -17,8 +17,8 @@ const ResourceCardNoteActions = ({
   if (!hasNotes) {
     return (
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-        <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
-        <BaseText variant="title" style={styles.buttonText}>Add Note</BaseText>
+        <Entypo name="squared-plus" size={24} color={Colors.darkgrey2} />
+        <BaseText variant="title" style={styles.buttonText}>Add Notes</BaseText>
       </TouchableOpacity>
     );
   }
@@ -28,12 +28,12 @@ const ResourceCardNoteActions = ({
   return (
     <View style={styles.actionsContainer}>
       <TouchableOpacity style={styles.addNoteButton} onPress={() => navigation.navigate('Notes', { resourceId })}>
-        <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
+        <Entypo name="squared-plus" size={24} color={Colors.darkgrey2} />
         <BaseText variant="title" style={styles.buttonText}>Add Notes</BaseText>
       </TouchableOpacity>
       <View style={styles.verticalDivider} />
       <TouchableOpacity style={styles.addNoteButton} onPress={() => setShowNotes(!showNotes)}>
-        <FontAwesome name={showNotesIcon} size={20} color={Colors.headerIcon} />
+        <FontAwesome name={showNotesIcon} size={20} color={Colors.darkgrey2} />
         <BaseText variant="title" style={styles.buttonText}>{showNotesText}</BaseText>
       </TouchableOpacity>
     </View>
