@@ -114,6 +114,14 @@ const CollectionRow = ({
               <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
             </View>
           </View>
+          <View style={styles.dateRow}>
+            <Text>date</Text>
+            <Text style={styles.dateText}>Last Modified</Text>
+          </View>
+          <View style={styles.dateRow}>
+            <Text>date</Text>
+            <Text style={styles.dateText}>Created</Text>
+          </View>
         </View>
       )}
     </View>
@@ -188,6 +196,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
+    marginTop: 4,
     backgroundColor: Colors.lightgrey3,
   },
+  dateRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  dateText: {
+    marginLeft: 8
+  }
 });
