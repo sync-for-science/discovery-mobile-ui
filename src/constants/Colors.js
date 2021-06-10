@@ -4,6 +4,7 @@ const gray3 = '#5e5e5e';
 const gray4 = '#f2f2f2'; // default screen background
 const gray5 = '#ECECEC';
 const gray6 = '#8c8c8c';
+const gray7 = '#F8F8F8';
 // blue1 === OLD PRIMARY
 const blue1 = '#3477e3'; // eslint-disable-line no-unused-vars
 const blue2 = '#c7d7f0';
@@ -31,6 +32,7 @@ export default {
   secondary: blue4,
   lightgrey: gray1,
   lightgrey2: gray5,
+  lightgrey3: gray7,
   mediumgrey: gray2,
   darkgrey: gray3,
   darkgrey2: gray6,
