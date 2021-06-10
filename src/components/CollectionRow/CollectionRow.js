@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import {
   StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
-import { func, shape, string } from 'prop-types';
+import {
+  func, number, shape, string,
+} from 'prop-types';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -10,6 +12,42 @@ import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
+
+const CountInfo = ({ count, label }) => (
+  <View style={styles.countIconContainer}>
+    <View style={[
+      styles.countIcon,
+      label === 'Records' ? styles.collectionColor : styles.notesColor,
+    ]}
+    >
+      <Text>{count}</Text>
+    </View>
+    <Text style={styles.countIconText}>{label}</Text>
+  </View>
+);
+
+CountInfo.propTypes = {
+  count: number.isRequired,
+  label: string.isRequired,
+};
+
+const DateInfo = ({ date, label }) => (
+  <View style={styles.dateRow}>
+    <Text style={label === 'Created' ? { color: Colors.darkgrey2 } : null}>
+      {date}
+    </Text>
+    {label && (
+      <Text style={styles.dateText}>
+        {label}
+      </Text>
+    )}
+  </View>
+);
+
+DateInfo.propTypes = {
+  date: string.isRequired,
+  label: string.isRequired,
+};
 
 const CollectionRow = ({
   collectionId,
@@ -36,25 +74,11 @@ const CollectionRow = ({
       </TouchableOpacity>
       {showDetails && (
         <View style={styles.detailsContainer}>
-          <View style={styles.countIconContainer}>
-            <View style={[styles.countIcon, styles.collectionColor]}>
-              <Text>1</Text>
-            </View>
-            <Text style={styles.countIconText}>Records</Text>
-          </View>
-          <View style={styles.countIconContainer}>
-            <View style={[styles.countIcon, styles.notesColor]}>
-              <Text>1</Text>
-            </View>
-            <Text style={styles.countIconText}>Notes</Text>
-          </View>
-          <View style={styles.dateRow}>
-            <Text>date</Text>
-            <Text style={styles.dateText}>Last Modified</Text>
-          </View>
-          <View style={styles.dateRow}>
-            <Text>date</Text>
-            <Text style={styles.dateText}>Created</Text>
+          <CountInfo count={1} label="Records" />
+          <CountInfo count={1} label="Notes" />
+          <View style={styles.dateInfoContainer}>
+            <DateInfo date="6/10/2021" label="Last Modified" />
+            <DateInfo date="6/10/2021" label="Created" />
           </View>
         </View>
       )}
@@ -126,9 +150,12 @@ const styles = StyleSheet.create({
   },
   dateRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dateText: {
-    marginLeft: 8
-  }
+    marginLeft: 8,
+  },
+  dateInfoContainer: {
+    marginTop: 4,
+  },
 });
