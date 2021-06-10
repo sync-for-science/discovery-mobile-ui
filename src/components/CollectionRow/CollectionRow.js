@@ -9,31 +9,36 @@ import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../constants/Colors';
-import BaseText from '../Generic/BaseText';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
 
-const CountInfo = ({ count, label }) => (
+const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
     <View style={[
       styles.countIcon,
-      label === 'Records' ? styles.collectionColor : styles.notesColor,
+      color ? { backgroundColor: color } : Colors.lightgrey2,
     ]}
     >
       <Text>{count}</Text>
     </View>
-    <Text style={styles.countIconText}>{label}</Text>
+    {label && <Text style={styles.countIconText}>{label}</Text>}
   </View>
 );
 
 CountInfo.propTypes = {
   count: number.isRequired,
-  label: string.isRequired,
+  label: string,
+  color: string,
 };
 
-const DateInfo = ({ date, label }) => (
+CountInfo.defaultProps = {
+  label: null,
+  color: null,
+};
+
+const DateInfo = ({ date, label, color }) => (
   <View style={styles.dateRow}>
-    <Text style={label === 'Created' ? { color: Colors.darkgrey2 } : null}>
+    <Text style={color ? { color } : null}>
       {date}
     </Text>
     {label && (
@@ -46,7 +51,13 @@ const DateInfo = ({ date, label }) => (
 
 DateInfo.propTypes = {
   date: string.isRequired,
-  label: string.isRequired,
+  label: string,
+  color: string,
+};
+
+DateInfo.defaultProps = {
+  label: null,
+  color: null,
 };
 
 const CollectionRow = ({
@@ -63,8 +74,18 @@ const CollectionRow = ({
 
   return (
     <View style={styles.collectionRowContainer}>
+      <View style={styles.dateInfoRow}>
+        <View style={styles.dateInfoMargin}>
+          <DateInfo date="5/10/21" />
+        </View>
+        <DateInfo date="5/10/21" color={Colors.darkgrey} />
+      </View>
       <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
-        <BaseText style={styles.labelText}>{label}</BaseText>
+        <View style={styles.collectionRowCountIconsContainer}>
+          <CountInfo count={1} color={Colors.collectionYellow} />
+          <CountInfo count={1} color={Colors.mediumgrey} />
+          <Text style={styles.labelText}>{label}</Text>
+        </View>
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.infoIcon} onPress={() => setShowDetails(!showDetails)}>
             <Ionicons name="information-circle-outline" size={24} color="black" />
@@ -74,11 +95,12 @@ const CollectionRow = ({
       </TouchableOpacity>
       {showDetails && (
         <View style={styles.detailsContainer}>
-          <CountInfo count={1} label="Records" />
-          <CountInfo count={1} label="Notes" />
+          <CountInfo count={1} label="Records" color={Colors.collectionYellow} />
+          <CountInfo count={1} label="Collection Notes" color={Colors.mediumgrey} />
+          <CountInfo count={1} label="Record Notes" color={Colors.mediumgrey} />
           <View style={styles.dateInfoContainer}>
             <DateInfo date="6/10/2021" label="Last Modified" />
-            <DateInfo date="6/10/2021" label="Created" />
+            <DateInfo date="6/10/2021" label="Created" color={Colors.darkgrey2} />
           </View>
         </View>
       )}
@@ -102,15 +124,14 @@ export default connect(null, mapDispatchToProps)(CollectionRow);
 const styles = StyleSheet.create({
   collectionRowContainer: {
     width: '90%',
+    paddingTop: 12,
   },
   collectionRow: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingTop: 12,
-  },
-  labelText: {
-    color: 'black',
+    marginTop: 4,
+
   },
   iconContainer: {
     flexDirection: 'row',
@@ -136,6 +157,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
+    marginRight: 6,
   },
   countIconText: {
     marginLeft: 8,
@@ -157,5 +179,19 @@ const styles = StyleSheet.create({
   },
   dateInfoContainer: {
     marginTop: 4,
+  },
+  dateInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateInfoMargin: {
+    marginRight: 24,
+  },
+  labelText: {
+    fontSize: 16,
+  },
+  collectionRowCountIconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
