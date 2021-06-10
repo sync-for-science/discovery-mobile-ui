@@ -228,16 +228,16 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   detailsContainer: {
-    borderColor: Colors.mediumgrey,
+    borderColor: Colors.collectionYellow,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
     marginTop: 4,
-    backgroundColor: Colors.lightgrey3,
   },
   dateRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 4,
   },
   dateText: {
     marginLeft: 8,
