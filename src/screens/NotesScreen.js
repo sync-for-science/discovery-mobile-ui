@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: Colors.headerBackground,
+    backgroundColor: Colors.notesHeaderBackground,
     alignItems: 'center',
     elevation: 0,
     height: 50,
