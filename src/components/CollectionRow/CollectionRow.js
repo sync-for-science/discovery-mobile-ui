@@ -62,27 +62,33 @@ DateInfo.defaultProps = {
   color: null,
 };
 
-const CountInfo = ({ count, label }) => (
+const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
     <View style={[
       styles.countIcon,
-      label === 'Records' ? styles.collectionColor : styles.notesColor,
+      color ? { backgroundColor: color } : Colors.lightgrey2,
     ]}
     >
       <Text>{count}</Text>
     </View>
-    <Text style={styles.countIconText}>{label}</Text>
+    {label && <Text style={styles.countIconText}>{label}</Text>}
   </View>
 );
 
 CountInfo.propTypes = {
   count: number.isRequired,
-  label: string.isRequired,
+  label: string,
+  color: string,
 };
 
-const DateInfo = ({ date, label }) => (
+CountInfo.defaultProps = {
+  label: null,
+  color: null,
+};
+
+const DateInfo = ({ date, label, color }) => (
   <View style={styles.dateRow}>
-    <Text style={label === 'Created' ? { color: Colors.darkgrey2 } : null}>
+    <Text style={color ? { color } : null}>
       {date}
     </Text>
     {label && (
@@ -95,7 +101,13 @@ const DateInfo = ({ date, label }) => (
 
 DateInfo.propTypes = {
   date: string.isRequired,
-  label: string.isRequired,
+  label: string,
+  color: string,
+};
+
+DateInfo.defaultProps = {
+  label: null,
+  color: null,
 };
 
 const CollectionRow = ({
@@ -177,6 +189,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionRow);
 const styles = StyleSheet.create({
   collectionRowContainer: {
     width: '90%',
+    paddingTop: 12,
   },
   collectionRow: {
     alignItems: 'center',
@@ -215,6 +228,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
+    marginRight: 6,
   },
   countIconText: {
     marginLeft: 8,
@@ -236,5 +250,19 @@ const styles = StyleSheet.create({
   },
   dateInfoContainer: {
     marginTop: 4,
+  },
+  dateInfoRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  dateInfoMargin: {
+    marginRight: 24,
+  },
+  labelText: {
+    fontSize: 16,
+  },
+  collectionRowCountIconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
