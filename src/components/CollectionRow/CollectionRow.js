@@ -204,4 +204,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  iconContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
+  },
+  infoIcon: {
+    marginRight: 8
+  }
 });
