@@ -62,6 +62,42 @@ DateInfo.defaultProps = {
   color: null,
 };
 
+const CountInfo = ({ count, label }) => (
+  <View style={styles.countIconContainer}>
+    <View style={[
+      styles.countIcon,
+      label === 'Records' ? styles.collectionColor : styles.notesColor,
+    ]}
+    >
+      <Text>{count}</Text>
+    </View>
+    <Text style={styles.countIconText}>{label}</Text>
+  </View>
+);
+
+CountInfo.propTypes = {
+  count: number.isRequired,
+  label: string.isRequired,
+};
+
+const DateInfo = ({ date, label }) => (
+  <View style={styles.dateRow}>
+    <Text style={label === 'Created' ? { color: Colors.darkgrey2 } : null}>
+      {date}
+    </Text>
+    {label && (
+      <Text style={styles.dateText}>
+        {label}
+      </Text>
+    )}
+  </View>
+);
+
+DateInfo.propTypes = {
+  date: string.isRequired,
+  label: string.isRequired,
+};
+
 const CollectionRow = ({
   collection,
   collectionId,
@@ -113,14 +149,6 @@ const CollectionRow = ({
             <View style={styles.dateInfoContainer}>
               <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
             </View>
-          </View>
-          <View style={styles.dateRow}>
-            <Text>date</Text>
-            <Text style={styles.dateText}>Last Modified</Text>
-          </View>
-          <View style={styles.dateRow}>
-            <Text>date</Text>
-            <Text style={styles.dateText}>Created</Text>
           </View>
         </View>
       )}
@@ -201,9 +229,12 @@ const styles = StyleSheet.create({
   },
   dateRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   dateText: {
-    marginLeft: 8
-  }
+    marginLeft: 8,
+  },
+  dateInfoContainer: {
+    marginTop: 4,
+  },
 });
