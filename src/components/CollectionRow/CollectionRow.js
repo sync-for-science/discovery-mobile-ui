@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
 import { collectionByIdSelector } from '../../redux/selectors';
-import { formatDateShort, formatDateTime } from '../../resources/fhirReader';
+import { formatDateShort } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
