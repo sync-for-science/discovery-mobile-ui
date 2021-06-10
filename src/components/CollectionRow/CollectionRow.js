@@ -130,6 +130,7 @@ const CollectionRow = ({
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
 
+
   return (
     <View style={styles.collectionRowContainer}>
       <View style={styles.dateInfoRow}>
