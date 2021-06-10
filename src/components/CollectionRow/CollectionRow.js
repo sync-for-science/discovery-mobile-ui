@@ -141,13 +141,19 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionRow);
 const styles = StyleSheet.create({
   collectionRowContainer: {
     width: '90%',
-    paddingTop: 12,
   },
   collectionRow: {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 4,
+    paddingTop: 12,
+  },
+  labelText: {
+    fontSize: 16,
+  },
+  collectionRowCountIconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   iconContainer: {
     flexDirection: 'row',
@@ -163,52 +169,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
   },
+  collectionColor: {
+    backgroundColor: Colors.collectionIcon,
+  },
+  notesColor: {
+    backgroundColor: Colors.mediumgrey,
+  },
   countIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 4,
-    marginRight: 6,
   },
   countIconText: {
     marginLeft: 8,
   },
   detailsContainer: {
-    borderColor: Colors.collectionYellow,
+    borderColor: Colors.mediumgrey,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
-    marginTop: 4,
+    backgroundColor: Colors.lightgrey3,
   },
-  dateRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  dateText: {
-    marginLeft: 8,
-  },
-  dateInfoContainer: {
-    marginTop: 4,
-  },
-  dateInfoRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  dateInfoMargin: {
-    marginRight: 24,
-  },
-  labelText: {
-    fontSize: 16,
-  },
-  collectionRowCountIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  iconContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center'
-  },
-  infoIcon: {
-    marginRight: 8
-  }
 });
