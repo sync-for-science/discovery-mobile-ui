@@ -217,14 +217,8 @@ const styles = StyleSheet.create({
     elevation: 0,
     height: 50,
   },
-  recordNotesHeader: {
-    backgroundColor: Colors.recordNotesHeaderBackground,
-  },
   headerText: {
     fontSize: 18,
-  },
-  recordHeaderText: {
-    color: 'white',
   },
   textInputContainer: {
     paddingHorizontal: 10,

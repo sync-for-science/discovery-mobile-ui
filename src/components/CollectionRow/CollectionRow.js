@@ -146,7 +146,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 4,
-
   },
   iconContainer: {
     flexDirection: 'row',
@@ -161,12 +160,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-  },
-  collectionColor: {
-    backgroundColor: Colors.collectionIcon,
-  },
-  notesColor: {
-    backgroundColor: Colors.mediumgrey,
   },
   countIconContainer: {
     flexDirection: 'row',
