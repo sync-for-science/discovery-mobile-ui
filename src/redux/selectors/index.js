@@ -44,7 +44,7 @@ export const prebuiltCollectionsSelector = (state) => Object.entries(state.colle
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
 export const collectionByIdSelector = createSelector(
-  [collectionsSelector, (ownProps) => ownProps],
+  [collectionsSelector, (_, ownProps) => ownProps],
   (collections, ownProps) => collections[ownProps.collectionId],
 );
 

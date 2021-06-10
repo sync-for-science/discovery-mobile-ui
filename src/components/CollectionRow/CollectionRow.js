@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { activeCollectionSelector } from '../../redux/selectors';
+import { collectionByIdSelector } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
@@ -125,8 +125,8 @@ CollectionRow.propTypes = {
   selectCollectionAction: func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  collection: activeCollectionSelector(state),
+const mapStateToProps = (state, ownProps) => ({
+  collection: collectionByIdSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {
