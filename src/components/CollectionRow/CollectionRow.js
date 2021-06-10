@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
 import { collectionByIdSelector } from '../../redux/selectors';
-import { formatDateShort } from '../../resources/fhirReader';
+import { formatDateShort, formatDateTime } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -75,6 +75,7 @@ const CollectionRow = ({
     navigation.navigate('Catalog');
   };
   const createdDate = formatDateShort(collection.created);
+  const modifiedDate = formatDateTime(collection.lastUpdated);
   const collectionNotesCount = Object.keys(collection.notes).length;
   const collectionRecords = Object.values(collection.records);
   const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
@@ -85,7 +86,7 @@ const CollectionRow = ({
     <View style={styles.collectionRowContainer}>
       <View style={styles.dateInfoRow}>
         <View style={styles.dateInfoMargin}>
-          <DateInfo date="5/10/21" />
+          <DateInfo date={modifiedDate} />
         </View>
         <DateInfo date={createdDate} color={Colors.darkgrey} />
       </View>
@@ -108,7 +109,7 @@ const CollectionRow = ({
           <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
           <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
           <View style={styles.dateInfoContainer}>
-            <DateInfo date="6/10/2021" label="Last Modified" />
+            <DateInfo date={modifiedDate} label="Last Modified" />
             <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
           </View>
         </View>
