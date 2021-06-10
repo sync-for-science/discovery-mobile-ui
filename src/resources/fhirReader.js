@@ -5,7 +5,7 @@ import {
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
-const UI_DATE_FORMAT_SHORT= 'MM/dd/y';
+const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
 export const getPatientName = (patientResource) => {
   if (!patientResource) {

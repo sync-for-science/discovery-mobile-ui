@@ -43,6 +43,11 @@ export const prebuiltCollectionsSelector = (state) => Object.entries(state.colle
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
+export const collectionByIdSelector = createSelector(
+  [collectionsSelector, (ownProps) => ownProps],
+  (collections, ownProps) => collections[ownProps.collectionId],
+);
+
 export const activeCollectionSelector = createSelector(
   [collectionsSelector, activeCollectionIdSelector],
   (collections, activeCollectionId) => collections[activeCollectionId],

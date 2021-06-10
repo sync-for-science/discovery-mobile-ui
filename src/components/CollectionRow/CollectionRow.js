@@ -11,7 +11,8 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { activeCollectionSelector} from '../../redux/selectors'
+import { activeCollectionSelector } from '../../redux/selectors';
+import { formatDateShort } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -73,7 +74,12 @@ const CollectionRow = ({
     selectCollectionAction(collectionId);
     navigation.navigate('Catalog');
   };
-
+  const createdDate = formatDateShort(collection.created);
+  const collectionNotesCount = Object.keys(collection.notes).length;
+  const collectionRecords = Object.values(collection.records);
+  const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
+    notes ? acc.concat(Object.keys(notes)) : acc), []).length;
+  const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
 
   return (
     <View style={styles.collectionRowContainer}>
@@ -81,12 +87,12 @@ const CollectionRow = ({
         <View style={styles.dateInfoMargin}>
           <DateInfo date="5/10/21" />
         </View>
-        <DateInfo date="5/10/21" color={Colors.darkgrey} />
+        <DateInfo date={createdDate} color={Colors.darkgrey} />
       </View>
       <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
         <View style={styles.collectionRowCountIconsContainer}>
-          <CountInfo count={1} color={Colors.collectionYellow} />
-          <CountInfo count={1} color={Colors.mediumgrey} />
+          <CountInfo count={savedRecordsCount} color={Colors.collectionYellow} />
+          <CountInfo count={collectionNotesCount + recordNotesCount} color={Colors.mediumgrey} />
           <Text style={styles.labelText}>{label}</Text>
         </View>
         <View style={styles.iconContainer}>
@@ -98,12 +104,12 @@ const CollectionRow = ({
       </TouchableOpacity>
       {showDetails && (
         <View style={styles.detailsContainer}>
-          <CountInfo count={1} label="Records" color={Colors.collectionYellow} />
-          <CountInfo count={1} label="Collection Notes" color={Colors.mediumgrey} />
-          <CountInfo count={1} label="Record Notes" color={Colors.mediumgrey} />
+          <CountInfo count={savedRecordsCount} label="Records" color={Colors.collectionYellow} />
+          <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
+          <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
           <View style={styles.dateInfoContainer}>
             <DateInfo date="6/10/2021" label="Last Modified" />
-            <DateInfo date="6/10/2021" label="Created" color={Colors.darkgrey2} />
+            <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
           </View>
         </View>
       )}
@@ -112,6 +118,7 @@ const CollectionRow = ({
 };
 
 CollectionRow.propTypes = {
+  collection: shape({}).isRequired,
   collectionId: string.isRequired,
   label: string.isRequired,
   navigation: shape({}).isRequired,
@@ -119,8 +126,8 @@ CollectionRow.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  collection: activeCollectionSelector(state)
-})
+  collection: activeCollectionSelector(state),
+});
 
 const mapDispatchToProps = {
   selectCollectionAction: selectCollection,
