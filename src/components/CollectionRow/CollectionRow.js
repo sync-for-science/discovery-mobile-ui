@@ -1,7 +1,8 @@
-import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { func, shape, string } from 'prop-types';
 import { connect } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
@@ -14,16 +15,25 @@ const CollectionRow = ({
   navigation,
   selectCollectionAction,
 }) => {
+  const [showDetails, setShowDetails] = useState(false)
   const handlePress = () => {
     selectCollectionAction(collectionId);
     navigation.navigate('Catalog');
   };
 
   return (
-    <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
-      <BaseText style={styles.labelText}>{label}</BaseText>
-      <CollectionRowActionIcon collectionId={collectionId} collectionLabel={label} />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.collectionRow} onPress={handlePress}>
+        <BaseText style={styles.labelText}>{label}</BaseText>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.infoIcon} onPress={() => setShowDetails(!showDetails)}>
+            <Ionicons name="information-circle-outline" size={24} color="black"/>
+          </TouchableOpacity>
+          <CollectionRowActionIcon collectionId={collectionId} collectionLabel={label} />
+        </View>
+      </TouchableOpacity>
+      {showDetails && <Text>Details</Text>}
+    </>
   );
 };
 
@@ -53,4 +63,11 @@ const styles = StyleSheet.create({
   labelText: {
     color: 'black',
   },
+  iconContainer: {
+    flexDirection: 'row', 
+    alignItems: 'center'
+  },
+  infoIcon: {
+    marginRight: 8
+  }
 });
