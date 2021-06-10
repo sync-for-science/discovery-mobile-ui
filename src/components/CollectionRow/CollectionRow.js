@@ -11,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
+import { activeCollectionSelector} from '../../redux/selectors'
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -61,6 +62,7 @@ DateInfo.defaultProps = {
 };
 
 const CollectionRow = ({
+  collection,
   collectionId,
   label,
   navigation,
@@ -71,6 +73,7 @@ const CollectionRow = ({
     selectCollectionAction(collectionId);
     navigation.navigate('Catalog');
   };
+
 
   return (
     <View style={styles.collectionRowContainer}>
@@ -115,11 +118,15 @@ CollectionRow.propTypes = {
   selectCollectionAction: func.isRequired,
 };
 
+const mapStateToProps = (state) => ({
+  collection: activeCollectionSelector(state)
+})
+
 const mapDispatchToProps = {
   selectCollectionAction: selectCollection,
 };
 
-export default connect(null, mapDispatchToProps)(CollectionRow);
+export default connect(mapStateToProps, mapDispatchToProps)(CollectionRow);
 
 const styles = StyleSheet.create({
   collectionRowContainer: {
