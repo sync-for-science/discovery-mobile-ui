@@ -110,7 +110,9 @@ const CollectionRow = ({
           <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
           <View style={styles.dateInfoContainer}>
             <DateInfo date={modifiedDate} label="Last Modified" />
-            <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+            <View style={styles.dateInfoContainer}>
+              <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+            </View>
           </View>
         </View>
       )}
@@ -171,16 +173,16 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   detailsContainer: {
-    borderColor: Colors.mediumgrey,
+    borderColor: Colors.collectionYellow,
     borderWidth: 1,
     borderRadius: 8,
     padding: 8,
     marginTop: 4,
-    backgroundColor: Colors.lightgrey3,
   },
   dateRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 4,
   },
   dateText: {
     marginLeft: 8,
