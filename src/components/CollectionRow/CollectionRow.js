@@ -218,12 +218,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
   },
-  collectionColor: {
-    backgroundColor: Colors.collectionIcon,
-  },
-  notesColor: {
-    backgroundColor: Colors.mediumgrey,
-  },
   countIconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
