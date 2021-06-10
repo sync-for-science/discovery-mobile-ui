@@ -24,17 +24,16 @@ const AccordionHeader = ({
   item, expanded, fromDetailsPanel, activeCollectionId, fromDateAccordion,
 }) => {
   const { headerLabel, headerCount, resourceIds } = item;
-  const headerStyle = [styles.header];
-  if (fromDetailsPanel && fromDateAccordion) {
-    headerStyle.push({ paddingLeft: 30 });
-  }
-
   const chevronIcon = expanded
     ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
     : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
 
   return (
-    <View style={headerStyle}>
+    <View style={[
+      styles.header,
+      (fromDetailsPanel && fromDateAccordion) ? styles.addPaddingLeft : null,
+    ]}
+    >
       <View style={styles.headerTextContainer}>
         <View style={styles.leftIconContainer}>
           {chevronIcon}
@@ -195,5 +194,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: 2,
     marginRight: 2,
+  },
+  addPaddingLeft: {
+    paddingLeft: 30,
   },
 });
