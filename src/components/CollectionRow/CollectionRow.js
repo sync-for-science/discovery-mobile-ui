@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
 import { collectionByIdSelector } from '../../redux/selectors';
-import { formatDateShort, formatDateTime } from '../../resources/fhirReader';
+import { formatDateShort } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -75,7 +75,7 @@ const CollectionRow = ({
     navigation.navigate('Catalog');
   };
   const createdDate = formatDateShort(collection.created);
-  const modifiedDate = formatDateTime(collection.lastUpdated);
+  const modifiedDate = formatDateShort(collection.lastUpdated);
   const collectionNotesCount = Object.keys(collection.notes).length;
   const collectionRecords = Object.values(collection.records);
   const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
