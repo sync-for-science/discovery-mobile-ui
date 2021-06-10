@@ -2,9 +2,9 @@ import {
   arrayOf, shape, func, string, bool,
 } from 'prop-types';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { Text } from 'native-base';
+import { MaterialIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
@@ -48,19 +48,14 @@ const FocusedIcon = ({
     }
   };
 
-  const iconCount = null;
   // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = (fullyFocused ? styles.fullyFocused : (focusedCount ? styles.partialFocused : (markedOrFocusedCount) ? styles.hasMarked : styles.unmarked));
+  const iconColor = (fullyFocused ? Colors.fullyFocused : (focusedCount ? Colors.hasFocused : (markedOrFocusedCount) ? Colors.hasMarked : 'white'));
 
   return (
     <TouchableOpacity
-      style={[
-        styles.base,
-        iconStyle,
-      ]}
-      {...{ onPress: (iconStyle === styles.unmarked ? undefined : handlePress) }}
+      {...{ onPress: (iconColor === 'white' ? undefined : handlePress) }}
     >
-      <Text style={styles.text}>{iconCount}</Text>
+      <MaterialIcons name="center-focus-strong" size={24} color={iconColor} />
     </TouchableOpacity>
   );
 };
@@ -97,36 +92,3 @@ const mapDispatchToProps = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(React.memo(FocusedIcon));
-
-const styles = StyleSheet.create({
-  text: {
-    color: 'white',
-  },
-  base: {
-    height: 15,
-    width: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 5,
-    marginLeft: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    backgroundColor: 'transparent',
-  },
-  fullyFocused: {
-    borderWidth: 2,
-    borderColor: Colors.fullyFocused,
-    backgroundColor: Colors.fullyFocused,
-  },
-  partialFocused: {
-    borderColor: Colors.hasFocused,
-    backgroundColor: Colors.hasMarked,
-  },
-  hasMarked: {
-    borderColor: Colors.hasMarked,
-    backgroundColor: Colors.hasMarked,
-  },
-  unmarked: {
-  },
-});

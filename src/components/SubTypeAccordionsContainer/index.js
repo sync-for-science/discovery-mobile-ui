@@ -1,24 +1,30 @@
 import React from 'react';
 import {
-  StyleSheet, View,
+  StyleSheet, View, Text,
 } from 'react-native';
 import { shape, arrayOf, bool } from 'prop-types';
 
 import BaseAccordion from '../Generic/BaseAccordion';
-import BaseText from '../Generic/BaseText';
+import { PLURAL_RESOURCE_TYPES } from '../../constants/resource-types';
 
-const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
+const SubTypeAccordionsContainer = ({ data, fromDetailsPanel, fromDateAccordion }) => (
   <View>
-    { data.map(({ type, label, subTypes }, index) => {
+    { data.map(({ type, subTypes }, index) => {
       const firstGroupStyle = index === 0 ? styles.firstGroupContainer : {};
       return (
         <View key={type} style={[styles.groupContainer, firstGroupStyle]}>
           {fromDetailsPanel
                 && (
-                <View style={styles.typeTextContainer}>
-                  <BaseText variant="title" style={styles.typeText}>
-                    {label}
-                  </BaseText>
+                <View style={[
+                  styles.typeTextContainer,
+                  fromDateAccordion ? styles.addMarginLeft : null,
+                ]}
+                >
+                  <View style={styles.typeTextPill}>
+                    <Text style={styles.typeText}>
+                      {PLURAL_RESOURCE_TYPES[type]}
+                    </Text>
+                  </View>
                 </View>
                 )}
           <View style={styles.root}>
@@ -30,6 +36,7 @@ const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
                   resourceIds={recordIds}
                   headerCount={recordIds.length}
                   fromDetailsPanel={fromDetailsPanel}
+                  fromDateAccordion={fromDateAccordion}
                 />
               ))}
             </View>
@@ -43,10 +50,12 @@ const SubTypeAccordionsContainer = ({ data, fromDetailsPanel }) => (
 SubTypeAccordionsContainer.propTypes = {
   data: arrayOf(shape({})).isRequired,
   fromDetailsPanel: bool,
+  fromDateAccordion: bool,
 };
 
 SubTypeAccordionsContainer.defaultProps = {
   fromDetailsPanel: false,
+  fromDateAccordion: false,
 };
 
 export default SubTypeAccordionsContainer;
@@ -68,8 +77,19 @@ const styles = StyleSheet.create({
   },
   typeTextContainer: {
     marginLeft: 5,
+    alignItems: 'flex-start',
   },
   typeText: {
-    textTransform: 'uppercase',
+    fontWeight: '700',
+  },
+  typeTextPill: {
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 20,
+  },
+  addMarginLeft: {
+    marginLeft: 30,
   },
 });

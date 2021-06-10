@@ -7,7 +7,7 @@ import { shape } from 'prop-types';
 import {
   Header, Right, Body, Title, Left,
 } from 'native-base';
-import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../constants/Colors';
 import CollectionRow from '../components/CollectionRow/CollectionRow';
@@ -33,7 +33,7 @@ const CollectionsListScreen = ({
         </Body>
         <Right>
           <TouchableOpacity onPress={handleNewCollectionPress}>
-            <Entypo name="squared-plus" size={24} color={Colors.headerIcon} />
+            <Feather name="plus-square" size={24} color={Colors.headerIcon} />
           </TouchableOpacity>
         </Right>
       </Header>
