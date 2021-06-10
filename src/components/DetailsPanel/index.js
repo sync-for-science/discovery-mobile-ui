@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: Colors.headerBackground,
+    backgroundColor: Colors.collectionYellow,
     alignItems: 'center',
     elevation: 0,
     height: 50,
