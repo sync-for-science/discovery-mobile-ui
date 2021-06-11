@@ -185,7 +185,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     }
     case actionTypes.BUILD_DEFAULT_COLLECTIONS: {
       return produce(state, (draft) => {
-        const resources = action.payload;
+        const { resources, associations: { encounters } } = action.payload;
+
         const sortedResources = Object.values(resources)
           .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
           .filter((r) => r.timelineDate) // must have timelineDate
@@ -215,12 +216,19 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           });
           /* eslint-enable no-param-reassign */
         };
-
+        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id);
+        const referencesEncounters = Object.entries(encounters)
+          .reduce((acc, [recordId, encounterId]) => {
+            if (lastEncounters.includes(encounterId)) {
+              return acc.concat(recordId);
+            }
+            return acc;
+          }, []);
         updateOrCreateCollection({
           id: 'lastEncounters',
           label: 'Last 3 Encounters',
           selectedResourceType: 'Encounter',
-          recordIds: sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id),
+          recordIds: lastEncounters.concat(referencesEncounters),
         });
         updateOrCreateCollection({
           id: 'lastVitalSigns',

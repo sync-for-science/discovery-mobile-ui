@@ -137,10 +137,10 @@ const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
 const buildDefaultCollections = (action$, state$) => action$.pipe(
   ofType(actionTypes.RESOURCE_BATCH),
   rxMap(() => {
-    const { resources } = state$.value;
+    const { resources, associations } = state$.value;
     return ({
       type: actionTypes.BUILD_DEFAULT_COLLECTIONS,
-      payload: resources,
+      payload: { resources, associations },
     });
   }),
 );
