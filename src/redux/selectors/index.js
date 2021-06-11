@@ -25,7 +25,7 @@ export const resourceByRoutePropsSelector = (state, ownProps) => (
 
 const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
 
-const collectionsSelector = (state) => state.collections;
+export const collectionsSelector = (state) => state.collections;
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
