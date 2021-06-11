@@ -5,7 +5,7 @@ import { clone } from 'ramda';
 import { compareAsc } from 'date-fns';
 
 import { actionTypes } from '../action-types';
-import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
+import { PLURAL_RESOURCE_TYPES, TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 
@@ -173,7 +173,10 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.BUILD_DEFAULT_COLLECTIONS: {
       return produce(state, (draft) => {
         const resources = action.payload;
-        const sortedResources = Object.values(resources).sort(sortByDate);
+        const sortedResources = Object.values(resources)
+          .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
+          .filter((r) => r.timelineDate) // must have timelineDate
+          .sort(sortByDate);
         // eslint-disable-next-line no-param-reassign
         draft.lastEncounters = createCollection({
           id: 'lastEncounters',
