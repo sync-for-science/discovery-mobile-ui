@@ -2,7 +2,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
 import { clone } from 'ramda';
-import { compareAsc } from 'date-fns';
+import { compareDesc } from 'date-fns';
 
 import { actionTypes } from '../action-types';
 import { PLURAL_RESOURCE_TYPES, TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
@@ -152,7 +152,7 @@ const createNote = (text) => {
   };
 };
 
-const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
+const sortByDateDesc = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareDesc(t1, t2);
 
 const disabledActionsForPreBuilt = [
   actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
@@ -189,7 +189,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const sortedResources = Object.values(resources)
           .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
           .filter((r) => r.timelineDate) // must have timelineDate
-          .sort(sortByDate);
+          .sort(sortByDateDesc);
 
         const updateOrCreateCollection = ({
           id, label, selectedResourceType, recordIds,
