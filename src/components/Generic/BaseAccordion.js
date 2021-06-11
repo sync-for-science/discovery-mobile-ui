@@ -19,9 +19,16 @@ import CountIcon from '../Icons/CountIcon';
 import FocusedIcon from '../Icons/FocusedIcon';
 import MarkedIcon from '../Icons/MarkedIcon';
 import CollectionIcon from '../Icons/CollectionIcon';
+import RecordNumberBar from '../RecordNumberBar';
 
 const AccordionHeader = ({
-  item, expanded, fromDetailsPanel, activeCollectionId, fromDateAccordion,
+  item,
+  expanded,
+  fromDetailsPanel,
+  activeCollectionId,
+  fromDateAccordion,
+  maxRecordsCount,
+  fromTimeSavedAccordion,
 }) => {
   const { headerLabel, headerCount, resourceIds } = item;
   const chevronIcon = expanded
@@ -35,13 +42,20 @@ const AccordionHeader = ({
     ]}
     >
       <View style={styles.headerTextContainer}>
-        <View style={styles.leftIconContainer}>
-          {chevronIcon}
-          <CountIcon count={headerCount} />
+        <View style={styles.leftSideHeader}>
+          <View style={styles.leftIconContainer}>
+            {chevronIcon}
+            {!fromDetailsPanel && <CountIcon count={headerCount} />}
+          </View>
+          <BaseText style={styles.headerText}>
+            {headerLabel}
+          </BaseText>
         </View>
-        <BaseText style={styles.headerText}>
-          {headerLabel}
-        </BaseText>
+        {maxRecordsCount && (
+          <View style={styles.rightSideHeader}>
+            <RecordNumberBar count={headerCount} maxCount={maxRecordsCount} />
+          </View>
+        )}
       </View>
       <View style={styles.rightIconsContainer}>
         { !fromDetailsPanel
@@ -60,11 +74,13 @@ const AccordionHeader = ({
               />
             </>
             )}
-        <CollectionIcon
-          collectionId={activeCollectionId}
-          resourceIds={resourceIds}
-          showCount
-        />
+        {!fromTimeSavedAccordion && (
+          <CollectionIcon
+            collectionId={activeCollectionId}
+            resourceIds={resourceIds}
+            showCount
+          />
+        )}
       </View>
     </View>
   );
@@ -76,11 +92,15 @@ AccordionHeader.propTypes = {
   fromDetailsPanel: bool,
   activeCollectionId: string.isRequired,
   fromDateAccordion: bool,
+  maxRecordsCount: number,
+  fromTimeSavedAccordion: bool,
 };
 
 AccordionHeader.defaultProps = {
   fromDetailsPanel: false,
   fromDateAccordion: false,
+  maxRecordsCount: null,
+  fromTimeSavedAccordion: null,
 };
 
 const ResourceCards = ({ item, activeCollectionId, fromDetailsPanel }) => item.resourceIds.map(
@@ -112,6 +132,8 @@ const BaseAccordion = ({
   headerLabel,
   fromDetailsPanel,
   fromDateAccordion,
+  maxRecordsCount,
+  fromTimeSavedAccordion,
 }) => {
   const dataArray = [{ headerLabel, headerCount, resourceIds }];
 
@@ -128,6 +150,8 @@ const BaseAccordion = ({
             fromDetailsPanel={fromDetailsPanel}
             activeCollectionId={activeCollectionId}
             fromDateAccordion={fromDateAccordion}
+            maxRecordsCount={maxRecordsCount}
+            fromTimeSavedAccordion={fromTimeSavedAccordion}
           />
         )}
         renderContent={(item) => (
@@ -149,11 +173,15 @@ BaseAccordion.propTypes = {
   headerLabel: string.isRequired,
   fromDetailsPanel: bool,
   fromDateAccordion: bool,
+  maxRecordsCount: number,
+  fromTimeSavedAccordion: bool,
 };
 
 BaseAccordion.defaultProps = {
   fromDetailsPanel: false,
   fromDateAccordion: false,
+  maxRecordsCount: null,
+  fromTimeSavedAccordion: null,
 };
 
 const mapStateToProps = (state) => ({
@@ -197,5 +225,14 @@ const styles = StyleSheet.create({
   },
   addPaddingLeft: {
     paddingLeft: 30,
+  },
+  leftSideHeader: {
+    flex: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rightSideHeader: {
+    flex: 65,
+    paddingRight: 8,
   },
 });
