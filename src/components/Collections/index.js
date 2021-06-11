@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { shape } from 'prop-types';
 
-import CollectionsIndexHeader from './CollectionsIndexHeader';
 import CollectionRow from '../CollectionRow/CollectionRow';
 
 const CollectionsIndex = ({
@@ -12,7 +11,6 @@ const CollectionsIndex = ({
   collections,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
-    <CollectionsIndexHeader />
     <View style={styles.collectionRowContainer}>
       {Object.entries(collections).map(([id, { label }]) => (
         <CollectionRow

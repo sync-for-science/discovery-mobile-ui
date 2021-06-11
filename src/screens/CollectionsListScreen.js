@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   SafeAreaView,
-  StatusBar,
   StyleSheet,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,7 +9,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
-import Colors from '../constants/Colors';
+import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 
 const CollectionsIndexCustom = connect((state) => ({
   collections: customCollectionsSelector(state),
@@ -34,7 +33,7 @@ const Tab = createMaterialTopTabNavigator();
 
 const CollectionsListScreen = () => (
   <SafeAreaView style={styles.root}>
-    <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+    <CollectionsIndexHeader />
     <Tab.Navigator
       initialRouteName="Updates"
       style={styles.tabs}
