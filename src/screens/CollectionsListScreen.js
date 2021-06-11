@@ -35,7 +35,7 @@ const CollectionsListScreen = () => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader />
     <Tab.Navigator
-      initialRouteName="Updates"
+      initialRouteName="Builds"
       style={styles.tabs}
     >
       <Tab.Screen
