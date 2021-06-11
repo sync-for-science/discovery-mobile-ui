@@ -12,11 +12,14 @@ import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 
 const DateAccordion = ({
-  date, types, fromDetailsPanel, expanded,
+  date, types, fromDetailsPanel, expanded, maxRecordCount,
 }) => {
   const dataArray = [{ title: date, content: types }];
 
   const renderHeader = (item, isExpanded) => {
+    const recordCountOnDate = item.content.length;
+    const barFlexWidth = (recordCountOnDate / maxRecordCount).toFixed(2) * 100;
+    const emptyFlexWidth = 100 - barFlexWidth;
     const chevronIcon = isExpanded
       ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
       : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
@@ -29,8 +32,10 @@ const DateAccordion = ({
           </Text>
         </View>
         <View style={styles.rightSideHeader}>
-          <View style={styles.barWidth} />
-          <Text>{item.content.length}</Text>
+          <View style={[styles.barWidth, { flex: barFlexWidth }]} />
+          <View style={{ flex: emptyFlexWidth }}>
+            <Text>{recordCountOnDate}</Text>
+          </View>
         </View>
       </View>
     );
@@ -58,26 +63,33 @@ DateAccordion.propTypes = {
   types: arrayOf(shape({}).isRequired).isRequired,
   fromDetailsPanel: bool.isRequired,
   expanded: arrayOf(number),
+  maxRecordCount: number.isRequired,
 };
 
 DateAccordion.defaultProps = {
   expanded: [],
 };
 
-const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => (
-  <View>
-    {
+const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => {
+  const maxRecordCount = savedRecordsByRecordDate.reduce((acc, { types }) => (
+    acc < types.length ? types.length : acc
+  ), 0);
+  return (
+    <View>
+      {
       savedRecordsByRecordDate.map(({ date, types }) => (
         <DateAccordion
           key={date}
           date={date}
           types={types}
+          maxRecordCount={maxRecordCount}
           fromDetailsPanel={fromDetailsPanel}
         />
       ))
     }
-  </View>
-);
+    </View>
+  );
+};
 
 DateAccordionsContainer.propTypes = {
   savedRecordsByRecordDate: arrayOf(shape({}).isRequired).isRequired,
@@ -103,7 +115,6 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   barWidth: {
-    flex: 1,
     backgroundColor: Colors.collectionYellow,
     height: 6,
     marginRight: 8,
