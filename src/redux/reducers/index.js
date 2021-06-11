@@ -161,6 +161,8 @@ const createNote = (text) => {
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
 export const collectionsReducer = (state = preloadCollections, action) => {
+  const { collectionId } = action.payload || {};
+
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       const { id } = defaultCollection;
@@ -207,7 +209,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
-      const { collectionId, resourceIds } = action.payload;
+      const { resourceIds } = action.payload;
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
@@ -218,14 +220,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
-      const { collectionId, resourceType } = action.payload;
+      const { resourceType } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].selectedResourceType = resourceType;
       });
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const { collectionId, resourceType } = action.payload;
+      const { resourceType } = action.payload;
       return produce(state, (draft) => {
         const collection = draft[collectionId];
         const { selectedResourceType, resourceTypeFilters } = collection;
@@ -245,7 +247,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
-      const { collectionId, dateRangeStart, dateRangeEnd } = action.payload;
+      const { dateRangeStart, dateRangeEnd } = action.payload;
       return produce(state, (draft) => {
         if (dateRangeStart) {
           // eslint-disable-next-line no-param-reassign
@@ -258,7 +260,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const { collectionId, resourceIds } = action.payload;
+      const { resourceIds } = action.payload;
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
@@ -269,7 +271,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const { collectionId, subType, resourceIdsMap } = action.payload;
+      const { subType, resourceIdsMap } = action.payload;
 
       return produce(state, (draft) => {
         const collection = draft[collectionId];
@@ -291,7 +293,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
-      const { collectionId } = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
@@ -318,7 +319,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const { collectionId } = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.saved = false; // eslint-disable-line no-param-reassign
@@ -327,7 +327,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const { collectionId, collectionName } = action.payload;
+      const { collectionName } = action.payload;
       const originalCollection = state[collectionId];
       const newCollection = clone(originalCollection);
       newCollection.id = uuidv4();
@@ -338,21 +338,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       };
     }
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
-      const { collectionId, showCollectionOnly } = action.payload;
+      const { showCollectionOnly } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].showCollectionOnly = showCollectionOnly;
       });
     }
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      const { collectionId, showMarkedOnly } = action.payload;
+      const { showMarkedOnly } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].showMarkedOnly = showMarkedOnly;
       });
     }
     case actionTypes.TOGGLE_SORTING_STATE: {
-      const { collectionId, sortField } = action.payload;
+      const { sortField } = action.payload;
       return produce(state, (draft) => {
         if (state[collectionId].detailsPanelSortingState.activeSortField === sortField) {
           const prevDir = state[collectionId].detailsPanelSortingState.sortDirections[sortField];
@@ -368,7 +368,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_RECORD_NOTE: {
-      const { collectionId, resourceId, text } = action.payload;
+      const { resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
@@ -383,16 +383,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DELETE_RECORD_NOTE: {
-      const { collectionId, resourceId, noteId } = action.payload;
+      const { resourceId, noteId } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].records[resourceId].notes[noteId];
       });
     }
     case actionTypes.EDIT_RECORD_NOTE: {
-      const {
-        collectionId, resourceId, noteId, text,
-      } = action.payload;
+      const { resourceId, noteId, text } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].text = text;
@@ -401,7 +399,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_COLLECTION_NOTE: {
-      const { collectionId, text } = action.payload;
+      const { text } = action.payload;
       const newNote = createNote(text);
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
@@ -409,14 +407,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DELETE_COLLECTION_NOTE: {
-      const { collectionId, noteId } = action.payload;
+      const { noteId } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].notes[noteId];
       });
     }
     case actionTypes.EDIT_COLLECTION_NOTE: {
-      const { collectionId, noteId, text } = action.payload;
+      const { noteId, text } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].notes[noteId].text = text;
