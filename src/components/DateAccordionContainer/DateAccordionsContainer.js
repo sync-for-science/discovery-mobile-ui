@@ -10,6 +10,7 @@ import {
 import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
+import RecordNumberBar from '../RecordNumberBar';
 
 const DateAccordion = ({
   date, types, fromDetailsPanel, expanded, maxRecordCount,
@@ -21,8 +22,7 @@ const DateAccordion = ({
       subTypes.forEach(({ recordIds }) => acc.push(...recordIds));
       return acc;
     }, []).length;
-    const barFlexWidth = (recordCountOnDate / maxRecordCount).toFixed(2) * 100;
-    const emptyFlexWidth = 100 - barFlexWidth;
+
     const chevronIcon = isExpanded
       ? <Ionicons name="chevron-up" size={16} color={Colors.accordionChevronIcon} />
       : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
@@ -35,10 +35,7 @@ const DateAccordion = ({
           </Text>
         </View>
         <View style={styles.rightSideHeader}>
-          <View style={[styles.barWidth, { flex: barFlexWidth }]} />
-          <View style={{ flex: emptyFlexWidth }}>
-            <Text>{recordCountOnDate}</Text>
-          </View>
+          <RecordNumberBar count={recordCountOnDate} maxCount={maxRecordCount} />
         </View>
       </View>
     );
@@ -121,11 +118,6 @@ const styles = StyleSheet.create({
   },
   headerText: {
     marginLeft: 5,
-  },
-  barWidth: {
-    backgroundColor: Colors.collectionYellow,
-    height: 6,
-    marginRight: 8,
   },
   leftSideHeader: {
     flex: 35,
