@@ -90,7 +90,6 @@ export const createCollection = (options = {}) => {
     preBuilt = false,
     showCollectionOnly = false,
     selectedResourceType = TYPES_SORTED_BY_LABEL[0],
-    resourceIds = [],
   } = options;
   const timeCreated = new Date();
 
@@ -113,12 +112,7 @@ export const createCollection = (options = {}) => {
     showCollectionOnly,
     showMarkedOnly: false,
     focusedSubtype: '',
-    records: resourceIds.reduce((acc, rid) => {
-      acc[rid] = acc[rid] ?? createNewCollectionRecord();
-      acc[rid].saved = true;
-      acc[rid].dateSaved = new Date();
-      return acc;
-    }, {}),
+    records: {},
     detailsPanelSortingState: defaultDetailsPanelSortingState,
     notes: {},
   };
@@ -196,32 +190,49 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
           .filter((r) => r.timelineDate) // must have timelineDate
           .sort(sortByDate);
-        // eslint-disable-next-line no-param-reassign
-        draft.lastEncounters = createCollection({
+
+        const updateOrCreateCollection = ({
+          id, label, selectedResourceType, recordIds,
+        }) => {
+          /* eslint-disable no-param-reassign */
+          draft[id] = draft[id] ?? createCollection({
+            id,
+            label,
+            preBuilt: true,
+            showCollectionOnly: true,
+            selectedResourceType,
+          });
+
+          const { records } = draft[id];
+          Object.values(records).forEach((record) => {
+            // un-save, in case it is no longer part of preBuilt:
+            record.saved = recordIds.includes(record.id);
+          });
+
+          recordIds.forEach((rId) => {
+            records[rId] = records[rId] ?? createNewCollectionRecord();
+            records[rId].saved = true;
+          });
+          /* eslint-enable no-param-reassign */
+        };
+
+        updateOrCreateCollection({
           id: 'lastEncounters',
           label: 'Last 3 Encounters',
-          preBuilt: true,
-          showCollectionOnly: true,
           selectedResourceType: 'Encounter',
-          resourceIds: sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id),
+          recordIds: sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id),
         });
-        // eslint-disable-next-line no-param-reassign
-        draft.lastVitalSigns = createCollection({
+        updateOrCreateCollection({
           id: 'lastVitalSigns',
           label: 'Last 5 Vital Signs',
-          preBuilt: true,
-          showCollectionOnly: true,
           selectedResourceType: 'vital-signs',
-          resourceIds: sortedResources.filter((item) => item.type === 'vital-signs').slice(0, 5).map(({ id }) => id),
+          recordIds: sortedResources.filter((item) => item.type === 'vital-signs').slice(0, 5).map(({ id }) => id),
         });
-        // eslint-disable-next-line no-param-reassign
-        draft.lastLabResults = createCollection({
+        updateOrCreateCollection({
           id: 'lastLabResults',
           label: 'Last 5 Lab Results',
-          preBuilt: true,
-          showCollectionOnly: true,
           selectedResourceType: 'laboratory',
-          resourceIds: sortedResources.filter((item) => item.type === 'laboratory').slice(0, 5).map(({ id }) => id),
+          recordIds: sortedResources.filter((item) => item.type === 'laboratory').slice(0, 5).map(({ id }) => id),
         });
       });
     }
