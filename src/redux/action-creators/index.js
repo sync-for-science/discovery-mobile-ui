@@ -71,7 +71,7 @@ export const renameCollection = (collectionId, collectionName) => ({
 
 export const clearCollection = (collectionId) => ({
   type: actionTypes.CLEAR_COLLECTION,
-  payload: collectionId,
+  payload: { collectionId },
 });
 
 export const duplicateCollection = (collectionId, collectionName) => ({
@@ -81,7 +81,7 @@ export const duplicateCollection = (collectionId, collectionName) => ({
 
 export const clearMarkedResources = (collectionId) => ({
   type: actionTypes.CLEAR_MARKED_RESOURCES,
-  payload: collectionId,
+  payload: { collectionId },
 });
 
 export const toggleShowCollectionOnly = (showCollectionOnly) => (dispatch, getState) => {

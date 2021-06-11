@@ -291,7 +291,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
-      const collectionId = action.payload;
+      const { collectionId } = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
@@ -318,7 +318,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const collectionId = action.payload;
+      const { collectionId } = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.saved = false; // eslint-disable-line no-param-reassign
