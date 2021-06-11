@@ -126,7 +126,9 @@ const CatalogModal = ({
                 showMarkedOnly={showMarkedOnly}
               />
               <View style={styles.segmentControlContainer}>
-                <CollectionSegmentControl />
+                <CollectionSegmentControl
+                  readOnly={collection.preBuilt}
+                />
                 <MarkedSegmentControl />
               </View>
               <TouchableOpacity

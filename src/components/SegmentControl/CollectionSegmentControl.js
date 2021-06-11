@@ -9,6 +9,7 @@ import { activeCollectionShowCollectionOnlySelector, hasAnyCollectionRecordInSco
 import Colors from '../../constants/Colors';
 
 const CollectionSegmentControl = ({
+  readOnly,
   enabled,
   showCollectionOnly,
   toggleShowCollectionOnlyAction,
@@ -21,7 +22,7 @@ const CollectionSegmentControl = ({
   return (
     <View style={styles.root}>
       <BaseSegmentControl
-        enabled={enabled}
+        enabled={!readOnly && enabled}
         values={['Edit Collection', 'Preview Collection']}
         selectedIndex={segControlIndex}
         onChange={handleChange}
@@ -32,6 +33,7 @@ const CollectionSegmentControl = ({
 };
 
 CollectionSegmentControl.propTypes = {
+  readOnly: bool.isRequired,
   enabled: bool.isRequired,
   showCollectionOnly: bool.isRequired,
   toggleShowCollectionOnlyAction: func.isRequired,
