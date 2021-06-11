@@ -30,7 +30,7 @@ const DateAccordion = ({
         </View>
         <View style={styles.rightSideHeader}>
           <View style={styles.barWidth} />
-          <Text>3</Text>
+          <Text>{item.content.length}</Text>
         </View>
       </View>
     );
