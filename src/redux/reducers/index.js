@@ -160,8 +160,25 @@ const createNote = (text) => {
 
 const sortByDate = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareAsc(t1, t2);
 
+const disabledActionsForPreBuilt = [
+  actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
+  actionTypes.ADD_RESOURCE_TO_COLLECTION,
+  actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+  actionTypes.RENAME_COLLECTION,
+  actionTypes.CLEAR_COLLECTION,
+  actionTypes.DELETE_COLLECTION,
+];
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   const { collectionId } = action.payload || {};
+
+  if (collectionId && state[collectionId]) {
+    const { preBuilt } = state[collectionId];
+    if (preBuilt && disabledActionsForPreBuilt.includes(action.type)) {
+      console.warn(`Collection ${collectionId} is pre-built -- cannot apply action ${action.type}`); // eslint-disable-line no-console
+      return state;
+    }
+  }
 
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
