@@ -360,6 +360,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       const newCollection = clone(originalCollection);
       newCollection.id = uuidv4();
       newCollection.label = collectionName;
+      newCollection.preBuilt = false;
       return {
         ...state,
         [newCollection.id]: newCollection,
