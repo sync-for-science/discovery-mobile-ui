@@ -17,7 +17,10 @@ const DateAccordion = ({
   const dataArray = [{ title: date, content: types }];
 
   const renderHeader = (item, isExpanded) => {
-    const recordCountOnDate = item.content.length;
+    const recordCountOnDate = item.content.reduce((acc, { subTypes }) => {
+      subTypes.forEach(({ recordIds }) => acc.push(...recordIds));
+      return acc;
+    }, []).length;
     const barFlexWidth = (recordCountOnDate / maxRecordCount).toFixed(2) * 100;
     const emptyFlexWidth = 100 - barFlexWidth;
     const chevronIcon = isExpanded
@@ -71,9 +74,14 @@ DateAccordion.defaultProps = {
 };
 
 const DateAccordionsContainer = ({ savedRecordsByRecordDate, fromDetailsPanel }) => {
-  const maxRecordCount = savedRecordsByRecordDate.reduce((acc, { types }) => (
-    acc < types.length ? types.length : acc
-  ), 0);
+  const maxRecordCount = savedRecordsByRecordDate.reduce((acc1, { types }) => {
+    const recordIdsPerDate = types.reduce((acc2, { subTypes }) => {
+      subTypes.forEach(({ recordIds }) => acc2.push(...recordIds));
+      return acc2;
+    }, []);
+    return acc1 < recordIdsPerDate.length ? recordIdsPerDate.length : acc1;
+  }, 0);
+
   return (
     <View>
       {
