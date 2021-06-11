@@ -26,6 +26,20 @@ export const resourceByRoutePropsSelector = (state, ownProps) => (
 const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
 
 export const collectionsSelector = (state) => state.collections;
+export const customCollectionsSelector = (state) => Object.entries(state.collections)
+  .reduce((acc, [id, collection]) => {
+    if (!collection.preBuilt) {
+      acc[id] = collection;
+    }
+    return acc;
+  }, {});
+export const prebuiltCollectionsSelector = (state) => Object.entries(state.collections)
+  .reduce((acc, [id, collection]) => {
+    if (collection.preBuilt) {
+      acc[id] = collection;
+    }
+    return acc;
+  }, {});
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 

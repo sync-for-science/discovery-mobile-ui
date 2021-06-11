@@ -8,12 +8,12 @@ import { connect } from 'react-redux';
 import { shape } from 'prop-types';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
-import { collectionsSelector } from '../redux/selectors';
+import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
 import Colors from '../constants/Colors';
 
 const CollectionsIndexCustom = connect((state) => ({
-  collections: collectionsSelector(state),
+  collections: customCollectionsSelector(state),
 }), null)(({ navigation, collections }) => (
   <CollectionsIndex
     navigation={navigation}
@@ -22,7 +22,7 @@ const CollectionsIndexCustom = connect((state) => ({
 ));
 
 const CollectionsIndexPrebuilt = connect((state) => ({
-  collections: collectionsSelector(state),
+  collections: prebuiltCollectionsSelector(state),
 }), null)(({ navigation, collections }) => (
   <CollectionsIndex
     navigation={navigation}
