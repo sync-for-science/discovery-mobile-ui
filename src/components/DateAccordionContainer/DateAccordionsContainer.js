@@ -22,10 +22,16 @@ const DateAccordion = ({
       : <Ionicons name="chevron-down" size={16} color={Colors.accordionChevronIcon} />;
     return (
       <View style={styles.header}>
-        {chevronIcon}
-        <Text style={styles.headerText}>
-          {item.title}
-        </Text>
+        <View style={styles.leftSideHeader}>
+          {chevronIcon}
+          <Text style={styles.headerText}>
+            {item.title}
+          </Text>
+        </View>
+        <View style={styles.rightSideHeader}>
+          <View style={styles.barWidth} />
+          <Text>3</Text>
+        </View>
       </View>
     );
   };
@@ -95,5 +101,22 @@ const styles = StyleSheet.create({
   },
   headerText: {
     marginLeft: 5,
+  },
+  barWidth: {
+    flex: 1,
+    backgroundColor: Colors.collectionYellow,
+    height: 6,
+    marginRight: 8,
+  },
+  leftSideHeader: {
+    flex: 35,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rightSideHeader: {
+    flex: 65,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 8,
   },
 });
