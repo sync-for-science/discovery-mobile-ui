@@ -10,6 +10,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
+import Colors from '../constants/Colors';
 
 const CollectionsIndexCustom = connect((state) => ({
   collections: customCollectionsSelector(state),
@@ -36,7 +37,11 @@ const CollectionsListScreen = () => (
     <CollectionsIndexHeader />
     <Tab.Navigator
       initialRouteName="Builds"
-      style={styles.tabs}
+      tabBarOptions={{
+        indicatorStyle: {
+          backgroundColor: Colors.collectionYellow,
+        },
+      }}
     >
       <Tab.Screen
         name="Builds"
