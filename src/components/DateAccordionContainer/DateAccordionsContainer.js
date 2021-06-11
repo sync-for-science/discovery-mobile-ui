@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Accordion } from 'native-base';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import {
@@ -11,6 +11,7 @@ import { savedRecordsByRecordDateSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import RecordNumberBar from '../RecordNumberBar';
+import BaseText from '../Generic/BaseText';
 
 const DateAccordion = ({
   date, types, fromDetailsPanel, expanded, maxRecordCount,
@@ -30,9 +31,9 @@ const DateAccordion = ({
       <View style={styles.header}>
         <View style={styles.leftSideHeader}>
           {chevronIcon}
-          <Text style={styles.headerText}>
+          <BaseText style={styles.headerText}>
             {item.title}
-          </Text>
+          </BaseText>
         </View>
         <View style={styles.rightSideHeader}>
           <RecordNumberBar count={recordCountOnDate} maxCount={maxRecordCount} />
@@ -118,6 +119,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     marginLeft: 5,
+    color: 'black',
   },
   leftSideHeader: {
     flex: 35,
