@@ -27,6 +27,7 @@ import OBDataAccess1 from '../components/Onboarding/DataAccess/OBDataAccess1';
 import OBDataAccess3 from '../components/Onboarding/DataAccess/OBDataAccess3';
 import OBDataAccess4 from '../components/Onboarding/DataAccess/OBDataAccess4';
 import OBComplete from '../components/Onboarding/sections/OBComplete';
+import OBSecurityAndPrivacy from '../components/Onboarding/sections/OBSecurityAndPrivacy';
 
 const TOTAL_PROGRESS_POSITIONS = 10;
 
@@ -95,6 +96,8 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         controlsEnabled={false}
       >
         <OBWelcome />
+        <OBSecurityAndPrivacy />
+
         <OBBenefits />
         <OBMainConcepts />
         <OBMainConcepts1 />
