@@ -5,8 +5,8 @@ import {
   View,
   StatusBar,
   Text,
-  Button,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import { func } from 'prop-types';
 
@@ -18,6 +18,7 @@ import S4SLogo from '../../assets/images/logos/s4s-logo.png';
 import ResponsiveDimensions from '../constants/ResponsiveDimensions';
 import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
 import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
+import TextStyles from '../constants/TextStyles';
 
 const LoginScreen = ({ handleOnboardingState }) => (
   <SafeAreaView style={styles.safeAreaView}>
@@ -36,7 +37,9 @@ const LoginScreen = ({ handleOnboardingState }) => (
     </View>
     <View>
       <Login />
-      <Button title="Reset Onboarding" color="red" onPress={() => handleOnboardingState(false)} />
+      <TouchableOpacity onPress={() => handleOnboardingState(false)}>
+        <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
+      </TouchableOpacity>
       <ResetAsyncStorageButton />
     </View>
     <View style={styles.companyLogosContainer}>
@@ -64,6 +67,7 @@ export default LoginScreen;
 const {
   rd4, rd7, rd8,
 } = ResponsiveDimensions;
+const { body1 } = TextStyles;
 
 const styles = StyleSheet.create({
   safeAreaView: {
@@ -103,5 +107,11 @@ const styles = StyleSheet.create({
   harvard: {
     height: rd8,
     marginBottom: rd4,
+  },
+  baseText: {
+    ...body1,
+  },
+  logoBlue: {
+    color: Colors.logoBlue,
   },
 });

@@ -79,12 +79,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   login: {
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.logoBlue,
     paddingVertical: 8,
-    borderRadius: 50,
+    paddingHorizontal: 24,
+    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50%',
   },
   loginText: {
     color: 'white',
