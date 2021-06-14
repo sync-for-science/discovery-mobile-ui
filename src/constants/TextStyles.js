@@ -39,7 +39,7 @@ export default {
   },
   body2: {
     fontSize: hp('1.5%'),
-    ineHeight: hp('1.8%'),
+    lineHeight: hp('1.8%'),
   },
   body3: { // onboarding body text
     fontSize: hp('2.0%'),
