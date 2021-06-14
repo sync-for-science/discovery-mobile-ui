@@ -3,7 +3,6 @@ import React from 'react';
 import OBSectionBodyTemplate from '../components/OBSectionBodyTemplate';
 import OBBullet from '../components/OBBullet';
 
-// wireframe page 10
 const OBKeyFeatures1 = () => (
   <OBSectionBodyTemplate
     title="Key Features"

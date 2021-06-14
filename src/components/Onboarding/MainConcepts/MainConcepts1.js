@@ -9,7 +9,6 @@ import DataHierarchy from '../../../../assets/images/screenshots/screenshot-data
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
-// wireframe page 6
 const OBMainConcepts1 = () => (
   <OBSectionBodyTemplate title="Main Concepts" subTitle="Records">
     <Text style={styles.body}>

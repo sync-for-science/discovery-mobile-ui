@@ -9,7 +9,6 @@ import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 import LogoBasic from '../../../icons/LogoBasic';
 import Colors from '../../../constants/Colors';
 
-// wireframe page 3
 const OBWelcome = () => (
   <View style={styles.root}>
     <View style={styles.welcomeBannerContainer}>

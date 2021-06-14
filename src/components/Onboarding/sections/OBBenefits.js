@@ -7,7 +7,6 @@ import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
-// wireframe page 4
 const OBBenefits = () => (
   <OBSectionCoverTemplate title="Benefits">
     <Text style={styles.body}>

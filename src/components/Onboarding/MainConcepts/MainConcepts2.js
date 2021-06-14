@@ -9,7 +9,6 @@ import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 import CollectionExample from '../../../../assets/images/screenshots/screenshot-collection.svg';
 
-// wireframe page 7
 const OBMainConcepts2 = () => (
   <OBSectionBodyTemplate title="Main Concepts" subTitle="Collections">
     <Text style={styles.body}>

@@ -7,7 +7,6 @@ import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
-// wireframe page 9
 const OBKeyFeatures = () => (
   <OBSectionCoverTemplate title="Key Features of Discovery">
     <Text style={styles.body}>
