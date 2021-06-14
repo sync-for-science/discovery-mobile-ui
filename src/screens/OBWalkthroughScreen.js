@@ -30,7 +30,7 @@ import OBComplete from '../components/Onboarding/sections/OBComplete';
 import OBSecurityAndPrivacy from '../components/Onboarding/sections/OBSecurityAndPrivacy';
 import OBEvaluation from '../components/Onboarding/sections/OBEvaluation';
 
-const TOTAL_PROGRESS_POSITIONS = 10;
+const TOTAL_PROGRESS_POSITIONS = 9;
 
 const getNavData = (index) => {
   switch (index) {
@@ -67,17 +67,7 @@ const getNavData = (index) => {
     case 15:
       return { progress: 8 };
     case 16:
-      return { progress: 7 };
-    case 17:
-      return { progress: 8 };
-    case 18:
-      return { progress: 9, dotNav: [1, 3] };
-    case 19:
-      return { progress: 9, dotNav: [2, 3] };
-    case 20:
-      return { progress: 9, dotNav: [3, 3] };
-    case 21:
-      return { progress: 10, isLastScreen: true };
+      return { progress: 9, isLastScreen: true };
     default:
       return {};
   }
@@ -116,12 +106,6 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBKeyFeatures5 />
         <OBKeyFeatures6 />
         <OBVideo />
-        <OBSecurity />
-        <OBDataAccess />
-        <OBDataAccess1 />
-        {/* <OBDataAccess2 /> */}
-        <OBDataAccess3 />
-        <OBDataAccess4 />
         <OBComplete handleOnboardingState={handleOnboardingState} />
       </Swiper>
       <OBNavigation
