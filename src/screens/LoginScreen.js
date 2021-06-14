@@ -21,39 +21,43 @@ import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
 import TextStyles from '../constants/TextStyles';
 
 const LoginScreen = ({ handleOnboardingState }) => (
-  <SafeAreaView style={styles.safeAreaView}>
+  <SafeAreaView style={styles.root}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
-      <View style={styles.logoContainer}>
+      <View style={styles.topScreen}>
         <Image
           style={styles.s4sLogo}
           source={S4SLogo}
           resizeMode="contain"
         />
+        <View style={styles.fullLogoContainer}>
+          <FullLogo height={100} width={300} fill="black" />
+        </View>
       </View>
-      <View style={styles.logoContainer}>
-        <FullLogo height={100} width={300} fill="black" />
+      <View style={styles.midScreen}>
+        <Login />
+        <View style={styles.reduxButtons}>
+          <TouchableOpacity onPress={() => handleOnboardingState(false)}>
+            <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
+          </TouchableOpacity>
+          <View style={styles.resetStorageContainer}>
+            <ResetAsyncStorageButton />
+          </View>
+        </View>
       </View>
-    </View>
-    <View>
-      <Login />
-      <TouchableOpacity onPress={() => handleOnboardingState(false)}>
-        <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
-      </TouchableOpacity>
-      <ResetAsyncStorageButton />
-    </View>
-    <View style={styles.companyLogosContainer}>
-      <Text style={styles.powered}>Powered By</Text>
-      <Image
-        style={styles.harvard}
-        source={harvardLogo}
-        resizeMode="contain"
-      />
-      <Image
-        style={styles.vermonster}
-        source={vermonsterLogo}
-        resizeMode="contain"
-      />
+      <View style={styles.bottomScreen}>
+        <Text style={styles.powered}>Powered By</Text>
+        <Image
+          style={styles.harvard}
+          source={harvardLogo}
+          resizeMode="contain"
+        />
+        <Image
+          style={styles.vermonster}
+          source={vermonsterLogo}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   </SafeAreaView>
 );
@@ -65,53 +69,54 @@ LoginScreen.propTypes = {
 export default LoginScreen;
 
 const {
-  rd4, rd7, rd8,
+  rd2, rd4, rd6, rd7, rd8,
 } = ResponsiveDimensions;
 const { body1 } = TextStyles;
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  root: {
     flex: 1,
     backgroundColor: 'white',
   },
   screen: {
     flex: 1,
-    padding: 10,
-  },
-  logoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 70,
-    marginTop: 40,
-  },
-  vermonsterContainer: {
-    marginTop: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  companyText: {
-    color: Colors.lightgrey,
-    paddingBottom: 5,
+    paddingHorizontal: rd4,
+    justifyContent: 'space-between',
   },
   s4sLogo: {
-    height: '100%',
-  },
-  companyLogosContainer: {
-    width: '100%',
-    alignItems: 'center',
-    // marginBottom: rd8,
+    height: 60,
+    width: '55%',
   },
   vermonster: {
     height: rd7,
   },
   harvard: {
     height: rd8,
-    marginBottom: rd4,
   },
   baseText: {
     ...body1,
   },
   logoBlue: {
     color: Colors.logoBlue,
+  },
+  topScreen: {
+    alignItems: 'center',
+    marginTop: rd6,
+  },
+  bottomScreen: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 70,
+    marginTop: 40,
+    marginBottom: rd8,
+  },
+  fullLogoContainer: {
+    marginTop: rd6,
+  },
+  reduxButtons: {
+    marginTop: rd4,
+  },
+  resetStorageContainer: {
+    marginTop: rd2,
   },
 });
