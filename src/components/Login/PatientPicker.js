@@ -16,11 +16,11 @@ const PATIENTS = {
   'ab4e7a7d-8b0d-41e1-9ce9-3877d7615aed': 'Mrs. Renea Quigley',
 };
 
-export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
+export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[5];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
   <View style={styles.container}>
-    <View style={styles.label}><Text>Select synthetic patient:</Text></View>
+    <View style={styles.label}><Text>Select a fictitious patient for the evaluation</Text></View>
     <Picker
       selectedValue={patientId}
       onValueChange={(itemValue) => setPatientId(itemValue)}
