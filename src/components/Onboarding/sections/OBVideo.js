@@ -8,7 +8,6 @@ import OBSectionCoverTemplate from '../components/OBSectionCoverTemplate';
 import TextStyles from '../../../constants/TextStyles';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
-// wireframe page 16
 const OBVideo = () => (
   <OBSectionCoverTemplate title="Video Tutorial">
     <Text style={styles.body}>
@@ -17,7 +16,7 @@ const OBVideo = () => (
     <View style={styles.videoContainer}>
       <YoutubePlayer
         height={250}
-        videoId="lYfkl-HXfuU"
+        videoId="Px3564G-vw4"
       />
     </View>
   </OBSectionCoverTemplate>
