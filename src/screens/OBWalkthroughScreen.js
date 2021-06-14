@@ -21,11 +21,6 @@ import OBKeyFeatures4 from '../components/Onboarding/KeyFeatures/OBKeyFeatures4'
 import OBKeyFeatures5 from '../components/Onboarding/KeyFeatures/OBKeyFeatures5';
 import OBKeyFeatures6 from '../components/Onboarding/KeyFeatures/OBKeyFeatures6';
 import OBVideo from '../components/Onboarding/sections/OBVideo';
-import OBSecurity from '../components/Onboarding/sections/OBSecurity';
-import OBDataAccess from '../components/Onboarding/sections/OBDataAccess';
-import OBDataAccess1 from '../components/Onboarding/DataAccess/OBDataAccess1';
-import OBDataAccess3 from '../components/Onboarding/DataAccess/OBDataAccess3';
-import OBDataAccess4 from '../components/Onboarding/DataAccess/OBDataAccess4';
 import OBComplete from '../components/Onboarding/sections/OBComplete';
 import OBSecurityAndPrivacy from '../components/Onboarding/sections/OBSecurityAndPrivacy';
 import OBEvaluation from '../components/Onboarding/sections/OBEvaluation';
