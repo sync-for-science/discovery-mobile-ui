@@ -13,7 +13,7 @@ import { func } from 'prop-types';
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
-import FullLogo from '../../assets/images/logos/basic-logo-transparent-fill.svg';
+import FullLogo from '../../assets/images/logos/full-logo-transparent-fill.svg';
 import S4SLogo from '../../assets/images/logos/s4s-logo.png';
 import ResponsiveDimensions from '../constants/ResponsiveDimensions';
 import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
@@ -31,7 +31,7 @@ const LoginScreen = ({ handleOnboardingState }) => (
           resizeMode="contain"
         />
         <View style={styles.fullLogoContainer}>
-          <FullLogo height={100} width={300} fill="black" />
+          <FullLogo height={140} width={300} fill="black" />
         </View>
       </View>
       <View style={styles.midScreen}>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 70,
     marginTop: 40,
-    marginBottom: rd8,
+    marginBottom: rd6,
   },
   fullLogoContainer: {
     marginTop: rd6,
