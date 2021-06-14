@@ -3,6 +3,7 @@ import { string, bool } from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Colors from '../../constants/Colors';
+import TextStyles from '../../constants/TextStyles'
 
 const DataRow = ({
   isHeadingRow, count, label, oldest, latest,
@@ -45,15 +46,17 @@ DataRow.defaultProps = {
 
 export default DataRow;
 
+const { body1 } = TextStyles
+
 const styles = StyleSheet.create({
   root: {
-    width: '100%',
     flex: 1,
     flexDirection: 'row',
     paddingVertical: 10,
     paddingHorizontal: 5,
-    padding: 10,
     backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   heading: {
     color: Colors.secondary,
@@ -61,17 +64,15 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   count: {
-    alignSelf: 'flex-start',
     textAlign: 'right',
     paddingRight: 10,
     flex: 1,
   },
   label: {
-    alignSelf: 'flex-start',
+    ...body1,
     flex: 4,
   },
   date: {
-    alignSelf: 'flex-end',
     fontSize: 11,
     flex: 2,
   },
