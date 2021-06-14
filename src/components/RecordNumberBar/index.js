@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
     alignItems: 'center',
+    width: '50%',
   },
   barWidth: {
     backgroundColor: Colors.collectionYellow,
