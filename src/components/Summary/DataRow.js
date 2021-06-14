@@ -3,7 +3,7 @@ import { string, bool } from 'prop-types';
 import { StyleSheet, Text, View } from 'react-native';
 
 import Colors from '../../constants/Colors';
-import TextStyles from '../../constants/TextStyles'
+import TextStyles from '../../constants/TextStyles';
 
 const DataRow = ({
   isHeadingRow, count, label, oldest, latest,
@@ -46,7 +46,7 @@ DataRow.defaultProps = {
 
 export default DataRow;
 
-const { body1 } = TextStyles
+const { body1 } = TextStyles;
 
 const styles = StyleSheet.create({
   root: {
