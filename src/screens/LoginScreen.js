@@ -71,7 +71,7 @@ export default LoginScreen;
 const {
   rd2, rd4, rd6, rd7, rd8,
 } = ResponsiveDimensions;
-const { body1 } = TextStyles;
+const { body1, h5 } = TextStyles;
 
 const styles = StyleSheet.create({
   root: {
@@ -119,5 +119,10 @@ const styles = StyleSheet.create({
   },
   resetStorageContainer: {
     marginTop: rd2,
+  },
+  powered: {
+    ...h5,
+    color: Colors.darkgrey,
+    fontWeight: '300',
   },
 });
