@@ -41,38 +41,42 @@ const getNavData = (index) => {
     case 2:
       return { progress: 2 };
     case 3:
-      return { progress: 3, dotNav: [1, 3] };
+      return { progress: 3 };
     case 4:
-      return { progress: 3, dotNav: [2, 3] };
-    case 5:
-      return { progress: 3, dotNav: [3, 3] };
-    case 6:
       return { progress: 4 };
+    case 5:
+      return { progress: 5, dotNav: [1, 3] };
+    case 6:
+      return { progress: 5, dotNav: [2, 3] };
     case 7:
-      return { progress: 5, dotNav: [1, 6] };
+      return { progress: 5, dotNav: [3, 3] };
     case 8:
-      return { progress: 5, dotNav: [2, 6] };
-    case 9:
-      return { progress: 5, dotNav: [3, 6] };
-    case 10:
-      return { progress: 5, dotNav: [4, 6] };
-    case 11:
-      return { progress: 5, dotNav: [5, 6] };
-    case 12:
-      return { progress: 5, dotNav: [6, 6] };
-    case 13:
       return { progress: 6 };
+    case 9:
+      return { progress: 7, dotNav: [1, 6] };
+    case 10:
+      return { progress: 7, dotNav: [2, 6] };
+    case 11:
+      return { progress: 7, dotNav: [3, 6] };
+    case 12:
+      return { progress: 7, dotNav: [4, 6] };
+    case 13:
+      return { progress: 7, dotNav: [5, 6] };
     case 14:
-      return { progress: 7 };
+      return { progress: 7, dotNav: [6, 6] };
     case 15:
-      return { progress: 8 };
+      return { progress: 6 };
     case 16:
-      return { progress: 9, dotNav: [1, 3] };
+      return { progress: 7 };
     case 17:
-      return { progress: 9, dotNav: [2, 3] };
+      return { progress: 8 };
     case 18:
-      return { progress: 9, dotNav: [3, 3] };
+      return { progress: 9, dotNav: [1, 3] };
     case 19:
+      return { progress: 9, dotNav: [2, 3] };
+    case 20:
+      return { progress: 9, dotNav: [3, 3] };
+    case 21:
       return { progress: 10, isLastScreen: true };
     default:
       return {};
@@ -99,7 +103,6 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBWelcome />
         <OBSecurityAndPrivacy />
         <OBEvaluation />
-
         <OBBenefits />
         <OBMainConcepts />
         <OBMainConcepts1 />
@@ -112,6 +115,7 @@ const OBScreenWalkthrough = ({ handleOnboardingState }) => {
         <OBKeyFeatures4 />
         <OBKeyFeatures5 />
         <OBKeyFeatures6 />
+
         <OBVideo />
         <OBSecurity />
         <OBDataAccess />
