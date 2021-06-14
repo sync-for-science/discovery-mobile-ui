@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   },
   reduxButtons: {
     marginTop: rd4,
+    alignItems: 'flex-start',
   },
   resetStorageContainer: {
     marginTop: rd2,

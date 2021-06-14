@@ -15,7 +15,7 @@ const ResetAsyncStorage = () => {
   };
 
   return (
-    <TouchableOpacity style={styles.root} onPress={handleClearAsyncStorage}>
+    <TouchableOpacity onPress={handleClearAsyncStorage}>
       <Text style={[styles.baseText, styles.logoBlue]}>Delete App Data From Phone</Text>
     </TouchableOpacity>
   );
@@ -26,9 +26,6 @@ export default ResetAsyncStorage;
 const { body1 } = TextStyles;
 
 const styles = StyleSheet.create({
-  root: {
-    width: '100%',
-  },
   baseText: {
     ...body1,
   },
