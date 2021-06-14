@@ -16,6 +16,12 @@ const SummaryScreen = () => (
     <Tab.Navigator
       initialRouteName="Records"
       style={styles.tabs}
+      tabBarOptions={{
+        labelStyle: { textTransform: 'none' },
+        indicatorStyle: {
+          backgroundColor: Colors.primary,
+        },
+      }}
     >
       <Tab.Screen
         name="Records"

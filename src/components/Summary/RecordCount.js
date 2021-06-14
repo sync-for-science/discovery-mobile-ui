@@ -14,6 +14,7 @@ import {
 } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import { formatDate } from '../../resources/fhirReader';
+import TextStyles from '../../constants/TextStyles';
 
 const RecordCount = ({
   emphasizeProviders, allRecordsSortedByDate, providers, dateRange,
@@ -57,21 +58,24 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, null)(RecordCount);
 
+const { body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     margin: 6,
+    marginTop: 24,
     padding: 8,
     justifyContent: 'center',
     backgroundColor: 'white',
     borderWidth: 1,
     borderRadius: 6,
-    borderColor: Colors.lightgrey,
+    borderColor: Colors.primary,
   },
   recordCount: {
-    fontSize: 16,
+    ...body1,
   },
   dateRange: {
-    fontSize: 16,
+    ...body1,
   },
 });
