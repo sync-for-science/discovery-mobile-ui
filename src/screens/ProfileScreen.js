@@ -27,7 +27,7 @@ const ProfileScreen = () => (
       <Data />
     </ScrollView>
     <Logout>
-      <Button title="Logout" />
+      <Button title="Logout" color={Colors.primary} />
     </Logout>
   </SafeAreaView>
 );
