@@ -1,3 +1,4 @@
+import 'react-native-url-polyfill/auto';
 import React, { useState, useEffect } from 'react';
 import { RecoilRoot } from 'recoil';
 import { LogBox, View } from 'react-native';

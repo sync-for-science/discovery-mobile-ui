@@ -1,4 +1,4 @@
-// processResource() executes once per/resource, as paginated FHIR requests resolve.
+// flattenResources() executes once per/resource, as paginated FHIR requests resolve.
 const RESOURCES_WITHOUT_SUBTYPES = ['Patient', 'Organization', 'Practitioner'];
 const RESOURCES_WITHOUT_DATES = ['Patient', 'Organization', 'Practitioner'];
 const KNOWN_UNSUPPORTED_OBSERVATIONS = ['survey']; // procedure ?
@@ -83,7 +83,7 @@ const getTimelineDate = (resource) => {
 const STATUSES_OK = ['200 OK', '201 Created'];
 const MAX_DEPTH = 4;
 
-const processResource = (result, resource, depth = 0) => {
+const flattenResources = (result, resource, depth = 0) => {
   if (depth > MAX_DEPTH) {
     return;
   }
@@ -99,12 +99,14 @@ const processResource = (result, resource, depth = 0) => {
     resource.entry.forEach((entry) => {
       const status = entry?.response?.status;
       if (!STATUSES_OK.includes(status)) {
-        console.error(`response.status not OK -- status: ${status}, id: ${id}`); // eslint-disable-line no-console
+        // Epic responses do not have this field?
+        // eslint-disable-next-line no-console
+        // console.error(`response.status not OK -- status: ${status}, id: ${id}`);
       }
       if (resource.contained && entry.resource.id) {
         result.context.set(entry.resource.id, resource);
       }
-      processResource(result, entry.resource, depth + 1);
+      flattenResources(result, entry.resource, depth + 1);
     });
   } else {
     if (!id) {
@@ -124,4 +126,4 @@ const processResource = (result, resource, depth = 0) => {
   }
 };
 
-export default processResource;
+export default flattenResources;

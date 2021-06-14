@@ -7,6 +7,9 @@ jobs:
   publish:
     name: Install and publish
     runs-on: ubuntu-latest
+    env:
+      BASE_URL: 'https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/'
+      CLIENT_ID: '419cd41f-f024-4251-bafd-e6c2debe8c58'
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2

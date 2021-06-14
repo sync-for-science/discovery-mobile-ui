@@ -3,7 +3,6 @@ import { memoizeWith, identity } from 'ramda';
 
 import Storage from './storage';
 
-// eslint-disable-next-line import/prefer-default-export
 export const authenticationState = atom({
   key: 'authenticationState',
   default: {
