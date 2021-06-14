@@ -10,6 +10,7 @@ import {
   getPatientName,
 } from '../../resources/fhirReader';
 import { patientSelector } from '../../redux/selectors';
+import Colors from '../../constants/Colors';
 
 const UserInfo = ({
   patientResource,
@@ -18,7 +19,7 @@ const UserInfo = ({
 
   return (
     <View style={styles.root}>
-      <Ionicons name="person-circle-outline" size={40} color="black" />
+      <Ionicons name="person-circle-outline" size={80} color={Colors.primary} />
       <Text style={styles.userName}>
         {name}
       </Text>
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginVertical: 18,
   },
   userName: {
     fontSize: 24,
