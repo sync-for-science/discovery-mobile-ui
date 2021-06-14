@@ -11,12 +11,11 @@ import Colors from '../../../constants/Colors';
 import LogoBasic from '../../../icons/LogoBasic';
 import ResponsiveDimensions from '../../../constants/ResponsiveDimensions';
 
-// wireframe page 24
 const OBComplete = ({ handleOnboardingState }) => (
   <View style={styles.root}>
     <View style={styles.thankYouContainer}>
-      <Text style={styles.thankYouText}>Thank you Jonathan,</Text>
-      <Text style={styles.thankYouText}>you&apos;re all set!</Text>
+      <Text style={styles.thankYouText}>You are all set </Text>
+      <Text style={styles.thankYouText}>for the evaluation!</Text>
     </View>
     <TouchableOpacity onPress={() => handleOnboardingState(true)}>
       <View style={styles.logoContainer}>
