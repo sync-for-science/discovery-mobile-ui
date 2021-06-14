@@ -52,7 +52,7 @@ const Demographics = ({
 
   return (
     <View style={styles.root}>
-      <View style={styles.heading}>
+      <View style={styles.headingContainer}>
         <Text style={styles.headingText}>
           Demographics
         </Text>
@@ -91,27 +91,26 @@ export default connect(mapStateToProps, mapDispatchToProps)(Demographics);
 
 const styles = StyleSheet.create({
   root: {
-    marginHorizontal: 20,
     justifyContent: 'center',
   },
-  heading: {
-    padding: 5,
+  headingContainer: {
+    paddingHorizontal: 32,
+    paddingVertical: 4,
     backgroundColor: Colors.primary,
   },
   headingText: {
     color: 'white',
     fontSize: 16,
-    padding: 5,
   },
   subHeading: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 32,
     paddingTop: 10,
     backgroundColor: 'white',
     fontSize: 14,
     color: 'black',
   },
   row: {
-    padding: 10,
+    paddingHorizontal: 32,
     backgroundColor: 'white',
   },
   data: {

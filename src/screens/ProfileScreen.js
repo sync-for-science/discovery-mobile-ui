@@ -3,6 +3,9 @@ import {
   StyleSheet, SafeAreaView, StatusBar, Button,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import {
+  Header, Body, Title,
+} from 'native-base';
 
 import Colors from '../constants/Colors';
 import UserInfo from '../components/Profile/UserInfo';
@@ -13,6 +16,11 @@ import Logout from '../components/Login/Logout';
 const ProfileScreen = () => (
   <SafeAreaView style={styles.root}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
+    <Header style={styles.header}>
+      <Body>
+        <Title style={styles.headerText}>Profile</Title>
+      </Body>
+    </Header>
     <UserInfo />
     <ScrollView style={styles.scrollContainer}>
       <Demographics />
@@ -33,5 +41,13 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+  },
+  header: {
+    backgroundColor: Colors.logoBlue,
+    height: 50,
+  },
+  headerText: {
+    color: 'white',
+    fontSize: 18,
   },
 });
