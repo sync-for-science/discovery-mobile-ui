@@ -1,8 +1,8 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
-import { clone } from 'ramda';
-import { compareDesc } from 'date-fns';
+import { clone, groupBy, flatten } from 'ramda';
+import { compareDesc, format } from 'date-fns';
 
 import { actionTypes } from '../action-types';
 import { PLURAL_RESOURCE_TYPES, TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
@@ -154,6 +154,21 @@ const createNote = (text) => {
 
 const sortByDateDesc = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareDesc(t1, t2);
 
+const groupRecordsByDay = groupBy((record) => {
+  const isoDate = format(record.timelineDate, 'yyyy-MM-dd');
+  return isoDate;
+});
+
+const lastNRecordIdsGroupedByDay = (records, count) => {
+  const lastNSorted = Object.entries(groupRecordsByDay(records))
+    .sort(([k1], [k2]) => ((k1 > k2) ? -1 : 1))
+    .slice(0, count)
+    .map(([, recordsOnDay]) => recordsOnDay)
+    .map((recordsOnDay) => recordsOnDay);
+
+  return flatten(lastNSorted).map((recordsOnDay) => recordsOnDay.id);
+};
+
 const disabledActionsForPreBuilt = [
   actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
   actionTypes.ADD_RESOURCE_TO_COLLECTION,
@@ -216,6 +231,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           });
           /* eslint-enable no-param-reassign */
         };
+
         const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id);
         const referencesEncounters = Object.entries(encounters)
           .reduce((acc, [recordId, encounterId]) => {
@@ -230,17 +246,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           selectedResourceType: 'Encounter',
           recordIds: lastEncounters.concat(referencesEncounters),
         });
-        updateOrCreateCollection({
-          id: 'lastVitalSigns',
-          label: 'Last 5 Vital Signs',
-          selectedResourceType: 'vital-signs',
-          recordIds: sortedResources.filter((item) => item.type === 'vital-signs').slice(0, 5).map(({ id }) => id),
-        });
+
+        const laboratories = sortedResources.filter((item) => item.type === 'laboratory');
         updateOrCreateCollection({
           id: 'lastLabResults',
           label: 'Last 5 Lab Results',
           selectedResourceType: 'laboratory',
-          recordIds: sortedResources.filter((item) => item.type === 'laboratory').slice(0, 5).map(({ id }) => id),
+          recordIds: lastNRecordIdsGroupedByDay(laboratories, 5),
+        });
+
+        const vitalSigns = sortedResources.filter((item) => item.type === 'vital-signs');
+        updateOrCreateCollection({
+          id: 'lastVitalSigns',
+          label: 'Last 5 Vital Signs',
+          selectedResourceType: 'vital-signs',
+          recordIds: lastNRecordIdsGroupedByDay(vitalSigns, 5),
         });
       });
     }
