@@ -3,9 +3,10 @@ import {
   SafeAreaView,
   StyleSheet,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { shape } from 'prop-types';
+import { connect } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
@@ -32,9 +33,12 @@ const CollectionsIndexPrebuilt = connect((state) => ({
 
 const Tab = createMaterialTopTabNavigator();
 
-const CollectionsListScreen = () => (
+// Note: when 1st landing on this screen, `getFocusedRouteNameFromRoute(route) === undefined` ?
+const CollectionsListScreen = ({ route }) => (
   <SafeAreaView style={styles.root}>
-    <CollectionsIndexHeader />
+    <CollectionsIndexHeader
+      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
+    />
     <Tab.Navigator
       initialRouteName="Builds"
       tabBarOptions={{
@@ -57,6 +61,7 @@ const CollectionsListScreen = () => (
 
 CollectionsListScreen.propTypes = {
   navigation: shape({}).isRequired, // eslint-disable-line react/no-unused-prop-types
+  route: shape({}).isRequired,
 };
 
 export default CollectionsListScreen;
