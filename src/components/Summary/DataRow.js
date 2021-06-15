@@ -55,14 +55,10 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     paddingHorizontal: 5,
     backgroundColor: 'white',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end',
   },
   heading: {
     color: Colors.secondary,
-    fontSize: 12,
-    alignSelf: 'flex-end',
-    justifyContent: 'flex-end',
+    ...body1
   },
   count: {
     textAlign: 'right',
@@ -71,10 +67,10 @@ const styles = StyleSheet.create({
   },
   label: {
     ...body1,
-    flex: 4,
+    flex: 5,
   },
   date: {
-    fontSize: 11,
-    flex: 2,
+    flex: 3,
+    ...body1
   },
 });

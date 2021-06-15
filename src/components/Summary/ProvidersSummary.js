@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 import DataRow from './DataRow';
-import { formatDate } from '../../resources/fhirReader';
+import { formatDate, formatDateShortYear } from '../../resources/fhirReader';
 
 const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
   <View style={styles.root}>
@@ -36,8 +36,8 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
               key={name}
               count={String(items.length)}
               label={name}
-              oldest={formatDate(items[0]?.timelineDate)}
-              latest={formatDate(items[items.length - 1]?.timelineDate)}
+              oldest={formatDateShortYear(items[0]?.timelineDate)}
+              latest={formatDateShortYear(items[items.length - 1]?.timelineDate)}
             />
           );
         })}

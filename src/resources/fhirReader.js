@@ -4,6 +4,7 @@ import {
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
+const UI_DATE_FORMAT_SHORT_YEAR = 'MMM d, yy';
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
@@ -82,6 +83,8 @@ export const getResourceDate = (resource) => (
 
 // TODO: Ensure these always receive a Date or empty value, and perform Date(...) casting in caller?
 export const formatDate = (date) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
+
+export const formatDateShortYear = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT_YEAR) : '');
 
 export const formatDateTime = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_LONG) : '');
 
