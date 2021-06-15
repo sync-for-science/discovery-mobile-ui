@@ -232,7 +232,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           /* eslint-enable no-param-reassign */
         };
 
-        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id);
+        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 3).map(({ id }) => id);
         const referencesEncounters = Object.entries(encounters)
           .reduce((acc, [recordId, encounterId]) => {
             if (lastEncounters.includes(encounterId)) {
