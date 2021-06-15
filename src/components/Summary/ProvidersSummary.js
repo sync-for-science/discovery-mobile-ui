@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 import DataRow from './DataRow';
-import { formatDate, formatDateShortYear } from '../../resources/fhirReader';
+import { formatDateShortYear } from '../../resources/fhirReader';
 
 const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
   <View style={styles.root}>

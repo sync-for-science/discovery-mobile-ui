@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: Colors.secondary,
-    ...body1
+    ...body1,
   },
   count: {
     textAlign: 'right',
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
   },
   date: {
     flex: 3,
-    ...body1
+    ...body1,
   },
 });
