@@ -109,6 +109,8 @@ const NotesScreen = ({
     ? collection.records[resource.id]?.notes && Object.keys(collection.records[resource?.id]?.notes).length // eslint-disable-line max-len
     : Object.keys(collection.notes).length;
 
+  console.log('noteCount', noteCount)
+
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -118,7 +120,7 @@ const NotesScreen = ({
           </TouchableOpacity>
         </Left>
         <View style={styles.headerTitleContainer}>
-          {noteCount && <HeaderCountIcon count={noteCount} outline />}
+          {noteCount > 0 && <HeaderCountIcon count={noteCount} outline />}
           <Title style={styles.headerText}><Text>Notes</Text></Title>
         </View>
         <Right>
