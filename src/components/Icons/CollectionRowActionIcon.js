@@ -5,14 +5,15 @@ import {
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 import {
-  number, string,
+  shape, number, string,
 } from 'prop-types';
 
-import { collectionsCountSelector } from '../../redux/selectors';
+import { collectionsSelector, collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
 
 const CollectionRowActionIcon = ({
+  collections,
   collectionId,
   collectionLabel,
   collectionsCount,
@@ -20,8 +21,24 @@ const CollectionRowActionIcon = ({
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
 
   const handlePress = () => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      {
+    if (collections[collectionId].preBuilt) {
+      ActionSheetIOS.showActionSheetWithOptions({
+        options: [
+          'Cancel',
+          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
+        ],
+        cancelButtonIndex: 0,
+        userInterfaceStyle: 'dark',
+      },
+      (buttonIndex) => {
+        if (buttonIndex === 0) {
+          // cancel action
+        } else if (buttonIndex === 1) {
+          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
+        }
+      });
+    } else {
+      ActionSheetIOS.showActionSheetWithOptions({
         options: [
           'Cancel',
           CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME].title,
@@ -48,8 +65,8 @@ const CollectionRowActionIcon = ({
             setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE]);
           }
         }
-      },
-    );
+      });
+    }
   };
 
   return (
@@ -58,24 +75,26 @@ const CollectionRowActionIcon = ({
         <Entypo name="dots-three-vertical" size={20} color={Colors.headerIcon} />
       </TouchableOpacity>
       {collectionsDialogText && (
-      <CollectionsDialog
-        collectionId={collectionId}
-        collectionLabel={collectionLabel}
-        collectionsDialogText={collectionsDialogText}
-        setCollectionsDialogText={setCollectionsDialogText}
-      />
+        <CollectionsDialog
+          collectionId={collectionId}
+          collectionLabel={collectionLabel}
+          collectionsDialogText={collectionsDialogText}
+          setCollectionsDialogText={setCollectionsDialogText}
+        />
       )}
     </View>
   );
 };
 
 CollectionRowActionIcon.propTypes = {
+  collections: shape({}).isRequired,
   collectionId: string.isRequired,
   collectionLabel: string.isRequired,
   collectionsCount: number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
+  collections: collectionsSelector(state),
   collectionsCount: collectionsCountSelector(state),
 });
 

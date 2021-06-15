@@ -1,10 +1,11 @@
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import { produce } from 'immer';
-import { clone } from 'ramda';
+import { clone, groupBy, flatten } from 'ramda';
+import { compareDesc, format } from 'date-fns';
 
 import { actionTypes } from '../action-types';
-import { TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
+import { PLURAL_RESOURCE_TYPES, TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 
@@ -82,15 +83,23 @@ const defaultDetailsPanelSortingState = {
 //   .filter(([, v]) => v)
 //   .reduce((acc, [id, v]) => ({ ...acc, [id]: v }), {}));
 
-const createCollection = (label = 'Untitled Collection') => {
+export const createCollection = (options = {}) => {
+  const {
+    label = 'Untitled Collection',
+    id = uuidv4(),
+    preBuilt = false,
+    showCollectionOnly = false,
+    selectedResourceType = TYPES_SORTED_BY_LABEL[0],
+  } = options;
   const timeCreated = new Date();
 
   return {
-    id: uuidv4(),
+    id,
+    preBuilt,
     created: timeCreated,
     lastUpdated: timeCreated,
     label,
-    selectedResourceType: TYPES_SORTED_BY_LABEL[0],
+    selectedResourceType,
     resourceTypeFilters: TYPES_SORTED_BY_LABEL
       .reduce((acc, resourceType) => ({
         ...acc,
@@ -100,7 +109,7 @@ const createCollection = (label = 'Untitled Collection') => {
       dateRangeStart: undefined,
       dateRangeEnd: undefined,
     },
-    showCollectionOnly: false,
+    showCollectionOnly,
     showMarkedOnly: false,
     focusedSubtype: '',
     records: {},
@@ -143,7 +152,43 @@ const createNote = (text) => {
   };
 };
 
+const sortByDateDesc = ({ timelineDate: t1 }, { timelineDate: t2 }) => compareDesc(t1, t2);
+
+const groupRecordsByDay = groupBy((record) => {
+  const isoDate = format(record.timelineDate, 'yyyy-MM-dd');
+  return isoDate;
+});
+
+const lastNRecordIdsGroupedByDay = (records, count) => {
+  const lastNSorted = Object.entries(groupRecordsByDay(records))
+    .sort(([k1], [k2]) => ((k1 > k2) ? -1 : 1))
+    .slice(0, count)
+    .map(([, recordsOnDay]) => recordsOnDay)
+    .map((recordsOnDay) => recordsOnDay);
+
+  return flatten(lastNSorted).map((recordsOnDay) => recordsOnDay.id);
+};
+
+const disabledActionsForPreBuilt = [
+  actionTypes.TOGGLE_SHOW_COLLECTION_ONLY,
+  actionTypes.ADD_RESOURCE_TO_COLLECTION,
+  actionTypes.REMOVE_RESOURCE_FROM_COLLECTION,
+  actionTypes.RENAME_COLLECTION,
+  actionTypes.CLEAR_COLLECTION,
+  actionTypes.DELETE_COLLECTION,
+];
+
 export const collectionsReducer = (state = preloadCollections, action) => {
+  const { collectionId } = action.payload || {};
+
+  if (collectionId && state[collectionId]) {
+    const { preBuilt } = state[collectionId];
+    if (preBuilt && disabledActionsForPreBuilt.includes(action.type)) {
+      console.warn(`Collection ${collectionId} is pre-built -- cannot apply action ${action.type}`); // eslint-disable-line no-console
+      return state;
+    }
+  }
+
   switch (action.type) {
     case actionTypes.CLEAR_PATIENT_DATA: {
       const { id } = defaultCollection;
@@ -153,8 +198,74 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         [defaultCollection.id]: defaultCollection,
       };
     }
+    case actionTypes.BUILD_DEFAULT_COLLECTIONS: {
+      return produce(state, (draft) => {
+        const { resources, associations: { encounters } } = action.payload;
+
+        const sortedResources = Object.values(resources)
+          .filter(({ type }) => PLURAL_RESOURCE_TYPES[type])
+          .filter((r) => r.timelineDate) // must have timelineDate
+          .sort(sortByDateDesc);
+
+        const updateOrCreateCollection = ({
+          id, label, selectedResourceType, recordIds,
+        }) => {
+          /* eslint-disable no-param-reassign */
+          draft[id] = draft[id] ?? createCollection({
+            id,
+            label,
+            preBuilt: true,
+            showCollectionOnly: true,
+            selectedResourceType,
+          });
+
+          const { records } = draft[id];
+          Object.values(records).forEach((record) => {
+            // un-save, in case it is no longer part of preBuilt:
+            record.saved = recordIds.includes(record.id);
+          });
+
+          recordIds.forEach((rId) => {
+            records[rId] = records[rId] ?? createNewCollectionRecord();
+            records[rId].saved = true;
+          });
+          /* eslint-enable no-param-reassign */
+        };
+
+        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id);
+        const referencesEncounters = Object.entries(encounters)
+          .reduce((acc, [recordId, encounterId]) => {
+            if (lastEncounters.includes(encounterId)) {
+              return acc.concat(recordId);
+            }
+            return acc;
+          }, []);
+        updateOrCreateCollection({
+          id: 'lastEncounters',
+          label: 'Last 3 Encounters',
+          selectedResourceType: 'Encounter',
+          recordIds: lastEncounters.concat(referencesEncounters),
+        });
+
+        const laboratories = sortedResources.filter((item) => item.type === 'laboratory');
+        updateOrCreateCollection({
+          id: 'lastLabResults',
+          label: 'Last 5 Lab Results',
+          selectedResourceType: 'laboratory',
+          recordIds: lastNRecordIdsGroupedByDay(laboratories, 5),
+        });
+
+        const vitalSigns = sortedResources.filter((item) => item.type === 'vital-signs');
+        updateOrCreateCollection({
+          id: 'lastVitalSigns',
+          label: 'Last 5 Vital Signs',
+          selectedResourceType: 'vital-signs',
+          recordIds: lastNRecordIdsGroupedByDay(vitalSigns, 5),
+        });
+      });
+    }
     case actionTypes.ADD_RESOURCE_TO_COLLECTION: {
-      const { collectionId, resourceIds } = action.payload;
+      const { resourceIds } = action.payload;
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
@@ -165,14 +276,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
-      const { collectionId, resourceType } = action.payload;
+      const { resourceType } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].selectedResourceType = resourceType;
       });
     }
     case actionTypes.TOGGLE_RESOURCE_TYPE_FILTERS: {
-      const { collectionId, resourceType } = action.payload;
+      const { resourceType } = action.payload;
       return produce(state, (draft) => {
         const collection = draft[collectionId];
         const { selectedResourceType, resourceTypeFilters } = collection;
@@ -192,7 +303,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.UPDATE_DATE_RANGE_FILTER: {
-      const { collectionId, dateRangeStart, dateRangeEnd } = action.payload;
+      const { dateRangeStart, dateRangeEnd } = action.payload;
       return produce(state, (draft) => {
         if (dateRangeStart) {
           // eslint-disable-next-line no-param-reassign
@@ -205,7 +316,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const { collectionId, resourceIds } = action.payload;
+      const { resourceIds } = action.payload;
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
@@ -216,7 +327,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
-      const { collectionId, subType, resourceIdsMap } = action.payload;
+      const { subType, resourceIdsMap } = action.payload;
 
       return produce(state, (draft) => {
         const collection = draft[collectionId];
@@ -238,7 +349,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CLEAR_MARKED_RESOURCES: {
-      const collectionId = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
@@ -246,7 +356,9 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_COLLECTION: {
-      const newCollection = createCollection(action.payload);
+      const newCollection = createCollection({
+        label: action.payload,
+      });
       return {
         ...state,
         [newCollection.id]: newCollection,
@@ -263,7 +375,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
-      const collectionId = action.payload;
       return produce(state, (draft) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.saved = false; // eslint-disable-line no-param-reassign
@@ -272,32 +383,33 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
-      const { collectionId, collectionName } = action.payload;
+      const { collectionName } = action.payload;
       const originalCollection = state[collectionId];
       const newCollection = clone(originalCollection);
       newCollection.id = uuidv4();
       newCollection.label = collectionName;
+      newCollection.preBuilt = false;
       return {
         ...state,
         [newCollection.id]: newCollection,
       };
     }
     case actionTypes.TOGGLE_SHOW_COLLECTION_ONLY: {
-      const { collectionId, showCollectionOnly } = action.payload;
+      const { showCollectionOnly } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].showCollectionOnly = showCollectionOnly;
       });
     }
     case actionTypes.TOGGLE_SHOW_MARKED_ONLY: {
-      const { collectionId, showMarkedOnly } = action.payload;
+      const { showMarkedOnly } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].showMarkedOnly = showMarkedOnly;
       });
     }
     case actionTypes.TOGGLE_SORTING_STATE: {
-      const { collectionId, sortField } = action.payload;
+      const { sortField } = action.payload;
       return produce(state, (draft) => {
         if (state[collectionId].detailsPanelSortingState.activeSortField === sortField) {
           const prevDir = state[collectionId].detailsPanelSortingState.sortDirections[sortField];
@@ -313,7 +425,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_RECORD_NOTE: {
-      const { collectionId, resourceId, text } = action.payload;
+      const { resourceId, text } = action.payload;
 
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
@@ -328,16 +440,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DELETE_RECORD_NOTE: {
-      const { collectionId, resourceId, noteId } = action.payload;
+      const { resourceId, noteId } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].records[resourceId].notes[noteId];
       });
     }
     case actionTypes.EDIT_RECORD_NOTE: {
-      const {
-        collectionId, resourceId, noteId, text,
-      } = action.payload;
+      const { resourceId, noteId, text } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].text = text;
@@ -346,7 +456,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.CREATE_COLLECTION_NOTE: {
-      const { collectionId, text } = action.payload;
+      const { text } = action.payload;
       const newNote = createNote(text);
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
@@ -354,14 +464,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.DELETE_COLLECTION_NOTE: {
-      const { collectionId, noteId } = action.payload;
+      const { noteId } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].notes[noteId];
       });
     }
     case actionTypes.EDIT_COLLECTION_NOTE: {
-      const { collectionId, noteId, text } = action.payload;
+      const { noteId, text } = action.payload;
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].notes[noteId].text = text;

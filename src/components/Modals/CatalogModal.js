@@ -49,10 +49,11 @@ const CatalogModal = ({
   clearMarkedResourcesAction,
   collection,
   clearHighlightedEnabled,
-  clearCollectionEnabled,
+  hasCollectionRecordsInScope,
 }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { showCollectionOnly, showMarkedOnly } = collection;
+  const clearCollectionEnabled = hasCollectionRecordsInScope && !collection.preBuilt;
 
   const handleClearCollection = () => {
     const clearAndCloseModal = () => {
@@ -126,7 +127,9 @@ const CatalogModal = ({
                 showMarkedOnly={showMarkedOnly}
               />
               <View style={styles.segmentControlContainer}>
-                <CollectionSegmentControl />
+                <CollectionSegmentControl
+                  readOnly={collection.preBuilt}
+                />
                 <MarkedSegmentControl />
               </View>
               <TouchableOpacity
@@ -170,13 +173,13 @@ CatalogModal.propTypes = {
   clearMarkedResourcesAction: func.isRequired,
   collection: shape({}).isRequired,
   clearHighlightedEnabled: bool.isRequired,
-  clearCollectionEnabled: bool.isRequired,
+  hasCollectionRecordsInScope: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
   clearHighlightedEnabled: hasAnyHighlightedRecordInScope(state),
-  clearCollectionEnabled: hasAnyCollectionRecordInScope(state),
+  hasCollectionRecordsInScope: hasAnyCollectionRecordInScope(state),
 });
 
 const mapDispatchToProps = {

@@ -134,11 +134,23 @@ const resolveReferences = (action$, state$, { fhirClient }) => action$.pipe(
   catchError((error) => handleError(error, 'Error in resolveReferences')),
 );
 
+const buildDefaultCollections = (action$, state$) => action$.pipe(
+  ofType(actionTypes.RESOURCE_BATCH),
+  rxMap(() => {
+    const { resources, associations } = state$.value;
+    return ({
+      type: actionTypes.BUILD_DEFAULT_COLLECTIONS,
+      payload: { resources, associations },
+    });
+  }),
+);
+
 const rootEpic = combineEpics(
   initializeFhirClient,
   flattenResponsePayload,
   requestNextItems,
   resolveReferences,
+  buildDefaultCollections,
 );
 
 export default rootEpic;

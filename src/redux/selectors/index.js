@@ -25,7 +25,21 @@ export const resourceByRoutePropsSelector = (state, ownProps) => (
 
 const resourceFromOwnPropsSelector = (state, ownProps) => ownProps.resource;
 
-const collectionsSelector = (state) => state.collections;
+export const collectionsSelector = (state) => state.collections;
+export const customCollectionsSelector = (state) => Object.entries(state.collections)
+  .reduce((acc, [id, collection]) => {
+    if (!collection.preBuilt) {
+      acc[id] = collection;
+    }
+    return acc;
+  }, {});
+export const prebuiltCollectionsSelector = (state) => Object.entries(state.collections)
+  .reduce((acc, [id, collection]) => {
+    if (collection.preBuilt) {
+      acc[id] = collection;
+    }
+    return acc;
+  }, {});
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
 
@@ -503,7 +517,7 @@ export const savedRecordsBySavedDaySelector = createSelector(
         const { passesFilters: { dateSaved } } = record;
         const formattedDay = formatDate(dateSaved);
         return produce(acc, (draft) => {
-        // eslint-disable-next-line no-param-reassign
+          // eslint-disable-next-line no-param-reassign
           draft[formattedDay] = draft[formattedDay] ?? [];
           draft[formattedDay].push(record.id);
         });

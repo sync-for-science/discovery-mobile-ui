@@ -1,87 +1,77 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity,
+  SafeAreaView,
+  StyleSheet,
 } from 'react-native';
-import { connect } from 'react-redux';
 import { shape } from 'prop-types';
-import {
-  Header, Right, Body, Title, Left,
-} from 'native-base';
-import { Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { connect } from 'react-redux';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
+import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
+import CollectionsIndex from '../components/Collections/index';
+import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
-import CollectionRow from '../components/CollectionRow/CollectionRow';
-import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
 
-const CollectionsListScreen = ({
-  navigation,
-  collections,
-}) => {
-  const [collectionsDialogText, setCollectionsDialogText] = useState(null);
+const CollectionsIndexCustom = connect((state) => ({
+  collections: customCollectionsSelector(state),
+}), null)(({ navigation, collections }) => (
+  <CollectionsIndex
+    navigation={navigation}
+    collections={collections}
+  />
+));
 
-  const handleNewCollectionPress = () => {
-    setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
-  };
+const CollectionsIndexPrebuilt = connect((state) => ({
+  collections: prebuiltCollectionsSelector(state),
+}), null)(({ navigation, collections }) => (
+  <CollectionsIndex
+    navigation={navigation}
+    collections={collections}
+  />
+));
 
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
-      <Header style={styles.header}>
-        <Left />
-        <Body>
-          <Title style={styles.headerText}>Collections</Title>
-        </Body>
-        <Right>
-          <TouchableOpacity onPress={handleNewCollectionPress}>
-            <Feather name="plus-square" size={24} color={Colors.headerIcon} />
-          </TouchableOpacity>
-        </Right>
-      </Header>
-      <View style={styles.collectionRowContainer}>
-        {Object.entries(collections).map(([id, { label }]) => (
-          <CollectionRow
-            key={id}
-            collectionId={id}
-            label={label}
-            navigation={navigation}
-          />
-        ))}
-      </View>
-      {collectionsDialogText && (
-        <CollectionsDialog
-          collectionsDialogText={collectionsDialogText}
-          setCollectionsDialogText={setCollectionsDialogText}
-        />
-      )}
-    </SafeAreaView>
-  );
-};
+const Tab = createMaterialTopTabNavigator();
+
+// Note: when 1st landing on this screen, `getFocusedRouteNameFromRoute(route) === undefined` ?
+const CollectionsListScreen = ({ route }) => (
+  <SafeAreaView style={styles.root}>
+    <CollectionsIndexHeader
+      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
+    />
+    <Tab.Navigator
+      initialRouteName="Builds"
+      tabBarOptions={{
+        indicatorStyle: {
+          backgroundColor: Colors.collectionYellow,
+        },
+      }}
+    >
+      <Tab.Screen
+        name="Builds"
+        component={CollectionsIndexCustom}
+      />
+      <Tab.Screen
+        name="Updates"
+        component={CollectionsIndexPrebuilt}
+      />
+    </Tab.Navigator>
+  </SafeAreaView>
+);
 
 CollectionsListScreen.propTypes = {
-  navigation: shape({}).isRequired,
-  collections: shape({}).isRequired,
+  navigation: shape({}).isRequired, // eslint-disable-line react/no-unused-prop-types
+  route: shape({}).isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  collections: state.collections,
-});
-
-export default connect(mapStateToProps, null)(CollectionsListScreen);
+export default CollectionsListScreen;
 
 const styles = StyleSheet.create({
-  safeAreaView: {
+  root: {
     flex: 1,
     backgroundColor: 'white',
   },
-  collectionRowContainer: {
-    alignItems: 'center',
-  },
-  header: {
-    backgroundColor: Colors.headerBackground,
-    height: 50,
-  },
-  headerText: {
-    color: 'black',
-    fontSize: 18,
+  scrollContainer: {
+    flex: 1,
   },
 });
