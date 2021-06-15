@@ -93,7 +93,7 @@ const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Data);
 
-const { body1 } = TextStyles;
+const { h5, body1 } = TextStyles;
 
 const styles = StyleSheet.create({
   root: {
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
   },
   headingText: {
     color: 'black',
-    ...body1,
+    ...h5,
+    fontWeight: '300',
   },
   subHeading: {
     paddingHorizontal: 32,

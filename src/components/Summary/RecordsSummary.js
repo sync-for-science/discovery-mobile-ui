@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });
