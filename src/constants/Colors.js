@@ -7,7 +7,7 @@ const gray6 = '#8c8c8c';
 const gray7 = '#F8F8F8';
 // blue1 === OLD PRIMARY
 const blue1 = '#3477e3'; // eslint-disable-line no-unused-vars
-const blue2 = '#c7d7f0';
+const blue2 = '#c7d7f0'; // eslint-disable-line no-unused-vars
 const blue3 = '#143263';
 const blue4 = '#4a8fe4';
 const blue5 = '#bcd2f5';
@@ -25,7 +25,7 @@ const purple2 = '#EAB9FF';
 
 export default {
   primary: blue9,
-  primaryLight: blue2,
+  primaryLight: blue10,
   primaryLight2: blue5,
   primaryDark: blue3,
   primaryDark2: blue6,

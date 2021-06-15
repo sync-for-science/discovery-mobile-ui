@@ -103,10 +103,10 @@ const styles = StyleSheet.create({
   headingContainer: {
     paddingHorizontal: 32,
     paddingVertical: 4,
-    backgroundColor: Colors.primary,
+    backgroundColor: Colors.primaryLight,
   },
   headingText: {
-    color: 'white',
+    color: 'black',
     ...body1,
   },
   subHeading: {
