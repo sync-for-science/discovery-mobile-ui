@@ -130,6 +130,15 @@ const CollectionRow = ({
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
 
+  let descriptionText
+  if (collection.label === "Last 3 Encounters") {
+    descriptionText = "This Collection is supposed to identify the last 3 Encounters. There are X such Encounters in your data."
+  } if (collection.label === "Last 5 Lab Results") {
+    descriptionText = "This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. There are X dates: [list of dates]; \nLab Results were received in your data, including [the list of all different Lab Results in any of the dates, together]."
+  } if (collection.label === "Last 5 Vital Signs") {
+    descriptionText = 'This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are X dates: [list of dates]; \nVital Signs were collected in your data, including [the list of all different Vital Signs in any of the dates, together].  '
+  }
+
   return (
     <View style={styles.collectionRowContainer}>
       <View style={styles.dateInfoRow}>
@@ -153,13 +162,22 @@ const CollectionRow = ({
       </TouchableOpacity>
       {showDetails && (
         <View style={styles.detailsContainer}>
-          <CountInfo count={savedRecordsCount} label="Records" color={Colors.collectionYellow} />
-          <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
-          <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
-          <View style={styles.dateInfoContainer}>
-            <DateInfo date={modifiedDate} label="Last Modified" />
+          {collection.preBuilt && (
+            <View style={styles.descriptionContainer}>
+              <Text>
+                {descriptionText}
+              </Text>
+            </View>
+          )}
+          <View>
+            <CountInfo count={savedRecordsCount} label="Records" color={Colors.collectionYellow} />
+            <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
+            <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
             <View style={styles.dateInfoContainer}>
-              <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+              <DateInfo date={modifiedDate} label="Last Modified" />
+              <View style={styles.dateInfoContainer}>
+                <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+              </View>
             </View>
           </View>
         </View>
@@ -259,4 +277,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  descriptionContainer: {
+    marginBottom: 12
+  }
 });
