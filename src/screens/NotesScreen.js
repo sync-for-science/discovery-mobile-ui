@@ -109,14 +109,12 @@ const NotesScreen = ({
     ? collection.records[resource.id]?.notes && Object.keys(collection.records[resource?.id]?.notes).length // eslint-disable-line max-len
     : Object.keys(collection.notes).length;
 
-  console.log('noteCount', noteCount)
-
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
         <Left>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Entypo name="chevron-thin-left" size={20} color='black' />
+            <Entypo name="chevron-thin-left" size={20} color="black" />
           </TouchableOpacity>
         </Left>
         <View style={styles.headerTitleContainer}>
@@ -126,7 +124,7 @@ const NotesScreen = ({
         <Right>
           {!showNoteInput && (
             <TouchableOpacity onPress={handleCreateNote} disabled={showNoteInput}>
-              <Feather name="plus-square" size={24} color='black' />
+              <Feather name="plus-square" size={24} color="black" />
             </TouchableOpacity>
           )}
         </Right>
