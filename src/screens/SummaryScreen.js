@@ -10,6 +10,7 @@ import {
 import Colors from '../constants/Colors';
 import RecordsSummary from '../components/Summary/RecordsSummary';
 import ProvidersSummary from '../components/Summary/ProvidersSummary';
+import TextStyles from '../constants/TextStyles';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -25,7 +26,7 @@ const SummaryScreen = () => (
       initialRouteName="Records"
       style={styles.tabs}
       tabBarOptions={{
-        labelStyle: { textTransform: 'none' },
+        labelStyle: styles.tabText,
         indicatorStyle: {
           backgroundColor: Colors.primary,
         },
@@ -48,6 +49,8 @@ SummaryScreen.propTypes = {
 
 export default SummaryScreen;
 
+const { body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     backgroundColor: 'white',
@@ -60,5 +63,9 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     fontSize: 18,
+  },
+  tabText: {
+    textTransform: 'none',
+    ...body1,
   },
 });
