@@ -20,13 +20,15 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
     />
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.resourceTypeContainer}>
-        <DataRow
-          isHeadingRow
-          count=""
-          label=""
-          oldest="Oldest"
-          latest="Latest"
-        />
+        <View style={styles.header}>
+          <DataRow
+            isHeadingRow
+            count=""
+            label=""
+            oldest="Oldest"
+            latest="Latest"
+          />
+        </View>
         {providers.map(({ id, name }) => {
           const items = allResourcesByProvider[id];
           return (
@@ -70,7 +72,9 @@ const styles = StyleSheet.create({
   scrollContainer: {
   },
   resourceTypeContainer: {
-    alignItems: 'center',
     width: '100%',
   },
+  header: {
+    marginTop: 10
+  }
 });

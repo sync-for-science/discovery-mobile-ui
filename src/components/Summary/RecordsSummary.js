@@ -24,13 +24,15 @@ const RecordsSummary = ({ recordsByType }) => (
     />
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.resourceTypeContainer}>
-        <DataRow
-          isHeadingRow
-          count=""
-          label=""
-          oldest="Oldest"
-          latest="Latest"
-        />
+        <View style={styles.header}>
+          <DataRow
+            isHeadingRow
+            count=""
+            label=""
+            oldest="Oldest"
+            latest="Latest"
+          />
+        </View>
         {recordsByType.map(({ type, label, items }) => (
           <DataRow
             key={type}
@@ -78,7 +80,9 @@ const styles = StyleSheet.create({
   scrollContainer: {
   },
   resourceTypeContainer: {
-    alignItems: 'center',
     width: '100%',
   },
+  header: {
+    marginTop: 10
+  }
 });

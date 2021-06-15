@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     flexDirection: 'row',
-    paddingVertical: 10,
+    paddingVertical: 6,
     paddingHorizontal: 5,
     backgroundColor: 'white',
     alignItems: 'flex-start',
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     color: Colors.secondary,
     fontSize: 12,
     alignSelf: 'flex-end',
+    justifyContent: 'flex-end',
   },
   count: {
     textAlign: 'right',
