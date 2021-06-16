@@ -755,7 +755,7 @@ export const preBuiltDescriptionSelector = createSelector(
         return `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
       }
 
-      return `This Collection is supposed to identify the ${collectionLabel} for you the last 5 dates they were received. ${thereAreText} are ${datesArray.count} dates found in your Records: ${printDates}`;
+      return `This Collection is supposed to identify the ${collectionLabel} for you the last 5 dates they were received. ${thereAreText} are ${datesArray.length} dates found in your Records: ${printDates}`;
     }
     return null;
   },
