@@ -164,7 +164,7 @@ const CollectionRow = ({
             </View>
           )}
           <View>
-            <CountInfo count={savedRecordsCount} label="Records" color={Colors.collectionYellow} />
+            <CountInfo count={savedRecordsCount} label="Records In Collection" color={Colors.collectionYellow} />
             <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
             <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
             <View style={styles.dateInfoContainer}>
