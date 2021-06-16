@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headingContainer: {
-    paddingHorizontal: 32,
+    paddingHorizontal: 16,
     paddingVertical: 4,
     backgroundColor: Colors.primaryLight,
   },
