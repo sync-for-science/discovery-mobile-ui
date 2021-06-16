@@ -278,7 +278,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       });
     }
     case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const { collectionId, resourceIds } = action.payload;
+      const { resourceIds } = action.payload;
       return produce(state, (draft) => {
         resourceIds.forEach((id) => {
           const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
