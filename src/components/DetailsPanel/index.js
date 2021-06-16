@@ -73,7 +73,7 @@ const DetailsPanel = ({
           </TouchableOpacity>
         </Left>
         <View style={styles.headerTitleContainer}>
-          <HeaderCountIcon count={savedItemsCount} outline />
+          {savedItemsCount > 0 && <HeaderCountIcon count={savedItemsCount} outline />}
           <Title style={styles.headerText}>{collection?.label}</Title>
         </View>
         <Right>
