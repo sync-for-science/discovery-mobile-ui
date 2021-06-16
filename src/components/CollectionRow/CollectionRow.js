@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { collectionByIdSelector } from '../../redux/selectors';
+import { collectionByIdSelector, encountersCountSelector } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
 
 const CountInfo = ({ count, label, color }) => (
@@ -116,6 +116,7 @@ const CollectionRow = ({
   label,
   navigation,
   selectCollectionAction,
+  encountersCount,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
@@ -130,13 +131,13 @@ const CollectionRow = ({
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
 
-  let descriptionText
-  if (collection.label === "Last 3 Encounters") {
-    descriptionText = "This Collection is supposed to identify the last 3 Encounters. There are X such Encounters in your data."
-  } if (collection.label === "Last 5 Lab Results") {
-    descriptionText = "This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. There are X dates: [list of dates]; \nLab Results were received in your data, including [the list of all different Lab Results in any of the dates, together]."
-  } if (collection.label === "Last 5 Vital Signs") {
-    descriptionText = 'This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are X dates: [list of dates]; \nVital Signs were collected in your data, including [the list of all different Vital Signs in any of the dates, together].  '
+  let descriptionText;
+  if (collection.label === 'Last 3 Encounters') {
+    descriptionText = `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
+  } if (collection.label === 'Last 5 Lab Results') {
+    descriptionText = 'This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. There are X dates: [list of dates]; \nLab Results were received in your data, including [the list of all different Lab Results in any of the dates, together].';
+  } if (collection.label === 'Last 5 Vital Signs') {
+    descriptionText = 'This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are X dates: [list of dates]; \nVital Signs were collected in your data, including [the list of all different Vital Signs in any of the dates, together].  ';
   }
 
   return (
@@ -192,10 +193,12 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
+  encountersCount: number.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
+  encountersCount: encountersCountSelector(state),
 });
 
 const mapDispatchToProps = {
@@ -278,6 +281,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   descriptionContainer: {
-    marginBottom: 12
-  }
+    marginBottom: 12,
+  },
 });

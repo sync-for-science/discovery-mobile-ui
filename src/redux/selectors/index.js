@@ -718,3 +718,7 @@ export const collectionsCounterSelector = (state) => {
     preBuiltCount,
   };
 };
+
+export const encountersCountSelector = (state) => (
+  Object.values(state.resources).filter(({ resourceType }) => resourceType === 'Encounter').length
+);
