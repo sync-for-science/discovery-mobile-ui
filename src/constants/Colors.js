@@ -59,7 +59,7 @@ export default {
   accordionChevronIcon: gray6,
   editingBackground: blue8,
   collectionSegmentControl: yellow1,
-  markedsegmentControl: blue4,
+  markedsegmentControl: purple1,
   logoBlue: blue9,
   headerBackground: yellow1,
   notesHeaderBackground: gray2,
