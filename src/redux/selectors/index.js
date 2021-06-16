@@ -747,12 +747,12 @@ export const savedRecordsDatesSelector = createSelector(
       }, {});
 
       const datesArray = Object.keys(datesInfo.dates);
-      const printDates = datesArray.reduce((acc, date, index) => {
-        if (index === (datesArray.length - 1)) {
-          return acc += `and ${formatDate(date)}`;
-        }
-        return acc += `${formatDate(date)}, `;
-      }, '');
+      const printDates = datesArray.reduce((acc, date, index) =>
+        // if (index === (datesArray.length - 1)) {
+        //   return acc += `and ${formatDate(date)}`;
+        // }
+        acc += `\n   ${formatDate(date)}`,
+      '');
 
       return {
         count: datesArray.length,

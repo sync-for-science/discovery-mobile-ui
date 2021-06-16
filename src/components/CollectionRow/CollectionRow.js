@@ -139,9 +139,10 @@ const CollectionRow = ({
     descriptionText = `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
   } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults) {
     const thereAreText = savedRecordsDates.count < 5 ? 'However, there' : 'There';
-    descriptionText = `This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. ${thereAreText} are ${savedRecordsDates.count} such dates: ${savedRecordsDates.printDates}.`;
+    descriptionText = `This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. ${thereAreText} are ${savedRecordsDates.count} dates found in your Records: ${savedRecordsDates.printDates}`;
   } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastVitalSigns) {
-    descriptionText = `This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are ${savedRecordsDates.count} such dates: ${savedRecordsDates.printDates}`;
+    const thereAreText = savedRecordsDates.count < 5 ? 'However, there' : 'There';
+    descriptionText = `This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. ${thereAreText} are ${savedRecordsDates.count} dates found in your Records: ${savedRecordsDates.printDates}`;
   }
 
   return (
