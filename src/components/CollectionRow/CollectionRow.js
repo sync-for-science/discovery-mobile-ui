@@ -3,7 +3,6 @@ import {
   StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
 import {
-  arrayOf,
   func, number, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
@@ -12,9 +11,10 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { collectionByIdSelector, encountersCountSelector, savedRecordsDatesSelector } from '../../redux/selectors';
+import {
+  collectionByIdSelector, preBuiltDescriptionSelector,
+} from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
-import { PREBUILT_COLLECTIONS_LABELS } from '../../redux/reducers';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -118,8 +118,7 @@ const CollectionRow = ({
   label,
   navigation,
   selectCollectionAction,
-  encountersCount,
-  savedRecordsDates,
+  preBuiltDescription,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
@@ -133,17 +132,6 @@ const CollectionRow = ({
   const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
-
-  let descriptionText;
-  if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
-    descriptionText = `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
-  } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults) {
-    const thereAreText = savedRecordsDates.count < 5 ? 'However, there' : 'There';
-    descriptionText = `This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. ${thereAreText} are ${savedRecordsDates.count} dates found in your Records: ${savedRecordsDates.printDates}`;
-  } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastVitalSigns) {
-    const thereAreText = savedRecordsDates.count < 5 ? 'However, there' : 'There';
-    descriptionText = `This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. ${thereAreText} are ${savedRecordsDates.count} dates found in your Records: ${savedRecordsDates.printDates}`;
-  }
 
   return (
     <View style={styles.collectionRowContainer}>
@@ -171,7 +159,7 @@ const CollectionRow = ({
           {collection.preBuilt && (
             <View style={styles.descriptionContainer}>
               <Text>
-                {descriptionText}
+                {preBuiltDescription}
               </Text>
             </View>
           )}
@@ -198,14 +186,16 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
-  encountersCount: number.isRequired,
-  savedRecordsDates: shape({}).isRequired,
+  preBuiltDescription: string,
+};
+
+CollectionRow.defaultProps = {
+  preBuiltDescription: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
-  encountersCount: encountersCountSelector(state),
-  savedRecordsDates: savedRecordsDatesSelector(state, ownProps),
+  preBuiltDescription: preBuiltDescriptionSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {

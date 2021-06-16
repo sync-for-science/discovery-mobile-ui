@@ -720,13 +720,13 @@ export const collectionsCounterSelector = (state) => {
   };
 };
 
-export const encountersCountSelector = (state) => (
+const encountersCountSelector = (state) => (
   Object.values(state.resources).filter(({ resourceType }) => resourceType === 'Encounter').length
 );
 
-export const savedRecordsDatesSelector = createSelector(
-  [collectionByIdSelector, resourcesSelector],
-  (collection, resources) => {
+export const preBuiltDescriptionSelector = createSelector(
+  [collectionByIdSelector, resourcesSelector, encountersCountSelector, (_, ownProps) => ownProps],
+  (collection, resources, encountersCount, ownProps) => {
     if (collection.preBuilt) {
       const datesInfo = Object.keys(collection.records).reduce((acc, recordId) => {
         const { timelineDate } = resources[recordId];
@@ -747,17 +747,15 @@ export const savedRecordsDatesSelector = createSelector(
       }, {});
 
       const datesArray = Object.keys(datesInfo.dates);
-      const printDates = datesArray.reduce((acc, date, index) =>
-        // if (index === (datesArray.length - 1)) {
-        //   return acc += `and ${formatDate(date)}`;
-        // }
-        acc += `\n   ${formatDate(date)}`,
-      '');
+      const printDates = datesArray.reduce((acc, date) => acc.concat(`\n   ${formatDate(date)}`), '');
+      const thereAreText = datesArray.count < 5 ? 'However, there' : 'There';
+      const collectionLabel = ownProps.collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults ? 'Lab Results' : 'Vital Signs';
 
-      return {
-        count: datesArray.length,
-        printDates,
-      };
+      if (ownProps.collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
+        return `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
+      }
+
+      return `This Collection is supposed to identify the ${collectionLabel} for you the last 5 dates they were received. ${thereAreText} are ${datesArray.count} dates found in your Records: ${printDates}`;
     }
     return null;
   },
