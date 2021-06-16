@@ -703,3 +703,13 @@ export const collectionsLabelsSelector = createSelector(
   (collections) => values(collections)
     .reduce((acc, { label }) => { acc.push(label.toLowerCase()); return acc; }, []),
 );
+
+export const collectionsCounterSelector = (state) => {
+  const collections = Object.values(state.collections);
+  const customCount = collections.filter(({ preBuilt }) => preBuilt === false).length;
+  const preBuiltCount = collections.filter(({ preBuilt }) => preBuilt === true).length;
+  return {
+    customCount,
+    preBuiltCount,
+  };
+};

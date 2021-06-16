@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
-import { customCollectionsSelector, prebuiltCollectionsSelector } from '../redux/selectors';
+import { customCollectionsSelector, prebuiltCollectionsSelector, collectionsCounterSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
@@ -34,7 +34,7 @@ const CollectionsIndexPrebuilt = connect((state) => ({
 const Tab = createMaterialTopTabNavigator();
 
 // Note: when 1st landing on this screen, `getFocusedRouteNameFromRoute(route) === undefined` ?
-const CollectionsListScreen = ({ route }) => (
+const CollectionsListScreen = ({ route, collectionsCounter }) => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader
       showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
@@ -48,11 +48,11 @@ const CollectionsListScreen = ({ route }) => (
       }}
     >
       <Tab.Screen
-        name="Builds"
+        name={`${collectionsCounter.customCount} Builds`}
         component={CollectionsIndexCustom}
       />
       <Tab.Screen
-        name="Updates"
+        name={`${collectionsCounter.preBuiltCount} Updates`}
         component={CollectionsIndexPrebuilt}
       />
     </Tab.Navigator>
@@ -62,9 +62,14 @@ const CollectionsListScreen = ({ route }) => (
 CollectionsListScreen.propTypes = {
   navigation: shape({}).isRequired, // eslint-disable-line react/no-unused-prop-types
   route: shape({}).isRequired,
+  collectionsCounter: shape({}).isRequired,
 };
 
-export default CollectionsListScreen;
+const mapStateToProps = (state) => ({
+  collectionsCounter: collectionsCounterSelector(state),
+});
+
+export default connect(mapStateToProps, null)(CollectionsListScreen);
 
 const styles = StyleSheet.create({
   root: {
