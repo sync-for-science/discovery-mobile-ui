@@ -3,6 +3,7 @@ import {
   StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
 import {
+  arrayOf,
   func, number, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
@@ -11,8 +12,9 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { collectionByIdSelector, encountersCountSelector } from '../../redux/selectors';
+import { collectionByIdSelector, encountersCountSelector, savedRecordsDatesSelector } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
+import { PREBUILT_COLLECTIONS_LABELS } from '../../redux/reducers';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -117,6 +119,7 @@ const CollectionRow = ({
   navigation,
   selectCollectionAction,
   encountersCount,
+  savedRecordsDates,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
@@ -132,12 +135,13 @@ const CollectionRow = ({
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
 
   let descriptionText;
-  if (collection.label === 'Last 3 Encounters') {
+  if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
     descriptionText = `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
-  } if (collection.label === 'Last 5 Lab Results') {
-    descriptionText = 'This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. There are X dates: [list of dates]; \nLab Results were received in your data, including [the list of all different Lab Results in any of the dates, together].';
-  } if (collection.label === 'Last 5 Vital Signs') {
-    descriptionText = 'This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are X dates: [list of dates]; \nVital Signs were collected in your data, including [the list of all different Vital Signs in any of the dates, together].  ';
+  } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults) {
+    const thereAreText = savedRecordsDates.count < 5 ? 'However, there' : 'There';
+    descriptionText = `This Collection is supposed to identify the Lab Results for you the last 5 dates they were received. ${thereAreText} are ${savedRecordsDates.count} such dates: ${savedRecordsDates.printDates}.`;
+  } if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastVitalSigns) {
+    descriptionText = `This Collection is supposed to identify the Vital Signs for you the last 5 dates they were collected. There are ${savedRecordsDates.count} such dates: ${savedRecordsDates.printDates}`;
   }
 
   return (
@@ -194,11 +198,13 @@ CollectionRow.propTypes = {
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
   encountersCount: number.isRequired,
+  savedRecordsDates: shape({}).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
   encountersCount: encountersCountSelector(state),
+  savedRecordsDates: savedRecordsDatesSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {

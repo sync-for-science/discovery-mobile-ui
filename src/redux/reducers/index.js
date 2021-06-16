@@ -178,6 +178,12 @@ const disabledActionsForPreBuilt = [
   actionTypes.DELETE_COLLECTION,
 ];
 
+export const PREBUILT_COLLECTIONS_LABELS = {
+  lastEncounters: 'lastEncounters',
+  lastLabResults: 'lastLabResults',
+  lastVitalSigns: 'lastVitalSigns',
+};
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   const { collectionId } = action.payload || {};
 
@@ -241,7 +247,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
             return acc;
           }, []);
         updateOrCreateCollection({
-          id: 'lastEncounters',
+          id: PREBUILT_COLLECTIONS_LABELS.lastEncounters,
           label: 'Last 3 Encounters',
           selectedResourceType: 'Encounter',
           recordIds: lastEncounters.concat(referencesEncounters),
@@ -249,7 +255,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 
         const laboratories = sortedResources.filter((item) => item.type === 'laboratory');
         updateOrCreateCollection({
-          id: 'lastLabResults',
+          id: PREBUILT_COLLECTIONS_LABELS.lastLabResults,
           label: 'Last 5 Lab Results',
           selectedResourceType: 'laboratory',
           recordIds: lastNRecordIdsGroupedByDay(laboratories, 5),
@@ -257,7 +263,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 
         const vitalSigns = sortedResources.filter((item) => item.type === 'vital-signs');
         updateOrCreateCollection({
-          id: 'lastVitalSigns',
+          id: PREBUILT_COLLECTIONS_LABELS.lastVitalSigns,
           label: 'Last 5 Vital Signs',
           selectedResourceType: 'vital-signs',
           recordIds: lastNRecordIdsGroupedByDay(vitalSigns, 5),

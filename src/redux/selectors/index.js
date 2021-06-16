@@ -14,6 +14,7 @@ import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
+import { PREBUILT_COLLECTIONS_LABELS } from '../reducers';
 
 const resourcesSelector = (state) => state.resources;
 
@@ -721,4 +722,43 @@ export const collectionsCounterSelector = (state) => {
 
 export const encountersCountSelector = (state) => (
   Object.values(state.resources).filter(({ resourceType }) => resourceType === 'Encounter').length
+);
+
+export const savedRecordsDatesSelector = createSelector(
+  [collectionByIdSelector, resourcesSelector],
+  (collection, resources) => {
+    if (collection.preBuilt) {
+      const datesInfo = Object.keys(collection.records).reduce((acc, recordId) => {
+        const { timelineDate } = resources[recordId];
+        const { subType } = resources[recordId];
+        if (!acc.dates) {
+          acc.dates = {};
+        }
+        if (!acc.subTypes) {
+          acc.subTypes = {};
+        }
+        if (!acc.dates[timelineDate]) {
+          acc.dates[timelineDate] = true;
+        }
+        if (!acc.subTypes[subType]) {
+          acc.subTypes[subType] = true;
+        }
+        return acc;
+      }, {});
+
+      const datesArray = Object.keys(datesInfo.dates);
+      const printDates = datesArray.reduce((acc, date, index) => {
+        if (index === (datesArray.length - 1)) {
+          return acc += `and ${formatDate(date)}`;
+        }
+        return acc += `${formatDate(date)}, `;
+      }, '');
+
+      return {
+        count: datesArray.length,
+        printDates,
+      };
+    }
+    return null;
+  },
 );
