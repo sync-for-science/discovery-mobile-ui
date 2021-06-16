@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
 import { func, bool, shape } from 'prop-types';
 import {
-  StyleSheet, StatusBar, TouchableOpacity, View
+  StyleSheet, StatusBar, TouchableOpacity, View,
 } from 'react-native';
 import {
-  Header, Right, Body, Title, Left,
+  Header, Right, Title, Left,
 } from 'native-base';
 import { Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
-import { collectionsCounterSelector } from '../../redux/selectors'
+import { collectionsCounterSelector } from '../../redux/selectors';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
 
 const AddCollectionButton = ({ onPress }) => (
@@ -26,13 +26,11 @@ AddCollectionButton.propTypes = {
 
 const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
-  const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount
+  const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
   const handleNewCollectionPress = () => {
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
   };
-
-  console.log('collectionsCounter', collectionsCounter)
 
   return (
     <>
@@ -59,12 +57,12 @@ const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter }) => {
 
 CollectionsIndex.propTypes = {
   showNewCollectionButton: bool.isRequired,
-  collectionsCounter: shape({}).isRequired
+  collectionsCounter: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  collectionsCounter: collectionsCounterSelector(state)
-})
+  collectionsCounter: collectionsCounterSelector(state),
+});
 
 export default connect(mapStateToProps, null)(CollectionsIndex);
 
