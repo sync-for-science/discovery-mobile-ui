@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView,
+  StyleSheet, ScrollView, SafeAreaView,
 } from 'react-native';
 import { shape } from 'prop-types';
 
@@ -11,7 +11,7 @@ const CollectionsIndex = ({
   collections,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
-    <View style={styles.collectionRowContainer}>
+    <ScrollView contentContainerStyle={styles.collectionRowContainer}>
       {Object.entries(collections).map(([id, { label }]) => (
         <CollectionRow
           key={id}
@@ -20,7 +20,7 @@ const CollectionsIndex = ({
           navigation={navigation}
         />
       ))}
-    </View>
+    </ScrollView>
   </SafeAreaView>
 );
 

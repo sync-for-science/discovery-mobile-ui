@@ -178,6 +178,12 @@ const disabledActionsForPreBuilt = [
   actionTypes.DELETE_COLLECTION,
 ];
 
+export const PREBUILT_COLLECTIONS_LABELS = {
+  lastEncounters: 'lastEncounters',
+  lastLabResults: 'lastLabResults',
+  lastVitalSigns: 'lastVitalSigns',
+};
+
 export const collectionsReducer = (state = preloadCollections, action) => {
   const { collectionId } = action.payload || {};
 
@@ -232,7 +238,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           /* eslint-enable no-param-reassign */
         };
 
-        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 2).map(({ id }) => id);
+        const lastEncounters = sortedResources.filter((item) => item.type === 'Encounter').slice(0, 3).map(({ id }) => id);
         const referencesEncounters = Object.entries(encounters)
           .reduce((acc, [recordId, encounterId]) => {
             if (lastEncounters.includes(encounterId)) {
@@ -241,24 +247,24 @@ export const collectionsReducer = (state = preloadCollections, action) => {
             return acc;
           }, []);
         updateOrCreateCollection({
-          id: 'lastEncounters',
-          label: 'Last 3 Encounters',
+          id: PREBUILT_COLLECTIONS_LABELS.lastEncounters,
+          label: 'Last Encounters',
           selectedResourceType: 'Encounter',
           recordIds: lastEncounters.concat(referencesEncounters),
         });
 
         const laboratories = sortedResources.filter((item) => item.type === 'laboratory');
         updateOrCreateCollection({
-          id: 'lastLabResults',
-          label: 'Last 5 Lab Results',
+          id: PREBUILT_COLLECTIONS_LABELS.lastLabResults,
+          label: 'Last Lab Results',
           selectedResourceType: 'laboratory',
           recordIds: lastNRecordIdsGroupedByDay(laboratories, 5),
         });
 
         const vitalSigns = sortedResources.filter((item) => item.type === 'vital-signs');
         updateOrCreateCollection({
-          id: 'lastVitalSigns',
-          label: 'Last 5 Vital Signs',
+          id: PREBUILT_COLLECTIONS_LABELS.lastVitalSigns,
+          label: 'Last Vital Signs',
           selectedResourceType: 'vital-signs',
           recordIds: lastNRecordIdsGroupedByDay(vitalSigns, 5),
         });

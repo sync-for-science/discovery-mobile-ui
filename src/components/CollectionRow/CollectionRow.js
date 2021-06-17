@@ -11,8 +11,11 @@ import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
-import { collectionByIdSelector } from '../../redux/selectors';
+import {
+  collectionByIdSelector,
+} from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
+import PreBuiltDescriptionText from './PreBuiltDescriptionText';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -105,13 +108,22 @@ const CollectionRow = ({
       </TouchableOpacity>
       {showDetails && (
         <View style={styles.detailsContainer}>
-          <CountInfo count={savedRecordsCount} label="Records" color={Colors.collectionYellow} />
-          <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
-          <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
-          <View style={styles.dateInfoContainer}>
-            <DateInfo date={modifiedDate} label="Last Modified" />
+          {collection.preBuilt && (
+            <View style={styles.descriptionContainer}>
+              <Text>
+                <PreBuiltDescriptionText collectionId={collectionId} />
+              </Text>
+            </View>
+          )}
+          <View>
+            <CountInfo count={savedRecordsCount} label="Records In Collection" color={Colors.collectionYellow} />
+            <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
+            <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
             <View style={styles.dateInfoContainer}>
-              <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+              <DateInfo date={modifiedDate} label="Last Modified" />
+              <View style={styles.dateInfoContainer}>
+                <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+              </View>
             </View>
           </View>
         </View>
@@ -126,6 +138,9 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
+};
+
+CollectionRow.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -147,7 +162,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginTop: 4,
   },
   iconContainer: {
     flexDirection: 'row',
@@ -203,5 +217,8 @@ const styles = StyleSheet.create({
   collectionRowCountIconsContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  descriptionContainer: {
+    marginBottom: 12,
   },
 });
