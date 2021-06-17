@@ -21,12 +21,14 @@ const RecordCount = ({
 }) => {
   const { minimumDate, maximumDate } = dateRange;
   const formattedDateRange = !(minimumDate && maximumDate) ? '' : `from ${formatDate(minimumDate)} to ${formatDate(maximumDate)}`;
+  const pluralizedRecords = allRecordsSortedByDate.length > 1 ? 'Records' : 'Record';
+  const pluralizedProviders = providers.length > 1 ? 'Providers' : 'Provider';
 
   return (
     <View style={styles.root}>
       <Text style={styles.recordCount}>
-        {!emphasizeProviders && `${allRecordsSortedByDate.length} Records with ${providers.length} Providers`}
-        {emphasizeProviders && `${providers.length} Providers from ${allRecordsSortedByDate.length} Records`}
+        {!emphasizeProviders && `${allRecordsSortedByDate.length} ${pluralizedRecords} with ${providers.length} ${pluralizedProviders}`}
+        {emphasizeProviders && `${providers.length} ${pluralizedProviders} from ${allRecordsSortedByDate.length} ${pluralizedRecords}`}
       </Text>
       <Text style={styles.dateRange}>
         {formattedDateRange}
