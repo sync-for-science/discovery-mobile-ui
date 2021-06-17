@@ -15,6 +15,7 @@ import {
 
 import { formatDate } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
+import TextStyles from '../../constants/TextStyles';
 
 const Data = ({
   dateRange,
@@ -47,7 +48,7 @@ const Data = ({
 
   return (
     <View style={styles.root}>
-      <View style={styles.heading}>
+      <View style={styles.headingContainer}>
         <Text style={styles.headingText}>
           Data
         </Text>
@@ -92,32 +93,35 @@ const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Data);
 
+const { h6, body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
-    marginHorizontal: 20,
+    marginTop: 16,
     justifyContent: 'center',
   },
-  heading: {
-    padding: 5,
-    backgroundColor: Colors.primary,
+  headingContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 4,
+    backgroundColor: Colors.primaryLight,
   },
   headingText: {
-    color: 'white',
-    fontSize: 16,
-    padding: 5,
+    color: 'black',
+    ...h6,
+    fontWeight: '400',
   },
   subHeading: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 32,
     paddingTop: 10,
-    backgroundColor: 'white',
-    fontSize: 14,
-    color: 'black',
+    color: Colors.darkgrey2,
+    ...body1,
   },
   row: {
-    padding: 10,
+    paddingHorizontal: 32,
     backgroundColor: 'white',
   },
   data: {
-    color: Colors.darkgrey,
+    color: 'black',
+    ...body1,
   },
 });

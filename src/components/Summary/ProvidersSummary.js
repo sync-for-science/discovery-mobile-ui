@@ -11,7 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { providersSelector, allResourcesByProviderSelector } from '../../redux/selectors';
 import RecordCount from './RecordCount';
 import DataRow from './DataRow';
-import { formatDate } from '../../resources/fhirReader';
+import { formatDateShortYear } from '../../resources/fhirReader';
 
 const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
   <View style={styles.root}>
@@ -20,13 +20,15 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
     />
     <ScrollView style={styles.scrollContainer}>
       <View style={styles.resourceTypeContainer}>
-        <DataRow
-          isHeadingRow
-          count=""
-          label=""
-          oldest="Oldest"
-          latest="Latest"
-        />
+        <View style={styles.header}>
+          <DataRow
+            isHeadingRow
+            count=""
+            label=""
+            oldest="Oldest"
+            latest="Latest"
+          />
+        </View>
         {providers.map(({ id, name }) => {
           const items = allResourcesByProvider[id];
           return (
@@ -34,8 +36,8 @@ const ProvidersSummary = ({ providers, allResourcesByProvider }) => (
               key={name}
               count={String(items.length)}
               label={name}
-              oldest={formatDate(items[0]?.timelineDate)}
-              latest={formatDate(items[items.length - 1]?.timelineDate)}
+              oldest={formatDateShortYear(items[0]?.timelineDate)}
+              latest={formatDateShortYear(items[items.length - 1]?.timelineDate)}
             />
           );
         })}
@@ -70,7 +72,9 @@ const styles = StyleSheet.create({
   scrollContainer: {
   },
   resourceTypeContainer: {
-    alignItems: 'center',
     width: '100%',
+  },
+  header: {
+    marginTop: 10,
   },
 });

@@ -6,9 +6,10 @@ import {
 } from 'prop-types';
 
 const BaseSegmentControl = ({
-  enabled, values, selectedIndex, onChange, activeColor,
+  enabled, values, selectedIndex, onChange, activeColor, activeFontColor,
 }) => {
   const tintColor = activeColor || 'lightblue';
+  const fontColor = activeFontColor ? { color: activeFontColor } : {};
   return (
     <SegmentedControl
       enabled={enabled}
@@ -18,7 +19,7 @@ const BaseSegmentControl = ({
         onChange(event.nativeEvent.selectedSegmentIndex);
       }}
       fontStyle={styles.scFontStyle}
-      activeFontStyle={styles.scActiveFontStyle}
+      activeFontStyle={{ ...styles.scActiveFontStyle, ...fontColor }}
       tintColor={tintColor}
     />
   );
@@ -30,10 +31,12 @@ BaseSegmentControl.propTypes = {
   selectedIndex: number.isRequired,
   onChange: func.isRequired,
   activeColor: string,
+  activeFontColor: string,
 };
 
 BaseSegmentControl.defaultProps = {
   activeColor: null,
+  activeFontColor: null,
 };
 
 export default BaseSegmentControl;

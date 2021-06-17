@@ -12,6 +12,7 @@ import { customCollectionsSelector, prebuiltCollectionsSelector, collectionsCoun
 import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
+import TextStyles from '../constants/TextStyles';
 
 const CollectionsIndexCustom = connect((state) => ({
   collections: customCollectionsSelector(state),
@@ -42,6 +43,7 @@ const CollectionsListScreen = ({ route, collectionsCounter }) => (
     <Tab.Navigator
       initialRouteName="Builds"
       tabBarOptions={{
+        labelStyle: styles.tabText,
         indicatorStyle: {
           backgroundColor: Colors.collectionYellow,
         },
@@ -71,6 +73,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, null)(CollectionsListScreen);
 
+const { body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -79,8 +83,8 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
-  headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  tabText: {
+    textTransform: 'none',
+    ...body1,
   },
 });

@@ -26,6 +26,7 @@ const MarkedSegmentControl = ({
         selectedIndex={segControlIndex}
         onChange={handleChange}
         activeColor={Colors.markedsegmentControl}
+        activeFontColor="white"
       />
     </View>
   );
