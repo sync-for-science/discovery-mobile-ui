@@ -723,13 +723,15 @@ export const preBuiltDatesSelector = createSelector(
   [collectionByIdSelector, resourcesSelector],
   (collection, resources) => {
     if (collection.preBuilt) {
-      return Object.keys(Object.keys(collection.records).reduce((acc, recordId) => {
-        const { timelineDate } = resources[recordId];
-        if (!acc[timelineDate]) {
-          acc[timelineDate] = true;
-        }
-        return acc;
-      }, {}));
+      return Object.keys(Object.entries(collection.records)
+        .filter(([, recordValues]) => recordValues.saved === true)
+        .reduce((acc, [recordId]) => {
+          const { timelineDate } = resources[recordId];
+          if (!acc[timelineDate]) {
+            acc[timelineDate] = true;
+          }
+          return acc;
+        }, {}));
     }
     return null;
   },
