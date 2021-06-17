@@ -120,7 +120,7 @@ export const createCollection = (options = {}) => {
 
 const createNewCollectionRecord = () => ({
   saved: false,
-  dateSaved: null,
+  dateSaved: new Date(),
   highlight: UNMARKED,
   // highlight:
   //   0 -- unmarked
