@@ -1,51 +1,85 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { number, string, arrayOf } from 'prop-types';
+import { string, arrayOf } from 'prop-types';
 
-import { preBuiltDatesSelector, encountersCountSelector } from '../../redux/selectors';
+import { preBuiltDatesSelector } from '../../redux/selectors';
 import { PREBUILT_COLLECTIONS_LABELS } from '../../redux/reducers';
 import { formatDate } from '../../resources/fhirReader';
 
-const PreBuiltDescriptionText = ({ preBuiltDates, encountersCount, collectionId }) => {
-  console.log('encountersCount', encountersCount);
-  console.log('preBuiltDates', preBuiltDates);
-  const thereAreText = preBuiltDates.count < 5 ? 'However, there' : 'There';
-  const collectionLabel = collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults ? 'Lab Results' : 'Vital Signs';
+const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
   const printDates = preBuiltDates.reduce((acc, date) => acc.concat(`\n   ${formatDate(date)}`), '');
+  const allCount = collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters ? 3 : 5;
 
+  let firstLine;
   if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
-    let secondLine;
-    if (encountersCount === 0) {
-      secondLine = (
-        <>
-          Discovery was
+    firstLine = (
+      <>
+        This Update looks for the
+        {' '}
+        <Text style={styles.bold}>last 3 Encounters</Text>
+        {' '}
+        in your Records.
+      </>
+    );
+  } else if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults) {
+    firstLine = (
+      <>
+        This Update looks for all Lab Results in the
+        {' '}
+        <Text style={styles.bold}>last 5 dates</Text>
+        {' '}
+        they were received.
+      </>
+    );
+  } else {
+    firstLine = (
+      <>
+        This Update looks for all Vital Signs in the
+        {' '}
+        <Text style={styles.bold}>last 5 dates</Text>
+        {' '}
+        they were received.
+      </>
+    );
+  }
+
+  let secondLine;
+  if (preBuiltDates.length === 0) {
+    secondLine = (
+      <>
+        Discovery was
+        {' '}
+        <Text style={styles.bold}>not able to identify</Text>
+        {' '}
+        any.
+      </>
+    );
+  } else if (preBuiltDates.length === allCount) {
+    secondLine = (
+      <>
+        Discovery was able to find
+        {' '}
+        <Text style={styles.bold}>
+          all
           {' '}
-          <Text style={styles.bold}>not able to identify</Text>
+          {allCount}
           {' '}
-          any.
-        </>
-      );
-    }
-    if (encountersCount === 3) {
-      secondLine = (
-        <>
-          Discovery was able to find
-          {' '}
-          <Text style={styles.bold}>all 3 of them</Text>
-          {' '}
-          taking place on:
-          {' '}
-          {printDates}
-        </>
-      );
-    }
+          of them
+        </Text>
+        {' '}
+        taking place on:
+        {' '}
+        {printDates}
+      </>
+    );
+  } else {
     secondLine = (
       <Text>
         Discovery was able to find
         {' '}
         <Text style={styles.bold}>
-          {encountersCount}
+          {preBuiltDates.length}
           {' '}
           of them
         </Text>
@@ -55,46 +89,24 @@ const PreBuiltDescriptionText = ({ preBuiltDates, encountersCount, collectionId 
         {printDates}
       </Text>
     );
-    return (
-      <Text>
-        This Update looks for the
-        {' '}
-        <Text style={styles.bold}>last 3 Encounters</Text>
-        {' '}
-        in your Records.
-        {'\n'}
-        {secondLine}
-      </Text>
-    );
   }
 
   return (
     <Text>
-      This Collection is supposed to identify the
-      {' '}
-      {collectionLabel}
-      for you the last 5 dates they were received.
-      {' '}
-      {thereAreText}
-      {' '}
-      are
-      {preBuiltDates.length}
-      {' '}
-      dates found in your Records:
-      {printDates}
+      {firstLine}
+      {'\n'}
+      {secondLine}
     </Text>
   );
 };
 
 PreBuiltDescriptionText.propTypes = {
   preBuiltDates: arrayOf(string).isRequired,
-  encountersCount: number.isRequired,
   collectionId: string.isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   preBuiltDates: preBuiltDatesSelector(state, ownProps),
-  encountersCount: encountersCountSelector(state),
 });
 
 export default connect(mapStateToProps, null)(PreBuiltDescriptionText);
