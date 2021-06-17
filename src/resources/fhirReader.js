@@ -4,7 +4,7 @@ import {
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
-const UI_DATE_FORMAT_SHORT_YEAR = 'MMM d, yy';
+const UI_DATE_FORMAT_SHORT_YEAR = "MMM d, ''yy";
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
