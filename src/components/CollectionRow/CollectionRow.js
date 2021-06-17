@@ -65,54 +65,6 @@ DateInfo.defaultProps = {
   color: null,
 };
 
-const CountInfo = ({ count, label, color }) => (
-  <View style={styles.countIconContainer}>
-    <View style={[
-      styles.countIcon,
-      color ? { backgroundColor: color } : Colors.lightgrey2,
-    ]}
-    >
-      <Text>{count}</Text>
-    </View>
-    {label && <Text style={styles.countIconText}>{label}</Text>}
-  </View>
-);
-
-CountInfo.propTypes = {
-  count: number.isRequired,
-  label: string,
-  color: string,
-};
-
-CountInfo.defaultProps = {
-  label: null,
-  color: null,
-};
-
-const DateInfo = ({ date, label, color }) => (
-  <View style={styles.dateRow}>
-    <Text style={color ? { color } : null}>
-      {date}
-    </Text>
-    {label && (
-      <Text style={styles.dateText}>
-        {label}
-      </Text>
-    )}
-  </View>
-);
-
-DateInfo.propTypes = {
-  date: string.isRequired,
-  label: string,
-  color: string,
-};
-
-DateInfo.defaultProps = {
-  label: null,
-  color: null,
-};
-
 const CollectionRow = ({
   collection,
   collectionId,
@@ -210,14 +162,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingTop: 12,
-  },
-  labelText: {
-    fontSize: 16,
-  },
-  collectionRowCountIconsContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
   },
   iconContainer: {
     flexDirection: 'row',
