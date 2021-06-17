@@ -39,7 +39,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
         {' '}
         <Text style={styles.bold}>last 5 dates</Text>
         {' '}
-        they were received.
+        they were measured.
       </>
     );
   }
