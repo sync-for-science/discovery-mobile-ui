@@ -12,9 +12,10 @@ import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection } from '../../redux/action-creators';
 import {
-  collectionByIdSelector, preBuiltDescriptionSelector,
+  collectionByIdSelector,
 } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
+import PreBuiltDescriptionText from './PreBuiltDescriptionText';
 
 const CountInfo = ({ count, label, color }) => (
   <View style={styles.countIconContainer}>
@@ -118,7 +119,6 @@ const CollectionRow = ({
   label,
   navigation,
   selectCollectionAction,
-  preBuiltDescription,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
@@ -159,7 +159,7 @@ const CollectionRow = ({
           {collection.preBuilt && (
             <View style={styles.descriptionContainer}>
               <Text>
-                {preBuiltDescription}
+                <PreBuiltDescriptionText collectionId={collectionId} />
               </Text>
             </View>
           )}
@@ -186,16 +186,13 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
-  preBuiltDescription: string,
 };
 
 CollectionRow.defaultProps = {
-  preBuiltDescription: null,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
-  preBuiltDescription: preBuiltDescriptionSelector(state, ownProps),
 });
 
 const mapDispatchToProps = {

@@ -14,7 +14,6 @@ import { PLURAL_RESOURCE_TYPES, SINGULAR_RESOURCE_TYPES } from '../../constants/
 import { formatDate } from '../../resources/fhirReader';
 import { FOCUSED } from '../../constants/marked-status';
 import { SORT_DESC, sortFields } from '../../constants/sorting';
-import { PREBUILT_COLLECTIONS_LABELS } from '../reducers';
 
 const resourcesSelector = (state) => state.resources;
 
@@ -720,42 +719,21 @@ export const collectionsCounterSelector = (state) => {
   };
 };
 
-const encountersCountSelector = (state) => (
+export const encountersCountSelector = (state) => (
   Object.values(state.resources).filter(({ resourceType }) => resourceType === 'Encounter').length
 );
 
-export const preBuiltDescriptionSelector = createSelector(
-  [collectionByIdSelector, resourcesSelector, encountersCountSelector, (_, ownProps) => ownProps],
-  (collection, resources, encountersCount, ownProps) => {
+export const preBuiltDatesSelector = createSelector(
+  [collectionByIdSelector, resourcesSelector],
+  (collection, resources) => {
     if (collection.preBuilt) {
-      const datesInfo = Object.keys(collection.records).reduce((acc, recordId) => {
+      return Object.keys(Object.keys(collection.records).reduce((acc, recordId) => {
         const { timelineDate } = resources[recordId];
-        const { subType } = resources[recordId];
-        if (!acc.dates) {
-          acc.dates = {};
-        }
-        if (!acc.subTypes) {
-          acc.subTypes = {};
-        }
-        if (!acc.dates[timelineDate]) {
-          acc.dates[timelineDate] = true;
-        }
-        if (!acc.subTypes[subType]) {
-          acc.subTypes[subType] = true;
+        if (!acc[timelineDate]) {
+          acc[timelineDate] = true;
         }
         return acc;
-      }, {});
-
-      const datesArray = Object.keys(datesInfo.dates);
-      const printDates = datesArray.reduce((acc, date) => acc.concat(`\n   ${formatDate(date)}`), '');
-      const thereAreText = datesArray.count < 5 ? 'However, there' : 'There';
-      const collectionLabel = ownProps.collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults ? 'Lab Results' : 'Vital Signs';
-
-      if (ownProps.collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
-        return `This Collection is supposed to identify the last 3 Encounters. There are ${encountersCount} such Encounters in your data.`;
-      }
-
-      return `This Collection is supposed to identify the ${collectionLabel} for you the last 5 dates they were received. ${thereAreText} are ${datesArray.length} dates found in your Records: ${printDates}`;
+      }, {}));
     }
     return null;
   },
