@@ -6,7 +6,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; // eslint
 import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import UpdatesScreen from '../screens/UpdatesScreen'
+import UpdatesScreen from '../screens/UpdatesScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
@@ -33,9 +33,8 @@ function selectIconName(name, focused) {
 
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
-  tabBarIcon: ({ focused, color, size }) => {
-    return ( // eslint-disable-line react/prop-types
-    name === "Updates" 
+  tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
+    name === 'Updates'
       ? (
         <MaterialCommunityIcons
           name={selectIconName(name, focused)}
@@ -49,7 +48,7 @@ const selectScreenOptions = ({ route: { name } }) => ({
           color={color}
         />
       )
-  )},
+  ),
 });
 
 const CollectionStackScreen = () => (
@@ -90,17 +89,13 @@ const AuthorizedNavigator = () => (
         },
         labelStyle: { fontSize: 12 },
         tabBarIcon: {
-          size: 5
-        }
+          size: 5,
+        },
       }}
     >
       <HomeTab.Screen name="Profile" component={ProfileScreen} />
       <HomeTab.Screen name="Summary" component={SummaryScreen} />
-      <HomeTab.Screen name="Updates" component={UpdatesScreen} 
-        options={{
-          title: 'cheese'
-        }}
-      />
+      <HomeTab.Screen name="Updates" component={UpdatesScreen} />
       <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
     </HomeTab.Navigator>
   </StateProvider>
