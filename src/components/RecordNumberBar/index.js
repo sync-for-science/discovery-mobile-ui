@@ -6,12 +6,16 @@ import Colors from '../../constants/Colors';
 
 const RecordNumberBar = ({ count, maxCount }) => {
   const barFlexWidth = (count / maxCount).toFixed(2) * 100;
-  const emptyFlexWidth = 100 - barFlexWidth;
+  const textBuffer = 25;
+  const emptyFlexWidth = 100 - (barFlexWidth - textBuffer);
   return (
     <View style={styles.root}>
+      <View />
       <View style={[styles.barWidth, { flex: barFlexWidth }]} />
       <View style={{ flex: emptyFlexWidth }}>
-        <Text>{count}</Text>
+        <View>
+          <Text>{count}</Text>
+        </View>
       </View>
     </View>
   );
@@ -28,7 +32,7 @@ const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '50%',
+    width: '65%',
   },
   barWidth: {
     backgroundColor: Colors.collectionYellow,
