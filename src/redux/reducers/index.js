@@ -248,7 +248,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           }, []);
         updateOrCreateCollection({
           id: PREBUILT_COLLECTIONS_LABELS.lastEncounters,
-          label: 'Last 3 Encounters',
+          label: 'Last Encounters',
           selectedResourceType: 'Encounter',
           recordIds: lastEncounters.concat(referencesEncounters),
         });
@@ -256,7 +256,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const laboratories = sortedResources.filter((item) => item.type === 'laboratory');
         updateOrCreateCollection({
           id: PREBUILT_COLLECTIONS_LABELS.lastLabResults,
-          label: 'Last 5 Lab Results',
+          label: 'Last Lab Results',
           selectedResourceType: 'laboratory',
           recordIds: lastNRecordIdsGroupedByDay(laboratories, 5),
         });
@@ -264,7 +264,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const vitalSigns = sortedResources.filter((item) => item.type === 'vital-signs');
         updateOrCreateCollection({
           id: PREBUILT_COLLECTIONS_LABELS.lastVitalSigns,
-          label: 'Last 5 Vital Signs',
+          label: 'Last Vital Signs',
           selectedResourceType: 'vital-signs',
           recordIds: lastNRecordIdsGroupedByDay(vitalSigns, 5),
         });
