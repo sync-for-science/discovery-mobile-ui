@@ -28,7 +28,7 @@ const RecordCount = ({
     <View style={styles.root}>
       <Text style={styles.recordCount}>
         {!emphasizeProviders && `${allRecordsSortedByDate.length} ${pluralizedRecords} with ${providers.length} ${pluralizedProviders}`}
-        {emphasizeProviders && `${providers.length} ${pluralizedProviders} from ${allRecordsSortedByDate.length} ${pluralizedRecords}`}
+        {emphasizeProviders && `${providers.length} ${pluralizedProviders} with ${allRecordsSortedByDate.length} ${pluralizedRecords}`}
       </Text>
       <Text style={styles.dateRange}>
         {formattedDateRange}
