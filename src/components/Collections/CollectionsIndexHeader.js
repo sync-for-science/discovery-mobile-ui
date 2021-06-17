@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { func, bool } from 'prop-types';
+import { func, bool, shape } from 'prop-types';
 import {
-  StyleSheet, StatusBar, TouchableOpacity,
+  StyleSheet, StatusBar, TouchableOpacity, View,
 } from 'react-native';
 import {
-  Header, Right, Body, Title, Left,
+  Header, Right, Title, Left,
 } from 'native-base';
 import { Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
+import { collectionsCounterSelector } from '../../redux/selectors';
+import HeaderCountIcon from '../Icons/HeaderCountIcon';
 
 const AddCollectionButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
@@ -21,8 +24,9 @@ AddCollectionButton.propTypes = {
   onPress: func.isRequired,
 };
 
-const CollectionsIndex = ({ showNewCollectionButton }) => {
+const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
+  const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
   const handleNewCollectionPress = () => {
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
@@ -33,9 +37,10 @@ const CollectionsIndex = ({ showNewCollectionButton }) => {
       <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
       <Header style={styles.header}>
         <Left />
-        <Body>
+        <View style={styles.headerTitleContainer}>
+          {totalCollectionsCount > 0 && <HeaderCountIcon count={totalCollectionsCount} />}
           <Title style={styles.headerText}>Collections</Title>
-        </Body>
+        </View>
         <Right>
           {showNewCollectionButton && <AddCollectionButton onPress={handleNewCollectionPress} />}
         </Right>
@@ -52,9 +57,14 @@ const CollectionsIndex = ({ showNewCollectionButton }) => {
 
 CollectionsIndex.propTypes = {
   showNewCollectionButton: bool.isRequired,
+  collectionsCounter: shape({}).isRequired,
 };
 
-export default CollectionsIndex;
+const mapStateToProps = (state) => ({
+  collectionsCounter: collectionsCounterSelector(state),
+});
+
+export default connect(mapStateToProps, null)(CollectionsIndex);
 
 const styles = StyleSheet.create({
   header: {
@@ -64,5 +74,9 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'black',
     fontSize: 18,
+  },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

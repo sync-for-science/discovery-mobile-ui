@@ -4,7 +4,7 @@ import {
   StyleSheet, View, TouchableOpacity, ScrollView,
 } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import {
   Header, Right, Title, Left,
 } from 'native-base';
@@ -13,26 +13,31 @@ import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-ex
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
-import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector } from '../../redux/selectors';
+import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector, savedRecordsSelector } from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
 import Colors from '../../constants/Colors';
+import HeaderCountIcon from '../Icons/HeaderCountIcon';
 
-const CatalogScreenHeader = ({ collection, navigation }) => (
-  <Header style={styles.header}>
-    <Left>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
-      </TouchableOpacity>
-    </Left>
-    <View>
-      <Title style={styles.collectionLabel}>{collection?.label}</Title>
-    </View>
-    <Right>
-      <CatalogModal collectionId={collection.id} />
-    </Right>
-  </Header>
-);
+const CatalogScreenHeader = ({ collection, navigation }) => {
+  const savedRecords = useSelector(savedRecordsSelector).length;
+  return (
+    <Header style={styles.header}>
+      <Left>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Entypo name="chevron-thin-left" size={20} color={Colors.headerIcon} />
+        </TouchableOpacity>
+      </Left>
+      <View style={styles.headerTitleContainer}>
+        <HeaderCountIcon count={savedRecords} outline />
+        <Title style={styles.collectionLabel}>{collection?.label}</Title>
+      </View>
+      <Right>
+        <CatalogModal collectionId={collection.id} />
+      </Right>
+    </Header>
+  );
+};
 
 CatalogScreenHeader.propTypes = {
   collection: shape({}).isRequired,
@@ -90,5 +95,9 @@ const styles = StyleSheet.create({
   },
   drawerContainer: {
     flex: 1,
+  },
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

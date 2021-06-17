@@ -429,7 +429,7 @@ export const selectedRecordsGroupedByTypeSelector = createSelector(
   },
 );
 
-const savedItemsSelector = createSelector(
+export const savedRecordsSelector = createSelector(
   [allRecordsWithFilterResponseSelector],
   (resources) => resources
     .filter(({ passesFilters: { inCollection } }) => inCollection),
@@ -437,7 +437,7 @@ const savedItemsSelector = createSelector(
 
 // DetailsPanel - Record Type accordion sorting
 export const savedRecordsGroupedByTypeSelector = createSelector(
-  [savedItemsSelector, activeCollectionSelector],
+  [savedRecordsSelector, activeCollectionSelector],
   (savedItems, collection) => {
     const { detailsPanelSortingState: sortingState } = collection;
     const { RECORD_TYPE } = sortFields;
@@ -448,7 +448,7 @@ export const savedRecordsGroupedByTypeSelector = createSelector(
 
 // DetailsPanel - Record Date accordion sorting
 export const savedRecordsByRecordDateSelector = createSelector(
-  [savedItemsSelector, activeCollectionSelector],
+  [savedRecordsSelector, activeCollectionSelector],
   (items, collection) => {
     const { RECORD_DATE } = sortFields;
     const isDescending = collection.detailsPanelSortingState.sortDirections[RECORD_DATE] === SORT_DESC; // eslint-disable-line max-len
@@ -497,7 +497,7 @@ export const savedRecordsByRecordDateSelector = createSelector(
 
 // DetailsPanel - Time Saved accordion sorting
 export const savedRecordsBySavedDaySelector = createSelector(
-  [savedItemsSelector, activeCollectionSelector],
+  [savedRecordsSelector, activeCollectionSelector],
   (items, collection) => {
     const { TIME_SAVED } = sortFields;
     const isDescending = collection.detailsPanelSortingState.sortDirections[TIME_SAVED] === SORT_DESC; // eslint-disable-line max-len
@@ -703,3 +703,13 @@ export const collectionsLabelsSelector = createSelector(
   (collections) => values(collections)
     .reduce((acc, { label }) => { acc.push(label.toLowerCase()); return acc; }, []),
 );
+
+export const collectionsCounterSelector = (state) => {
+  const collections = Object.values(state.collections);
+  const customCount = collections.filter(({ preBuilt }) => preBuilt === false).length;
+  const preBuiltCount = collections.filter(({ preBuilt }) => preBuilt === true).length;
+  return {
+    customCount,
+    preBuiltCount,
+  };
+};
