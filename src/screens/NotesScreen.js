@@ -212,19 +212,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   header: {
-    backgroundColor: Colors.headerBackground,
+    backgroundColor: Colors.notesHeaderBackground,
     alignItems: 'center',
     elevation: 0,
     height: 50,
   },
-  recordNotesHeader: {
-    backgroundColor: Colors.recordNotesHeaderBackground,
-  },
   headerText: {
     fontSize: 18,
-  },
-  recordHeaderText: {
-    color: 'white',
   },
   textInputContainer: {
     paddingHorizontal: 10,

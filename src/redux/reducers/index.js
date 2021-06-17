@@ -120,7 +120,7 @@ export const createCollection = (options = {}) => {
 
 const createNewCollectionRecord = () => ({
   saved: false,
-  dateSaved: null,
+  dateSaved: new Date(),
   highlight: UNMARKED,
   // highlight:
   //   0 -- unmarked
@@ -273,6 +273,21 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           records[id].saved = true;
           records[id].dateSaved = new Date();
         });
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
+      });
+    }
+    case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
+      const { resourceIds } = action.payload;
+      return produce(state, (draft) => {
+        resourceIds.forEach((id) => {
+          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
+          records[id] = records[id] ?? {};
+          records[id].saved = false;
+          records[id].dateSaved = null;
+          // eslint-disable-next-line no-param-reassign
+          draft[collectionId].lastUpdated = new Date();
+        });
       });
     }
     case actionTypes.SELECT_RESOURCE_TYPE: {
@@ -313,17 +328,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           // eslint-disable-next-line no-param-reassign
           draft[collectionId].dateRangeFilter.dateRangeEnd = dateRangeEnd.toISOString();
         }
-      });
-    }
-    case actionTypes.REMOVE_RESOURCE_FROM_COLLECTION: {
-      const { resourceIds } = action.payload;
-      return produce(state, (draft) => {
-        resourceIds.forEach((id) => {
-          const { records } = draft[collectionId]; // eslint-disable-line no-param-reassign
-          records[id] = records[id] ?? {};
-          records[id].saved = false;
-          records[id].dateSaved = null;
-        });
       });
     }
     case actionTypes.UPDATE_MARKED_RESOURCES: {
@@ -380,6 +384,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
           attributes.saved = false; // eslint-disable-line no-param-reassign
           attributes.dateSaved = null; // eslint-disable-line no-param-reassign
         });
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
@@ -437,6 +443,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         const newNote = createNote(text);
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[newNote.id] = newNote;
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.DELETE_RECORD_NOTE: {
@@ -444,6 +452,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].records[resourceId].notes[noteId];
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.EDIT_RECORD_NOTE: {
@@ -453,6 +463,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].records[resourceId].notes[noteId].text = text;
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].records[resourceId].notes[noteId].dateEdited = new Date();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.CREATE_COLLECTION_NOTE: {
@@ -461,6 +473,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].notes[newNote.id] = newNote;
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.DELETE_COLLECTION_NOTE: {
@@ -468,6 +482,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       return produce(state, (draft) => {
         // eslint-disable-next-line no-param-reassign
         delete draft[collectionId].notes[noteId];
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     case actionTypes.EDIT_COLLECTION_NOTE: {
@@ -477,6 +493,8 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].notes[noteId].text = text;
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].notes[noteId].dateEdited = new Date();
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
       });
     }
     default:
