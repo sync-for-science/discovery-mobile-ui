@@ -719,13 +719,6 @@ export const collectionsCounterSelector = (state) => {
   };
 };
 
-export const preBuiltCountSelector = (state) => {
-  const encountersCount = Object.values(state.resources).filter(({ resourceType }) => resourceType === 'Encounter').length;
-  return ({
-    encountersCount,
-  });
-};
-
 export const preBuiltDatesSelector = createSelector(
   [collectionByIdSelector, resourcesSelector],
   (collection, resources) => {
