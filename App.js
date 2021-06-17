@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
-import { LogBox, View } from 'react-native';
+import {
+  LogBox, View, ActivityIndicator, StyleSheet,
+} from 'react-native';
 import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import Roboto from 'native-base/Fonts/Roboto.ttf';
@@ -32,7 +34,18 @@ export default function App() {
 
   return (
     <RecoilRoot>
-      <RootNavigator />
+      <Suspense fallback={<View style={styles.fallbackContainer}><ActivityIndicator /></View>}>
+        <RootNavigator />
+      </Suspense>
     </RecoilRoot>
   );
 }
+
+const styles = StyleSheet.create({
+  fallbackContainer: {
+    flex: 1,
+    justifyContent:
+    'center',
+    alignItems: 'center',
+  },
+});

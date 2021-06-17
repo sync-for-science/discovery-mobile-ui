@@ -5,6 +5,8 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
+import TextStyles from '../../constants/TextStyles';
+
 const PATIENTS = {
   '86512c6f-caf6-41f4-9503-e4270b37b94f': 'Mr. Blake Eichmann',
   '87a339d0-8cae-418e-89c7-8651e6aab3c6': 'Mrs. Danae Kshlerin',
@@ -16,11 +18,15 @@ const PATIENTS = {
   'ab4e7a7d-8b0d-41e1-9ce9-3877d7615aed': 'Mrs. Renea Quigley',
 };
 
-export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[0];
+export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[5];
 
 const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
   <View style={styles.container}>
-    <View style={styles.label}><Text>Select synthetic patient:</Text></View>
+    <View style={styles.labelContainer}>
+      <Text style={styles.label}>
+        Select a fictitious patient for the evaluation
+      </Text>
+    </View>
     <Picker
       selectedValue={patientId}
       onValueChange={(itemValue) => setPatientId(itemValue)}
@@ -45,13 +51,18 @@ PatientPicker.propTypes = {
 
 export default PatientPicker;
 
+const { body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
   },
-  label: {
+  labelContainer: {
     width: '100%',
     alignItems: 'center',
+  },
+  label: {
+    ...body1,
   },
   picker: Platform.select({
     ios: {
