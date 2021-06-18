@@ -12,6 +12,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
   const allCount = collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters ? 3 : 5;
 
   let firstLine;
+  let showTakesPlaceOn;
   if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastEncounters) {
     firstLine = (
       <>
@@ -22,6 +23,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
         in your Records.
       </>
     );
+    showTakesPlaceOn = ' takes place on:';
   } else if (collectionId === PREBUILT_COLLECTIONS_LABELS.lastLabResults) {
     firstLine = (
       <>
@@ -32,6 +34,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
         they were received.
       </>
     );
+    showTakesPlaceOn = ':';
   } else {
     firstLine = (
       <>
@@ -42,6 +45,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
         they were measured.
       </>
     );
+    showTakesPlaceOn = ':';
   }
 
   let secondLine;
@@ -67,8 +71,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
           {' '}
           of them
         </Text>
-        {' '}
-        taking place on:
+        {showTakesPlaceOn}
         {' '}
         {printDates}
       </>
@@ -83,8 +86,7 @@ const PreBuiltDescriptionText = ({ preBuiltDates, collectionId }) => {
           {' '}
           of them
         </Text>
-        {' '}
-        taking place on:
+        {showTakesPlaceOn}
         {' '}
         {printDates}
       </Text>
