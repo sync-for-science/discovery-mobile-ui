@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
+import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 import Colors from '../../constants/Colors';
 import BaseText from '../Generic/BaseText';
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
   },
   modalView: {
-    height: '50%',
+    height: 475,
     width: '100%',
     backgroundColor: 'white',
     borderRadius: 20,
@@ -267,7 +268,7 @@ const styles = StyleSheet.create({
   },
   segmentControlDescriptionContainer: {
     marginBottom: 20,
-    height: 80,
+    height: hp('13%'),
     justifyContent: 'center',
   },
   segmentControlContainer: {
