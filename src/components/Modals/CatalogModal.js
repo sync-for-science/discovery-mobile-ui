@@ -3,7 +3,7 @@ import {
   shape, func, string, bool,
 } from 'prop-types';
 import {
-  Alert, Modal, StyleSheet, TouchableOpacity, View,
+  Alert, Modal, StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
 import { Entypo, Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
@@ -14,11 +14,37 @@ import CollectionSegmentControl from '../SegmentControl/CollectionSegmentControl
 import MarkedSegmentControl from '../SegmentControl/MarkedSegmentControl';
 import { clearCollection, clearMarkedResources } from '../../redux/action-creators';
 import { activeCollectionSelector, hasAnyHighlightedRecordInScope, hasAnyCollectionRecordInScope } from '../../redux/selectors';
+import TextStyles from '../../constants/TextStyles';
 
-const scDesc1 = 'All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection or highlighting/unhighlighting in the Timeline.';
-const scDesc2 = 'Only the Records in the Collection are available for Preview, but you can highlight/unhighlight them in the Timeline.';
-const scDesc3 = 'Only the Records in the Collection that are also highlighted are available for Preview.';
-const scDesc4 = 'All Records specified by the Filters and the interval in the Datepicker are available for putting in/removing from the Collection, but you can only Preview the highlights.';
+const scDesc1 = (
+  <>
+    <Text style={{ fontWeight: '700' }}>Editing the Collection and Highlights</Text>
+    {'\n'}
+    Add/remove Records to/from the Collection, or highlight/unhighlight Records of interest.
+  </>
+);
+const scDesc2 = (
+  <>
+    <Text style={{ fontWeight: '700' }}>Previewing the Collection and editing the Highlights</Text>
+    {'\n'}
+    Only view Records in the Collection and highlight/unhighlight
+    Records of interest inside the Collection.
+  </>
+);
+const scDesc3 = (
+  <>
+    <Text style={{ fontWeight: '700' }}>Previewing the Collection and the Highlights</Text>
+    {'\n'}
+    Only view Records in the Collection that are highlighted.
+  </>
+);
+const scDesc4 = (
+  <>
+    <Text style={{ fontWeight: '700' }}>Editing the Collection and previewing the Highlights</Text>
+    {'\n'}
+    From all highlighted Records, add/remove Records to/from the Collection.
+  </>
+);
 
 const SegmentControlDescription = ({ showCollectionOnly, showMarkedOnly }) => {
   let description;
@@ -33,7 +59,7 @@ const SegmentControlDescription = ({ showCollectionOnly, showMarkedOnly }) => {
   }
   return (
     <View style={styles.segmentControlDescriptionContainer}>
-      <BaseText style={styles.segmentControlDescriptionText}>{description}</BaseText>
+      <Text style={styles.segmentControlDescriptionText}>{description}</Text>
     </View>
   );
 };
@@ -189,6 +215,8 @@ const mapDispatchToProps = {
 
 export default connect(mapStateToProps, mapDispatchToProps)(CatalogModal);
 
+const { body1 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     flexDirection: 'row',
@@ -234,14 +262,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
   },
+  segmentControlDescriptionText: {
+    ...body1,
+  },
   segmentControlDescriptionContainer: {
     marginBottom: 20,
     height: 80,
     justifyContent: 'center',
-  },
-  segmentControlDescriptionText: {
-    textAlign: 'center',
-    fontStyle: 'italic',
   },
   segmentControlContainer: {
     marginBottom: 20,
