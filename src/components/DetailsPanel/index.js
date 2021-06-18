@@ -84,7 +84,7 @@ const DetailsPanel = ({
       </Header>
       {!hasSavedRecords && (
         <View style={styles.zeroStateContainer}>
-          <Text style={styles.zeroStateText}>No Records In Collection</Text>
+          <Text style={styles.zeroStateText}>No Records in Collection.</Text>
         </View>
       )}
       {hasSavedRecords && (
