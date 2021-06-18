@@ -30,7 +30,7 @@ const Data = ({
       data: [`${formatDate(minimumDate)} - ${formatDate(maximumDate)}`],
     },
     {
-      title: 'Total number of records',
+      title: 'Total number of Records',
       data: [allRecordsSortedByDate.length],
     },
     {
