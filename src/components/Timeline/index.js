@@ -29,20 +29,20 @@ const Timeline = ({ handleOpenDrawer, noRecords }) => {
           </TouchableOpacity>
         </Left>
         <DateRangePicker />
-        {!noRecords && (
         <Right>
-          <TouchableOpacity
-            style={styles.expandIcon}
-            onPress={() => setShowTimeline(!showTimeline)}
-          >
-            <Ionicons
-              name={showTimeline ? 'chevron-up' : 'chevron-down'}
-              size={24}
-              color={Colors.expandTimeline}
-            />
-          </TouchableOpacity>
+          {!noRecords && (
+            <TouchableOpacity
+              style={styles.expandIcon}
+              onPress={() => setShowTimeline(!showTimeline)}
+            >
+              <Ionicons
+                name={showTimeline ? 'chevron-up' : 'chevron-down'}
+                size={24}
+                color={Colors.expandTimeline}
+              />
+            </TouchableOpacity>
+          )}
         </Right>
-        )}
       </View>
       {showTimeline && !noRecords && <TimelineChart />}
     </View>
