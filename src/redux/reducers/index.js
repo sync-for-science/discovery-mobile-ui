@@ -363,6 +363,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         Object.values(draft[collectionId].records).forEach((attributes) => {
           attributes.highlight = UNMARKED; // eslint-disable-line no-param-reassign
         });
+        draft[collectionId].showMarkedOnly = false; // eslint-disable-line no-param-reassign
       });
     }
     case actionTypes.CREATE_COLLECTION: {
@@ -392,6 +393,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         });
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].lastUpdated = new Date();
+        draft[collectionId].showCollectionOnly = false; // eslint-disable-line no-param-reassign
       });
     }
     case actionTypes.DUPLICATE_COLLECTION: {
