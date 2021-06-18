@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, SafeAreaView, StatusBar, Button,
+  StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, Text, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
@@ -27,7 +27,13 @@ const ProfileScreen = () => (
       <Data />
     </ScrollView>
     <Logout>
-      <Button title="Logout" color={Colors.primary} />
+      <View style={styles.logoutContainer}>
+        <TouchableOpacity style={styles.logout}>
+          <Text style={styles.logoutText}>
+            Logout
+          </Text>
+        </TouchableOpacity>
+      </View>
     </Logout>
   </SafeAreaView>
 );
@@ -49,5 +55,21 @@ const styles = StyleSheet.create({
   headerText: {
     color: 'white',
     fontSize: 18,
+  },
+  logout: {
+    backgroundColor: Colors.logoBlue,
+    paddingVertical: 8,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 20,
+  },
+  logoutContainer: {
+    alignItems: 'center',
+    marginBottom: 12,
   },
 });

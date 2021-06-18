@@ -1,7 +1,7 @@
 import React from 'react';
 import { arrayOf, shape } from 'prop-types';
 import {
-  StyleSheet, View, TouchableOpacity, ScrollView,
+  StyleSheet, View, TouchableOpacity, ScrollView, Text,
 } from 'react-native';
 import { PanGestureHandler } from 'react-native-gesture-handler';
 import { connect, useSelector } from 'react-redux';
@@ -13,11 +13,15 @@ import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-ex
 import Timeline from '../Timeline';
 import ResourceTypePicker from '../ResourceTypePicker';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
-import { activeCollectionSelector, selectedRecordsGroupedByTypeSelector, savedRecordsSelector } from '../../redux/selectors';
+import {
+  activeCollectionSelector, selectedRecordsGroupedByTypeSelector,
+  savedRecordsSelector, timelineIntervalsSelector,
+} from '../../redux/selectors';
 import CatalogModal from '../Modals/CatalogModal';
 import FilterDrawer from '../FilterDrawer';
 import Colors from '../../constants/Colors';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
+import TextStyles from '../../constants/TextStyles';
 
 const CatalogScreenHeader = ({ collection, navigation }) => {
   const savedRecords = useSelector(savedRecordsSelector).length;
@@ -47,37 +51,57 @@ CatalogScreenHeader.propTypes = {
 CatalogScreenHeader.defaultProps = {
 };
 
-const Catalog = ({ collection, selectedRecordsGroupedByType, navigation }) => (
-  <PanGestureHandler
-    activeOffsetX={-10}
-    failOffsetX={[-20, 0]}
-    onGestureEvent={() => navigation.navigate('CollectionDetails')}
-  >
-    <View style={styles.drawerContainer}>
-      <FilterDrawer>
-        <CatalogScreenHeader collection={collection} navigation={navigation} />
-        <Timeline />
-        <ResourceTypePicker />
-        <ScrollView style={styles.scrollView}>
-          <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
-        </ScrollView>
-      </FilterDrawer>
-    </View>
-  </PanGestureHandler>
-);
+const Catalog = ({
+  collection, selectedRecordsGroupedByType, navigation, timelineIntervals,
+}) => {
+  const noRecords = timelineIntervals.recordCount === 0;
+  return (
+    <PanGestureHandler
+      activeOffsetX={-10}
+      failOffsetX={[-20, 0]}
+      onGestureEvent={() => navigation.navigate('CollectionDetails')}
+    >
+      <View style={styles.drawerContainer}>
+        <FilterDrawer>
+          <CatalogScreenHeader collection={collection} navigation={navigation} />
+          <Timeline noRecords={noRecords} />
+          {noRecords && (
+          <View style={styles.zeroStateContainer}>
+            <Text style={styles.zeroStateText}>
+              No Records available based on the Filters or the time interval.
+            </Text>
+          </View>
+          )}
+          {!noRecords && (
+          <>
+            <ResourceTypePicker />
+            <ScrollView style={styles.scrollView}>
+              <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
+            </ScrollView>
+          </>
+          )}
+        </FilterDrawer>
+      </View>
+    </PanGestureHandler>
+  );
+};
 
 Catalog.propTypes = {
   collection: shape({}).isRequired,
   selectedRecordsGroupedByType: arrayOf(shape({}).isRequired).isRequired,
   navigation: shape({}).isRequired,
+  timelineIntervals: shape({}).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   collection: activeCollectionSelector(state),
   selectedRecordsGroupedByType: selectedRecordsGroupedByTypeSelector(state),
+  timelineIntervals: timelineIntervalsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(Catalog);
+
+const { h5 } = TextStyles;
 
 const styles = StyleSheet.create({
   header: {
@@ -99,5 +123,18 @@ const styles = StyleSheet.create({
   headerTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  zeroStateContainer: {
+    flex: 1,
+    paddingTop: 28,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  zeroStateText: {
+    ...h5,
+    fontWeight: '300',
+    textAlign: 'center',
+    color: Colors.darkgrey,
   },
 });

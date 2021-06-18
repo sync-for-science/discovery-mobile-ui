@@ -11,7 +11,10 @@ const CollectionsIndex = ({
   collections,
 }) => (
   <SafeAreaView style={styles.safeAreaView}>
-    <ScrollView contentContainerStyle={styles.collectionRowContainer}>
+    <ScrollView
+      contentContainerStyle={styles.collectionRowContainer}
+      keyboardShouldPersistTaps="handled"
+    >
       {Object.entries(collections).map(([id, { label }]) => (
         <CollectionRow
           key={id}

@@ -131,13 +131,15 @@ const NotesScreen = ({
       </Header>
       <ScrollView>
         {isResourceNotes && (
-        <ResourceCard
-          resourceId={resource.id}
-          resource={resource}
-          handleEditNote={handleEditNote}
-          editNoteId={editNoteId}
-          fromNotesScreen
-        />
+          <View style={styles.resourceCardContainer}>
+            <ResourceCard
+              resourceId={resource.id}
+              resource={resource}
+              handleEditNote={handleEditNote}
+              editNoteId={editNoteId}
+              fromNotesScreen
+            />
+          </View>
         )}
         {!isResourceNotes && (
           <>
@@ -264,5 +266,9 @@ const styles = StyleSheet.create({
   headerTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  resourceCardContainer: {
+    backgroundColor: Colors.primaryLight,
+    paddingTop: 10,
   },
 });

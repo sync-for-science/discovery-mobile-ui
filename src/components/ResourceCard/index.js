@@ -41,7 +41,7 @@ const ResourceCard = ({
           fromNotesScreen={fromNotesScreen}
         />
       </View>
-      <View style={styles.body}>
+      <View style={[styles.body, fromNotesScreen ? {} : styles.bottomBorder]}>
         <CardBody
           resource={resource}
         />
@@ -124,6 +124,8 @@ const styles = StyleSheet.create({
   body: {
     paddingHorizontal: 10,
     paddingBottom: 15,
+  },
+  bottomBorder: {
     borderBottomWidth: 1,
     borderBottomColor: Colors.lightgrey,
   },

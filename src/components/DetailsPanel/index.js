@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  StyleSheet, View, SafeAreaView, TouchableOpacity, ScrollView,
+  StyleSheet, View, SafeAreaView, TouchableOpacity, ScrollView, Text,
 } from 'react-native';
 import {
   Header, Right, Title, Left,
@@ -21,8 +21,8 @@ import {
 } from '../../redux/selectors';
 import SubTypeAccordionsContainer from '../SubTypeAccordionsContainer';
 import TimeSavedAccordionsContainer from '../TimeSavedAccordionsContainer';
-import BaseText from '../Generic/BaseText';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
+import TextStyles from '../../constants/TextStyles';
 
 const DetailsPanel = ({
   navigation, collection, savedRecordsGroupedByType, savedRecords,
@@ -84,7 +84,7 @@ const DetailsPanel = ({
       </Header>
       {!hasSavedRecords && (
         <View style={styles.zeroStateContainer}>
-          <BaseText style={styles.zeroStateText}>No Records In Collection</BaseText>
+          <Text style={styles.zeroStateText}>No Records in Collection.</Text>
         </View>
       )}
       {hasSavedRecords && (
@@ -117,6 +117,8 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, null)(DetailsPanel);
 
+const { h5 } = TextStyles;
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -134,10 +136,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
+    paddingTop: 48,
   },
   zeroStateText: {
-    fontStyle: 'italic',
+    ...h5,
+    fontWeight: '300',
+    color: Colors.darkgrey,
   },
   headerTitleContainer: {
     flexDirection: 'row',
