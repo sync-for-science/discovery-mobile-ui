@@ -2,9 +2,10 @@ import {
   arrayOf, shape, func, string, bool, number,
 } from 'prop-types';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet, TouchableOpacity, View, Text,
+} from 'react-native';
 import { connect } from 'react-redux';
-import { Text } from 'native-base';
 
 import Colors from '../../constants/Colors';
 import { actionTypes } from '../../redux/action-types';
@@ -52,58 +53,29 @@ const MarkedIcon = ({
 
   const iconCount = (isAccordion && markedOrFocusedCount) ? markedOrFocusedCount : null;
 
-  let iconStyle;
-  let textStyle;
-  if (allAreMarked) {
-    if (showMarkedOnly) {
-      iconStyle = styles.fullyMarkedDisabled;
-      textStyle = textStyles.fullyMarkedDisabled;
-    } else {
-      iconStyle = styles.fullyMarked;
-      textStyle = textStyles.fullyMarked;
-    }
-  } else if (markedOrFocusedCount) {
-    if (showMarkedOnly) {
-      iconStyle = styles.hasMarkedDisabled;
-      textStyle = textStyles.hasMarkedDisabled;
-    } else {
-      iconStyle = styles.hasMarked;
-      textStyle = textStyles.hasMarked;
-    }
-  } else {
-    iconStyle = styles.unmarked;
-    textStyle = textStyles.unmarked;
-  }
-
   const markedIconFill = showMarkedOnly ? Colors.hasMarkedDisabled : null;
 
   const markedIconDisplay = markedOrFocusedCount
     ? <MarkedIconSVG height={25} width={25} fill={markedIconFill} />
     : <MarkedIconOutlineSVG height={25} width={25} />;
 
-  if (isAccordion) {
-    return (
+  return (
+    <>
+      {isAccordion && (
+      <View style={styles.countContainer}>
+        <Text style={[textStyles.text, showMarkedOnly ? textStyles.textDisabled : {}]}>
+          {iconCount}
+        </Text>
+      </View>
+      )}
       <TouchableOpacity
-        style={[
-          styles.base,
-          iconStyle,
-        ]}
+        style={styles.base}
         onPress={handlePress}
         disabled={showMarkedOnly}
       >
-        <Text style={[textStyles.base, textStyle]}>{iconCount}</Text>
+        {markedIconDisplay}
       </TouchableOpacity>
-    );
-  }
-
-  return (
-    <TouchableOpacity
-      style={styles.base}
-      onPress={handlePress}
-      disabled={showMarkedOnly}
-    >
-      {markedIconDisplay}
-    </TouchableOpacity>
+    </>
   );
 };
 
@@ -153,7 +125,7 @@ const styles = StyleSheet.create({
     width: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginLeft: 5,
+    marginLeft: 2,
   },
   fullyMarked: {
     borderColor: Colors.fullyMarked,
@@ -172,26 +144,37 @@ const styles = StyleSheet.create({
   unmarked: {
     borderColor: Colors.unmarked,
   },
+  countContainer: {
+    minWidth: 20,
+    alignItems: 'flex-end',
+  },
 });
 
 const textStyles = StyleSheet.create({
-  base: {
-    color: 'transparent',
+  text: {
+    color: 'black',
+    fontWeight: '700',
   },
-  fullyMarked: {
-    color: Colors.fullyMarked,
-    fontWeight: 'bold',
+  textDisabled: {
+    color: Colors.darkgrey2,
   },
-  hasMarked: {
-    color: Colors.fullyMarked,
-  },
-  fullyMarkedDisabled: {
-    color: Colors.lightgrey,
-    fontWeight: 'bold',
-  },
-  hasMarkedDisabled: {
-    color: Colors.lightgrey,
-  },
-  unmarked: {
-  },
+  // base: {
+  //   color: 'transparent',
+  // },
+  // fullyMarked: {
+  //   color: 'black',
+  //   fontWeight: 'bold',
+  // },
+  // hasMarked: {
+  //   color: 'black',
+  // },
+  // fullyMarkedDisabled: {
+  //   color: Colors.lightgrey,
+  //   fontWeight: 'bold',
+  // },
+  // hasMarkedDisabled: {
+  //   color: Colors.lightgrey,
+  // },
+  // unmarked: {
+  // },
 });
