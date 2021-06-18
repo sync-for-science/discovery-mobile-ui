@@ -15,7 +15,9 @@ const UpdatesScreen = ({ navigation, collections, collectionsCounter }) => (
   <SafeAreaView style={styles.safeAreaView}>
     <Header style={styles.header}>
       <View style={styles.headerTitleContainer}>
-        {collectionsCounter.preBuilt > 0 && <HeaderCountIcon count={collectionsCounter.preBuilt} />}
+        {collectionsCounter.preBuiltCount > 0 && (
+        <HeaderCountIcon count={collectionsCounter.preBuiltCount} />
+        )}
         <Title style={styles.headerText}>Updates</Title>
       </View>
     </Header>
