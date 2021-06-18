@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { func } from 'prop-types';
+import { bool, func } from 'prop-types';
 import {
   StyleSheet, View, TouchableOpacity,
 } from 'react-native';
@@ -10,7 +10,7 @@ import DateRangePicker from './DateRangePicker';
 import TimelineChart from './TimelineChart';
 import Colors from '../../constants/Colors';
 
-const Timeline = ({ handleOpenDrawer }) => {
+const Timeline = ({ handleOpenDrawer, noRecords }) => {
   const [showTimeline, setShowTimeline] = useState(true);
 
   return (
@@ -29,6 +29,7 @@ const Timeline = ({ handleOpenDrawer }) => {
           </TouchableOpacity>
         </Left>
         <DateRangePicker />
+        {!noRecords && (
         <Right>
           <TouchableOpacity
             style={styles.expandIcon}
@@ -41,14 +42,16 @@ const Timeline = ({ handleOpenDrawer }) => {
             />
           </TouchableOpacity>
         </Right>
+        )}
       </View>
-      {showTimeline && <TimelineChart />}
+      {showTimeline && !noRecords && <TimelineChart />}
     </View>
   );
 };
 
 Timeline.propTypes = {
   handleOpenDrawer: func,
+  noRecords: bool.isRequired,
 };
 
 Timeline.defaultProps = {
