@@ -177,7 +177,7 @@ const CatalogModal = ({
                 ]}
                 onPress={handleClearMarked}
               >
-                <BaseText variant={clearHighlightedEnabled ? 'buttonDestructive' : 'buttonDisabled'}>Clear Highlighted Records</BaseText>
+                <BaseText variant={clearHighlightedEnabled ? 'buttonDestructive' : 'buttonDisabled'}>Clear Highlights</BaseText>
               </TouchableOpacity>
             </View>
           </View>
