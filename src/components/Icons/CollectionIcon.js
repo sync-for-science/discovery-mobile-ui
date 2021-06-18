@@ -27,7 +27,7 @@ const CollectionIcon = ({
   }, 0);
   const iconCount = (showCount && resourceCount) ? resourceCount : null;
 
-  const handlePress = () => (resourceCount
+  const handlePress = () => (resourceCount === resourceIds.length
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
