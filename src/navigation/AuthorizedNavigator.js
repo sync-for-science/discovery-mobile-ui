@@ -1,11 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
+import UpdatesScreen from '../screens/UpdatesScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
@@ -23,6 +24,8 @@ function selectIconName(name, focused) {
       return focused ? 'md-grid-sharp' : 'md-grid-outline';
     case 'Collections':
       return focused ? 'albums' : 'albums-outline';
+    case 'Updates':
+      return focused ? 'newspaper-variant' : 'newspaper-variant-outline';
     default:
       return '';
   }
@@ -31,11 +34,20 @@ function selectIconName(name, focused) {
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
   tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
-    <Ionicons
-      name={selectIconName(name, focused)}
-      size={size}
-      color={color}
-    />
+    name === 'Updates'
+      ? (
+        <MaterialCommunityIcons
+          name={selectIconName(name, focused)}
+          size={30}
+          color={color}
+        />
+      ) : (
+        <Ionicons
+          name={selectIconName(name, focused)}
+          size={size}
+          color={color}
+        />
+      )
   ),
 });
 
@@ -76,10 +88,14 @@ const AuthorizedNavigator = () => (
           height: 84,
         },
         labelStyle: { fontSize: 12 },
+        tabBarIcon: {
+          size: 5,
+        },
       }}
     >
       <HomeTab.Screen name="Profile" component={ProfileScreen} />
       <HomeTab.Screen name="Summary" component={SummaryScreen} />
+      <HomeTab.Screen name="Updates" component={UpdatesScreen} />
       <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
     </HomeTab.Navigator>
   </StateProvider>
