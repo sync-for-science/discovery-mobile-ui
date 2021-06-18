@@ -2,7 +2,9 @@ import {
   arrayOf, bool, func, string, shape,
 } from 'prop-types';
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Text } from 'react-native';
+import {
+  StyleSheet, TouchableOpacity, Text, View,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
@@ -29,13 +31,6 @@ const CollectionIcon = ({
     ? removeResourceFromCollectionAction(collectionId, resourceIds)
     : addResourceToCollectionAction(collectionId, resourceIds));
 
-  // eslint-disable-next-line no-nested-ternary, max-len
-  const iconStyle = resourceCount
-    ? (showCollectionOnly ? styles.hasResourceDisabled : styles.hasResource)
-    : null;
-
-  const textStyle = showCollectionOnly ? styles.textDisabled : styles.text;
-
   // eslint-disable-next-line no-nested-ternary
   const iconColor = resourceCount
     ? showCollectionOnly
@@ -45,29 +40,22 @@ const CollectionIcon = ({
 
   const iconType = resourceCount ? 'bookmark' : 'bookmark-outline';
 
-  if (showCount) {
-    return (
+  return (
+    <>
+      {showCount && (
+        <View style={styles.countContainer}>
+          <Text style={[styles.text, showCollectionOnly ? styles.textDisabled : {}]}>
+            {iconCount}
+          </Text>
+        </View>
+      )}
       <TouchableOpacity
-        style={[
-          styles.base,
-          iconStyle,
-        ]}
         onPress={handlePress}
         disabled={showCollectionOnly}
       >
-        <Text style={textStyle}>{iconCount}</Text>
+        <Ionicons name={iconType} size={28} color={iconColor} />
       </TouchableOpacity>
-    );
-  }
-
-  return (
-    <TouchableOpacity
-      style={styles.bookmarkContainer}
-      onPress={handlePress}
-      disabled={showCollectionOnly}
-    >
-      <Ionicons name={iconType} size={28} color={iconColor} />
-    </TouchableOpacity>
+    </>
   );
 };
 
@@ -96,6 +84,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(CollectionIcon);
 const styles = StyleSheet.create({
   text: {
     color: 'black',
+    fontWeight: '700',
   },
   textDisabled: {
     color: Colors.darkgrey2,
@@ -120,7 +109,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.collectionIconDisabled,
     borderWidth: 2,
   },
-  bookmarkContainer: {
-    marginLeft: 4,
+  countContainer: {
+    minWidth: 20,
+    alignItems: 'flex-end',
   },
 });
