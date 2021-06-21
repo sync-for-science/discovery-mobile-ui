@@ -24,7 +24,7 @@ AddCollectionButton.propTypes = {
   onPress: func.isRequired,
 };
 
-const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter }) => {
+const CollectionsIndexHeader = ({ showNewCollectionButton, collectionsCounter }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
   const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
@@ -55,7 +55,7 @@ const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter }) => {
   );
 };
 
-CollectionsIndex.propTypes = {
+CollectionsIndexHeader.propTypes = {
   showNewCollectionButton: bool.isRequired,
   collectionsCounter: shape({}).isRequired,
 };
@@ -64,7 +64,7 @@ const mapStateToProps = (state) => ({
   collectionsCounter: collectionsCounterSelector(state),
 });
 
-export default connect(mapStateToProps, null)(CollectionsIndex);
+export default connect(mapStateToProps, null)(CollectionsIndexHeader);
 
 const styles = StyleSheet.create({
   header: {
