@@ -77,10 +77,6 @@ export const getPatientAgeAtResource = (duration) => {
   return 'No Age Found';
 };
 
-export const getResourceDate = (resource) => (
-  resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
-);
-
 // TODO: Ensure these always receive a Date or empty value, and perform Date(...) casting in caller?
 export const formatDate = (date) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
 
@@ -89,6 +85,10 @@ export const formatDateShortYear = (date) => (date ? format(new Date(date), UI_D
 export const formatDateTime = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_LONG) : '');
 
 export const formatDateShort = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT) : '');
+
+export const getResourceDate = (resource) => (
+  resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
+);
 
 const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
 
