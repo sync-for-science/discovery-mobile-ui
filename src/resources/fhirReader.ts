@@ -84,7 +84,7 @@ export const getPatientAge = (patient: fhir4.Patient) => {
 // };
 
 // TODO: Ensure these always receive a Date or empty value, and perform Date(...) casting in caller?
-export const formatDate = (date: string | undefined) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
+export const formatDate = (date: string | Date | undefined) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
 
 export const formatDateShortYear = (date: string) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT_YEAR) : '');
 
@@ -92,7 +92,7 @@ export const formatDateTime = (date: string) => (date ? format(new Date(date), U
 
 export const formatDateShort = (date: string) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT) : '');
 
-export const getResourceDate = (resource: fhir4.Resource) => (
+export const getResourceDate = (resource: s4s.Resource) => (
   resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
 );
 
@@ -155,7 +155,7 @@ export const getValueQuantity = (resource: fhir4.Observation) => (resource.value
 
 export const getBloodPressureData = (resource: fhir4.Observation) => {
   if (resource.component) {
-    const bloodPressureData: Array<Object> = [];
+    const bloodPressureData: Array<s4s.BloodPressureData> = [];
     resource.component.forEach((measurement: fhir4.ObservationComponent) => {
       bloodPressureData.push(
         {
