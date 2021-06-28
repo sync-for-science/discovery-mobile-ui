@@ -144,6 +144,7 @@ export const getRefRange = (resource: fhir4.Observation) : string => {
     const highValue = resource.referenceRange?.[0]?.high?.value;
     const highUnits = resource.referenceRange?.[0]?.high?.unit;
 
+    // TODO: this needs to be fixed, since `value` fields are of type Number -- which can be 0:
     return lowValue && lowUnits && highValue && highUnits
       ? `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`
       : resource.referenceRange?.text;
