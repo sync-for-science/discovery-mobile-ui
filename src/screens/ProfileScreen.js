@@ -26,15 +26,15 @@ const ProfileScreen = () => (
       <Demographics />
       <Data />
     </ScrollView>
-    <Logout>
-      <View style={styles.logoutContainer}>
-        <TouchableOpacity style={styles.logout}>
+    <View style={styles.logoutContainer}>
+      <TouchableOpacity style={styles.logout}>
+        <Logout>
           <Text style={styles.logoutText}>
             Logout
           </Text>
-        </TouchableOpacity>
-      </View>
-    </Logout>
+        </Logout>
+      </TouchableOpacity>
+    </View>
   </SafeAreaView>
 );
 
