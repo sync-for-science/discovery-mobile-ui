@@ -6,12 +6,27 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {
   Header, Body, Title,
 } from 'native-base';
+import { func } from 'prop-types';
 
 import Colors from '../constants/Colors';
 import UserInfo from '../components/Profile/UserInfo';
 import Demographics from '../components/Profile/Demographics';
 import Data from '../components/Profile/Data';
 import Logout from '../components/Login/Logout';
+
+const LogoutButton = ({ onPress }) => (
+  <View style={styles.logoutContainer}>
+    <TouchableOpacity style={styles.logout} onPress={onPress}>
+      <Text style={styles.logoutText}>
+        Logout
+      </Text>
+    </TouchableOpacity>
+  </View>
+);
+
+LogoutButton.propTypes = {
+  onPress: func.isRequired,
+};
 
 const ProfileScreen = () => (
   <SafeAreaView style={styles.root}>
@@ -27,13 +42,7 @@ const ProfileScreen = () => (
       <Data />
     </ScrollView>
     <Logout>
-      <View style={styles.logoutContainer}>
-        <TouchableOpacity style={styles.logout}>
-          <Text style={styles.logoutText}>
-            Logout
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <LogoutButton />
     </Logout>
   </SafeAreaView>
 );
