@@ -24,10 +24,12 @@ const RootNavigator = () => {
         // eslint-disable-next-line no-nested-ternary
         !isOnboardingComplete
           ? <OnboardingNavigator handleOnboardingState={handleOnboardingState} />
-          : !authentication.authResult
-            ? <UnauthorizedNavigator handleOnboardingState={handleOnboardingState} />
-            : <AuthorizedNavigator />
-}
+          : (
+            !authentication.authResult
+              ? <UnauthorizedNavigator handleOnboardingState={handleOnboardingState} />
+              : <AuthorizedNavigator />
+          )
+      }
     </NavigationContainer>
   );
 };
