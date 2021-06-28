@@ -13,6 +13,7 @@ import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
 import TextStyles from '../constants/TextStyles';
+import ROUTES from '../constants/routes';
 
 const CollectionsIndexCustom = connect((state) => ({
   collections: customCollectionsSelector(state),
@@ -38,10 +39,10 @@ const Tab = createMaterialTopTabNavigator();
 const CollectionsListScreen = ({ route, collectionsCounter }) => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader
-      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
+      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== ROUTES.COLLECTIONS.UPDATES}
     />
     <Tab.Navigator
-      initialRouteName="Builds"
+      initialRouteName={ROUTES.COLLECTIONS.BUILDS}
       tabBarOptions={{
         labelStyle: styles.tabText,
         indicatorStyle: {
@@ -50,14 +51,14 @@ const CollectionsListScreen = ({ route, collectionsCounter }) => (
       }}
     >
       <Tab.Screen
-        name="Builds"
+        name={ROUTES.COLLECTIONS.BUILDS}
         options={{
           title: `${collectionsCounter.customCount} Builds`,
         }}
         component={CollectionsIndexCustom}
       />
       <Tab.Screen
-        name="Updates"
+        name={ROUTES.COLLECTIONS.UPDATES}
         options={{
           title: `${collectionsCounter.preBuiltCount} Updates`,
         }}
