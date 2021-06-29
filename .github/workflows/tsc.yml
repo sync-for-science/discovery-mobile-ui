@@ -1,11 +1,7 @@
-name: Expo Publish
-on:
-  push:
-    branches:
-      - master
+name: Type Check
+on: push
 jobs:
-  publish:
-    name: Install and publish
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,9 +17,5 @@ jobs:
       - name: Install Node.js Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
-      - uses: expo/expo-github-action@v5
-        with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
-      - name: Publish
-        run: expo publish
+      - name: Run ESLint
+        run: node_modules/.bin/tsc --noEmit
