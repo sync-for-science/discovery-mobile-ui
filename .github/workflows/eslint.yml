@@ -18,4 +18,4 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
       - name: Run ESLint
-        run: node_modules/.bin/eslint . --ext .js,.jsx
+        run: node_modules/.bin/eslint . --ext .js,.jsx,.ts,.tsx
