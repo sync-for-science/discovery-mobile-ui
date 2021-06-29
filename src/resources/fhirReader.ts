@@ -110,6 +110,7 @@ export const getOrderedBy = (resource: fhir4.NutritionOrder) : string => titleCa
 
 // assertedDate is an extension?
 //     http://www.hl7.org/FHIR/extension-condition-asserteddate.html
+//     "Comment: The assertedDate is in the context of the recording practitioner and might not be the same as the recordedDate."
 export const getAssertedDate = (resource: fhir4.Condition) : string => formatDate(resource.assertedDate);
 
 export const getStatus = (resource: fhir4.Observation) : string => titleCase(resource.status);
