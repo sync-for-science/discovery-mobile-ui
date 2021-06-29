@@ -106,7 +106,7 @@ export const getOnsetDateTime = (resource: fhir4.Condition) : string => formatDa
 export const getAbatementDateTime = (resource: fhir4.Condition) : string => formatDate(resource.abatementDateTime);
 
 // only NutritionOrder has orderer?
-export const getOrderedBy = (resource: fhir4.Resource) : string => titleCase(resource.orderer?.display);
+export const getOrderedBy = (resource: fhir4.NutritionOrder) : string => titleCase(resource.orderer?.display);
 
 // assertedDate is an extension?
 //     http://www.hl7.org/FHIR/extension-condition-asserteddate.html
