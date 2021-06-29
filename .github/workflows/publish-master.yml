@@ -13,11 +13,13 @@ jobs:
         with:
           node-version: 14.x
       - uses: actions/cache@v2
+        id: cache
         with:
           path: |
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
-      - name: Install Node.js dependencies
+      - name: Install Node.js Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
         run: yarn install --frozen-lockfile
       - uses: expo/expo-github-action@v5
         with:
