@@ -80,7 +80,13 @@ module.exports = {
             ignoreTemplateLiterals: true,
           },
         ],
-        '@typescript-eslint/no-use-before-define': ['error'],
+        '@typescript-eslint/restrict-template-expressions': ['warn', {
+          allowNumber: true,
+          allowBoolean: true,
+          allowAny: false,
+          allowNullish: false,
+        }],
+
       },
     },
   ],
