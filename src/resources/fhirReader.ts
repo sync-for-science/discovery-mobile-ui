@@ -138,18 +138,17 @@ export const getValueRatio = (resource: fhir4.Observation) : string => (
 export const getRefRangeLabel = (resource: fhir4.Observation) : string => resource.referenceRange?.[0]?.meaning?.coding?.[0]?.display || 'REFERENCE RANGE';
 
 export const getRefRange = (resource: fhir4.Observation) : string => {
-  if (resource.referenceRange) {
-    const lowValue = resource.referenceRange?.[0]?.low?.value;
-    const lowUnits = resource.referenceRange?.[0]?.low?.unit;
-    const highValue = resource.referenceRange?.[0]?.high?.value;
-    const highUnits = resource.referenceRange?.[0]?.high?.unit;
+  const firstReferenceRange = resource.referenceRange?.[0];
+  if (firstReferenceRange) {
+    const lowValue = firstReferenceRange.low?.value;
+    const lowUnits = firstReferenceRange.low?.unit;
+    const highValue = firstReferenceRange.high?.value;
+    const highUnits = firstReferenceRange.high?.unit;
 
     if (lowValue !== undefined && lowUnits && highValue !== undefined && highUnits) {
       return `${lowValue}${(lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`;
     }
-    // TODO: remove this?
-    //       "TS2339: Property 'text' does not exist on type 'ObservationReferenceRange[]'."
-    return resource.referenceRange?.text;
+    return firstReferenceRange.text || '';
   }
   return '';
 };
