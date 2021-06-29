@@ -145,7 +145,7 @@ export const getRefRange = (resource: fhir4.Observation) : string => {
     const highUnits = resource.referenceRange?.[0]?.high?.unit;
 
     if (lowValue !== undefined && lowUnits && highValue !== undefined && highUnits) {
-      return `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`;
+      return `${lowValue}${(lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`;
     }
     // TODO: remove this?
     //       "TS2339: Property 'text' does not exist on type 'ObservationReferenceRange[]'."
