@@ -1,18 +1,21 @@
-on:
-  push:
-  pull_request:
-
+name: Type Check
+on: push
 jobs:
-  tsc:
-    name: tsc
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: install node v12
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          node-version: 12
-      - name: yarn install
-        run: yarn install
-      - name: tsc
-        uses: icrawl/action-tsc@v1
+          node-version: 14.x
+      - uses: actions/cache@v2
+        id: cache
+        with:
+          path: |
+            node_modules
+          key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+      - name: Install Node.js Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+      - name: Run ESLint
+        run: node_modules/.bin/tsc --noEmit
