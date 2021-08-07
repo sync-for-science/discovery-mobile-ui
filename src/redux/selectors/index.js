@@ -33,6 +33,8 @@ export const customCollectionsSelector = (state) => Object.entries(state.collect
     }
     return acc;
   }, {});
+
+
 export const prebuiltCollectionsSelector = (state) => Object.entries(state.collections)
   .reduce((acc, [id, collection]) => {
     if (collection.preBuilt) {
@@ -42,6 +44,7 @@ export const prebuiltCollectionsSelector = (state) => Object.entries(state.colle
   }, {});
 
 export const activeCollectionIdSelector = (state) => state.activeCollectionId;
+export const creatingCollectionSelector = (state) => state.creatingCollection;
 
 export const collectionByIdSelector = createSelector(
   [collectionsSelector, (_, ownProps) => ownProps],

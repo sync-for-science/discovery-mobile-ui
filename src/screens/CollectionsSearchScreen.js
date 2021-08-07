@@ -9,8 +9,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 
 import { customCollectionsSelector, prebuiltCollectionsSelector, collectionsCounterSelector } from '../redux/selectors';
-import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexSearch from '../components/Collections/indexSearch';
+import CollectionsIndex from '../components/Collections/index';
 
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
@@ -45,7 +45,7 @@ const CustomCollectionsIndexHeader = connect((state) => ({
 const Tab = createMaterialTopTabNavigator();
 
 // Note: when 1st landing on this screen, `getFocusedRouteNameFromRoute(route) === undefined` ?
-const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
+const CollectionsSearchScreen = ({ route, collectionsCounter, navigation }) => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader
       showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
@@ -72,7 +72,7 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
   </SafeAreaView>
 );
 
-CollectionsListScreen.propTypes = {
+CollectionsSearchScreen.propTypes = {
   navigation: shape({}).isRequired, // eslint-disable-line react/no-unused-prop-types
   route: shape({}).isRequired,
   collectionsCounter: shape({}).isRequired,
@@ -82,7 +82,7 @@ const mapStateToProps = (state) => ({
   collectionsCounter: collectionsCounterSelector(state),
 });
 
-export default connect(mapStateToProps, null)(CollectionsListScreen);
+export default connect(mapStateToProps, null)(CollectionsSearchScreen);
 
 const { body1 } = TextStyles;
 
@@ -98,4 +98,5 @@ const styles = StyleSheet.create({
     textTransform: 'none',
     ...body1,
   },
+
 });

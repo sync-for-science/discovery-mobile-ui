@@ -7,18 +7,24 @@ import { connect } from 'react-redux';
 import {
   shape, number, string,
 } from 'prop-types';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { collectionsSelector, collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
+import { isAddingNewCollection, selectCollection } from '../../redux/action-creators';
 
 const CollectionRowActionIcon = ({
   collections,
   collectionId,
   collectionLabel,
   collectionsCount,
+  isAddingNewCollectionAction,
+  selectCollectionAction,
+
 }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
+  const navigation = useNavigation();
 
   const handlePress = () => {
     if (collections[collectionId].preBuilt) {
@@ -41,11 +47,13 @@ const CollectionRowActionIcon = ({
       ActionSheetIOS.showActionSheetWithOptions({
         options: [
           'Cancel',
+          'Edit Collection',
+
           CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME].title,
           CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
           CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE].title,
         ],
-        destructiveButtonIndex: 3,
+        destructiveButtonIndex: 4,
         cancelButtonIndex: 0,
         userInterfaceStyle: 'dark',
       },
@@ -53,10 +61,14 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
+          selectCollectionAction(collectionId)
+          isAddingNewCollectionAction(false);
+          navigation.navigate('CollectionInput')
+        }else if (buttonIndex === 2) {
           setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
-        } else if (buttonIndex === 2) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
         } else if (buttonIndex === 3) {
+          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
+        } else if (buttonIndex === 4) {
           if (collectionsCount <= 1) {
             setCollectionsDialogText(
               CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR],
@@ -96,6 +108,12 @@ CollectionRowActionIcon.propTypes = {
 const mapStateToProps = (state) => ({
   collections: collectionsSelector(state),
   collectionsCount: collectionsCountSelector(state),
+
 });
 
-export default connect(mapStateToProps, null)(CollectionRowActionIcon);
+const mapDispatchToProps = {
+  isAddingNewCollectionAction: isAddingNewCollection,
+  selectCollectionAction: selectCollection,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps, null)(CollectionRowActionIcon);

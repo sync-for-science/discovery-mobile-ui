@@ -6,13 +6,14 @@ import {
   func, number, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
-import { selectCollection } from '../../redux/action-creators';
+import { selectCollection, isAddingNewCollection } from '../../redux/action-creators';
 import {
   collectionByIdSelector,
+  creatingCollectionSelector
 } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
 import PreBuiltDescriptionText from './PreBuiltDescriptionText';
@@ -71,10 +72,14 @@ const CollectionRow = ({
   label,
   navigation,
   selectCollectionAction,
+  isAddingNewCollectionAction,
+  creatingCollection
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
     selectCollectionAction(collectionId);
+    isAddingNewCollectionAction(false);
+
     navigation.navigate('Catalog');
   };
   const createdDate = formatDateShort(collection.created);
@@ -84,7 +89,7 @@ const CollectionRow = ({
   const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
-
+  const show_purpose = (collection.purpose.length) > 0
   return (
     <View style={styles.collectionRowContainer}>
       <View style={styles.dateInfoRow}>
@@ -100,6 +105,18 @@ const CollectionRow = ({
           <Text style={styles.labelText}>{label}</Text>
         </View>
         <View style={styles.iconContainer}>
+
+          {collection.current &&
+            <View style={styles.iconPadding}>
+              <Feather name="watch" size={20} color={Colors.currentCollectionColor} />
+            </View>
+          }
+          {collection.urgent &&
+            <View style={styles.iconPadding}>
+              <Feather name="alert-triangle" size={20} color={Colors.destructive} />
+            </View>
+          }
+
           <TouchableOpacity style={styles.infoIcon} onPress={() => setShowDetails(!showDetails)}>
             <Ionicons name="information-circle-outline" size={24} color="black" />
           </TouchableOpacity>
@@ -116,15 +133,52 @@ const CollectionRow = ({
             </View>
           )}
           <View>
+
+          {show_purpose &&
+            <View>
+              <Text style={styles.purposeText}>
+                {collection.purpose}
+              </Text>
+            </View>
+          }
+
+          {collection.current &&
+            <View style={styles.currentTextField}>
+
+                <Feather name="watch" size={18} color={Colors.currentCollectionColor} />
+
+                <Text style={styles.switchText}>Current Collection</Text>
+            </View>
+          }
+          {collection.urgent &&
+            <View style={styles.currentTextField}>
+              <Feather name="alert-triangle" size={18} color={Colors.destructive} />
+
+              <Text variant="title" style={styles.switchText}>Urgent Collection</Text>
+            </View>
+          }
+          <View style = {styles.badgeRow}>
+              {Object.entries(collection.tags).map((item, index)=> (
+                <TouchableOpacity style = {styles.badgeStyle}>
+                  <Text>{collection.tags[index]}</Text>
+
+                </TouchableOpacity>
+              ))}
+          </View>
+
             <CountInfo count={savedRecordsCount} label="Records In Collection" color={Colors.collectionYellow} />
             <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
             <CountInfo count={recordNotesCount} label="Record Notes" color={Colors.mediumgrey} />
             <View style={styles.dateInfoContainer}>
+
               <DateInfo date={modifiedDate} label="Last Modified" />
+
               <View style={styles.dateInfoContainer}>
                 <DateInfo date={createdDate} label="Created" color={Colors.darkgrey2} />
+
               </View>
             </View>
+
           </View>
         </View>
       )}
@@ -145,10 +199,14 @@ CollectionRow.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
+  creatingCollection: creatingCollectionSelector(state, ownProps),
+
 });
 
 const mapDispatchToProps = {
   selectCollectionAction: selectCollection,
+  isAddingNewCollectionAction: isAddingNewCollection,
+
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollectionRow);
@@ -221,4 +279,39 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     marginBottom: 12,
   },
+  currentTextField:{
+    flexDirection: 'row',
+    paddingTop:2,
+    paddingBottom:5,
+
+    paddingLeft:3
+  },
+  switchText:{
+    paddingLeft:12
+  },
+  purposeText:{
+    paddingTop:2,
+    paddingLeft:7,
+    paddingBottom:5,
+    paddingRight:5
+  },
+  iconPadding:{
+    padding:3,
+  },
+  badgeStyle: {
+      borderRadius: 10,
+      backgroundColor: Colors.sortingHeaderBackground,
+      paddingHorizontal: 10,
+      marginRight:10,
+      paddingVertical: 5,
+      marginVertical: 2,
+
+  },
+  badgeRow:{
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginBottom: 5,
+
+
+  }
 });

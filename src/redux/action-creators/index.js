@@ -54,6 +54,8 @@ export const createCollection = (collectionName) => ({
   payload: collectionName,
 });
 
+
+
 export const selectCollection = (collectionId) => ({
   type: actionTypes.SELECT_COLLECTION,
   payload: collectionId,
@@ -185,5 +187,26 @@ export const editCollectionNote = (noteId, text) => (dispatch, getState) => {
       noteId,
       text,
     },
+  });
+};
+
+export const editCollectionDetails = (purpose, tags, current, urgent) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.EDIT_COLLECTION_DETAILS,
+    payload: {
+      collectionId: activeCollectionId,
+      purpose,
+      tags,
+      current,
+      urgent,
+    },
+  });
+};
+
+export const isAddingNewCollection = (creatingCollectionHolder) => {
+  return ({
+    type: actionTypes.ADDING_NEW_COLLECTION,
+    payload: creatingCollectionHolder,
   });
 };
