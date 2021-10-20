@@ -8,6 +8,8 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+import { Entypo, Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+
 const Colors = {
     WHITE: '#fff',
     BLACK: '#000',
@@ -76,8 +78,11 @@ function RenderBadge({
     ]), [textStyle, badgeTextStyle]);
 
     return (
+
         <TouchableOpacity style={[_badgeStyle, {backgroundColor: Colors.YELLOW3}]} onPress={__onPress}>
-            {showBadgeDot && <View style={_badgeDotStyle} />}
+          <Feather name="x" size={16} color={Colors.currentCollectionColor} />
+
+            {/**showBadgeDot && <View style={_badgeDotStyle} />*/}
             <Text style={_badgeTextStyle}>{label}</Text>
         </TouchableOpacity>
     );

@@ -12,7 +12,14 @@ const Colors = {
     YELLOW1: '#ffc000',
     YELLOW2: '#f2db99',
     YELLOW3: '#FFF2CC',
-    SHUTTLE_GREY: '#565E67'
+    SHUTTLE_GREY: '#565E67',
+    GREY1: '#c2c2c2',
+    GREY2: '#d9d9d9',
+    GREY3: '#5e5e5e',
+    GREY4: '#f2f2f2', // default screen background
+    GREY5: '#ECECEC',
+    GREY6: '#8c8c8c',
+    GREY7: '#F8F8F8'
 
 };
 

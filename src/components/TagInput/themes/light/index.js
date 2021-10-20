@@ -15,6 +15,13 @@ const Colors = {
     YELLOW1: '#ffc000',
     YELLOW2: '#f2db99',
     YELLOW3: '#FFF2CC',
+    GREY1: '#c2c2c2',
+    GREY2: '#d9d9d9',
+    GREY3: '#5e5e5e',
+    GREY4: '#f2f2f2', // default screen background
+    GREY5: '#ECECEC',
+    GREY6: '#8c8c8c',
+    GREY7: '#F8F8F8'
 };
 
 export const ICONS = {
@@ -40,6 +47,8 @@ export default StyleSheet.create({
         borderColor: Colors.BLACK,
         paddingHorizontal: 10,
         backgroundColor: Colors.WHITE,
+        borderWidth:0.5,
+
 
     },
     label: {
@@ -114,10 +123,26 @@ export default StyleSheet.create({
     listItemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-
         justifyContent: 'space-between',
         paddingHorizontal: 10,
-        height: 40
+        height: 30,
+        marginVertical:1,
+        borderRadius:20,
+        marginHorizontal:5,
+
+
+    },
+    listItemContainer2: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        height: 30,
+        marginVertical:1,
+        borderRadius:50,
+        marginHorizontal:5,
+        backgroundColor: Colors.YELLOW3,
+
     },
     listItemLabel: {
         flex: 1,
@@ -151,7 +176,7 @@ export default StyleSheet.create({
         padding: 10,
         borderBottomColor: Colors.BLACK,
         borderBottomWidth: 1,
-        backgroundColor: Colors.YELLOW3
+        backgroundColor: Colors.GREY2,
 
 
     },
@@ -165,6 +190,8 @@ export default StyleSheet.create({
         borderColor: Colors.BLACK,
         borderWidth: 1,
         color: Colors.BLACK,
+        backgroundColor: Colors.WHITE,
+
 
     },
     itemSeparator: {

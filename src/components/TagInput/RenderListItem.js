@@ -24,6 +24,7 @@ function RenderListItem({
     IconComponent,
     TickIconComponent,
     listItemContainerStyle,
+    listItemContainerStyle2,
     listItemLabelStyle,
     listChildContainerStyle,
     listParentContainerStyle,
@@ -84,13 +85,20 @@ function RenderListItem({
      * The list item container style.
      * @returns {object}
      */
-    const _listItemContainerStyle = useMemo(() => ([
-        ...[listItemContainerStyle].flat(),
+    const _listItemContainerStyle = useMemo(() => (isSelected ? [
+        ...[listItemContainerStyle2].flat(),
         ...[_listParentChildContainerStyle].flat(),
         ...[_selectedItemContainerStyle].flat(),
         ...[_customItemContainerStyle].flat(),
         ...[_disabledItemContainerStyle].flat(),
-    ]), [listItemContainerStyle, _listParentChildContainerStyle, _selectedItemContainerStyle, _customItemContainerStyle, _disabledItemContainerStyle]);
+    ]:[
+    ...[listItemContainerStyle].flat(),
+    ...[_listParentChildContainerStyle].flat(),
+    ...[_selectedItemContainerStyle].flat(),
+    ...[_customItemContainerStyle].flat(),
+    ...[_disabledItemContainerStyle].flat(),
+  ]
+  ), [listItemContainerStyle, _listParentChildContainerStyle, _selectedItemContainerStyle, _customItemContainerStyle, _disabledItemContainerStyle]);
 
     /**
      * The list category label style.

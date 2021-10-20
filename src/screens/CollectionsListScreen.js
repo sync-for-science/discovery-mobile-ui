@@ -22,6 +22,7 @@ const CollectionsIndexCustom = connect((state) => ({
   <CollectionsIndexSearch
     navigation={navigation}
     collections={collections}
+
   />
 ));
 

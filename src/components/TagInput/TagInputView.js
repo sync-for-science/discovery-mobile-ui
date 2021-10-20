@@ -189,6 +189,7 @@ function Picker({
       temp_values.push(searchText)
       setValue(temp_values)
       console.log(value)
+      _onChangeSearchText("")
 
     };
     useEffect(() => {
@@ -1017,6 +1018,10 @@ function Picker({
         ...[listItemContainerStyle].flat()
     ]), [rtl, listItemContainerStyle, THEME]);
 
+    const _listItemContainerStyle2 = useMemo(() => ([
+        RTL_DIRECTION(rtl, THEME.listItemContainer2),
+        ...[listItemContainerStyle].flat()
+    ]), [rtl, listItemContainerStyle, THEME]);
     /**
      * The tick icon container style.
      * @returns {object}
@@ -1282,6 +1287,7 @@ function Picker({
                 IconComponent={IconComponent}
                 TickIconComponent={_TickIconComponent}
                 listItemContainerStyle={_listItemContainerStyle}
+                listItemContainerStyle2={_listItemContainerStyle2}
                 listItemLabelStyle={_listItemLabelStyle}
                 listChildContainerStyle={listChildContainerStyle}
                 listChildLabelStyle={listChildLabelStyle}
@@ -1350,8 +1356,8 @@ function Picker({
         if (searchPlaceholder !== null)
             return searchPlaceholder;
 
-        return ('Add Tags');
-    }, [searchPlaceholder, 'Add Tags']);
+        return ('search for or create new tags');
+    }, [searchPlaceholder, 'add tags']);
 
     /**
      * onChangeSearchText.

@@ -188,6 +188,10 @@ function Picker({
       console.log(value)
 
     };
+
+   useEffect(() => {
+     console.log(items);
+   }, [items]);
     /**
      * The item schema.
      * @returns {object}
@@ -954,6 +958,7 @@ function Picker({
      */
      const BadgeBodyComponent = useMemo(() => (
         <FlatList
+
             ref={setBadgeFlatListRef}
             data={selectedItems}
             renderItem={__renderBadge}
@@ -964,6 +969,7 @@ function Picker({
             ListEmptyComponent={BadgeListEmptyComponent}
             style={THEME.listBody}
             contentContainerStyle={THEME.listBodyContainer}
+
             inverted={rtl}
         />
     ), [
@@ -996,6 +1002,10 @@ function Picker({
         ...[listItemContainerStyle].flat()
     ]), [rtl, listItemContainerStyle, THEME]);
 
+    const _listItemContainerStyle2 = useMemo(() => ([
+        RTL_DIRECTION(rtl, THEME.listItemContainer2),
+        ...[listItemContainerStyle].flat()
+    ]), [rtl, listItemContainerStyle, THEME]);
     /**
      * The tick icon container style.
      * @returns {object}
@@ -1261,6 +1271,8 @@ function Picker({
                 IconComponent={IconComponent}
                 TickIconComponent={_TickIconComponent}
                 listItemContainerStyle={_listItemContainerStyle}
+                listItemContainerStyle2={_listItemContainerStyle2}
+
                 listItemLabelStyle={_listItemLabelStyle}
                 listChildContainerStyle={listChildContainerStyle}
                 listChildLabelStyle={listChildLabelStyle}
@@ -1329,8 +1341,8 @@ function Picker({
         if (searchPlaceholder !== null)
             return searchPlaceholder;
 
-        return ('Search for tags');
-    }, [searchPlaceholder, 'Search for tags']);
+        return ('search for tags');
+    }, [searchPlaceholder, 'search for tags']);
 
     /**
      * onChangeSearchText.

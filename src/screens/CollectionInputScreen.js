@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity,
+  SafeAreaView, StyleSheet, View, TouchableOpacity,TouchableWithoutFeedback,
   ScrollView, TextInput, KeyboardAvoidingView, Alert, Text, CheckBox,Switch
 } from 'react-native';
 import { Checkbox } from 'react-native-paper';
@@ -58,6 +58,7 @@ const CollectionInputScreen = ({
   const [open, setOpen] = useState(false);
   const [hasTextValue, setHasTextValue]= useState(false);
   const [sameName, setSameName]= useState(false);
+  const [moveToCatalog, setMoveToCatalog]= useState(false);
 
   var items_list =
     [
@@ -96,7 +97,7 @@ const CollectionInputScreen = ({
   const discardInputAlert = () => {
     Alert.alert(
       'Discard Edits',
-      'Are you sure you want to discard edits to this note?',
+      'Are you sure you want to discard edits to this collection?',
       [
         {
           text: 'Cancel',
@@ -112,6 +113,9 @@ const CollectionInputScreen = ({
     );
   };
 
+
+
+
   const handleCloseInput = ({ alert }) => {
     if (alert) {
       discardInputAlert();
@@ -120,18 +124,19 @@ const CollectionInputScreen = ({
     }
   };
 
+
   const handleSave = () => {
     if (creatingCollection){
-      if (!collection_names.includes(title)){
-      if (hasTextValue) {
-        if (hasInputErrors({ text: title, isRename: false, label: title })) {
-          return;
-        }
-        createCollectionAction(title);
-        setIsAddingCollection(true);
-      }
+        if (!collection_names.includes(title)){
+          if (hasTextValue) {
+            if (hasInputErrors({ text: title, isRename: false, label: title })) {
+              return;
+            }
+            createCollectionAction(title);
+            setIsAddingCollection(true);
+          }
 
-    }
+      }
     }else{
       if (hasInputErrors({ text: title, isRename: true, label: title })) {
         return;
@@ -147,13 +152,40 @@ const CollectionInputScreen = ({
 
   };
   const saveAndContinue = () => {
-    handleSave();
-    navigation.navigate('Catalog');
+    if (creatingCollection){
+        if (!collection_names.includes(title)){
+          if (hasTextValue) {
+            if (hasInputErrors({ text: title, isRename: false, label: title })) {
+              return;
+            }
+            createCollectionAction(title);
+            setIsAddingCollection(true);
+            console.log()
+
+          }
+
+      }
+    }else{
+      if (hasInputErrors({ text: title, isRename: true, label: title })) {
+        return;
+      }
+      renameCollectionAction(newCollectionID, title);
+
+      editCollectionDetailsAction(purpose,value,(current || urgent), urgent);
+    }
+    setMoveToCatalog(true);
+    //
 
   };
   const discardChanges = () => {
+
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DISCARD]);
 
+  };
+
+  const discardChangesCreate = () => {
+
+    setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DISCARD_CREATE]);
 
   };
     //selectCollectionAction(title);
@@ -170,24 +202,32 @@ const CollectionInputScreen = ({
       if(isAddingCollection){
         // console.log(collections[Object.keys(collections)[Object.keys(collections).length - 1]].label)
         //console.log(collections[Object.keys(collections)[Object.keys(collections).length - 1]].id)
+        console.log(Object.keys(collections)[Object.keys(collections).length - 1]);
+
         selectCollectionAction(Object.keys(collections)[Object.keys(collections).length - 1]);
+        console.log(Object.keys(collections)[Object.keys(collections).length - 1])
         editCollectionDetailsAction(purpose,value,(current || urgent), urgent);
         setIsAddingCollection(false);
 
 
       }
     }
+    if(moveToCatalog){
+      console.log("  ");
+      navigation.navigate('Catalog');
+
+    }
 
     //if (useState(collections )!== collections) {
     //}
-  }, [collections]);
+  }, [collections, isAddingCollection, moveToCatalog]);
 
   useEffect(() => {
     setSameName(false)
     if (title.length > 0){
       setHasTextValue(true)
     }
-    if (creatingCollection){1
+    if (creatingCollection){
       for (i in collection_names){
         if (collection_names[i].toLowerCase() == title.toLowerCase()){
           setHasTextValue(false)
@@ -196,6 +236,9 @@ const CollectionInputScreen = ({
       }
     }
   }, [title])
+
+
+
 
 
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
@@ -233,7 +276,9 @@ const CollectionInputScreen = ({
 
 
   return (
+
     <SafeAreaView style={styles.root}>
+
       <Header style={styles.header}>
         <Left>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -251,12 +296,15 @@ const CollectionInputScreen = ({
       <View style={styles.inputField}>
 
         <KeyboardAvoidingView behavior="padding">
+          <TouchableWithoutFeedback onPress={() => setOpen(false)}>
 
-          <View style={styles.textInputDiv}>
-            <TouchableOpacity style={styles.textInputHeader} disabled={true}>
-            <Text variant="title" style={styles.formHeader}>Title</Text>
-            </TouchableOpacity>
-          </View>
+              <View style={styles.textInputDiv}>
+                <TouchableOpacity style={styles.textInputHeader} disabled={true}>
+                <Text variant="title" style={styles.formHeader}>Title</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableWithoutFeedback>
+
           <View style={styles.titleTextInputContainer}>
             <TextInput
               style={styles.textInput}
@@ -264,12 +312,16 @@ const CollectionInputScreen = ({
               placeholder = {placeholder_title}
               value={title}
               autoFocus
+              onTouchStart={()=>  setOpen(false)}
+              multiline={true}
+
             />
           </View>
+
           <View style = {styles.titleFooter}>
           {sameName &&
             <View style = {styles.sameNameAlertContainer}>
-                <Text style={{color: Colors.destructive}}>Collection Name Must Be Unique</Text>
+                <Text style={{color: Colors.destructive}}>Collection name must be unique</Text>
             </View>
           }
           </View>
@@ -278,12 +330,16 @@ const CollectionInputScreen = ({
 
 
         <KeyboardAvoidingView behavior="padding">
+
+        <TouchableWithoutFeedback onPress={() => setOpen(false)}>
+
           <View style={styles.textInputDiv}>
 
             <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
               <Text variant="title" style={styles.formHeader}>Purpose</Text>
             </TouchableOpacity>
           </View>
+          </TouchableWithoutFeedback>
 
           <View style={styles.purposeTextInputContainer}>
             <TextInput
@@ -292,14 +348,20 @@ const CollectionInputScreen = ({
               placeholder = {'add purpose'}
               value={purpose}
               autoFocus
+              onTouchStart={()=>  setOpen(false)}
+              multiline={true}
+
             />
           </View>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+
+
         <View style={styles.tagTextHeader}>
           <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
           <Text variant="title" style={styles.formHeader}>Collection Tags</Text>
           </TouchableOpacity>
         </View>
+
         <View style = {{zIndex: 100, backgroundColor:"#fff"}}>
         <Picker
           multiple={true}
@@ -312,12 +374,13 @@ const CollectionInputScreen = ({
           items={items}
           setItems={setItems}
           searchable={true}
-          placeholder={"add tags"}
+
+          placeholder={"add new or existing tags "}
         />
         </View>
         <View style={styles.switchTextHeader}>
           <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
-            <Text variant="title" style={styles.formHeader}>Set Collection As</Text>
+            <Text variant="title" style={styles.formHeader}>Priority</Text>
           </TouchableOpacity>
         </View>
         <View style= {styles.switchRow} >
@@ -359,8 +422,16 @@ const CollectionInputScreen = ({
 
 
 
+
       <View style={styles.textRow}>
-            <TouchableOpacity style={styles.saveButton} onPress={discardChanges}>
+            <TouchableOpacity style={styles.saveButton} onPress={() => {
+              console.log(creatingCollection)
+
+              if (creatingCollection){
+                discardChangesCreate();
+              }else{
+                discardChanges();
+              }}}>
               <BaseText variant="title" style={styles.discardButtonText}>Discard</BaseText>
             </TouchableOpacity>
 
@@ -371,14 +442,15 @@ const CollectionInputScreen = ({
                 setCollectionsDialogText={setCollectionsDialogText}
               />
             )}
+          <View style = {styles.saveCol}>
+            <TouchableOpacity style={styles.saveButton} onPress={saveCollection} disabled={!hasTextValue}>
+              <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.saveButton} onPress={saveCollection} disabled={!hasTextValue}>
-            <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.saveButton} onPress={saveAndContinue} disabled={!hasTextValue}>
-            <BaseText variant="title" style={saveButtonTextStyle}>Save and Continue</BaseText>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.saveButton} onPress={saveAndContinue} disabled={!hasTextValue}>
+              <BaseText variant="title" style={saveButtonTextStyle}>Save and Continue</BaseText>
+            </TouchableOpacity>
+          </View>
       </View>
       {/*<DropDownPicker
         multiple={true}
@@ -444,18 +516,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   titleTextInputContainer: {
-    marginHorizontal:5,
+    marginHorizontal:0,
     paddingHorizontal: 5,
     flexDirection: 'row',
     borderRadius:10,
     borderWidth:1,
+    borderWidth:0.5,
+
   },
   titleFooter:{
     marginHorizontal:5,
     paddingHorizontal: 5,
     flexDirection: 'row',
     borderRadius:10,
-    paddingBottom: 25,
+    paddingBottom: 10,
   },
   sameNameAlertContainer:{
     paddingTop:10,
@@ -465,12 +539,14 @@ const styles = StyleSheet.create({
   },
 
   purposeTextInputContainer: {
-    marginHorizontal:5,
+    marginHorizontal:0,
     paddingHorizontal: 5,
     flexDirection: 'row',
     borderRadius:10,
     borderWidth:1,
-    marginBottom: 25,
+    marginBottom: 10,
+    borderWidth:0.5,
+
 
   },
   textInput: {
@@ -481,6 +557,7 @@ const styles = StyleSheet.create({
   },
   saveButton: {
     marginLeft: 10,
+    paddingBottom: 10,
   },
   textInputHeader:{
 
@@ -589,7 +666,7 @@ const styles = StyleSheet.create({
   },
   switchTextHeader:{
     padding:10,
-    marginTop:25,
+    marginTop:15,
 
   },
   formHeader:{

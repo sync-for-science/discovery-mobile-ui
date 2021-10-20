@@ -1,9 +1,9 @@
 import React,  { useState, useEffect } from 'react';
 
 import {
-  StyleSheet, ScrollView, SafeAreaView,KeyboardAvoidingView, View, TouchableOpacity, BaseText, TextInput, Text, Switch
+  StyleSheet, ScrollView, SafeAreaView,KeyboardAvoidingView, TouchableWithoutFeedback, View, TouchableOpacity, BaseText, TextInput, Text, Switch
 } from 'react-native';
-import { Chip } from 'react-native-paper';
+import { Chip, Button } from 'react-native-paper';
 
 
 import { shape } from 'prop-types';
@@ -26,7 +26,7 @@ const CollectionsIndexSearch = ({
   const [open, setOpen] = useState(false);
 
 
-  var items_list =
+  /*var items_list =
     [
 
     ]
@@ -49,8 +49,9 @@ const CollectionsIndexSearch = ({
 
   for (var i in item_names) {
     items_list.push({label: item_names[i], value: item_names[i]})
-  }
-  const [items, setItems] = useState(items_list);
+  }*/
+  //const [items, setItems] = useState(items_list);
+  const [items, setItems] = useState([]);
   const [value, setValue] = useState( []);
   const [current, currentSelection] = useState(false);
   const [urgent, urgentSelection] = useState(false);
@@ -59,12 +60,46 @@ const CollectionsIndexSearch = ({
   const [title, onChangeTitle] = useState('');
   const [notCurrent, setNotCurrent] = useState('');
   const [notUrgent, setNotUrgent] = useState('');
+  const emptyIcon = () => null
+
+  const [tempSearchText, setSearchText] = useState([]);
+  const [showSearchText, setShowSearchText] = useState(false);
+  const [disableReset, setDisableReset] = useState(true);
 
   //console.log("HOME PAGE")
   //console.log(collection_names);
   useEffect(() => {
     var newCollectionsList = {}
+
+
+    var items_list =
+      [
+
+      ]
+    var item_names = []
+    var collection_names = []
+    if (Object.keys(collections).length > 0){
+      for (const [key, value] of Object.entries(collections)) {
+
+
+        if (collections[key] != null){
+        collection_names.push(collections[key].label);
+        for (var j = 0; j < collections[key].tags.length; j++) {
+          if (!item_names.includes(collections[key].tags[j])) {
+            item_names.push(collections[key].tags[j])
+          }
+        }
+      }
+      }
+    }
+
+    for (var i in item_names) {
+      items_list.push({label: item_names[i], value: item_names[i]})
+    }
+
+    setItems(items_list)
     for (i in collections){
+
       var to_add = true
       if (title.length > 0 && to_add){
         if(!(collections[i].label.includes(title) )&& !(collections[i].purpose.includes(title))){
@@ -78,8 +113,6 @@ const CollectionsIndexSearch = ({
         if (to_add && !(collections[i].tags.includes(value[j]) )){
           to_add = false
           //console.log("oof current")
-
-
         }
       }
 
@@ -105,70 +138,158 @@ const CollectionsIndexSearch = ({
         newCollectionsList[i] = collections[i]
       }
     }
-
+    var searchText = []
     //console.log(collectionsList)
-    console.log(notCurrent)
     editCollectionsList(newCollectionsList)
-  }, [title, value, current, urgent, notCurrent, notUrgent]);
+    if (title.length > 0) {
+      searchText.push(<><Text style={{fontWeight: "bold"}}> {"phrase: "}</Text></> )
+      searchText.push(<><Text> {title}</Text></> )
 
+    }
+
+    if (value.length > 0){
+      if (title.length > 0){
+        searchText.push(<><Text>{", "}</Text></>)
+      }
+      searchText.push(<><Text style={{fontWeight: "bold"}}> {"selected tags: "}</Text></> )
+      for (j in value){
+        searchText.push(<><Text> {value[j]}</Text></>)
+        if (j != value.length -1 || current || urgent || notCurrent || notUrgent )
+        searchText.push(<><Text>{", "}</Text></>)
+      }
+    }else{
+      if (title.length > 0 && (current || urgent || notCurrent || notUrgent)){
+        searchText.push(<><Text>{", "}</Text></>)
+
+      }
+    }
+    if (urgent){
+      searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
+      searchText.push(<><Text>{"current and urgent items"}</Text></>)
+
+
+    }else if (current){
+      if(notUrgent){
+        searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
+        searchText.push(<><Text>{"current and not urgent items"}</Text></>)
+
+      }else{
+        searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
+        searchText.push(<><Text>{"current items"}</Text></>)
+      }
+    }
+
+
+    if (notCurrent){
+      searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
+      searchText.push(<><Text>{"not current or urgent items "}</Text></>)
+
+    }else if (!current && notUrgent){
+      searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
+      searchText.push(<><Text>{"not urgent items"}</Text></>)
+
+    }
+
+    setSearchText(searchText)
+
+    if ((value.length > 0 || title.length > 0 || current || urgent || notCurrent || notUrgent )&& !showSearch){
+      setShowSearchText(true);
+    }else{
+      setShowSearchText(false);
+    }
+    if (value.length > 0 || title.length > 0 || current || urgent || notCurrent || notUrgent ){
+      setDisableReset(false);
+    }else{
+      setDisableReset(true);
+    }
+  }, [title, value, current, urgent, notCurrent, notUrgent, collections, showSearch]);
+
+  function reset(){
+    onChangeTitle("")
+    urgentSelection(false)
+    currentSelection(false)
+    setNotCurrent(false)
+    setNotUrgent(false)
+    setValue([])
+  }
+  useEffect(() => {setOpen(false)},[title,showSearch ])
   return (
 
 
 
-
   <SafeAreaView style={[styles.safeAreaView]}>
-    <TouchableOpacity
+  {/*onPress={() => setShowSearch(!showSearch)}
+
+      <TouchableOpacity
       style={styles.expandIcon}
-      onPress={() => setShowSearch(!showSearch)}
-    >
+
+      >*/}
+
+
       <View style={styles.root}>
         <View style={styles.dateRangeContainer}>
 
           <Left>
-            <TouchableOpacity style = {styles.leftRightPadding}>
-            <Feather name="search" size={24} color={Colors.primary} />
+          {!disableReset &&
+            <Button style = {styles.reset_button} color = {Colors.destructive} mode="text" onPress={reset}>
+              RESET
+            </Button>
+          }
 
-            </TouchableOpacity>
           </Left>
-          <View><Text style={styles.dash}>Search Collections</Text></View>
+          <TouchableOpacity onPress={() => setShowSearch(!showSearch)}>
+            <View ><Text style={styles.dash}>Search Collections</Text></View>
+          </TouchableOpacity>
 
 
-          <Right>
+          <Right onPress={() => setShowSearch(!showSearch)}>
+            <TouchableOpacity style = {styles.leftRightPadding} onPress={() => setShowSearch(!showSearch)}>
+
 
                 <Ionicons
                   name={showSearch ? 'chevron-up' : 'chevron-down'}
                   size={24}
                   color={Colors.expandTimeline}
                 />
+                </TouchableOpacity>
+
           </Right>
+
         </View>
       </View>
-    </TouchableOpacity>
+      {/*</TouchableOpacity>*/}
 
     {showSearch &&
 
     <KeyboardAvoidingView style ={[styles.searchItemsDiv, styles.zindex]} >
 
 
-      <View style={styles.searchBoxDiv}>
-        <Text style={styles.textInstructions}>Search for phrase in Collection name or purpose</Text>
+
+    <View style={styles.searchBoxDiv}>
+      { // <Text style={styles.textInstructions}>Search for phrase in Collection name or purpose</Text>
+      }
 
           <View style={styles.textInputContainer}>
-            <View style = {{paddingRight:10}}>
-              <Feather name="search" size={18} />
-            </View>
+
             <TextInput
+              onTouchStart={()=>  setOpen(false)}
+
               value={title}
               onChangeText={onChangeTitle}
-              placeholder="search"
+              placeholder="search Collections' names and purposes"
+              placeholderTextColor = "#777777"
+
               autoFocus
             />
             </View>
       </View>
-      <View style={styles.dropDown}>
-        <Text style={styles.dropDowntextInstructions}>Specify tags that Collections must include</Text>
 
-      </View>
+
+      {  //<View style={styles.dropDown}>
+        //<Text style={styles.dropDowntextInstructions}>Specify tags that Collections must include</Text>
+
+        //</View>
+      }
 
       <Picker
           multiple={true}
@@ -181,7 +302,7 @@ const CollectionsIndexSearch = ({
           items={items}
           setItems={setItems}
           searchable={true}
-          placeholder={"specify tags"}
+          placeholder={"specify tags that Collections must include"}
 
       />
 
@@ -191,20 +312,20 @@ const CollectionsIndexSearch = ({
 
       <View style= {styles.switchRow} >
         <View styles = {styles.setChipWidth}>
-          <Chip disabled = {(notCurrent)} selected = {urgent || current}  onPress={() => currentSelection(!current)}>Current</Chip>
+          <Chip style={[styles.button, (urgent || current) ? styles.selected : null]} disabled = {(notCurrent)} selected = {urgent || current}  onPress={() => currentSelection(!current)}>Current</Chip>
         </View>
         <View style={styles.urgentPadding}>
 
-          <Chip disabled = {(notCurrent || notUrgent)} selected = {urgent}  onPress={() => urgentSelection(!urgent)}>Urgent</Chip>
+          <Chip  style={[styles.button, (urgent) ? styles.selected : null]} disabled = {(notCurrent || notUrgent)} selected = {urgent}  onPress={() => urgentSelection(!urgent)}>Urgent</Chip>
         </View>
 
       </View>
       <View style= {styles.switchRow} >
         <View tyles = {styles.setChipWidth}>
-          <Chip disabled = {(current || urgent)} selected = {notCurrent}  onPress={() => setNotCurrent(!notCurrent)}>Not Current</Chip>
+          <Chip style={[styles.button, (notCurrent) ? styles.selected : null]} disabled = {(current || urgent)} selected = {notCurrent}  onPress={() => setNotCurrent(!notCurrent)}>Not Current</Chip>
         </View>
         <View style={styles.notUrgentPadding}>
-          <Chip disabled = {(urgent)} selected = {(notUrgent || notCurrent)}  onPress={() => setNotUrgent(!notUrgent)}>Not Urgent</Chip>
+          <Chip style={[styles.button, (notUrgent || notCurrent) ? styles.selected : null]} disabled = {(urgent)} selected = {(notUrgent || notCurrent)}  onPress={() => setNotUrgent(!notUrgent)}>Not Urgent</Chip>
         </View>
 
       </View>
@@ -214,10 +335,15 @@ const CollectionsIndexSearch = ({
 
 
     }
+    <View  style = {(showSearchText)? styles.searchSummary : {display: 'none'}}>
+    {showSearchText && tempSearchText}
+    </View>
 
 
 
 
+
+    <TouchableWithoutFeedback onPress={() => setOpen(false)}>
 
     <ScrollView
       contentContainerStyle={styles.collectionRowContainer}
@@ -233,6 +359,7 @@ const CollectionsIndexSearch = ({
       ))}
 
     </ScrollView>
+    </TouchableWithoutFeedback>
 
 
   </SafeAreaView>
@@ -261,6 +388,8 @@ const styles = StyleSheet.create({
     borderWidth:1,
     backgroundColor: 'white',
     flexDirection: 'row',
+    borderWidth:0.5,
+
 
   },
   textInput: {
@@ -307,11 +436,12 @@ const styles = StyleSheet.create({
   searchItemsDiv: {
     paddingHorizontal: 10,
     borderRadius: 10,
-    margin: 10,
+    margin: 5,
     padding: 10,
     flexDirection: 'column',
     borderWidth: 1,
-    borderColor: 'gray'
+    borderColor: 'gray',
+    backgroundColor:Colors.sortingHeaderBackground,
 
   },
   searchBoxDiv:{
@@ -358,6 +488,34 @@ const styles = StyleSheet.create({
   },
   setChipWidth: {
     width: 100,
+  },
+  searchSummary:{
+    flexDirection: 'row',
+     flexWrap: 'wrap',
+     alignItems: 'flex-start',
+     margin: 4,
+     borderRadius:10,
+     backgroundColor: Colors.sortingHeaderBackground,
+     padding:5,
+     borderWidth:0.5,
+  },
+  hidden:{
+  },
+  reset_button:{
+    marginHorizontal: 10,
+    marginVertical:-5,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderColor: 'white',
+    marginHorizontal: 4,
+    borderRadius: 20,
+    borderWidth: 2,
+  },
+  selected: {
+    borderColor: Colors.darkgrey,
   },
   zindex:{
     zIndex: 100
