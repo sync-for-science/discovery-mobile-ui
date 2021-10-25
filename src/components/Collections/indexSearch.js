@@ -149,7 +149,7 @@ const CollectionsIndexSearch = ({
 
     if (value.length > 0){
       if (title.length > 0){
-        searchText.push(<><Text>{", "}</Text></>)
+        searchText.push(<><Text>{"; "}</Text></>)
       }
       searchText.push(<><Text style={{fontWeight: "bold"}}> {"selected tags: "}</Text></> )
       for (j in value){
@@ -159,7 +159,7 @@ const CollectionsIndexSearch = ({
       }
     }else{
       if (title.length > 0 && (current || urgent || notCurrent || notUrgent)){
-        searchText.push(<><Text>{", "}</Text></>)
+        searchText.push(<><Text>{"; "}</Text></>)
 
       }
     }
@@ -202,7 +202,21 @@ const CollectionsIndexSearch = ({
     }else{
       setDisableReset(true);
     }
+    console.log(collectionsList);
   }, [title, value, current, urgent, notCurrent, notUrgent, collections, showSearch]);
+  Object.size = function(obj) {
+    var size = 0,
+      key;
+    for (key in obj) {
+      if (obj.hasOwnProperty(key)) size++;
+    }
+    if (size == 1){
+      return ("1 Result")
+    }else{
+      return (size.toString()+ " Results");
+
+    }
+  };
 
   function reset(){
     onChangeTitle("")
@@ -336,9 +350,11 @@ const CollectionsIndexSearch = ({
 
     }
     <View  style = {(showSearchText)? styles.searchSummary : {display: 'none'}}>
-    {showSearchText && tempSearchText}
+      {showSearchText && tempSearchText}
     </View>
-
+    <View style={(showSearchText)? styles.numResultsView : {display: 'none'}}>
+      <Text style={styles.numResultsText}>{ Object.size(collectionsList)}</Text>
+    </View>
 
 
 
@@ -461,7 +477,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
+  numResultsText:{
+    paddingLeft: 2,
 
+    fontSize: 14,
+    fontWeight: "bold"
+  },
+  numResultsView:{
+    paddingLeft:5,
+    flexDirection:'row'
+  },
   textInstructions: {
     paddingLeft: 5,
     paddingBottom: 1,

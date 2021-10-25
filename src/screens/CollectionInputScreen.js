@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView, StyleSheet, View, TouchableOpacity,TouchableWithoutFeedback,
-  ScrollView, TextInput, KeyboardAvoidingView, Alert, Text, CheckBox,Switch
+  ScrollView, TextInput, DeviceInfo, KeyboardAvoidingView, Alert, Text, CheckBox,Switch, Keyboard
 } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 
@@ -272,6 +272,12 @@ const CollectionInputScreen = ({
     }
     return false;
   };
+  const reduceInputs = () =>{
+    Keyboard.dismiss()
+    console.log("Closings")
+    setOpen(false)
+
+  }
 
 
 
@@ -285,9 +291,11 @@ const CollectionInputScreen = ({
             <Entypo name="chevron-thin-left" size={20} color="black" />
           </TouchableOpacity>
         </Left>
-        <View style={styles.headerTitleContainer}>
-          <Title style={styles.headerText}><Text>{title}</Text></Title>
-        </View>
+          <TouchableWithoutFeedback onPress={reduceInputs}>
+            <View style={styles.headerTitleContainer}>
+              <Title style={styles.headerText}><Text>{title}</Text></Title>
+            </View>
+          </TouchableWithoutFeedback>
         <Right>
 
         </Right>
@@ -296,16 +304,14 @@ const CollectionInputScreen = ({
       <View style={styles.inputField}>
 
         <KeyboardAvoidingView behavior="padding">
-          <TouchableWithoutFeedback onPress={() => setOpen(false)}>
+          <TouchableWithoutFeedback onPress={reduceInputs}>
 
               <View style={styles.textInputDiv}>
-                <TouchableOpacity style={styles.textInputHeader} disabled={true}>
                 <Text variant="title" style={styles.formHeader}>Title</Text>
-                </TouchableOpacity>
               </View>
             </TouchableWithoutFeedback>
 
-          <View style={styles.titleTextInputContainer}>
+          <ScrollView style={styles.titleTextInputContainer} keyboardShouldPersistTaps="false">
             <TextInput
               style={styles.textInput}
               onChangeText={onChangeTitle}
@@ -313,10 +319,9 @@ const CollectionInputScreen = ({
               value={title}
               autoFocus
               onTouchStart={()=>  setOpen(false)}
-              multiline={true}
-
+              multiline={false}
             />
-          </View>
+          </ScrollView>
 
           <View style = {styles.titleFooter}>
           {sameName &&
@@ -331,7 +336,7 @@ const CollectionInputScreen = ({
 
         <KeyboardAvoidingView behavior="padding">
 
-        <TouchableWithoutFeedback onPress={() => setOpen(false)}>
+        <TouchableWithoutFeedback onPress={reduceInputs}>
 
           <View style={styles.textInputDiv}>
 
@@ -341,7 +346,7 @@ const CollectionInputScreen = ({
           </View>
           </TouchableWithoutFeedback>
 
-          <View style={styles.purposeTextInputContainer}>
+          <View style={styles.purposeTextInputContainer} >
             <TextInput
               style={styles.textInput}
               onChangeText={onChangePurpose}
@@ -357,9 +362,9 @@ const CollectionInputScreen = ({
 
 
         <View style={styles.tagTextHeader}>
-          <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
-          <Text variant="title" style={styles.formHeader}>Collection Tags</Text>
-          </TouchableOpacity>
+          <TouchableWithoutFeedback  disabled={true} onPress={reduceInputs}>
+            <Text variant="title" style={styles.formHeader}>Collection Tags</Text>
+          </TouchableWithoutFeedback>
         </View>
 
         <View style = {{zIndex: 100, backgroundColor:"#fff"}}>
@@ -378,11 +383,14 @@ const CollectionInputScreen = ({
           placeholder={"add new or existing tags "}
         />
         </View>
-        <View style={styles.switchTextHeader}>
-          <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
-            <Text variant="title" style={styles.formHeader}>Priority</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.switchTextHeader}>
+            <TouchableWithoutFeedback  disabled={true} onPress={reduceInputs}>
+
+                <Text variant="title" style={styles.formHeader}>Priority</Text>
+              </TouchableWithoutFeedback>
+
+          </View>
+
         <View style= {styles.switchRow} >
           <View style={styles.currentTextField}>
 
@@ -522,6 +530,7 @@ const styles = StyleSheet.create({
     borderRadius:10,
     borderWidth:1,
     borderWidth:0.5,
+    height:30
 
   },
   titleFooter:{
@@ -541,11 +550,14 @@ const styles = StyleSheet.create({
   purposeTextInputContainer: {
     marginHorizontal:0,
     paddingHorizontal: 5,
+    paddingTop:3,
     flexDirection: 'row',
     borderRadius:10,
     borderWidth:1,
     marginBottom: 10,
     borderWidth:0.5,
+    minHeight:30,
+    maxHeight:100
 
 
   },
@@ -661,12 +673,16 @@ const styles = StyleSheet.create({
     padding:10,
   },
   tagTextHeader:{
-    padding:10,
+    paddingTop:10,
+    paddingBottom:5,
+    paddingLeft:8,
 
   },
   switchTextHeader:{
-    padding:10,
+    paddingTop:8,
+    paddingBottom:3,
     marginTop:15,
+    paddingLeft:8
 
   },
   formHeader:{
