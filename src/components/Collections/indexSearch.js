@@ -64,6 +64,8 @@ const CollectionsIndexSearch = ({
 
   const [tempSearchText, setSearchText] = useState([]);
   const [showSearchText, setShowSearchText] = useState(false);
+  const [threeLineDiv, setThreeLineDiv] = useState([]);
+  const [showCount, setShowCount] = useState(false);
   const [disableReset, setDisableReset] = useState(true);
 
   //console.log("HOME PAGE")
@@ -140,57 +142,101 @@ const CollectionsIndexSearch = ({
     }
     var searchText = []
     //console.log(collectionsList)
+    var threeLineSearchText = []
     editCollectionsList(newCollectionsList)
     if (title.length > 0) {
-      searchText.push(<><Text style={{fontWeight: "bold"}}> {"phrase: "}</Text></> )
-      searchText.push(<><Text> {title}</Text></> )
-
+      searchText.push(<><Text style={{fontWeight: "bold", marginLeft:-3, padding:0,}}> {"phrase: "}</Text></> )
+      searchText.push(<><Text style={{padding:0,}}> {title}</Text></> )
+      threeLineSearchText.push(
+        <>
+          <View style = {styles.threeLineSummary}>
+            <Text style={{fontWeight: "bold", marginLeft:-3, padding:0,}}> {"phrase: "}</Text>
+            <Text style={{padding:0,}}> {title +"; "}</Text>
+            <Text style={{padding:0,}}> {}</Text>
+          </View>
+        </>
+      )
     }
 
     if (value.length > 0){
-      if (title.length > 0){
-        searchText.push(<><Text>{"; "}</Text></>)
+      var tagList = ""
+      for(j in value){
+        tagList = tagList + value[j]
+        if (j == value.length -1  ){
+          tagList = tagList + ";"
+        }else{
+          tagList = tagList + ", "
+        }
       }
-      searchText.push(<><Text style={{fontWeight: "bold"}}> {"selected tags: "}</Text></> )
+      threeLineSearchText.push(
+        <>
+          <View style = {styles.threeLineSummary}>
+            <Text style={{fontWeight: "bold", marginLeft:-3, padding:0,}}> {"tags: "}</Text>
+            <Text style={{padding:0,}}> {tagList}</Text>
+          </View>
+        </>
+      )
+
+      if (title.length > 0){
+        searchText.push(<><Text style={{padding:0,}} >{"; "}</Text></>)
+      }
+      searchText.push(<><Text style={{fontWeight: "bold", marginLeft:-3, padding:0,}}> {"selected tags: "}</Text></> )
       for (j in value){
-        searchText.push(<><Text> {value[j]}</Text></>)
-        if (j != value.length -1 || current || urgent || notCurrent || notUrgent )
-        searchText.push(<><Text>{", "}</Text></>)
+        searchText.push(<><Text style={{padding:0,}}> {value[j]}</Text></>)
+        if (j != value.length -1  ){
+          searchText.push(<><Text style={{padding:0,}}>{", "}</Text></>)
+        }
+        if (j == value.length -1 && (current || urgent || notCurrent || notUrgent)){
+          searchText.push(<><Text style={{padding:0}}>{"; "}</Text></>)
+
+        }
       }
     }else{
       if (title.length > 0 && (current || urgent || notCurrent || notUrgent)){
-        searchText.push(<><Text>{"; "}</Text></>)
+        searchText.push(<><Text style={{padding:0}}>{"; "}</Text></>)
 
       }
     }
+    var priorityText = ""
+
     if (urgent){
-      searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
-      searchText.push(<><Text>{"current and urgent items"}</Text></>)
-
-
+      searchText.push(<><Text style={{fontWeight: "bold", padding:0}}>{"priority: "}</Text></>)
+      searchText.push(<><Text>{"current, urgent;"}</Text></>)
+      priorityText = "current, urgent;"
     }else if (current){
       if(notUrgent){
         searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
-        searchText.push(<><Text>{"current and not urgent items"}</Text></>)
-
+        searchText.push(<><Text>{"current, not urgent;"}</Text></>)
+        priorityText = "current, not urgent;"
       }else{
         searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
-        searchText.push(<><Text>{"current items"}</Text></>)
+        searchText.push(<><Text>{"current;"}</Text></>)
+        priorityText = "current;"
       }
     }
-
-
     if (notCurrent){
       searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
-      searchText.push(<><Text>{"not current or urgent items "}</Text></>)
+      searchText.push(<><Text>{"not current, not urgent; "}</Text></>)
+      priorityText = "not current, not urgent;"
 
     }else if (!current && notUrgent){
       searchText.push(<><Text style={{fontWeight: "bold"}}>{"priority: "}</Text></>)
-      searchText.push(<><Text>{"not urgent items"}</Text></>)
-
+      searchText.push(<><Text>{"not urgent;"}</Text></>)
+      priorityText = "not urgent;"
+    }
+    if(current || urgent || notCurrent || notUrgent){
+      threeLineSearchText.push(
+        <>
+          <View style = {styles.threeLineSummary}>
+            <Text style={{fontWeight: "bold", marginLeft:-3, padding:0,}}> {"priority: "}</Text>
+            <Text style={{padding:0,}}> {priorityText}</Text>
+          </View>
+        </>
+      )
     }
 
     setSearchText(searchText)
+    setThreeLineDiv(threeLineSearchText)
 
     if ((value.length > 0 || title.length > 0 || current || urgent || notCurrent || notUrgent )&& !showSearch){
       setShowSearchText(true);
@@ -287,6 +333,7 @@ const CollectionsIndexSearch = ({
 
             <TextInput
               onTouchStart={()=>  setOpen(false)}
+              style={styles.textInput}
 
               value={title}
               onChangeText={onChangeTitle}
@@ -349,11 +396,15 @@ const CollectionsIndexSearch = ({
 
 
     }
-    <View  style = {(showSearchText)? styles.searchSummary : {display: 'none'}}>
+    {/** <View  style = {(showSearchText)? styles.searchSummary : {display: 'none'}}>
       {showSearchText && tempSearchText}
+    </View>**/}
+
+    <View  style = {(showSearchText)? styles.threeLineSummaryDiv : {display: 'none'}}>
+      {showSearchText && threeLineDiv}
     </View>
-    <View style={(showSearchText)? styles.numResultsView : {display: 'none'}}>
-      <Text style={styles.numResultsText}>{ Object.size(collectionsList)}</Text>
+    <View style = {(!disableReset)? styles.numResultsView : {display: 'none'}}>
+      <Text style={styles.dash}>{ Object.size(collectionsList)}</Text>
     </View>
 
 
@@ -410,9 +461,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     backgroundColor: 'white',
-    flex: 1,
     borderRadius: 10,
     padding: 8,
+    flex: 1,
+    alignItems: 'stretch',
   },
   leftRightPadding:{
     paddingLeft: 10,
@@ -480,11 +532,12 @@ const styles = StyleSheet.create({
   numResultsText:{
     paddingLeft: 2,
 
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: "bold"
   },
   numResultsView:{
-    paddingLeft:5,
+    paddingTop:10,
+    paddingLeft:7,
     flexDirection:'row'
   },
   textInstructions: {
@@ -517,13 +570,28 @@ const styles = StyleSheet.create({
   searchSummary:{
     flexDirection: 'row',
      flexWrap: 'wrap',
-     alignItems: 'flex-start',
+     justifyContent: 'flex-start',
      margin: 4,
      borderRadius:10,
      backgroundColor: Colors.sortingHeaderBackground,
      padding:5,
      borderWidth:0.5,
   },
+  threeLineSummaryDiv:{
+     margin: 4,
+     borderRadius:10,
+     backgroundColor: Colors.sortingHeaderBackground,
+     padding:5,
+     borderWidth:0.5,
+  },
+
+  threeLineSummary:{
+    flexDirection: 'row',
+     flexWrap: 'wrap',
+     justifyContent: 'flex-start',
+  },
+
+
   hidden:{
   },
   reset_button:{
@@ -544,6 +612,15 @@ const styles = StyleSheet.create({
   },
   zindex:{
     zIndex: 100
+
+  },
+  textInput: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    alignItems: 'stretch',
+  },
+  textBold:{
 
   }
 

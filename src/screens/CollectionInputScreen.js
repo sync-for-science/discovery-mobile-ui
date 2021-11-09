@@ -297,7 +297,14 @@ const CollectionInputScreen = ({
             </View>
           </TouchableWithoutFeedback>
         <Right>
+        <TouchableWithoutFeedback style={styles.empty_toucable} onPress={reduceInputs}>
+          <View style={styles.headerTitleContainer}>
 
+          <Text style={styles.header_empty_text}> </Text>
+
+          </View>
+
+        </TouchableWithoutFeedback>
         </Right>
       </Header>
 
@@ -311,17 +318,18 @@ const CollectionInputScreen = ({
               </View>
             </TouchableWithoutFeedback>
 
-          <ScrollView style={styles.titleTextInputContainer} keyboardShouldPersistTaps="false">
+          <View style={styles.titleTextInputContainer}>
             <TextInput
               style={styles.textInput}
               onChangeText={onChangeTitle}
               placeholder = {placeholder_title}
               value={title}
-              autoFocus
               onTouchStart={()=>  setOpen(false)}
               multiline={false}
+              autoFocus
+
             />
-          </ScrollView>
+          </View>
 
           <View style = {styles.titleFooter}>
           {sameName &&
@@ -350,11 +358,14 @@ const CollectionInputScreen = ({
             <TextInput
               style={styles.textInput}
               onChangeText={onChangePurpose}
-              placeholder = {'add purpose'}
+              placeholder = {"add purpose"}
+              onSubmitEditing={Keyboard.dismiss}
+
               value={purpose}
-              autoFocus
               onTouchStart={()=>  setOpen(false)}
-              multiline={true}
+              multiline={false}
+
+              autoFocus
 
             />
           </View>
@@ -431,7 +442,7 @@ const CollectionInputScreen = ({
 
 
 
-      <View style={styles.textRow}>
+      <KeyboardAvoidingView style={styles.textRow}>
             <TouchableOpacity style={styles.saveButton} onPress={() => {
               console.log(creatingCollection)
 
@@ -459,7 +470,7 @@ const CollectionInputScreen = ({
               <BaseText variant="title" style={saveButtonTextStyle}>Save and Continue</BaseText>
             </TouchableOpacity>
           </View>
-      </View>
+      </KeyboardAvoidingView>
       {/*<DropDownPicker
         multiple={true}
         min={0}
@@ -530,7 +541,10 @@ const styles = StyleSheet.create({
     borderRadius:10,
     borderWidth:1,
     borderWidth:0.5,
-    height:30
+    height:34,
+    width:'100%',
+    paddingTop:2,
+
 
   },
   titleFooter:{
@@ -538,7 +552,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     flexDirection: 'row',
     borderRadius:10,
-    paddingBottom: 10,
+    paddingBottom: 12,
   },
   sameNameAlertContainer:{
     paddingTop:10,
@@ -550,22 +564,24 @@ const styles = StyleSheet.create({
   purposeTextInputContainer: {
     marginHorizontal:0,
     paddingHorizontal: 5,
-    paddingTop:3,
+    paddingTop:1,
     flexDirection: 'row',
     borderRadius:10,
     borderWidth:1,
+
+
     marginBottom: 10,
     borderWidth:0.5,
-    minHeight:30,
-    maxHeight:100
+    width:'100%',
 
 
   },
   textInput: {
     backgroundColor: 'white',
-    flex: 1,
     borderRadius: 10,
     padding: 8,
+    flex: 1,
+    alignItems: 'stretch',
   },
   saveButton: {
     marginLeft: 10,
@@ -679,7 +695,7 @@ const styles = StyleSheet.create({
 
   },
   switchTextHeader:{
-    paddingTop:8,
+    paddingTop:6,
     paddingBottom:3,
     marginTop:15,
     paddingLeft:8
@@ -691,6 +707,18 @@ const styles = StyleSheet.create({
 
   switchText:{
     paddingLeft: 5,
+  },
+  empty_toucable:{
+    width:'400%',
+    height:'400%',
+    marginTop:-5,
+    padding:0,
+
+  },
+  header_empty_text:{
+    width:'100%',
+    height:'200%',
+    marginVertical:-100,
   }
 
 });

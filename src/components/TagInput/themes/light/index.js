@@ -50,6 +50,7 @@ export default StyleSheet.create({
         borderWidth:0.5,
 
 
+
     },
     label: {
         flex: 1,
@@ -110,8 +111,8 @@ export default StyleSheet.create({
         position: 'absolute',
         backgroundColor: Colors.WHITE,
         borderRadius: 8,
+        borderWidth: 0.5,
         borderColor: Colors.BLACK,
-        borderWidth: 1,
         width: '100%',
         overflow: 'hidden',
 
@@ -175,7 +176,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         borderBottomColor: Colors.BLACK,
-        borderBottomWidth: 1,
+        borderBottomWidth:0.5,
         backgroundColor: Colors.GREY2,
 
 
@@ -188,7 +189,7 @@ export default StyleSheet.create({
         paddingVertical: 5,
         borderRadius: 8,
         borderColor: Colors.BLACK,
-        borderWidth: 1,
+        borderWidth: 0.5,
         color: Colors.BLACK,
         backgroundColor: Colors.WHITE,
 
