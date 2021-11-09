@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,29 +7,25 @@ import {
   Text,
   Image,
   TouchableOpacity,
-} from 'react-native';
-import { func } from 'prop-types';
+} from "react-native";
+import { func } from "prop-types";
 
-import Login from '../components/Login';
-import Colors from '../constants/Colors';
-import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
-import FullLogo from '../../assets/images/logos/full-logo-transparent-fill.svg';
-import S4SLogo from '../../assets/images/logos/s4s-logo.png';
-import ResponsiveDimensions from '../constants/ResponsiveDimensions';
-import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
-import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
-import TextStyles from '../constants/TextStyles';
+import Login from "../components/Login";
+import Colors from "../constants/Colors";
+import ResetAsyncStorageButton from "../storage/ResetAsyncStorageButton";
+import FullLogo from "../../assets/images/logos/full-logo-transparent-fill.svg";
+import S4SLogo from "../../assets/images/logos/s4s-logo.png";
+import ResponsiveDimensions from "../constants/ResponsiveDimensions";
+import vermonsterLogo from "../../assets/images/logos/vermonster-logo.png";
+import harvardLogo from "../../assets/images/logos/harvard-dbmi-logo.png";
+import TextStyles from "../constants/TextStyles";
 
 const LoginScreen = ({ handleOnboardingState }) => (
   <SafeAreaView style={styles.root}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
       <View style={styles.topScreen}>
-        <Image
-          style={styles.s4sLogo}
-          source={S4SLogo}
-          resizeMode="contain"
-        />
+        <Image style={styles.s4sLogo} source={S4SLogo} resizeMode="contain" />
         <View style={styles.fullLogoContainer}>
           <FullLogo height={140} width={300} fill="black" />
         </View>
@@ -38,7 +34,9 @@ const LoginScreen = ({ handleOnboardingState }) => (
         <Login />
         <View style={styles.reduxButtons}>
           <TouchableOpacity onPress={() => handleOnboardingState(false)}>
-            <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
+            <Text style={[styles.baseText, styles.logoBlue]}>
+              Repeat Onboarding
+            </Text>
           </TouchableOpacity>
           <View style={styles.resetStorageContainer}>
             <ResetAsyncStorageButton />
@@ -46,7 +44,7 @@ const LoginScreen = ({ handleOnboardingState }) => (
         </View>
       </View>
       <View style={styles.bottomScreen}>
-        <Text style={styles.powered}>Powered By</Text>
+        <Text style={styles.powered}>Made By</Text>
         <Image
           style={styles.harvard}
           source={harvardLogo}
@@ -68,24 +66,22 @@ LoginScreen.propTypes = {
 
 export default LoginScreen;
 
-const {
-  rd2, rd4, rd6, rd7, rd8,
-} = ResponsiveDimensions;
+const { rd2, rd4, rd6, rd7, rd8 } = ResponsiveDimensions;
 const { body1, h5 } = TextStyles;
 
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   screen: {
     flex: 1,
     paddingHorizontal: rd4,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   s4sLogo: {
     height: 60,
-    width: '55%',
+    width: "55%",
   },
   vermonster: {
     height: rd7,
@@ -100,12 +96,12 @@ const styles = StyleSheet.create({
     color: Colors.logoBlue,
   },
   topScreen: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: rd6,
   },
   bottomScreen: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 70,
     marginTop: 40,
     marginBottom: rd6,
@@ -115,7 +111,7 @@ const styles = StyleSheet.create({
   },
   reduxButtons: {
     marginTop: rd4,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   resetStorageContainer: {
     marginTop: rd2,
@@ -123,6 +119,6 @@ const styles = StyleSheet.create({
   powered: {
     ...h5,
     color: Colors.darkgrey,
-    fontWeight: '300',
+    fontWeight: "300",
   },
 });
