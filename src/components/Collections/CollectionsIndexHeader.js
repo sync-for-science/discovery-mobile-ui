@@ -39,7 +39,8 @@ AddCollectionButton.propTypes = {
   onPress: func.isRequired,
 };
 
-const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter, navigation, isAddingNewCollectionAction, creatingCollection }) => {
+const CollectionsIndexHeader = ({ showNewCollectionButton, collectionsCounter, navigation, isAddingNewCollectionAction, creatingCollection }) => {
+
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
   const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
@@ -91,17 +92,11 @@ const mapStateToProps = (state, ownProps) => ({
 
 });
 
-<<<<<<< HEAD
 const mapDispatchToProps = {
   isAddingNewCollectionAction: isAddingNewCollection,
 };
-export default connect(mapStateToProps, mapDispatchToProps,null)(CollectionsIndex);
-||||||| 8c8a1ed
-export default connect(mapStateToProps, null)(CollectionsIndex);
-=======
-export default connect(mapStateToProps, null)(CollectionsIndexHeader);
->>>>>>> upstream/master
 
+export default connect(mapStateToProps, mapDispatchToProps, null)(CollectionsIndexHeader);
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.headerBackground,

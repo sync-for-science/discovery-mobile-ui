@@ -11,7 +11,6 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { customCollectionsSelector, prebuiltCollectionsSelector, collectionsCounterSelector } from '../redux/selectors';
 import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexSearch from '../components/Collections/indexSearch';
-
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
 import TextStyles from '../constants/TextStyles';
@@ -50,7 +49,7 @@ const Tab = createMaterialTopTabNavigator();
 const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader
-      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== 'Updates'}
+      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== ROUTES.COLLECTIONS.UPDATES}
       navigation={navigation}
     />
     <Tab.Navigator

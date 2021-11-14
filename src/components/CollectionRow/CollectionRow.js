@@ -310,7 +310,7 @@ const styles = StyleSheet.create({
   badgeRow:{
     flexDirection: 'row',
     marginBottom: 5,
-
+    flexWrap: 'wrap'
 
   }
 });
