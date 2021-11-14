@@ -79,7 +79,7 @@ const CollectionsIndex = ({ showNewCollectionButton, collectionsCounter, navigat
   );
 };
 
-CollectionsIndex.propTypes = {
+CollectionsIndexHeader.propTypes = {
   showNewCollectionButton: bool.isRequired,
   collectionsCounter: shape({}).isRequired,
 };
@@ -91,10 +91,16 @@ const mapStateToProps = (state, ownProps) => ({
 
 });
 
+<<<<<<< HEAD
 const mapDispatchToProps = {
   isAddingNewCollectionAction: isAddingNewCollection,
 };
 export default connect(mapStateToProps, mapDispatchToProps,null)(CollectionsIndex);
+||||||| 8c8a1ed
+export default connect(mapStateToProps, null)(CollectionsIndex);
+=======
+export default connect(mapStateToProps, null)(CollectionsIndexHeader);
+>>>>>>> upstream/master
 
 const styles = StyleSheet.create({
   header: {

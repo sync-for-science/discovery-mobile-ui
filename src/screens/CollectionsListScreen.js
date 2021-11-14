@@ -15,6 +15,7 @@ import CollectionsIndexSearch from '../components/Collections/indexSearch';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
 import Colors from '../constants/Colors';
 import TextStyles from '../constants/TextStyles';
+import ROUTES from '../constants/routes';
 
 const CollectionsIndexCustom = connect((state) => ({
   collections: customCollectionsSelector(state),
@@ -53,7 +54,7 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       navigation={navigation}
     />
     <Tab.Navigator
-      initialRouteName="Builds"
+      initialRouteName={ROUTES.COLLECTIONS.BUILDS}
       tabBarOptions={{
         labelStyle: styles.tabText,
         indicatorStyle: {
@@ -62,11 +63,17 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       }}
     >
       <Tab.Screen
-        name={`${collectionsCounter.customCount} Builds`}
+        name={ROUTES.COLLECTIONS.BUILDS}
+        options={{
+          title: `${collectionsCounter.customCount} Builds`,
+        }}
         component={CollectionsIndexCustom}
       />
       <Tab.Screen
-        name={`${collectionsCounter.preBuiltCount} Updates`}
+        name={ROUTES.COLLECTIONS.UPDATES}
+        options={{
+          title: `${collectionsCounter.preBuiltCount} Updates`,
+        }}
         component={CollectionsIndexPrebuilt}
       />
     </Tab.Navigator>
