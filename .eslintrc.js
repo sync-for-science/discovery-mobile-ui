@@ -23,5 +23,6 @@ module.exports = {
   rules: {
     'no-use-before-define': ['error', { functions: true, classes: true, variables: false }], // disable the rule for variables, but enable it for functions and classes
     'react/jsx-filename-extension': ['off'],
+    'no-param-reassign': 0,
   },
 };

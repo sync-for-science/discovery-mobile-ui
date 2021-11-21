@@ -10,14 +10,11 @@ import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf'; // eslint-disab
 
 import RootNavigator from './src/navigation/RootNavigator';
 
-LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
-console.disableYellowBox = true;
-console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
-
-
 export default function App() {
   const [loading, setLoading] = useState(false);
-
+  LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
+  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  LogBox.ignoreAllLogs();
   useEffect(() => {
     setLoading(true);
     const loadFonts = async () => {

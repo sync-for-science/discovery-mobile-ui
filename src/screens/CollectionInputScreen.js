@@ -1,36 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView, StyleSheet, View, TouchableOpacity,TouchableWithoutFeedback,
-  ScrollView, TextInput, DeviceInfo, KeyboardAvoidingView, Alert, Text, CheckBox,Switch, Keyboard
+  Platform, SafeAreaView, StyleSheet, View, TouchableOpacity, TouchableWithoutFeedback,
+  TextInput, KeyboardAvoidingView, Alert, Text, Switch, Keyboard,
 } from 'react-native';
-import { Checkbox } from 'react-native-paper';
 
 import {
   Header, Right, Title, Left,
 } from 'native-base';
 import { connect } from 'react-redux';
-import { Entypo, Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { func, shape } from 'prop-types';
-import { resourceByRoutePropsSelector, activeCollectionSelector,  creatingCollectionSelector,
-  collectionsLabelsSelector,customCollectionsSelector
- } from '../redux/selectors';
+import { Entypo, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { useNavigation } from '@react-navigation/native';
 import {
-  createRecordNote, createCollectionNote, createCollection, selectCollection, editCollectionDetails,renameCollection
+  func, shape, bool,
+} from 'prop-types';
+import {
+  activeCollectionSelector, creatingCollectionSelector,
+  collectionsLabelsSelector, customCollectionsSelector,
+} from '../redux/selectors';
+import {
+  createCollection, selectCollection, editCollectionDetails, renameCollection,
 } from '../redux/action-creators';
-import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../components/Dialog/CollectionsDialog';
+import CollectionsDialog, {
+  COLLECTIONS_DIALOG_ACTIONS,
+  CollectionsDialogText,
+} from '../components/Dialog/CollectionsDialog';
 
 import Colors from '../constants/Colors';
-import ResourceCard from '../components/ResourceCard';
 import BaseText from '../components/Generic/BaseText';
-import CollectionNotes from '../components/CollectionNotes';
-import HeaderCountIcon from '../components/Icons/HeaderCountIcon';
-//import DropDownPicker from 'react-native-dropdown-picker';
-import DropDownPicker from 'react-native-dropdown-picker';
 import Picker from '../components/TagInput/TagInputView';
 
 const CollectionInputScreen = ({
-  resource,
   collection,
   createCollectionAction,
   selectCollectionAction,
@@ -38,61 +37,43 @@ const CollectionInputScreen = ({
   creatingCollection,
   collectionsLabels,
   collections,
-  renameCollectionAction
+  renameCollectionAction,
 }) => {
   const navigation = useNavigation();
-  const route = useRoute();
-  const editingNote = route?.params?.editingNote;
   const [title, onChangeTitle] = useState(creatingCollection ? 'Untitled Collection' : collection.label);
-  const [purpose, onChangePurpose] = useState(creatingCollection ? '' : collection.purpose);
-  const [tags, onChangeTags] = useState(creatingCollection ? [] : collection.tags);
-  const [current, currentSelection] = useState(creatingCollection ? false : collection.current);
-  const [urgent, urgentSelection] = useState(creatingCollection ? false : collection.urgent);
-  const [editNoteId, setEditNoteId] = useState(null);
-  const [showNoteInput, setShowNoteInput] = useState(false);
-  const [inputText, setInputText] = useState('');
-  const [errorText, setErrorText] = useState('');
+  const [purpose, onChangePurpose] = useState(creatingCollection ? '' : collection?.purpose);
+  const [current, currentSelection] = useState(creatingCollection ? false : collection?.current);
+  const [urgent, urgentSelection] = useState(creatingCollection ? false : collection?.urgent);
   const [newCollectionID, setCollectionID] = useState('');
   const [isAddingCollection, setIsAddingCollection] = useState(false);
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
   const [open, setOpen] = useState(false);
-  const [hasTextValue, setHasTextValue]= useState(false);
-  const [sameName, setSameName]= useState(false);
-  const [moveToCatalog, setMoveToCatalog]= useState(false);
+  const [hasTextValue, setHasTextValue] = useState(false);
+  const [sameName, setSameName] = useState(false);
+  const [moveToCatalog, setMoveToCatalog] = useState(false);
 
-  var items_list =
-    [
+  const itemsList = [
 
-    ]
-  var item_names = []
-  var collection_names = []
-  if (Object.keys(collections).length > 0){
-    for (const [key, value] of Object.entries(collections)) {
-
-
-      if (collections[key] != null){
-      collection_names.push(collections[key].label);
-      for (var j = 0; j < collections[key].tags.length; j++) {
-        if (!item_names.includes(collections[key].tags[j])) {
-          item_names.push(collections[key].tags[j])
+  ];
+  const itemNames = [];
+  const collectionNames = [];
+  if (Object.keys(collections).length > 0) {
+    Object.keys(collections).forEach((key) => {
+      if (collections[key] != null) {
+        collectionNames.push(collections[key].label);
+        for (let j = 0; j < collections[key].tags.length; j += 1) {
+          if (!itemNames.includes(collections[key].tags[j])) {
+            itemNames.push(collections[key].tags[j]);
+          }
         }
       }
-    }
-    }
+    });
   }
-  for (var i in item_names) {
-    items_list.push({label: item_names[i], value: item_names[i]})
+  for (let i = 0; i < itemNames.length; i += 1) {
+    itemsList.push({ label: itemNames[i], value: itemNames[i] });
   }
-  const [items, setItems] = useState(items_list);
-  const [value, setValue] = useState( creatingCollection ? [] : collection.tags );
-  DropDownPicker.setMode("BADGE");
-  const isResourceNotes = !!resource;
-
-  const closeInput = () => {
-    onChangeText('');
-    setEditNoteId(null);
-    setShowNoteInput(false);
-  };
+  const [items, setItems] = useState(itemsList);
+  const [value, setValue] = useState(creatingCollection ? [] : collection.tags);
 
   const discardInputAlert = () => {
     Alert.alert(
@@ -106,180 +87,138 @@ const CollectionInputScreen = ({
         },
         {
           text: 'Discard',
-          onPress: () => closeInput(),
+          onPress: () => handleCloseInput(),
           style: 'destructive',
         },
       ],
     );
   };
 
-
-
-
   const handleCloseInput = ({ alert }) => {
     if (alert) {
       discardInputAlert();
-    } else {
-      closeInput();
     }
   };
 
-
   const handleSave = () => {
-    if (creatingCollection){
-        if (!collection_names.includes(title)){
-          if (hasTextValue) {
-            if (hasInputErrors({ text: title, isRename: false, label: title })) {
-              return;
-            }
-            createCollectionAction(title);
-            setIsAddingCollection(true);
+    if (creatingCollection) {
+      if (!collectionNames.includes(title)) {
+        if (hasTextValue) {
+          if (hasInputErrors({ text: title, isRename: false, label: title })) {
+            return;
           }
-
+          createCollectionAction(title);
+          setIsAddingCollection(true);
+        }
       }
-    }else{
+    } else {
       if (hasInputErrors({ text: title, isRename: true, label: title })) {
         return;
       }
       renameCollectionAction(newCollectionID, title);
 
-      editCollectionDetailsAction(purpose,value,(current || urgent), urgent);
+      editCollectionDetailsAction(purpose, value, (current || urgent), urgent);
     }
   };
   const saveCollection = () => {
     handleSave();
     navigation.navigate('CollectionsList');
-
   };
   const saveAndContinue = () => {
-    if (creatingCollection){
-        if (!collection_names.includes(title)){
-          if (hasTextValue) {
-            if (hasInputErrors({ text: title, isRename: false, label: title })) {
-              return;
-            }
-            createCollectionAction(title);
-            setIsAddingCollection(true);
-            console.log()
-
+    if (creatingCollection) {
+      if (!collectionNames.includes(title)) {
+        if (hasTextValue) {
+          if (hasInputErrors({ text: title, isRename: false, label: title })) {
+            return;
           }
-
+          createCollectionAction(title);
+          setIsAddingCollection(true);
+        }
       }
-    }else{
+    } else {
       if (hasInputErrors({ text: title, isRename: true, label: title })) {
         return;
       }
       renameCollectionAction(newCollectionID, title);
 
-      editCollectionDetailsAction(purpose,value,(current || urgent), urgent);
+      editCollectionDetailsAction(purpose, value, (current || urgent), urgent);
     }
     setMoveToCatalog(true);
     //
-
   };
   const discardChanges = () => {
-
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DISCARD]);
-
   };
 
   const discardChangesCreate = () => {
-
     setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DISCARD_CREATE]);
-
   };
-    //selectCollectionAction(title);
+    // selectCollectionAction(title);
 
-    //console.log(collection)
-    //collection.purpose = purpose
-    //collection.label = title
-    //collection.tags = tags
+  // console.log(collection)
+  // collection.label = title
+  // collection.tags = tags
 
   useEffect(() => {
-    if (Object.keys(collections).length > 0){
-      setCollectionID(Object.keys(collections)[Object.keys(collections).length - 1])
+    if (Object.keys(collections).length > 0) {
+      setCollectionID(Object.keys(collections)[Object.keys(collections).length - 1]);
 
-      if(isAddingCollection){
-        // console.log(collections[Object.keys(collections)[Object.keys(collections).length - 1]].label)
-        //console.log(collections[Object.keys(collections)[Object.keys(collections).length - 1]].id)
-        console.log(Object.keys(collections)[Object.keys(collections).length - 1]);
-
+      if (isAddingCollection) {
         selectCollectionAction(Object.keys(collections)[Object.keys(collections).length - 1]);
-        console.log(Object.keys(collections)[Object.keys(collections).length - 1])
-        editCollectionDetailsAction(purpose,value,(current || urgent), urgent);
+        editCollectionDetailsAction(purpose, value, (current || urgent), urgent);
         setIsAddingCollection(false);
-
-
       }
     }
-    if(moveToCatalog){
-      console.log("  ");
+    if (moveToCatalog) {
       navigation.navigate('Catalog');
-
     }
 
-    //if (useState(collections )!== collections) {
-    //}
+    // if (useState(collections )!== collections) {
+    // }
   }, [collections, isAddingCollection, moveToCatalog]);
 
   useEffect(() => {
-    setSameName(false)
-    if (title.length > 0){
-      setHasTextValue(true)
+    setSameName(false);
+    if (title.length > 0) {
+      setHasTextValue(true);
     }
-    if (creatingCollection){
-      for (i in collection_names){
-        if (collection_names[i].toLowerCase() == title.toLowerCase()){
-          setHasTextValue(false)
-          setSameName(true)
+    if (creatingCollection) {
+      for (let i = 0; i < collectionNames.length; i += 1) {
+        if (collectionNames[i].toLowerCase() === title.toLowerCase()) {
+          setHasTextValue(false);
+          setSameName(true);
         }
       }
     }
-  }, [title])
-
-
-
-
+  }, [title]);
 
   const saveButtonTextStyle = hasTextValue ? styles.saveButtonText : styles.disabledSaveButtonText;
-  //const noteCount = isResourceNotes
-    //? collection.records[resource.id]?.notes && Object.keys(collection.records[resource?.id]?.notes).length // eslint-disable-line max-len
-    //: Object.keys(collection.notes).length;
 
-  //PLACEHOLDERS
-  const placeholder_title = creatingCollection ? '' : collection.label ;
+  // PLACEHOLDERS
+  const placeholderTitle = creatingCollection ? '' : collection.label;
 
-  const current_header = creatingCollection ? 'Search Collections' : 'Edit Collection';
   const isUniqueName = ({ text, isRename, label }) => {
     // if action is rename, new label can be same as old label
     if (isRename && (text.toLowerCase() === label.toLowerCase())) {
       return true;
     }
-    return !collectionsLabels.includes(text.toLowerCase());
+    return !((collectionsLabels).includes(text.toLowerCase()));
   };
-  const UNIQUE_ERROR = 'Collection name must be unique.';
-  const LABEL_LENGTH_ERROR = 'Collection name must be at least 1 character';
   const hasMinLength = (text) => text.length > 0;
 
   const hasInputErrors = ({ text, isRename, label }) => {
     if (!hasMinLength(text)) {
-      setErrorText(LABEL_LENGTH_ERROR);
       return true;
     }
     if (!isUniqueName({ text, isRename, label })) {
-      setErrorText(UNIQUE_ERROR);
       return true;
     }
     return false;
   };
-  const reduceInputs = () =>{
-    Keyboard.dismiss()
-    console.log("Closings")
-    setOpen(false)
-
-  }
-
-
+  const reduceInputs = () => {
+    Keyboard.dismiss();
+    setOpen(false);
+  };
 
   return (
 
@@ -291,20 +230,20 @@ const CollectionInputScreen = ({
             <Entypo name="chevron-thin-left" size={20} color="black" />
           </TouchableOpacity>
         </Left>
-          <TouchableWithoutFeedback onPress={reduceInputs}>
-            <View style={styles.headerTitleContainer}>
-              <Title style={styles.headerText}><Text>{title}</Text></Title>
-            </View>
-          </TouchableWithoutFeedback>
-        <Right>
-        <TouchableWithoutFeedback style={styles.empty_toucable} onPress={reduceInputs}>
+        <TouchableWithoutFeedback onPress={reduceInputs}>
           <View style={styles.headerTitleContainer}>
-
-          <Text style={styles.header_empty_text}> </Text>
-
+            <Title style={styles.headerText}><Text>{title}</Text></Title>
           </View>
-
         </TouchableWithoutFeedback>
+        <Right>
+          <TouchableWithoutFeedback style={styles.empty_toucable} onPress={reduceInputs}>
+            <View style={styles.headerTitleContainer}>
+
+              <Text style={styles.header_empty_text}> </Text>
+
+            </View>
+
+          </TouchableWithoutFeedback>
         </Right>
       </Header>
 
@@ -313,208 +252,192 @@ const CollectionInputScreen = ({
         <KeyboardAvoidingView behavior="padding">
           <TouchableWithoutFeedback onPress={reduceInputs}>
 
-              <View style={styles.textInputDiv}>
-                <Text variant="title" style={styles.formHeader}>Title</Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <View style={styles.textInputDiv}>
+              <Text variant="title" style={styles.formHeader}>Title</Text>
+            </View>
+          </TouchableWithoutFeedback>
 
           <View style={styles.titleTextInputContainer}>
             <TextInput
               style={styles.textInput}
               onChangeText={onChangeTitle}
-              placeholder = {placeholder_title}
+              placeholder={placeholderTitle}
               value={title}
-              onTouchStart={()=>  setOpen(false)}
+              onTouchStart={() => setOpen(false)}
               multiline={false}
               autoFocus
-
             />
           </View>
 
-          <View style = {styles.titleFooter}>
-          {sameName &&
-            <View style = {styles.sameNameAlertContainer}>
-                <Text style={{color: Colors.destructive}}>Collection name must be unique</Text>
+          <View style={styles.titleFooter}>
+            {sameName
+            && (
+            <View style={styles.sameNameAlertContainer}>
+              <Text style={{ color: Colors.destructive }}>Collection name must be unique</Text>
             </View>
-          }
+            )}
           </View>
 
         </KeyboardAvoidingView>
 
-
         <KeyboardAvoidingView behavior="padding">
 
-        <TouchableWithoutFeedback onPress={reduceInputs}>
+          <TouchableWithoutFeedback onPress={reduceInputs}>
 
-          <View style={styles.textInputDiv}>
+            <View style={styles.textInputDiv}>
 
-            <TouchableOpacity style={styles.textInputHeader}  disabled={true}>
-              <Text variant="title" style={styles.formHeader}>Purpose</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity style={styles.textInputHeader} disabled>
+                <Text variant="title" style={styles.formHeader}>Purpose</Text>
+              </TouchableOpacity>
+            </View>
           </TouchableWithoutFeedback>
 
-          <View style={styles.purposeTextInputContainer} >
+          <View style={styles.purposeTextInputContainer}>
             <TextInput
               style={styles.textInput}
               onChangeText={onChangePurpose}
-              placeholder = {"add purpose"}
+              placeholder="add purpose"
               onSubmitEditing={Keyboard.dismiss}
-
               value={purpose}
-              onTouchStart={()=>  setOpen(false)}
+              onTouchStart={() => setOpen(false)}
               multiline={false}
-
               autoFocus
-
             />
           </View>
-          </KeyboardAvoidingView>
-
+        </KeyboardAvoidingView>
 
         <View style={styles.tagTextHeader}>
-          <TouchableWithoutFeedback  disabled={true} onPress={reduceInputs}>
+          <TouchableWithoutFeedback disabled onPress={reduceInputs}>
             <Text variant="title" style={styles.formHeader}>Collection Tags</Text>
           </TouchableWithoutFeedback>
         </View>
 
-        <View style = {{zIndex: 100, backgroundColor:"#fff"}}>
-        <Picker
-          multiple={true}
-          min={0}
-          max={5}
-          open={open}
-          value={value}
-          setOpen={setOpen}
-          setValue={setValue}
-          items={items}
-          setItems={setItems}
-          searchable={true}
-
-          placeholder={"add new or existing tags "}
-        />
+        <View style={{ zIndex: 100, backgroundColor: '#fff' }}>
+          <Picker
+            multiple
+            min={0}
+            max={5}
+            open={open}
+            value={value}
+            setOpen={setOpen}
+            setValue={setValue}
+            items={items}
+            setItems={setItems}
+            searchable
+            placeholder="add new or existing tags "
+          />
         </View>
-          <View style={styles.switchTextHeader}>
-            <TouchableWithoutFeedback  disabled={true} onPress={reduceInputs}>
+        <View style={styles.switchTextHeader}>
+          <TouchableWithoutFeedback disabled onPress={reduceInputs}>
 
-                <Text variant="title" style={styles.formHeader}>Priority</Text>
-              </TouchableWithoutFeedback>
+            <Text variant="title" style={styles.formHeader}>Priority</Text>
+          </TouchableWithoutFeedback>
 
-          </View>
+        </View>
 
-        <View style= {styles.switchRow} >
+        <View style={styles.switchRow}>
           <View style={styles.currentTextField}>
 
-              <Feather name="watch" size={18} color={Colors.currentCollectionColor} />
+            <Feather name="watch" size={18} color={Colors.currentCollectionColor} />
 
-              <Text style={styles.switchText}>Current</Text>
+            <Text style={styles.switchText}>Current</Text>
           </View>
 
-              <Switch
-              trackColor={{
-                false: Colors.mediumgrey,
-                true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
-                }}
-                thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(current ? 'primary' : 'primaryLight')]}
-                onValueChange={() => currentSelection(!current)}
-                value={current || urgent}
-                disabled={urgent}
-                />
-            <View style={styles.leftRightPadding}>
-              <Feather name="alert-triangle" size={18} color={Colors.destructive} />
+          <Switch
+            trackColor={{
+              false: Colors.mediumgrey,
+              true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
+            }}
+            thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(current ? 'primary' : 'primaryLight')]}
+            onValueChange={() => currentSelection(!current)}
+            value={current || urgent}
+            disabled={urgent}
+          />
+          <View style={styles.leftRightPadding}>
+            <Feather name="alert-triangle" size={18} color={Colors.destructive} />
 
-              <Text variant="title" style={styles.switchText}>Urgent</Text>
-            </View>
+            <Text variant="title" style={styles.switchText}>Urgent</Text>
+          </View>
 
-            <Switch
-              trackColor={{
-                false: Colors.mediumgrey,
-                true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
-              }}
-              thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(urgent ? 'primary' : 'primaryLight')]}
-              onValueChange={() => urgentSelection(!urgent)}
-              value={urgent}
-              />
+          <Switch
+            trackColor={{
+              false: Colors.mediumgrey,
+              true: Platform.OS === 'ios' ? Colors.primary : Colors.primaryLight,
+            }}
+            thumbColor={(Platform.OS === 'ios') ? 'white' : Colors[(urgent ? 'primary' : 'primaryLight')]}
+            onValueChange={() => urgentSelection(!urgent)}
+            value={urgent}
+          />
         </View>
       </View>
 
-
-
-
-
       <KeyboardAvoidingView style={styles.textRow}>
-            <TouchableOpacity style={styles.saveButton} onPress={() => {
-              console.log(creatingCollection)
+        <TouchableOpacity
+          style={styles.saveButton}
+          onPress={() => {
+            if (creatingCollection) {
+              discardChangesCreate();
+            } else {
+              discardChanges();
+            }
+          }}
+        >
+          <BaseText variant="title" style={styles.discardButtonText}>Discard</BaseText>
+        </TouchableOpacity>
 
-              if (creatingCollection){
-                discardChangesCreate();
-              }else{
-                discardChanges();
-              }}}>
-              <BaseText variant="title" style={styles.discardButtonText}>Discard</BaseText>
-            </TouchableOpacity>
+        {collectionsDialogText && (
+        <CollectionsDialog
+          collectionsDialogText={collectionsDialogText}
+          setCollectionsDialogText={setCollectionsDialogText}
+        />
+        )}
+        <View style={styles.saveCol}>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={saveCollection}
+            disabled={!hasTextValue}
+          >
+            <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
+          </TouchableOpacity>
 
-            {collectionsDialogText && (
-              <CollectionsDialog
-
-                collectionsDialogText={collectionsDialogText}
-                setCollectionsDialogText={setCollectionsDialogText}
-              />
-            )}
-          <View style = {styles.saveCol}>
-            <TouchableOpacity style={styles.saveButton} onPress={saveCollection} disabled={!hasTextValue}>
-              <BaseText variant="title" style={saveButtonTextStyle}>Save</BaseText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.saveButton} onPress={saveAndContinue} disabled={!hasTextValue}>
-              <BaseText variant="title" style={saveButtonTextStyle}>Save and Continue</BaseText>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.saveButton}
+            onPress={saveAndContinue}
+            disabled={!hasTextValue}
+          >
+            <BaseText variant="title" style={saveButtonTextStyle}>Save and Continue</BaseText>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
-      {/*<DropDownPicker
-        multiple={true}
-        min={0}
-        max={5}
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        searchable={true}
-      />*/}
 
     </SafeAreaView>
   );
 };
 
 CollectionInputScreen.propTypes = {
-  resource: shape({}),
   createCollectionAction: func.isRequired,
   collection: shape({}).isRequired,
-};
-
-CollectionInputScreen.defaultProps = {
-  resource: null,
+  selectCollectionAction: func.isRequired,
+  editCollectionDetailsAction: func.isRequired,
+  creatingCollection: bool.isRequired,
+  collections: shape({}).isRequired,
+  renameCollectionAction: func.isRequired,
+  collectionsLabels: shape([]).isRequired,
 };
 
 const mapStateToProps = (state, ownProps) => ({
   collectionsLabels: collectionsLabelsSelector(state),
-  resource: resourceByRoutePropsSelector(state, ownProps),
   collection: activeCollectionSelector(state),
   creatingCollection: creatingCollectionSelector(state, ownProps),
   collections: customCollectionsSelector(state, ownProps),
 
-
 });
-
 
 const mapDispatchToProps = {
   createCollectionAction: createCollection,
   selectCollectionAction: selectCollection,
   editCollectionDetailsAction: editCollectionDetails,
   renameCollectionAction: renameCollection,
-
 
 };
 
@@ -535,45 +458,39 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   titleTextInputContainer: {
-    marginHorizontal:0,
+    marginHorizontal: 0,
     paddingHorizontal: 5,
     flexDirection: 'row',
-    borderRadius:10,
-    borderWidth:1,
-    borderWidth:0.5,
-    height:34,
-    width:'100%',
-    paddingTop:2,
-
+    borderRadius: 10,
+    borderWidth: 0.5,
+    height: 34,
+    width: '100%',
+    paddingTop: 2,
 
   },
-  titleFooter:{
-    marginHorizontal:5,
+  titleFooter: {
+    marginHorizontal: 5,
     paddingHorizontal: 5,
     flexDirection: 'row',
-    borderRadius:10,
+    borderRadius: 10,
     paddingBottom: 12,
   },
-  sameNameAlertContainer:{
-    paddingTop:10,
+  sameNameAlertContainer: {
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
 
   },
 
   purposeTextInputContainer: {
-    marginHorizontal:0,
+    marginHorizontal: 0,
     paddingHorizontal: 5,
-    paddingTop:1,
+    paddingTop: 1,
     flexDirection: 'row',
-    borderRadius:10,
-    borderWidth:1,
-
-
+    borderRadius: 10,
     marginBottom: 10,
-    borderWidth:0.5,
-    width:'100%',
-
+    borderWidth: 0.5,
+    width: '100%',
 
   },
   textInput: {
@@ -587,13 +504,13 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     paddingBottom: 10,
   },
-  textInputHeader:{
+  textInputHeader: {
 
   },
   saveButtonText: {
     color: Colors.primary,
   },
-  discardButtonText:{
+  discardButtonText: {
     color: Colors.destructive,
   },
   disabledSaveButtonText: {
@@ -606,7 +523,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
   },
-  textInputDiv:{
+  textInputDiv: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -633,20 +550,19 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primaryLight,
     paddingTop: 10,
   },
-  checkboxContainer:{
+  checkboxContainer: {
     borderWidth: 2,
     borderRadius: 20,
     width: 40,
     height: 40,
-    marginLeft: 50
+    marginLeft: 50,
   },
-  switchTextInstructions:{
+  switchTextInstructions: {
     paddingLeft: 2,
     paddingTop: 10,
     paddingRight: 10,
     fontSize: 14,
   },
-
 
   textInstructions: {
     paddingLeft: 5,
@@ -654,71 +570,71 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     fontSize: 14,
   },
-  switchRow:{
+  switchRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 15,
   },
-  textRow:{
+  textRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 8,
-    paddingRight:20,
+    paddingRight: 20,
     marginVertical: 4,
     paddingTop: 20,
-    zIndex:-1,
-    width:  '100%'
+    zIndex: -1,
+    width: '100%',
 
   },
-  leftRightPadding:{
+  leftRightPadding: {
     paddingLeft: 10,
     paddingRight: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  currentTextField:{
+  currentTextField: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
 
   inputField: {
-    padding:10,
+    padding: 10,
   },
-  tagTextHeader:{
-    paddingTop:10,
-    paddingBottom:5,
-    paddingLeft:8,
+  tagTextHeader: {
+    paddingTop: 10,
+    paddingBottom: 5,
+    paddingLeft: 8,
 
   },
-  switchTextHeader:{
-    paddingTop:6,
-    paddingBottom:3,
-    marginTop:15,
-    paddingLeft:8
+  switchTextHeader: {
+    paddingTop: 6,
+    paddingBottom: 3,
+    marginTop: 15,
+    paddingLeft: 8,
 
   },
-  formHeader:{
-    fontSize:16,
+  formHeader: {
+    fontSize: 16,
   },
 
-  switchText:{
+  switchText: {
     paddingLeft: 5,
   },
-  empty_toucable:{
-    width:'400%',
-    height:'400%',
-    marginTop:-5,
-    padding:0,
+  empty_toucable: {
+    width: '400%',
+    height: '400%',
+    marginTop: -5,
+    padding: 0,
 
   },
-  header_empty_text:{
-    width:'100%',
-    height:'200%',
-    marginVertical:-100,
-  }
+  header_empty_text: {
+    width: '100%',
+    height: '200%',
+    marginVertical: -100,
+  },
 
 });

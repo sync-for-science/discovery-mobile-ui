@@ -91,8 +91,8 @@ export const createCollection = (options = {}) => {
     showCollectionOnly = false,
     selectedResourceType = TYPES_SORTED_BY_LABEL[0],
     purpose = '',
-    current =  false,
-    urgent =  false,
+    current = false,
+    urgent = false,
     tags = [],
   } = options;
   const timeCreated = new Date();
@@ -123,8 +123,6 @@ export const createCollection = (options = {}) => {
     purpose,
     current,
     urgent,
-
-
 
   };
 };
@@ -388,8 +386,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
       };
     }
 
-
-
     case actionTypes.DELETE_COLLECTION: {
       const newState = { ...state };
       delete newState[action.payload.collectionId];
@@ -398,8 +394,6 @@ export const collectionsReducer = (state = preloadCollections, action) => {
     case actionTypes.RENAME_COLLECTION: {
       const updatedCollection = { ...state[action.payload.collectionId] };
       updatedCollection.label = action.payload.collectionName;
-      console.log("RENAME RUNNING")
-      console.log(updatedCollection.label)
       return { ...state, [action.payload.collectionId]: updatedCollection };
     }
     case actionTypes.CLEAR_COLLECTION: {
@@ -525,13 +519,12 @@ export const collectionsReducer = (state = preloadCollections, action) => {
 
     case actionTypes.EDIT_COLLECTION_DETAILS: {
       const {
-      purpose,
-      tags,
-      current,
-      urgent } = action.payload;
-      console.log("run");
+        purpose,
+        tags,
+        current,
+        urgent,
+      } = action.payload;
       return produce(state, (draft) => {
-
         // eslint-disable-next-line no-param-reassign
         draft[collectionId].purpose = purpose;
         // eslint-disable-next-line no-param-reassign
@@ -566,12 +559,10 @@ export const activeCollectionIdReducer = (state = null, action) => {
   }
 };
 
-export const isCreatingNewCollectionReducer = (state = null, action) => {
-
+export const isCreatingNewCollectionReducer = (state = false, action) => {
   switch (action.type) {
     case actionTypes.ADDING_NEW_COLLECTION: {
       return action.payload;
-
     }
 
     default:

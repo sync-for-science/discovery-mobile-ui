@@ -5,9 +5,9 @@ import {
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 import {
-  shape, number, string,
+  shape, number, string, bool, func,
 } from 'prop-types';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { collectionsSelector, collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
@@ -61,10 +61,10 @@ const CollectionRowActionIcon = ({
         if (buttonIndex === 0) {
           // cancel action
         } else if (buttonIndex === 1) {
-          selectCollectionAction(collectionId)
+          selectCollectionAction(collectionId);
           isAddingNewCollectionAction(false);
-          navigation.navigate('CollectionInput')
-        }else if (buttonIndex === 2) {
+          navigation.navigate('CollectionInput');
+        } else if (buttonIndex === 2) {
           setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
         } else if (buttonIndex === 3) {
           setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
@@ -103,6 +103,8 @@ CollectionRowActionIcon.propTypes = {
   collectionId: string.isRequired,
   collectionLabel: string.isRequired,
   collectionsCount: number.isRequired,
+  selectCollectionAction: func.isRequired,
+  isAddingNewCollectionAction: bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({

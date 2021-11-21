@@ -22,7 +22,7 @@ const yellow3 = '#FFF2CC';
 const red1 = 'red';
 const purple1 = '#7030A0';
 const purple2 = '#EAB9FF';
-const green1 = '#6CBB3C'
+const green1 = '#6CBB3C';
 export default {
   primary: blue9,
   primaryLight: blue10,

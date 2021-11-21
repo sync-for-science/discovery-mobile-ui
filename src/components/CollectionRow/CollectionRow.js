@@ -3,7 +3,7 @@ import {
   StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
 import {
-  func, number, shape, string,
+  func, number, shape, string, bool,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
@@ -13,7 +13,6 @@ import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
 import { selectCollection, isAddingNewCollection } from '../../redux/action-creators';
 import {
   collectionByIdSelector,
-  creatingCollectionSelector
 } from '../../redux/selectors';
 import { formatDateShort } from '../../resources/fhirReader';
 import PreBuiltDescriptionText from './PreBuiltDescriptionText';
@@ -73,7 +72,6 @@ const CollectionRow = ({
   navigation,
   selectCollectionAction,
   isAddingNewCollectionAction,
-  creatingCollection
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
@@ -89,7 +87,7 @@ const CollectionRow = ({
   const recordNotesCount = collectionRecords.reduce((acc, { notes }) => (
     notes ? acc.concat(Object.keys(notes)) : acc), []).length;
   const savedRecordsCount = collectionRecords.filter((record) => record.saved === true).length;
-  const show_purpose = (collection.purpose.length) > 0
+  const showPurpose = (collection?.purpose.length) > 0;
   return (
     <View style={styles.collectionRowContainer}>
       <View style={styles.dateInfoRow}>
@@ -106,16 +104,18 @@ const CollectionRow = ({
         </View>
         <View style={styles.iconContainer}>
 
-          {collection.current &&
+          {collection?.current
+            && (
             <View style={styles.iconPadding}>
               <Feather name="watch" size={20} color={Colors.currentCollectionColor} />
             </View>
-          }
-          {collection.urgent &&
+            )}
+          {collection?.urgent
+            && (
             <View style={styles.iconPadding}>
               <Feather name="alert-triangle" size={20} color={Colors.destructive} />
             </View>
-          }
+            )}
 
           <TouchableOpacity style={styles.infoIcon} onPress={() => setShowDetails(!showDetails)}>
             <Ionicons name="information-circle-outline" size={24} color="black" />
@@ -134,37 +134,40 @@ const CollectionRow = ({
           )}
           <View>
 
-          {show_purpose &&
+            {showPurpose
+            && (
             <View>
               <Text style={styles.purposeText}>
-                {collection.purpose}
+                {collection?.purpose}
               </Text>
             </View>
-          }
+            )}
 
-          {collection.current &&
+            {collection?.current
+            && (
             <View style={styles.currentTextField}>
 
-                <Feather name="watch" size={18} color={Colors.currentCollectionColor} />
+              <Feather name="watch" size={18} color={Colors.currentCollectionColor} />
 
-                <Text style={styles.switchText}>Current Collection</Text>
+              <Text style={styles.switchText}>Current Collection</Text>
             </View>
-          }
-          {collection.urgent &&
+            )}
+            {collection?.urgent
+            && (
             <View style={styles.currentTextField}>
               <Feather name="alert-triangle" size={18} color={Colors.destructive} />
 
               <Text variant="title" style={styles.switchText}>Urgent Collection</Text>
             </View>
-          }
-          <View style = {styles.badgeRow}>
-              {Object.entries(collection.tags).map((item, index)=> (
-                <TouchableOpacity style = {styles.badgeStyle}>
+            )}
+            <View style={styles.badgeRow}>
+              {Object.entries(collection.tags).map((item, index) => (
+                <TouchableOpacity style={styles.badgeStyle}>
                   <Text>{collection.tags[index]}</Text>
 
                 </TouchableOpacity>
               ))}
-          </View>
+            </View>
 
             <CountInfo count={savedRecordsCount} label="Records In Collection" color={Colors.collectionYellow} />
             <CountInfo count={collectionNotesCount} label="Collection Notes" color={Colors.mediumgrey} />
@@ -192,6 +195,8 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
+  isAddingNewCollectionAction: bool.isRequired,
+
 };
 
 CollectionRow.defaultProps = {
@@ -199,7 +204,6 @@ CollectionRow.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => ({
   collection: collectionByIdSelector(state, ownProps),
-  creatingCollection: creatingCollectionSelector(state, ownProps),
 
 });
 
@@ -279,38 +283,38 @@ const styles = StyleSheet.create({
   descriptionContainer: {
     marginBottom: 12,
   },
-  currentTextField:{
+  currentTextField: {
     flexDirection: 'row',
-    paddingTop:2,
-    paddingBottom:5,
+    paddingTop: 2,
+    paddingBottom: 5,
 
-    paddingLeft:3
+    paddingLeft: 3,
   },
-  switchText:{
-    paddingLeft:12
+  switchText: {
+    paddingLeft: 12,
   },
-  purposeText:{
-    paddingTop:2,
-    paddingLeft:7,
-    paddingBottom:5,
-    paddingRight:5
+  purposeText: {
+    paddingTop: 2,
+    paddingLeft: 7,
+    paddingBottom: 5,
+    paddingRight: 5,
   },
-  iconPadding:{
-    padding:3,
+  iconPadding: {
+    padding: 3,
   },
   badgeStyle: {
-      borderRadius: 10,
-      backgroundColor: Colors.sortingHeaderBackground,
-      paddingHorizontal: 10,
-      marginRight:10,
-      paddingVertical: 5,
-      marginVertical: 2,
+    borderRadius: 10,
+    backgroundColor: Colors.sortingHeaderBackground,
+    paddingHorizontal: 10,
+    marginRight: 10,
+    paddingVertical: 5,
+    marginVertical: 2,
 
   },
-  badgeRow:{
+  badgeRow: {
     flexDirection: 'row',
     marginBottom: 5,
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
 
-  }
+  },
 });

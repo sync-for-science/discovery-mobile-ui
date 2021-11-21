@@ -35,14 +35,6 @@ const CollectionsIndexPrebuilt = connect((state) => ({
   />
 ));
 
-const CustomCollectionsIndexHeader = connect((state) => ({
-  collections: prebuiltCollectionsSelector(state),
-}), null)(({ navigation, collections }) => (
-  <CollectionsIndexHeader
-    navigation={navigation}
-    collections={collections}
-  />
-));
 const Tab = createMaterialTopTabNavigator();
 
 // Note: when 1st landing on this screen, `getFocusedRouteNameFromRoute(route) === undefined` ?

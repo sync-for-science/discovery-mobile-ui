@@ -24,7 +24,7 @@ const CategoryButton = ({
     {hasCollectionItems && <Text style={textStyles.hasCollection}>■</Text>}
     <Text style={[textStyles.button, isActive ? textStyles.selected : null]}>{label}</Text>
   </TouchableOpacity>
-); 
+);
 
 CategoryButton.propTypes = {
   resourceType: string.isRequired,

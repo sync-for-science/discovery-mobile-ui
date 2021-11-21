@@ -11,7 +11,6 @@ import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
 import CollectionInputScreen from '../screens/CollectionInputScreen';
-import CollectionsSearchScreen from '../screens/CollectionsSearchScreen';
 
 import Colors from '../constants/Colors';
 import StateProvider from '../../StateProvider';
@@ -79,10 +78,7 @@ const CollectionStackScreen = () => (
       name="CollectionInput"
       component={CollectionInputScreen}
     />
-    <CollectionsStack.Screen
-      name="CollectionSearch"
-      component={CollectionsSearchScreen}
-    />
+
   </CollectionsStack.Navigator>
 );
 
