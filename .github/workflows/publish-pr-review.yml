@@ -18,7 +18,7 @@ jobs:
       - uses: expo/expo-github-action@v6
         with:
           expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          token: ${{ secrets.EXPO_TOKEN }}
       - run: expo publish --release-channel=pr-${{ github.head_ref }}
       - uses: unsplash/comment-on-pr@master
         env:
