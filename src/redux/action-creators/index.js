@@ -187,3 +187,22 @@ export const editCollectionNote = (noteId, text) => (dispatch, getState) => {
     },
   });
 };
+
+export const editCollectionDetails = (purpose, tags, current, urgent) => (dispatch, getState) => {
+  const { activeCollectionId } = getState();
+  return dispatch({
+    type: actionTypes.EDIT_COLLECTION_DETAILS,
+    payload: {
+      collectionId: activeCollectionId,
+      purpose,
+      tags,
+      current,
+      urgent,
+    },
+  });
+};
+
+export const isAddingNewCollection = (creatingCollectionHolder) => ({
+  type: actionTypes.ADDING_NEW_COLLECTION,
+  payload: creatingCollectionHolder,
+});

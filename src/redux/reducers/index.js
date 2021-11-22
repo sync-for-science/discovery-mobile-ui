@@ -90,6 +90,10 @@ export const createCollection = (options = {}) => {
     preBuilt = false,
     showCollectionOnly = false,
     selectedResourceType = TYPES_SORTED_BY_LABEL[0],
+    purpose = '',
+    current = false,
+    urgent = false,
+    tags = [],
   } = options;
   const timeCreated = new Date();
 
@@ -115,6 +119,11 @@ export const createCollection = (options = {}) => {
     records: {},
     detailsPanelSortingState: defaultDetailsPanelSortingState,
     notes: {},
+    tags,
+    purpose,
+    current,
+    urgent,
+
   };
 };
 
@@ -176,6 +185,7 @@ const disabledActionsForPreBuilt = [
   actionTypes.RENAME_COLLECTION,
   actionTypes.CLEAR_COLLECTION,
   actionTypes.DELETE_COLLECTION,
+
 ];
 
 export const PREBUILT_COLLECTIONS_LABELS = {
@@ -375,6 +385,7 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         [newCollection.id]: newCollection,
       };
     }
+
     case actionTypes.DELETE_COLLECTION: {
       const newState = { ...state };
       delete newState[action.payload.collectionId];
@@ -505,6 +516,28 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         draft[collectionId].lastUpdated = new Date();
       });
     }
+
+    case actionTypes.EDIT_COLLECTION_DETAILS: {
+      const {
+        purpose,
+        tags,
+        current,
+        urgent,
+      } = action.payload;
+      return produce(state, (draft) => {
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].purpose = purpose;
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].tags = tags;
+
+        draft[collectionId].current = current;
+
+        draft[collectionId].urgent = urgent;
+
+        // eslint-disable-next-line no-param-reassign
+        draft[collectionId].lastUpdated = new Date();
+      });
+    }
     default:
       return state;
   }
@@ -521,6 +554,17 @@ export const activeCollectionIdReducer = (state = null, action) => {
     case actionTypes.DELETE_COLLECTION: {
       return null;
     }
+    default:
+      return state;
+  }
+};
+
+export const isCreatingNewCollectionReducer = (state = false, action) => {
+  switch (action.type) {
+    case actionTypes.ADDING_NEW_COLLECTION: {
+      return action.payload;
+    }
+
     default:
       return state;
   }

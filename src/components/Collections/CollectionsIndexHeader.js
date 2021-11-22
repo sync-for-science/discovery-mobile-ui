@@ -10,26 +10,44 @@ import { Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-e
 import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
-import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
+import CollectionsDialog from '../Dialog/CollectionsDialog';
 import { collectionsCounterSelector } from '../../redux/selectors';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
+import { isAddingNewCollection } from '../../redux/action-creators';
 
-const AddCollectionButton = ({ onPress }) => (
+const AddCollectionInputButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
     <Feather name="plus-square" size={24} color={Colors.headerIcon} />
   </TouchableOpacity>
+
 );
 
-AddCollectionButton.propTypes = {
+const SearchInputButton = ({ onPress }) => (
+  <TouchableOpacity onPress={onPress}>
+    <Feather name="search" size={24} color={Colors.headerIcon} />
+  </TouchableOpacity>
+
+);
+
+AddCollectionInputButton.propTypes = {
+  onPress: func.isRequired,
+};
+SearchInputButton.propTypes = {
   onPress: func.isRequired,
 };
 
-const CollectionsIndexHeader = ({ showNewCollectionButton, collectionsCounter }) => {
+const CollectionsIndexHeader = ({
+  showNewCollectionButton,
+  collectionsCounter,
+  navigation,
+  isAddingNewCollectionAction,
+}) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
   const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
   const handleNewCollectionPress = () => {
-    setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.CREATE]);
+    isAddingNewCollectionAction(true);
+    navigation.navigate('CollectionInput');
   };
 
   return (
@@ -42,7 +60,9 @@ const CollectionsIndexHeader = ({ showNewCollectionButton, collectionsCounter })
           <Title style={styles.headerText}>Collections</Title>
         </View>
         <Right>
-          {showNewCollectionButton && <AddCollectionButton onPress={handleNewCollectionPress} />}
+          {showNewCollectionButton
+            && <AddCollectionInputButton onPress={handleNewCollectionPress} />}
+
         </Right>
       </Header>
       {collectionsDialogText && (
@@ -58,14 +78,22 @@ const CollectionsIndexHeader = ({ showNewCollectionButton, collectionsCounter })
 CollectionsIndexHeader.propTypes = {
   showNewCollectionButton: bool.isRequired,
   collectionsCounter: shape({}).isRequired,
+  navigation: shape({}).isRequired,
+  isAddingNewCollectionAction: bool.isRequired,
+
 };
 
 const mapStateToProps = (state) => ({
+
   collectionsCounter: collectionsCounterSelector(state),
+
 });
 
-export default connect(mapStateToProps, null)(CollectionsIndexHeader);
+const mapDispatchToProps = {
+  isAddingNewCollectionAction: isAddingNewCollection,
+};
 
+export default connect(mapStateToProps, mapDispatchToProps, null)(CollectionsIndexHeader);
 const styles = StyleSheet.create({
   header: {
     backgroundColor: Colors.headerBackground,

@@ -9,6 +9,8 @@ import {
   associationsReducer,
   collectionsReducer,
   activeCollectionIdReducer,
+  isCreatingNewCollectionReducer,
+
 } from './reducers';
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
@@ -25,13 +27,14 @@ const createStore = (patientId) => {
     associations: associationsReducer,
     activeCollectionId: activeCollectionIdReducer,
     collections: collectionsReducer,
+    creatingCollection: isCreatingNewCollectionReducer,
   });
 
   const persistReducerConfig = {
     version: '0.1.0',
     key: `root-${patientId}`,
     storage: AsyncStorage,
-    whitelist: ['activeCollectionId', 'collections'],
+    whitelist: ['activeCollectionId', 'collections', 'creatingCollection'],
   };
 
   const store = configureStore({

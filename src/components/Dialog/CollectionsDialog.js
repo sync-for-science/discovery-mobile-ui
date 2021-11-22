@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
+import { useNavigation } from '@react-navigation/native';
+
 import {
   func, shape, string, arrayOf,
 } from 'prop-types';
@@ -18,6 +20,8 @@ export const COLLECTIONS_DIALOG_ACTIONS = {
   DUPLICATE: 'DUPLICATE',
   DELETE: 'DELETE',
   DELETE_ERROR: 'DELETE_ERROR',
+  DISCARD: 'DISCARD',
+  DISCARD_CREATE: 'DISCARD_CREATE',
 };
 
 export const CollectionsDialogText = {
@@ -66,6 +70,24 @@ export const CollectionsDialogText = {
     showTextInput: false,
     useDupLabel: false,
   },
+  [COLLECTIONS_DIALOG_ACTIONS.DISCARD]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.DISCARD,
+    title: 'Discard Collection',
+    description: 'Are you sure you want to discard these changes?',
+    submitButton: 'Discard',
+    showCancelButton: true,
+    showTextInput: false,
+    useDupLabel: false,
+  },
+  [COLLECTIONS_DIALOG_ACTIONS.DISCARD_CREATE]: {
+    action: COLLECTIONS_DIALOG_ACTIONS.DISCARD_CREATE,
+    title: 'Discard Collection',
+    description: 'Are you sure you want to cancel creating this collection?',
+    submitButton: 'Discard',
+    showCancelButton: true,
+    showTextInput: false,
+    useDupLabel: false,
+  },
 };
 
 const UNIQUE_ERROR = 'Collection name must be unique.';
@@ -84,6 +106,7 @@ const CollectionsDialog = ({
 }) => {
   const [inputText, setInputText] = useState('');
   const [errorText, setErrorText] = useState('');
+  const navigation = useNavigation();
 
   const {
     title, description, submitButton, showTextInput, showCancelButton,
@@ -152,6 +175,12 @@ const CollectionsDialog = ({
         break;
       case COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR:
         setCollectionsDialogText(null);
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.DISCARD:
+        navigation.navigate('CollectionsList');
+        break;
+      case COLLECTIONS_DIALOG_ACTIONS.DISCARD_CREATE:
+        navigation.navigate('CollectionsList');
         break;
       default:
         setCollectionsDialogText(null);
