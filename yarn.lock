@@ -3972,6 +3972,11 @@
   dependencies:
     expo "*"
 
+"@types/fhir@^0.0.34":
+  version "0.0.34"
+  resolved "https://registry.yarnpkg.com/@types/fhir/-/fhir-0.0.34.tgz#cc0ea22772627a96ba35842df06a4e4afa0bf55c"
+  integrity sha512-8pCGwxYMKbxHzFmekh4HnhLvolDB+Tj61LT6yFkL+ERSFtbUvEdvcxMip52pd0vW4PLUyUk1otRvZq07HKCSzQ==
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.4.tgz#4ff9f641a7c6d1a3508ff88bc3141b152772e753"
