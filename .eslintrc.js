@@ -23,8 +23,11 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'default-param-last': ['warn'],
+    'no-param-reassign': ['warn'],
     'no-use-before-define': ['error', { functions: true, classes: true, variables: false }], // disable the rule for variables, but enable it for functions and classes
+    'react/function-component-definition': ['off'],
     'react/jsx-filename-extension': ['off'],
-    'no-param-reassign': 0,
+    'react/no-unstable-nested-components': ['warn'],
   },
 };
