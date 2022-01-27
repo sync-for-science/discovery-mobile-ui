@@ -5,10 +5,11 @@ import {
 } from 'react-native';
 import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons';
-import Roboto from 'native-base/Fonts/Roboto.ttf';
-import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
 
 import RootNavigator from './src/navigation/RootNavigator';
+
+const Roboto = require('native-base/Fonts/Roboto.ttf');
+const RobotoMedium = require('native-base/Fonts/Roboto_medium.ttf');
 
 export default function App() {
   const [loading, setLoading] = useState(false);
