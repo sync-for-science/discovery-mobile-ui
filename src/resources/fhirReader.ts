@@ -1,6 +1,19 @@
 import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
+import {
+  Patient,
+  Practitioner,
+  Observation,
+  Address,
+  Condition,
+  NutritionOrder,
+  AllergyIntolerance,
+  Immunization,
+  MedicationRequest,
+  Encounter,
+} from 'fhir/r4';
+import { TimelineResource, BloodPressureData } from '../../types/s4s';
 
 // date format used throughout the UI
 const UI_DATE_FORMAT = 'MMM d, Y';
@@ -8,43 +21,43 @@ const UI_DATE_FORMAT_SHORT_YEAR = "MMM d, ''yy";
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
-export const getPatientName = (patientResource) => {
+export const getPatientName = (patientResource: Patient) => {
   if (!patientResource) {
     return '';
   }
-  const { given, family } = patientResource.name[0];
+  const { given, family } = patientResource.name?.[0] || {};
   return [given?.[0], family].join(' ');
 };
 
-export const formatPractitionerName = (practitionerResource) => {
-  if (practitionerResource?.name[0]) {
+export const formatPractitionerName = (practitionerResource: Practitioner) => {
+  if (practitionerResource.name?.[0]) {
     const { prefix, given, family } = practitionerResource.name[0];
     return [prefix?.[0], given?.[0], family].join(' ');
   }
   return '';
 };
 
-export const getPatientGender = (patientResource) => patientResource?.gender;
+export const getPatientGender = (patientResource: Patient) => patientResource?.gender;
 
-// returns human-readable patient birth date
-export const formatPatientBirthDate = (patientResource) => {
-  if (!patientResource) {
+// returns human-readable patient birthdate
+export const formatPatientBirthDate = (patientResource: Patient) => {
+  if (!patientResource.birthDate) {
     return null;
   }
-  const birthDate = parse(patientResource?.birthDate, 'yyyy-MM-dd', new Date());
+  const birthDate = parse(patientResource.birthDate, 'yyyy-MM-dd', new Date());
   return format(birthDate, UI_DATE_FORMAT);
 };
 
-export const getPatientAddresses = (patientResource) => patientResource?.address;
+export const getPatientAddresses = (patientResource: Patient) => patientResource.address;
 
-export const formatAddress = (address) => {
-  if (!address) {
-    return null;
-  }
+export const formatAddress = (address: Address[]) => {
   // handle the first one for now
   const firstAddress = address[0];
+  if (!firstAddress) {
+    return null;
+  }
   const buildup = [
-    firstAddress.line.join('\n'),
+    (firstAddress.line || []).join('\n'),
     `${firstAddress.city}, ${firstAddress.state} ${firstAddress.postalCode}`,
     firstAddress.country,
   ];
@@ -54,18 +67,20 @@ export const formatAddress = (address) => {
 
 // TODO: make it handle only years or months which is valid
 // TODO: have it return months for babies
-export const getPatientAge = (patient) => {
-  if (!patient) {
+export const getPatientAge = (patient: Patient) => {
+  const { birthDate } = patient;
+  if (!birthDate) {
     return null;
   }
-  const birthDate = patient?.birthDate;
   const birthDuration = intervalToDuration(
     {
       start: parse(birthDate, 'yyyy-MM-dd', new Date()),
       end: new Date(),
     },
   );
-
+  if (!birthDuration.years) {
+    return null;
+  }
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };
 
@@ -77,57 +92,73 @@ export const getPatientAge = (patient) => {
 //   return 'No Age Found';
 // };
 
-export const getResourceDate = (resource) => (
+export const getResourceDate = (resource: TimelineResource) => (
   resource.timelineDate ? formatDate(resource.timelineDate) : 'No Date Found'
 );
 
 // TODO: Ensure these always receive a Date or empty value, and perform Date(...) casting in caller?
-export const formatDate = (date) => (date ? format(new Date(date), UI_DATE_FORMAT) : '');
+export const formatDate = (date: string | Date | void) => {
+  if (!date) {
+    return '';
+  }
+  const d = (date instanceof Date) ? date : new Date(date);
+  return format(d, UI_DATE_FORMAT);
+};
 
-export const formatDateShortYear = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT_YEAR) : '');
+export const formatDateShortYear = (date: string) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT_YEAR) : '');
 
-export const formatDateTime = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_LONG) : '');
+export const formatDateTime = (date: string) => (date ? format(new Date(date), UI_DATE_FORMAT_LONG) : '');
 
-export const formatDateShort = (date) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT) : '');
+export const formatDateShort = (date: string) => (date ? format(new Date(date), UI_DATE_FORMAT_SHORT) : '');
 
-const titleCase = (text) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : null);
+const titleCase = (text: string | void) => (text ? text[0].toUpperCase() + text.substring(1).toLowerCase() : '');
 
-export const getReason = (resource) => resource.reasonCode?.[0]?.coding?.[0]?.display;
+export const getReason = (resource: MedicationRequest) => resource.reasonCode?.[0].coding?.[0].display; // eslint-disable-line max-len
 
-export const getOnsetDateTime = (resource) => formatDate(resource.onsetDateTime);
+// Called from MedicationCardBody, which is passed a MedicationRequest
+// However, MedicationRequest has no onsetDateTime or abatementDateTime:
+export const getOnsetDateTime = (resource: Condition) => formatDate(resource.onsetDateTime);
+export const getAbatementDateTime = (resource: Condition) => formatDate(resource.abatementDateTime);
 
-export const getAbatementDateTime = (resource) => formatDate(resource.abatementDateTime);
+// Called from GenericCardBody.js, however, only NutritionOrder has an orderer field:
+export const getOrderedBy = (resource: NutritionOrder) => titleCase(resource.orderer?.display);
 
-export const getOrderedBy = (resource) => titleCase(resource.orderer?.display);
+// assertedDate is an extension for Condition:
+// http://www.hl7.org/FHIR/extension-condition-asserteddate.html
+// @ts-ignore
+export const getAssertedDate = (resource: Condition) => formatDate(resource.assertedDate);
 
-export const getAssertedDate = (resource) => formatDate(resource.assertedDate);
+export const getStatus = (resource: Observation) => titleCase(resource.status);
 
-export const getStatus = (resource) => titleCase(resource.status);
-
-export const getClinicalStatus = (resource) => (
+// Called from GenericCardBody.js
+export const getClinicalStatus = (resource: AllergyIntolerance | Condition) => (
   titleCase(resource.clinicalStatus?.coding?.[0]?.code)
 );
 
-export const getVerficationStatus = (resource) => (
+// Called from GenericCardBody.js
+export const getVerficationStatus = (resource: AllergyIntolerance | Condition) => (
   titleCase(resource.verificationStatus?.coding?.[0]?.code)
 );
 
-export const getEnding = (resource) => formatDateTime(resource.period?.end);
+// TODO: getEnding also called for Observation and MedicationRequest, which have no period:
+export const getEnding = (resource: Encounter) => resource.period?.end && formatDateTime(resource.period.end); // eslint-disable-line max-len
 
-export const getClass = (resource) => resource.class?.code;
+export const getClass = (resource: Encounter) => resource.class.code;
 
-export const getPrimarySource = (resource) => {
+export const getPrimarySource = (resource: Immunization) => {
   const displayPrimarySource = resource.primarySource ? 'yes' : 'no';
   return titleCase(displayPrimarySource);
 };
 
-export const getValueRatio = (resource) => (
-  resource.valueRatio ? `${resource.valueRatio?.numerator?.value} / ${resource.valueRatio?.denominator?.value}` : null
+export const getValueRatio = (resource: Observation) => (
+  resource.valueRatio ? `${resource.valueRatio.numerator?.value} / ${resource.valueRatio.denominator?.value}` : null
 );
 
-export const getRefRangeLabel = (resource) => resource.referenceRange?.[0]?.meaning?.coding?.[0]?.display || 'REFERENCE RANGE';
+// TODO: fhir4 Observation does not have referenceRange[n].meaning:
+// @ts-ignore
+export const getRefRangeLabel = (resource: Observation) => resource.referenceRange?.[0]?.meaning?.coding?.[0]?.display || 'REFERENCE RANGE';
 
-export const getRefRange = (resource) => {
+export const getRefRange = (resource: Observation) => {
   if (resource.referenceRange) {
     const lowValue = resource.referenceRange?.[0]?.low?.value;
     const lowUnits = resource.referenceRange?.[0]?.low?.unit;
@@ -136,23 +167,30 @@ export const getRefRange = (resource) => {
 
     return lowValue && lowUnits && highValue && highUnits
       ? `${lowValue + (lowUnits && lowUnits !== highUnits ? ` ${lowUnits}` : '')} - ${highValue}${highUnits ? ` ${highUnits}` : ''}`
-      : resource.referenceRange?.text;
+      : resource.referenceRange?.[0].text;
   }
   return null;
 };
 
-export const getValueQuantity = (resource) => (resource.valueQuantity ? `${+resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}` : null);
+export const getValueQuantity = (resource: Observation) => {
+  if (resource.valueQuantity?.value === undefined) {
+    return null;
+  }
+  return `${resource.valueQuantity.value.toFixed(2)} ${resource.valueQuantity.unit}`;
+};
 
-export const getBloodPressureData = (resource) => {
+export const getBloodPressureData = (resource: Observation) => {
   if (resource.component) {
-    const bloodPressureData = [];
+    const bloodPressureData: BloodPressureData[] = [];
     resource.component.forEach((measurement) => {
-      bloodPressureData.push(
-        {
-          code: measurement.code.text,
-          valueQuantity: `${+measurement.valueQuantity.value.toFixed(2)} ${measurement.valueQuantity.unit}`,
-        },
-      );
+      if (measurement.valueQuantity?.value !== undefined) {
+        bloodPressureData.push(
+          {
+            code: measurement.code.text,
+            valueQuantity: `${measurement.valueQuantity.value.toFixed(2)} ${measurement.valueQuantity.unit}`,
+          },
+        );
+      }
     });
     return bloodPressureData;
   }
