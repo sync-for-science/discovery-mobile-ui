@@ -67,8 +67,11 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@typescript-eslint/eslint-plugin": "^5.10.1",
+    "@typescript-eslint/parser": "^5.10.1",
     "eslint": "^8.7.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-import-resolver-typescript": "^2.5.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
@@ -76,7 +79,8 @@
     "eslint-plugin-react-native": "^4.0.0",
     "jest-expo": "^40.0.1",
     "react-native-svg-transformer": "^0.14.3",
-    "react-test-renderer": "^17.0.1"
+    "react-test-renderer": "^17.0.1",
+    "typescript": "^4.5.5"
   },
   "private": true
 }
