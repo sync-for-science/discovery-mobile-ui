@@ -4,9 +4,9 @@ import {
   LogBox, View, ActivityIndicator, StyleSheet,
 } from 'react-native';
 import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-dependencies
-import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons } from '@expo/vector-icons';
 import Roboto from 'native-base/Fonts/Roboto.ttf';
-import Roboto_medium from 'native-base/Fonts/Roboto_medium.ttf'; // eslint-disable-line camelcase
+import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
 
 import RootNavigator from './src/navigation/RootNavigator';
 
@@ -20,7 +20,7 @@ export default function App() {
     const loadFonts = async () => {
       await Font.loadAsync({
         Roboto,
-        Roboto_medium,
+        RobotoMedium,
         ...Ionicons.font,
       });
     };

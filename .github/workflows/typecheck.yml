@@ -1,0 +1,31 @@
+name: "TypeScript Type Check"
+on: push
+jobs:
+  type-check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "."
+    steps:
+      - name: "Check out source code"
+        uses: actions/checkout@v2
+
+      - name: "Set up Node.js 14.18.0"
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: "Install/cache Node.js dependencies"
+        id: cache-deps # used for: steps.cache-deps.outputs.cache-hit != 'true'
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
+
+      - name: "Install Node.js dependencies"
+        # if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: "Run type check"
+        run: node_modules/.bin/tsc --p .

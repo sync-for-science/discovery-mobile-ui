@@ -28,56 +28,60 @@ const CollectionRowActionIcon = ({
 
   const handlePress = () => {
     if (collections[collectionId].preBuilt) {
-      ActionSheetIOS.showActionSheetWithOptions({
-        options: [
-          'Cancel',
-          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
-        ],
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: [
+            'Cancel',
+            CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
+          ],
+          cancelButtonIndex: 0,
+          userInterfaceStyle: 'dark',
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
           // cancel action
-        } else if (buttonIndex === 1) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
-        }
-      });
-    } else {
-      ActionSheetIOS.showActionSheetWithOptions({
-        options: [
-          'Cancel',
-          'Edit Collection',
-
-          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME].title,
-          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
-          CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE].title,
-        ],
-        destructiveButtonIndex: 4,
-        cancelButtonIndex: 0,
-        userInterfaceStyle: 'dark',
-      },
-      (buttonIndex) => {
-        if (buttonIndex === 0) {
-          // cancel action
-        } else if (buttonIndex === 1) {
-          selectCollectionAction(collectionId);
-          isAddingNewCollectionAction(false);
-          navigation.navigate('CollectionInput');
-        } else if (buttonIndex === 2) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
-        } else if (buttonIndex === 3) {
-          setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
-        } else if (buttonIndex === 4) {
-          if (collectionsCount <= 1) {
-            setCollectionsDialogText(
-              CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR],
-            );
-          } else {
-            setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE]);
+          } else if (buttonIndex === 1) {
+            setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
           }
-        }
-      });
+        },
+      );
+    } else {
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: [
+            'Cancel',
+            'Edit Collection',
+
+            CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME].title,
+            CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE].title,
+            CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE].title,
+          ],
+          destructiveButtonIndex: 4,
+          cancelButtonIndex: 0,
+          userInterfaceStyle: 'dark',
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 0) {
+          // cancel action
+          } else if (buttonIndex === 1) {
+            selectCollectionAction(collectionId);
+            isAddingNewCollectionAction(false);
+            navigation.navigate('CollectionInput');
+          } else if (buttonIndex === 2) {
+            setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
+          } else if (buttonIndex === 3) {
+            setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DUPLICATE]);
+          } else if (buttonIndex === 4) {
+            if (collectionsCount <= 1) {
+              setCollectionsDialogText(
+                CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE_ERROR],
+              );
+            } else {
+              setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.DELETE]);
+            }
+          }
+        },
+      );
     }
   };
 

@@ -525,17 +525,14 @@ export const collectionsReducer = (state = preloadCollections, action) => {
         urgent,
       } = action.payload;
       return produce(state, (draft) => {
-        // eslint-disable-next-line no-param-reassign
-        draft[collectionId].purpose = purpose;
-        // eslint-disable-next-line no-param-reassign
-        draft[collectionId].tags = tags;
-
-        draft[collectionId].current = current;
-
-        draft[collectionId].urgent = urgent;
-
-        // eslint-disable-next-line no-param-reassign
-        draft[collectionId].lastUpdated = new Date();
+        draft[collectionId] = { // eslint-disable-line no-param-reassign
+          ...draft[collectionId],
+          purpose,
+          tags,
+          current,
+          urgent,
+          lastUpdated: new Date(),
+        };
       });
     }
     default:

@@ -124,38 +124,32 @@ const CollectionsIndexSearch = ({
     editCollectionsList(newCollectionsList);
     if (title.length > 0) {
       searchText.push(
-        <>
+        <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
+          {' '}
+          {'phrase: '}
+        </Text>,
+      );
+      searchText.push(
+        <Text style={{ padding: 0 }}>
+          {' '}
+          {title}
+        </Text>,
+      );
+      threeLineSearchText.push(
+        <View style={styles.threeLineSummary}>
           <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
             {' '}
             {'phrase: '}
           </Text>
-        </>,
-      );
-      searchText.push(
-        <>
           <Text style={{ padding: 0 }}>
             {' '}
-            {title}
+            {`${title}; `}
           </Text>
-        </>,
-      );
-      threeLineSearchText.push(
-        <>
-          <View style={styles.threeLineSummary}>
-            <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
-              {' '}
-              {'phrase: '}
-            </Text>
-            <Text style={{ padding: 0 }}>
-              {' '}
-              {`${title}; `}
-            </Text>
-            <Text style={{ padding: 0 }}>
-              {' '}
-              {}
-            </Text>
-          </View>
-        </>,
+          <Text style={{ padding: 0 }}>
+            {' '}
+            {}
+          </Text>
+        </View>,
       );
     }
 
@@ -170,90 +164,82 @@ const CollectionsIndexSearch = ({
         }
       }
       threeLineSearchText.push(
-        <>
-          <View style={styles.threeLineSummary}>
-            <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
-              {' '}
-              {'tags: '}
-            </Text>
-            <Text style={{ padding: 0 }}>
-              {' '}
-              {tagList}
-            </Text>
-          </View>
-        </>,
+        <View style={styles.threeLineSummary}>
+          <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
+            {' '}
+            {'tags: '}
+          </Text>
+          <Text style={{ padding: 0 }}>
+            {' '}
+            {tagList}
+          </Text>
+        </View>,
       );
 
       if (title.length > 0) {
-        searchText.push(<><Text style={{ padding: 0 }}>{'; '}</Text></>);
+        searchText.push(<Text style={{ padding: 0 }}>{'; '}</Text>);
       }
       searchText.push(
-        <>
-          <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
-            {' '}
-            {'selected tags: '}
-          </Text>
-        </>,
+        <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
+          {' '}
+          {'selected tags: '}
+        </Text>,
       );
       for (let j = 0; j < value.length; j += 1) {
         searchText.push(
-          <>
-            <Text style={{ padding: 0 }}>
-              {' '}
-              {value[j]}
-            </Text>
-          </>,
+          <Text style={{ padding: 0 }}>
+            {' '}
+            {value[j]}
+          </Text>,
         );
         if (j !== value.length - 1) {
-          searchText.push(<><Text style={{ padding: 0 }}>{', '}</Text></>);
+          searchText.push(<Text style={{ padding: 0 }}>{', '}</Text>);
         }
         if (j === value.length - 1 && (current || urgent || notCurrent || notUrgent)) {
-          searchText.push(<><Text style={{ padding: 0 }}>{'; '}</Text></>);
+          searchText.push(<Text style={{ padding: 0 }}>{'; '}</Text>);
         }
       }
     } else if (title.length > 0 && (current || urgent || notCurrent || notUrgent)) {
-      searchText.push(<><Text style={{ padding: 0 }}>{'; '}</Text></>);
+      searchText.push(<Text style={{ padding: 0 }}>{'; '}</Text>);
     }
     let priorityText = '';
 
     if (urgent) {
-      searchText.push(<><Text style={{ fontWeight: 'bold', padding: 0 }}>{'priority: '}</Text></>);
-      searchText.push(<><Text>current, urgent;</Text></>);
+      searchText.push(<Text style={{ fontWeight: 'bold', padding: 0 }}>{'priority: '}</Text>);
+      searchText.push(<Text>current, urgent;</Text>);
       priorityText = 'current, urgent;';
     } else if (current) {
       if (notUrgent) {
-        searchText.push(<><Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text></>);
-        searchText.push(<><Text>current, not urgent;</Text></>);
+        searchText.push(<Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text>);
+        searchText.push(<Text>current, not urgent;</Text>);
         priorityText = 'current, not urgent;';
       } else {
-        searchText.push(<><Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text></>);
-        searchText.push(<><Text>current;</Text></>);
+        searchText.push(<Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text>);
+        searchText.push(<Text>current;</Text>);
         priorityText = 'current;';
       }
     }
     if (notCurrent) {
-      searchText.push(<><Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text></>);
-      searchText.push(<><Text>{'not current, not urgent; '}</Text></>);
+      searchText.push(<Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text>);
+      searchText.push(<Text>{'not current, not urgent; '}</Text>);
       priorityText = 'not current, not urgent;';
     } else if (!current && notUrgent) {
-      searchText.push(<><Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text></>);
-      searchText.push(<><Text>not urgent;</Text></>);
+      searchText.push(<Text style={{ fontWeight: 'bold' }}>{'priority: '}</Text>);
+      searchText.push(<Text>not urgent;</Text>);
       priorityText = 'not urgent;';
     }
     if (current || urgent || notCurrent || notUrgent) {
       threeLineSearchText.push(
-        <>
-          <View style={styles.threeLineSummary}>
-            <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
-              {' '}
-              {'priority: '}
-            </Text>
-            <Text style={{ padding: 0 }}>
-              {' '}
-              {priorityText}
-            </Text>
-          </View>
-        </>,
+        <View style={styles.threeLineSummary}>
+          <Text style={{ fontWeight: 'bold', marginLeft: -3, padding: 0 }}>
+            {' '}
+            {'priority: '}
+          </Text>
+          <Text style={{ padding: 0 }}>
+            {' '}
+            {priorityText}
+          </Text>
+        </View>,
       );
     }
 
@@ -312,7 +298,7 @@ const CollectionsIndexSearch = ({
               style={styles.reset_button}
               color={Colors.destructive}
               mode="text"
-              onPress={reset}
+              onPress={reset} /* eslint-disable-line react/jsx-no-bind */
             >
               RESET
             </Button>
