@@ -2,7 +2,6 @@ import React from 'react';
 import {
   StyleSheet, SafeAreaView, StatusBar, TouchableOpacity, Text, View,
 } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
 import {
   Header, Body, Title,
 } from 'native-base';
@@ -22,10 +21,10 @@ const ProfileScreen = () => (
       </Body>
     </Header>
     <UserInfo />
-    <ScrollView style={styles.scrollContainer}>
+    <View style={styles.scrollContainer}>
       <Demographics />
       <Data />
-    </ScrollView>
+    </View>
     <View style={styles.logoutContainer}>
       <Logout>
         <TouchableOpacity style={styles.logout}>
