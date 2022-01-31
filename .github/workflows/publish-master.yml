@@ -19,9 +19,9 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
       - name: Install Node.js dependencies
         run: yarn install --frozen-lockfile
-      - uses: expo/expo-github-action@v5
+      - uses: expo/expo-github-action@v7
         with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: 5.x
+          token: ${{ secrets.EXPO_TOKEN }}
       - name: Publish
         run: expo publish
