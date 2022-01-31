@@ -154,6 +154,7 @@ const BaseAccordion = ({
             fromTimeSavedAccordion={fromTimeSavedAccordion}
           />
         )}
+
         renderContent={(item) => (
           <ResourceCards
             item={item}

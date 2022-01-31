@@ -77,9 +77,7 @@ const Catalog = ({
           {!noRecords && (
           <>
             <ResourceTypePicker />
-            <ScrollView style={styles.scrollView}>
-              <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
-            </ScrollView>
+            <SubTypeAccordionsContainer data={selectedRecordsGroupedByType} />
           </>
           )}
         </FilterDrawer>

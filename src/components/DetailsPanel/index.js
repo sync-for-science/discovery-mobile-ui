@@ -63,7 +63,7 @@ const DetailsPanel = ({
         return null;
     }
   };
-
+  console.log('DetailsPanel: ');
   return (
     <SafeAreaView style={styles.root}>
       <Header style={styles.header}>
@@ -88,15 +88,10 @@ const DetailsPanel = ({
         </View>
       )}
       {hasSavedRecords && (
-        <>
-          <SortingHeader
-            sortingState={sortingState}
-            hasMultipleSavedRecords={hasMultipleSavedRecords}
-          />
-          <ScrollView>
-            {displayAccordion()}
-          </ScrollView>
-        </>
+        <SortingHeader
+          sortingState={sortingState}
+          hasMultipleSavedRecords={hasMultipleSavedRecords}
+        />
       )}
     </SafeAreaView>
   );
