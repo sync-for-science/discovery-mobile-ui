@@ -93,7 +93,7 @@
   },
   "private": true,
   "resolutions": {
-    "@react-native-community/datetimepicker": "3.5.2",
-    "@react-native-picker/picker": "2.1.0"
+    "@react-native-community/datetimepicker": "4.0.0",
+    "@react-native-picker/picker": "2.2.1"
   }
 }
