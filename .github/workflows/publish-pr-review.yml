@@ -15,10 +15,10 @@ jobs:
             node_modules
           key: ${{ runner.os }}-${{ hashFiles('package.json', 'yarn.lock') }}
       - run: yarn install --frozen-lockfile
-      - uses: expo/expo-github-action@v5
+      - uses: expo/expo-github-action@v7
         with:
-          expo-version: 4.x
-          expo-token: ${{ secrets.EXPO_TOKEN }}
+          expo-version: 5.x
+          token: ${{ secrets.EXPO_TOKEN }}
       - run: expo publish --release-channel=pr-${{ github.head_ref }}
       - uses: unsplash/comment-on-pr@master
         env:
