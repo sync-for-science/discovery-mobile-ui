@@ -13,7 +13,7 @@ import Colors from '../../constants/Colors';
 import CollectionsDialog from '../Dialog/CollectionsDialog';
 import { collectionsCounterSelector } from '../../redux/selectors';
 import HeaderCountIcon from '../Icons/HeaderCountIcon';
-import { isAddingNewCollection } from '../../redux/action-creators';
+import { updateIsAddingNewCollection } from '../../redux/action-creators';
 
 const AddCollectionInputButton = ({ onPress }) => (
   <TouchableOpacity onPress={onPress}>
@@ -90,7 +90,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  isAddingNewCollectionAction: isAddingNewCollection,
+  isAddingNewCollectionAction: updateIsAddingNewCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, null)(CollectionsIndexHeader);

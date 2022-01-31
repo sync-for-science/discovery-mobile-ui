@@ -202,7 +202,7 @@ export const editCollectionDetails = (purpose, tags, current, urgent) => (dispat
   });
 };
 
-export const isAddingNewCollection = (creatingCollectionHolder) => ({
+export const updateIsAddingNewCollection = (creatingCollectionHolder) => ({
   type: actionTypes.ADDING_NEW_COLLECTION,
   payload: creatingCollectionHolder,
 });

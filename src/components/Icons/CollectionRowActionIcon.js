@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { collectionsSelector, collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
-import { isAddingNewCollection, selectCollection } from '../../redux/action-creators';
+import { updateIsAddingNewCollection, selectCollection } from '../../redux/action-creators';
 
 const CollectionRowActionIcon = ({
   collections,
@@ -118,7 +118,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  isAddingNewCollectionAction: isAddingNewCollection,
+  isAddingNewCollectionAction: updateIsAddingNewCollection,
   selectCollectionAction: selectCollection,
 };
 
