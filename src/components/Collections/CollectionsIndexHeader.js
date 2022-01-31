@@ -40,13 +40,13 @@ const CollectionsIndexHeader = ({
   showNewCollectionButton,
   collectionsCounter,
   navigation,
-  isAddingNewCollectionAction,
+  updateIsAddingNewCollectionAction,
 }) => {
   const [collectionsDialogText, setCollectionsDialogText] = useState(null);
   const totalCollectionsCount = collectionsCounter.customCount + collectionsCounter.preBuiltCount;
 
   const handleNewCollectionPress = () => {
-    isAddingNewCollectionAction(true);
+    updateIsAddingNewCollectionAction(true);
     navigation.navigate('CollectionInput');
   };
 
@@ -79,7 +79,7 @@ CollectionsIndexHeader.propTypes = {
   showNewCollectionButton: bool.isRequired,
   collectionsCounter: shape({}).isRequired,
   navigation: shape({}).isRequired,
-  isAddingNewCollectionAction: bool.isRequired,
+  updateIsAddingNewCollectionAction: func.isRequired,
 
 };
 
@@ -90,7 +90,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  isAddingNewCollectionAction: updateIsAddingNewCollection,
+  updateIsAddingNewCollectionAction: updateIsAddingNewCollection,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps, null)(CollectionsIndexHeader);
