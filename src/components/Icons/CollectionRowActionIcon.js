@@ -5,21 +5,21 @@ import {
 import { Entypo } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 import { connect } from 'react-redux';
 import {
-  shape, number, string, bool, func,
+  shape, number, string, func,
 } from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
 import { collectionsSelector, collectionsCountSelector } from '../../redux/selectors';
 import Colors from '../../constants/Colors';
 import CollectionsDialog, { COLLECTIONS_DIALOG_ACTIONS, CollectionsDialogText } from '../Dialog/CollectionsDialog';
-import { isAddingNewCollection, selectCollection } from '../../redux/action-creators';
+import { updateIsAddingNewCollection, selectCollection } from '../../redux/action-creators';
 
 const CollectionRowActionIcon = ({
   collections,
   collectionId,
   collectionLabel,
   collectionsCount,
-  isAddingNewCollectionAction,
+  updateIsAddingNewCollectionAction,
   selectCollectionAction,
 
 }) => {
@@ -65,7 +65,7 @@ const CollectionRowActionIcon = ({
           // cancel action
           } else if (buttonIndex === 1) {
             selectCollectionAction(collectionId);
-            isAddingNewCollectionAction(false);
+            updateIsAddingNewCollectionAction(false);
             navigation.navigate('CollectionInput');
           } else if (buttonIndex === 2) {
             setCollectionsDialogText(CollectionsDialogText[COLLECTIONS_DIALOG_ACTIONS.RENAME]);
@@ -108,7 +108,7 @@ CollectionRowActionIcon.propTypes = {
   collectionLabel: string.isRequired,
   collectionsCount: number.isRequired,
   selectCollectionAction: func.isRequired,
-  isAddingNewCollectionAction: bool.isRequired,
+  updateIsAddingNewCollectionAction: func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -118,7 +118,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  isAddingNewCollectionAction: isAddingNewCollection,
+  updateIsAddingNewCollectionAction: updateIsAddingNewCollection,
   selectCollectionAction: selectCollection,
 };
 

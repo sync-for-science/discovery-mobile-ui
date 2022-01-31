@@ -3,14 +3,14 @@ import {
   StyleSheet, TouchableOpacity, View, Text,
 } from 'react-native';
 import {
-  func, number, shape, string, bool,
+  func, number, shape, string,
 } from 'prop-types';
 import { connect } from 'react-redux';
 import { Ionicons, Feather } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import Colors from '../../constants/Colors';
 import CollectionRowActionIcon from '../Icons/CollectionRowActionIcon';
-import { selectCollection, isAddingNewCollection } from '../../redux/action-creators';
+import { selectCollection, updateIsAddingNewCollection } from '../../redux/action-creators';
 import {
   collectionByIdSelector,
 } from '../../redux/selectors';
@@ -71,12 +71,12 @@ const CollectionRow = ({
   label,
   navigation,
   selectCollectionAction,
-  isAddingNewCollectionAction,
+  updateIsAddingNewCollectionAction,
 }) => {
   const [showDetails, setShowDetails] = useState(false);
   const handlePress = () => {
     selectCollectionAction(collectionId);
-    isAddingNewCollectionAction(false);
+    updateIsAddingNewCollectionAction(false);
 
     navigation.navigate('Catalog');
   };
@@ -195,7 +195,7 @@ CollectionRow.propTypes = {
   label: string.isRequired,
   navigation: shape({}).isRequired,
   selectCollectionAction: func.isRequired,
-  isAddingNewCollectionAction: bool.isRequired,
+  updateIsAddingNewCollectionAction: func.isRequired,
 
 };
 
@@ -209,7 +209,7 @@ const mapStateToProps = (state, ownProps) => ({
 
 const mapDispatchToProps = {
   selectCollectionAction: selectCollection,
-  isAddingNewCollectionAction: isAddingNewCollection,
+  updateIsAddingNewCollectionAction: updateIsAddingNewCollection,
 
 };
 
