@@ -41,15 +41,13 @@ const Data = ({
 
   return (
     <View style={styles.root}>
+      <View style={styles.headingContainer}>
+        <Text style={styles.headingText}>
+          Data
+        </Text>
+      </View>
       <SectionList
         sections={demographics}
-        ListHeaderComponent={() => (
-          <View style={styles.headingContainer}>
-            <Text style={styles.headingText}>
-              Data
-            </Text>
-          </View>
-        )}
         keyExtractor={(item, index) => item + index}
         renderSectionHeader={({ section: { title } }) => (
           <Text style={styles.subHeading}>{title}</Text>
