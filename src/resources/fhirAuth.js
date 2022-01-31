@@ -1,7 +1,6 @@
 import * as AppAuth from 'expo-app-auth';
 import Client from 'fhir-kit-client';
-
-const { Buffer } = require('buffer');
+import { Buffer } from 'buffer';
 
 export const buildFhirIssUrl = (patientId) => {
   const issDataString = JSON.stringify({
