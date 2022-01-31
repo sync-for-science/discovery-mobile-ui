@@ -12,9 +12,9 @@ import LoadingIndicator from './src/components/LoadingIndicator';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
-  LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
-  LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-  LogBox.ignoreAllLogs();
+  // LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
+  // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+  // LogBox.ignoreAllLogs();
   useEffect(() => {
     const loadFonts = async () => {
       try {
