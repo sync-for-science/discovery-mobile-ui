@@ -1,14 +1,16 @@
 import { atom, selector } from 'recoil';
 import { memoizeWith, identity } from 'ramda';
+import { TokenResponse } from 'expo-app-auth';
 
 import Storage from './storage';
 
-// eslint-disable-next-line import/prefer-default-export
+type AuthResultType = TokenResponse | null
+
 export const authenticationState = atom({
   key: 'AuthenticationState',
   default: {
-    baseUrl: null,
-    authResult: null,
+    baseUrl: '',
+    authResult: null as AuthResultType,
   },
 });
 
