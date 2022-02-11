@@ -5,7 +5,7 @@ import Storage from './storage';
 
 // eslint-disable-next-line import/prefer-default-export
 export const authenticationState = atom({
-  key: 'authenticationState',
+  key: 'AuthenticationState',
   default: {
     baseUrl: null,
     authResult: null,
@@ -13,22 +13,24 @@ export const authenticationState = atom({
 });
 
 export const storageOnboardingState = selector({
-  key: 'storageOnboardingState',
+  key: 'StorageOnboardingState',
   get: async () => Storage.getOnboardingState(),
 });
 
-export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => {
-  const atomForOnboardingState = atom({
-    key: 'atomForOnboardingState',
-    default: undefined,
-  });
+type isOnboarded = boolean | undefined
 
-  return selector({
-    key: 'onboardingState',
-    // if atomForOnboardingState is undefined aka default then use storage value
-    get: ({ get }) => (get(atomForOnboardingState) === undefined
-      ? storageIsOnboardingComplete
-      : get(atomForOnboardingState)),
-    set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted),
-  });
+const atomForOnboardingState = atom({
+  key: 'AtomForOnboardingState',
+  default: undefined as isOnboarded,
 });
+
+// TODO: it seems unecessary and possibly buggy to memoize this selector:
+// @ts-ignore
+export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => selector({
+  key: 'OnboardingState',
+  // if atomForOnboardingState is undefined aka default then use storage value
+  get: ({ get }) => (get(atomForOnboardingState) === undefined
+    ? storageIsOnboardingComplete
+    : get(atomForOnboardingState)),
+  set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted as boolean),
+}));
