@@ -37,7 +37,7 @@ const Login = () => {
       }
     } catch (error) {
       console.error('AppAuth Error:', error); // eslint-disable-line no-console
-      Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
+      Alert.alert('Login Error', 'You must log in to use Discovery', [{ text: 'OK' }]);
       // enable patient-picker and login buttons to render:
       setLoading(false);
     }
