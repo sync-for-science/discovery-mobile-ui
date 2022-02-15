@@ -12,6 +12,20 @@ export const endpointBundleState = atom({
   default: endpointBundle, // eg, from: https://open.epic.com/Endpoints/R4
 });
 
+export const endpointFilterState = atom({
+  key: 'EndpointFilterState',
+  default: '',
+});
+
+export const filteredEndpointsState = selector({
+  key: 'FilteredEndpointsState',
+  get: ({ get }) => {
+    const endpointEntries = get(endpointBundleState).entry;
+    const searchString = get(endpointFilterState).toLowerCase();
+    return endpointEntries.filter((entry) => (entry.resource.name || '').toLowerCase().includes(searchString));
+  },
+});
+
 const endpointsByIdState = selector({
   key: 'SelectedEndpointId',
   get: ({ get }) => {

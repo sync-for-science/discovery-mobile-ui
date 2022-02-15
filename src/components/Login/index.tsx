@@ -19,7 +19,7 @@ const Login = () => {
     <View style={styles.body}>
       <EndpointPicker
         loading={false}
-        prompt="Select a hospital system / clinic / portal: "
+        prompt="Select a hospital system portal: "
         endpoints={endpointBundle.entry}
         selectedValue={endpointId as string}
         onChange={setEndpointId}

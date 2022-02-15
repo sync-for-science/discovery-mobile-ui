@@ -6,8 +6,11 @@ import {
   StyleSheet, Text, View, Platform,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Searchbar } from 'react-native-paper';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
+import { endpointFilterState, filteredEndpointsState } from '../../recoil';
 import { TypedBundleEntry } from '../../../types/s4s';
 
 type EndpointPickerProps = {
@@ -20,32 +23,49 @@ type EndpointPickerProps = {
 
 const EndpointPicker = ({
   loading, prompt, endpoints, selectedValue, onChange,
-}: EndpointPickerProps) => (loading ? null : (
-  <View style={styles.container}>
-    <View style={styles.label}><Text>{prompt}</Text></View>
-    <View style={styles.count}>
-      <Text>
-        (
-        {String(endpoints.length)}
-        {' '}
-        organizations)
-      </Text>
-    </View>
-    <Picker
-      selectedValue={selectedValue}
-      onValueChange={onChange}
-      style={styles.picker}
-    >
-      {endpoints.map(({ resource: { id, name } }) => (
-        <Picker.Item
-          key={id}
-          value={id}
-          label={name}
+}: EndpointPickerProps) => {
+  const [searchQuery, setSearchQuery] = useRecoilState(endpointFilterState);
+  const filteredEndpoints = useRecoilValue(filteredEndpointsState);
+
+  const onChangeSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  if (loading) {
+    return null;
+  }
+
+  const enpointCountMessage = `(${filteredEndpoints.length}/${endpoints.length} endpoints)`;
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.label}><Text>{prompt}</Text></View>
+      <View style={styles.count}>
+        <Text>
+          {enpointCountMessage}
+        </Text>
+        <Searchbar
+          placeholder="Search"
+          onChangeText={onChangeSearch}
+          value={searchQuery}
         />
-      ))}
-    </Picker>
-  </View>
-));
+      </View>
+      <Picker
+        selectedValue={selectedValue}
+        onValueChange={onChange}
+        style={styles.picker}
+      >
+        {filteredEndpoints.map(({ resource: { id, name } }) => (
+          <Picker.Item
+            key={id}
+            value={id}
+            label={name}
+          />
+        ))}
+      </Picker>
+    </View>
+  );
+};
 
 EndpointPicker.propTypes = {
   loading: bool.isRequired,
