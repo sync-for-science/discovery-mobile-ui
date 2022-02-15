@@ -43,6 +43,8 @@ module.exports = {
       },
     ],
     'no-use-before-define': ['error', { functions: true, classes: true, variables: false }], // disable the rule for variables, but enable it for functions and classes
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
     'react/function-component-definition': ['off'],
     'react/jsx-filename-extension': ['off'],
     'react/no-unstable-nested-components': ['warn'],

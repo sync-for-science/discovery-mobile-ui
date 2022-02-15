@@ -6,13 +6,13 @@ const gray5 = '#ECECEC';
 const gray6 = '#8c8c8c';
 const gray7 = '#F8F8F8';
 // blue1 === OLD PRIMARY
-const blue1 = '#3477e3'; // eslint-disable-line no-unused-vars
-const blue2 = '#c7d7f0'; // eslint-disable-line no-unused-vars
+const blue1 = '#3477e3'; // eslint-disable-line @typescript-eslint/no-unused-vars
+const blue2 = '#c7d7f0'; // eslint-disable-line @typescript-eslint/no-unused-vars
 const blue3 = '#143263';
 const blue4 = '#4a8fe4';
 const blue5 = '#bcd2f5';
 const blue6 = '#4a648f';
-const blue7 = '#9dc3e6'; // eslint-disable-line no-unused-vars
+const blue7 = '#9dc3e6'; // eslint-disable-line @typescript-eslint/no-unused-vars
 const blue8 = '#e0eafa';
 const blue9 = '#28b0f0';
 const blue10 = '#B3DEF2';

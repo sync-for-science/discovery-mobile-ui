@@ -7,6 +7,10 @@ jobs:
   publish:
     name: Install and publish
     runs-on: ubuntu-latest
+    env:
+      EXPO_OWNER: ${{ secrets.EXPO_OWNER }}
+      EXPO_SLUG: ${{ secrets.EXPO_SLUG }}
+      CLIENT_ID: ${{ secrets.CLIENT_ID }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
