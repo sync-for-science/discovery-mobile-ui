@@ -13,21 +13,24 @@ const RootNavigator = () => {
   const isOnboardingComplete = useRecoilValue(onboardingState(storageOnboardingState));
   const [, setIsOnboardingComplete] = useRecoilState(onboardingState(storageOnboardingState));
 
-  const handleOnboardingState = (isCompleted) => {
+  const handleOnboardingState = (isCompleted: boolean) => {
     Storage.setOnboardingState(isCompleted);
     setIsOnboardingComplete(isCompleted);
   };
 
+  const renderMainView = () => {
+    if (!isOnboardingComplete) {
+      return (<OnboardingNavigator handleOnboardingState={handleOnboardingState} />);
+    }
+    if (!authentication.authResult) {
+      return (<UnauthorizedNavigator handleOnboardingState={handleOnboardingState} />);
+    }
+    return <AuthorizedNavigator />;
+  };
+
   return (
     <NavigationContainer>
-      {
-        // eslint-disable-next-line no-nested-ternary
-        !isOnboardingComplete
-          ? <OnboardingNavigator handleOnboardingState={handleOnboardingState} />
-          : !authentication.authResult
-            ? <UnauthorizedNavigator handleOnboardingState={handleOnboardingState} />
-            : <AuthorizedNavigator />
-}
+      {renderMainView()}
     </NavigationContainer>
   );
 };
