@@ -22,7 +22,7 @@ const RootNavigator = () => {
     if (!isOnboardingComplete) {
       return (<OnboardingNavigator handleOnboardingState={handleOnboardingState} />);
     }
-    if (!authentication.authResult) {
+    if (!authentication.tokenResponse) {
       return (<UnauthorizedNavigator handleOnboardingState={handleOnboardingState} />);
     }
     return <AuthorizedNavigator />;

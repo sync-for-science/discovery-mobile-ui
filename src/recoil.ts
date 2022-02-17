@@ -4,13 +4,13 @@ import { TokenResponse } from 'expo-app-auth';
 
 import Storage from './storage';
 
-type AuthResultType = TokenResponse | null
+type TokenResponseType = TokenResponse | null
 
 export const authenticationState = atom({
   key: 'AuthenticationState',
   default: {
     baseUrl: '',
-    authResult: null as AuthResultType,
+    tokenResponse: null as TokenResponseType,
   },
 });
 
