@@ -2,6 +2,7 @@
 
 Mobile UI for [Sync for Science](https://syncfor.science/) Discovery
 
+[Terms and Conditions](./TERMS-AND-CONDITIONS.md)
 
 ### Configure environment variables
 
