@@ -38,11 +38,11 @@ export const getPatientName = (patientResource: Patient) => {
 };
 
 export const formatPractitionerName = (practitionerResource: Practitioner) => {
-  if (practitionerResource.name?.[0]) {
+  if (practitionerResource?.name?.[0]) {
     const { prefix, given, family } = practitionerResource.name[0];
     return [prefix?.[0], given?.[0], family].join(' ');
   }
-  return '';
+  return '(Not Available)';
 };
 
 export const getPatientGender = (patientResource: Patient) => patientResource?.gender;
