@@ -1,7 +1,7 @@
 import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
-import {
+import { // eslint-disable-line import/no-extraneous-dependencies
   Patient,
   Practitioner,
   Observation,
