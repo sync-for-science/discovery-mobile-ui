@@ -1,15 +1,20 @@
 import { atom, selector } from 'recoil';
 import { memoizeWith, identity } from 'ramda';
 import { TokenResponseConfig } from 'expo-auth-session';
+import { Endpoint } from 'fhir/r4';
 
+import { TypedBundle } from '../types/s4s';
 import Storage from './storage';
-import endpointBundle from '../config/epic-portals';
 
 type TokenResponseType = TokenResponseConfig | null
 
-export const endpointBundleState = atom({
+export const endpointBundleState = selector({
   key: 'EndpointBundleState',
-  default: endpointBundle, // eg, from: https://open.epic.com/Endpoints/R4
+  get: async () => {
+    const response = await fetch('https://open.epic.com/Endpoints/R4');
+    const result = await response.json();
+    return result as TypedBundle<Endpoint>;
+  },
 });
 
 export const endpointFilterState = atom({
@@ -36,12 +41,12 @@ const endpointsByIdState = selector({
 
 const selectedEndpointIdAtom = atom({
   key: 'SelectedEndpointIdAtom',
-  default: endpointBundle.entry[0]?.resource.id,
+  default: '',
 });
 
 export const selectedEndpointIdState = selector({
   key: 'SelectedEndpointIdState',
-  get: ({ get }) => get(selectedEndpointIdAtom),
+  get: ({ get }) => get(selectedEndpointIdAtom) || get(endpointBundleState)?.entry[0]?.resource.id,
   set: ({ set }, id) => {
     set(selectedEndpointIdAtom, id as string);
   },
