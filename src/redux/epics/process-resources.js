@@ -38,7 +38,7 @@ const getSubType = (resource) => {
       subType = resource.vaccineCode?.text;
       break;
     case 'MedicationRequest':
-      subType = resource.medicationCodeableConcept?.text;
+      subType = resource.medicationReference?.display || resource.medicationCodeableConcept?.text;
       break;
     case 'CarePlan':
       subType = resource.category?.[0]?.text;

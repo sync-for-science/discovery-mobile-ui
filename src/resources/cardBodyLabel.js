@@ -22,6 +22,7 @@ const CARD_BODY_LABEL = {
   onset: 'Onset',
   orderedBy: 'Ordered By',
   period: 'Period',
+  relatedPractitioner: 'Practitioner (encounter)',
   practitioner: 'Practitioner',
   primarySource: 'Primary Source',
   provider: 'Provider',

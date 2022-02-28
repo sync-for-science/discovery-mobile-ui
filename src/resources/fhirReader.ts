@@ -1,7 +1,7 @@
 import {
   format, parse, formatDuration, intervalToDuration,
 } from 'date-fns';
-import {
+import { // eslint-disable-line import/no-extraneous-dependencies
   Patient,
   Practitioner,
   Observation,
@@ -22,19 +22,27 @@ const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
 export const getPatientName = (patientResource: Patient) => {
-  if (!patientResource) {
-    return '';
+  if (patientResource?.name) {
+    const officialName = patientResource.name.find((name) => name.use === 'official');
+    const usualName = patientResource.name.find((name) => name.use === 'usual');
+    const useName = officialName || usualName || patientResource.name[0];
+    if (useName) {
+      if (useName.text) {
+        return useName.text;
+      }
+      const { given, family } = useName;
+      return [given?.[0], family].join(' ');
+    }
   }
-  const { given, family } = patientResource.name?.[0] || {};
-  return [given?.[0], family].join(' ');
+  return '';
 };
 
 export const formatPractitionerName = (practitionerResource: Practitioner) => {
-  if (practitionerResource.name?.[0]) {
+  if (practitionerResource?.name?.[0]) {
     const { prefix, given, family } = practitionerResource.name[0];
     return [prefix?.[0], given?.[0], family].join(' ');
   }
-  return '';
+  return '(Not Available)';
 };
 
 export const getPatientGender = (patientResource: Patient) => patientResource?.gender;

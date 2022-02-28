@@ -27,17 +27,17 @@ const Login = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const authResponse = await authAsync(fhirIss);
-      if (authResponse) {
+      const tokenResponse = await authAsync(fhirIss);
+      if (tokenResponse) {
         setLoading(false);
         setAuthentication({
           baseUrl: fhirIss,
-          authResult: authResponse,
+          tokenResponse,
         });
       }
     } catch (error) {
       console.error('AppAuth Error:', error); // eslint-disable-line no-console
-      Alert.alert('Login Error', 'Must login to use Discovery', ['ok']);
+      Alert.alert('Login Error', 'You must log in to use Discovery', [{ text: 'OK' }]);
       // enable patient-picker and login buttons to render:
       setLoading(false);
     }

@@ -23,7 +23,7 @@ const initializeFhirClient = (action$, state$, { fhirClient }) => action$.pipe(
   ofType(actionTypes.SET_AUTH),
   // delay(5000), // e.g.: for debugging -- import delay from rxjs/operators
   switchMap(({ payload }) => {
-    const { accessToken, additionalParameters: { patient: patientId } } = payload.authResult;
+    const { accessToken, additionalParameters: { patient: patientId } } = payload.tokenResponse;
     // For "Skip Login", an instance is needed to resolve mock-data contained resources:
     fhirClient.initialize(payload.baseUrl, accessToken);
 

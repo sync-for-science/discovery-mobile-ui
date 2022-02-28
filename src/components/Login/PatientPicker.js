@@ -20,28 +20,33 @@ const PATIENTS = {
 
 export const DEFAULT_PATIENT_ID = Object.keys(PATIENTS)[5];
 
-const PatientPicker = ({ loading, patientId, setPatientId }) => !loading && (
-  <View style={styles.container}>
-    <View style={styles.labelContainer}>
-      <Text style={styles.label}>
-        Select a fictitious patient for the evaluation
-      </Text>
+const PatientPicker = ({ loading, patientId, setPatientId }) => {
+  if (loading) {
+    return null;
+  }
+  return (
+    <View style={styles.container}>
+      <View style={styles.labelContainer}>
+        <Text style={styles.label}>
+          Select a fictitious patient for the evaluation
+        </Text>
+      </View>
+      <Picker
+        selectedValue={patientId}
+        onValueChange={(itemValue) => setPatientId(itemValue)}
+        style={styles.picker}
+      >
+        {Object.entries(PATIENTS).map(([id, name]) => (
+          <Picker.Item
+            key={id}
+            value={id}
+            label={name}
+          />
+        ))}
+      </Picker>
     </View>
-    <Picker
-      selectedValue={patientId}
-      onValueChange={(itemValue) => setPatientId(itemValue)}
-      style={styles.picker}
-    >
-      {Object.entries(PATIENTS).map(([id, name]) => (
-        <Picker.Item
-          key={id}
-          value={id}
-          label={name}
-        />
-      ))}
-    </Picker>
-  </View>
-);
+  );
+};
 
 PatientPicker.propTypes = {
   loading: bool.isRequired,

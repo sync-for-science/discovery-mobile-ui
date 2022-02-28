@@ -9,7 +9,7 @@ export const MOCK_BUNDLE = mockBundle;
 
 export const MOCK_AUTH = {
   baseUrl: '/', // some value is needed to successfully instantiate fhir-kit-client, to resolve contained resources
-  authResult: {
+  tokenResponse: {
     accessToken: '',
     additionalParameters: {
       patient: '86512c6f-caf6-41f4-9503-e4270b37b94f', // 'Mr. Blake Eichmann'

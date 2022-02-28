@@ -1,4 +1,4 @@
-import { FhirResource } from 'fhir/r4';
+import { FhirResource } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
 // export interface Dictionary<Type> {
 //   [key: string]: Type

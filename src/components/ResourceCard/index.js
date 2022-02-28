@@ -57,7 +57,7 @@ const ResourceCard = ({
           relatedPractitioners.map((practitioner) => (
             <CardBodyField
               key={practitioner.id}
-              label={CARD_BODY_LABEL.practitioner}
+              label={CARD_BODY_LABEL.relatedPractitioner}
               value={formatPractitionerName(practitioner)}
             />
           ))
