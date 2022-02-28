@@ -22,6 +22,10 @@ In `.env`, replace `EXPO_OWNER`, `EXPO_SLUG`, `BUNDLE_IDENTIFIER`, `CLIENT_ID` w
   > 
   > ios.bundleIdentifier will be used to identify you app on the Apple App Store
 
+* `ENDPOINTS_URL` -- Public URL to a JSON FHIR Bundle whose entries are [Endpoint](https://www.hl7.org/fhir/endpoint.html) resources.
+   For example:
+   [https://open.epic.com/Endpoints/R4](https://open.epic.com/Endpoints/R4)
+
 * `CLIENT_ID` -- EHR client id, used for the [OAuth2 OpenID Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest) launch sequence.  (This is a Smart on FHIR ["public" app](http://hl7.org/fhir/smart-app-launch/app-launch.html#support-for-public-and-confidential-apps).)
 
 

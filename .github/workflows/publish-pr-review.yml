@@ -8,6 +8,7 @@ jobs:
       EXPO_OWNER: ${{ secrets.EXPO_OWNER }}
       EXPO_SLUG: ${{ secrets.EXPO_SLUG }}
       BUNDLE_IDENTIFIER: ${{ secrets.BUNDLE_IDENTIFIER }}
+      ENDPOINTS_URL: ${{ secrets.ENDPOINTS_URL }}
       CLIENT_ID: ${{ secrets.CLIENT_ID }}
     steps:
       - uses: actions/checkout@v2

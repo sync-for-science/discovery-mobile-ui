@@ -6,6 +6,7 @@ import {
 import { useRecoilValue, useRecoilState } from 'recoil';
 
 import Colors from '../../constants/Colors';
+import LoadingIndicator from '../LoadingIndicator';
 import LoginButton from './LoginButton';
 import EndpointPicker from './EndpointPicker';
 import { selectedEndpointIdState, baseUrlState, endpointBundleState } from '../../recoil';
@@ -14,6 +15,10 @@ const Login = () => {
   const endpointBundle = useRecoilValue(endpointBundleState);
   const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
   const baseUrl = useRecoilValue(baseUrlState);
+
+  if (!endpointBundle) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <View style={styles.body}>
