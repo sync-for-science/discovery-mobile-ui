@@ -61,6 +61,7 @@ const LoginButton = ({ baseUrl }: LoginButtonProps) => {
   const handleLogin = async () => {
     try {
       setAuthPending(true);
+      const state = `${Math.random()}`;
       const fhirClient = new FhirKitClient({ baseUrl });
       const smartAuthMetaData = await fhirClient.smartAuthMetadata();
       const { authorizeUrl, tokenUrl } = smartAuthMetaData;
@@ -72,6 +73,7 @@ const LoginButton = ({ baseUrl }: LoginButtonProps) => {
         responseType: ResponseType.Code, // Code | IdToken | Token
         clientId: CLIENT_ID,
         usePKCE: true,
+        state,
         scopes: SCOPES,
         redirectUri,
         extraParams: {
@@ -86,8 +88,12 @@ const LoginButton = ({ baseUrl }: LoginButtonProps) => {
 
       const authRequest: AuthRequest = await loadAsync(authRequestConfig, discovery);
 
-      if (!authRequest?.codeVerifier) {
-        throw new Error('need AuthRequest codeVerifier');
+      if (authRequest.state !== state) {
+        throw new Error('The AuthRequest state is incorrect.');
+      }
+
+      if (!authRequest.codeVerifier) {
+        throw new Error('The AuthRequest codeVerifier is not present.');
       }
 
       const promptOptions: AuthRequestPromptOptions = {
