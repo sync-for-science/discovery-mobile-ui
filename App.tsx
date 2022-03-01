@@ -11,21 +11,20 @@ import RootNavigator from './src/navigation/RootNavigator';
 import LoadingIndicator from './src/components/LoadingIndicator';
 
 export default function App() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   LogBox.ignoreLogs(['VirtualizedLists', 'A VirtualizedList']);
   LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
   LogBox.ignoreAllLogs();
   useEffect(() => {
-    setLoading(true);
     const loadFonts = async () => {
       await Font.loadAsync({
         Roboto,
         RobotoMedium,
         ...Ionicons.font,
       });
+      setLoading(false);
     };
     loadFonts();
-    setLoading(false);
   }, []);
 
   if (loading) {
