@@ -13,6 +13,9 @@ export default LoadingIndicator;
 
 const styles = StyleSheet.create({
   spinnerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 16,
   },
 });

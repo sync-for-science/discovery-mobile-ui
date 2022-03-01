@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  arrayOf, shape, func, string, bool,
+  arrayOf, shape, func, string,
 } from 'prop-types';
 import {
   StyleSheet, Text, View, Platform,
@@ -14,7 +14,6 @@ import { endpointFilterState, filteredEndpointsState } from '../../recoil';
 import { TypedBundleEntry } from '../../../types/s4s';
 
 type EndpointPickerProps = {
-  loading: boolean,
   prompt: string,
   endpoints: TypedBundleEntry<Endpoint>[],
   selectedValue: string,
@@ -22,7 +21,7 @@ type EndpointPickerProps = {
 };
 
 const EndpointPicker = ({
-  loading, prompt, endpoints, selectedValue, onChange,
+  prompt, endpoints, selectedValue, onChange,
 }: EndpointPickerProps) => {
   const [searchQuery, setSearchQuery] = useRecoilState(endpointFilterState);
   const filteredEndpoints = useRecoilValue(filteredEndpointsState);
@@ -30,10 +29,6 @@ const EndpointPicker = ({
   const onChangeSearch = (query: string) => {
     setSearchQuery(query);
   };
-
-  if (loading) {
-    return null;
-  }
 
   const enpointCountMessage = `(${filteredEndpoints.length}/${endpoints.length} endpoints)`;
 
@@ -68,7 +63,6 @@ const EndpointPicker = ({
 };
 
 EndpointPicker.propTypes = {
-  loading: bool.isRequired,
   prompt: string.isRequired,
   endpoints: arrayOf(shape({})).isRequired,
   selectedValue: string.isRequired,

@@ -6,7 +6,6 @@ import {
 import { useRecoilValue, useRecoilState } from 'recoil';
 
 import Colors from '../../constants/Colors';
-import LoadingIndicator from '../LoadingIndicator';
 import LoginButton from './LoginButton';
 import EndpointPicker from './EndpointPicker';
 import { selectedEndpointIdState, baseUrlState, endpointBundleState } from '../../recoil';
@@ -17,13 +16,12 @@ const Login = () => {
   const baseUrl = useRecoilValue(baseUrlState);
 
   if (!endpointBundle) {
-    return <LoadingIndicator />;
+    return null;
   }
 
   return (
     <View style={styles.body}>
       <EndpointPicker
-        loading={false}
         prompt="Select a hospital system portal: "
         endpoints={endpointBundle.entry}
         selectedValue={endpointId as string}

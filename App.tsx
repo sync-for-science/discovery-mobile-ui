@@ -1,15 +1,14 @@
 import 'react-native-url-polyfill/auto';
 import React, { useState, useEffect, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
-import {
-  LogBox, View, ActivityIndicator, StyleSheet,
-} from 'react-native';
+import { LogBox } from 'react-native';
 import * as Font from 'expo-font'; // eslint-disable-line import/no-extraneous-dependencies
 import { Ionicons } from '@expo/vector-icons';
 import Roboto from 'native-base/Fonts/Roboto.ttf';
 import RobotoMedium from 'native-base/Fonts/Roboto_medium.ttf';
 
 import RootNavigator from './src/navigation/RootNavigator';
+import LoadingIndicator from './src/components/LoadingIndicator';
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -30,23 +29,14 @@ export default function App() {
   }, []);
 
   if (loading) {
-    return (<View />);
+    return (<LoadingIndicator />);
   }
 
   return (
     <RecoilRoot>
-      <Suspense fallback={<View style={styles.fallbackContainer}><ActivityIndicator /></View>}>
+      <Suspense fallback={<LoadingIndicator />}>
         <RootNavigator />
       </Suspense>
     </RecoilRoot>
   );
 }
-
-const styles = StyleSheet.create({
-  fallbackContainer: {
-    flex: 1,
-    justifyContent:
-    'center',
-    alignItems: 'center',
-  },
-});

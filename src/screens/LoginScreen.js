@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { func } from 'prop-types';
 
+import LoadingIndicator from '../components/LoadingIndicator';
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
 import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
@@ -35,7 +36,9 @@ const LoginScreen = ({ handleOnboardingState }) => (
         </View>
       </View>
       <View style={styles.midScreen}>
-        <Login />
+        <Suspense fallback={(<LoadingIndicator />)}>
+          <Login />
+        </Suspense>
         <View style={styles.reduxButtons}>
           <TouchableOpacity onPress={() => handleOnboardingState(false)}>
             <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
