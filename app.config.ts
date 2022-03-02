@@ -17,7 +17,7 @@ if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && CLIENT_ID)) {
 
 // https://docs.expo.dev/versions/latest/config/app/
 
-const VERSION = '0.2.3';
+const VERSION = '0.2.4';
 
 module.exports = {
   expo: {
