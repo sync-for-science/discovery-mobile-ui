@@ -8,6 +8,10 @@ const {
 } = process.env;
 
 if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && CLIENT_ID)) {
+  console.log('         EXPO_OWNER exists: ', !!EXPO_OWNER);
+  console.log('          EXPO_SLUG exists: ', !!EXPO_SLUG);
+  console.log('  BUNDLE_IDENTIFIER exists: ', !!BUNDLE_IDENTIFIER);
+  console.log('          CLIENT_ID exists: ', !!CLIENT_ID);
   throw new Error('EXPO_OWNER, EXPO_SLUG, BUNDLE_IDENTIFIER, and CLIENT_ID must be defined.');
 }
 
