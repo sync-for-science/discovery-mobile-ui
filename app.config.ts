@@ -3,11 +3,12 @@ require('dotenv/config');
 const {
   EXPO_OWNER,
   EXPO_SLUG,
+  BUNDLE_IDENTIFIER,
   CLIENT_ID,
 } = process.env;
 
-if (!(EXPO_OWNER && EXPO_SLUG && CLIENT_ID)) {
-  throw new Error('EXPO_OWNER, EXPO_SLUG, and CLIENT_ID must be defined.');
+if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && CLIENT_ID)) {
+  throw new Error('EXPO_OWNER, EXPO_SLUG, BUNDLE_IDENTIFIER, and CLIENT_ID must be defined.');
 }
 
 // https://docs.expo.dev/versions/latest/config/app/
@@ -39,7 +40,7 @@ module.exports = {
       '**/*',
     ],
     ios: {
-      bundleIdentifier: 'com.s4s.discoverymobile',
+      bundleIdentifier: BUNDLE_IDENTIFIER,
       buildNumber: '0.2.0',
       supportsTablet: true,
       config: {
@@ -47,7 +48,7 @@ module.exports = {
       },
     },
     android: {
-      package: 'com.s4s.discoverymobile',
+      package: BUNDLE_IDENTIFIER,
       versionCode: 5,
       adaptiveIcon: {
         foregroundImage: './assets/adaptive-icon.png',
