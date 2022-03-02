@@ -4,20 +4,22 @@ const {
   EXPO_OWNER,
   EXPO_SLUG,
   BUNDLE_IDENTIFIER,
+  ENDPOINTS_URL,
   CLIENT_ID,
 } = process.env;
 
-if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && CLIENT_ID)) {
+if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && ENDPOINTS_URL && CLIENT_ID)) {
   console.log('         EXPO_OWNER exists: ', !!EXPO_OWNER);
   console.log('          EXPO_SLUG exists: ', !!EXPO_SLUG);
   console.log('  BUNDLE_IDENTIFIER exists: ', !!BUNDLE_IDENTIFIER);
+  console.log('      ENDPOINTS_URL exists: ', !!ENDPOINTS_URL);
   console.log('          CLIENT_ID exists: ', !!CLIENT_ID);
-  throw new Error('EXPO_OWNER, EXPO_SLUG, BUNDLE_IDENTIFIER, and CLIENT_ID must be defined.');
+  throw new Error('EXPO_OWNER, EXPO_SLUG, BUNDLE_IDENTIFIER, ENDPOINTS_URL, and CLIENT_ID must be defined.');
 }
 
 // https://docs.expo.dev/versions/latest/config/app/
 
-const VERSION = '0.2.3';
+const VERSION = '0.3.0';
 
 module.exports = {
   expo: {
@@ -30,6 +32,7 @@ module.exports = {
     extra: {
       EXPO_OWNER,
       EXPO_SLUG,
+      ENDPOINTS_URL,
       CLIENT_ID,
     },
     orientation: 'portrait',

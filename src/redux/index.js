@@ -15,12 +15,18 @@ import {
 import rootEpic from './epics';
 import FhirClient from './middleware/fhir-client';
 
-const createStore = (patientId) => {
+const createStore = (authentication) => {
+  const { baseUrl, tokenResponse: { accessToken, idToken } } = authentication;
+
+  const fhirClient = new FhirClient(baseUrl, accessToken, idToken);
+
   const epicMiddleware = createEpicMiddleware({
     dependencies: {
-      fhirClient: new FhirClient(),
+      fhirClient,
     },
   });
+
+  const { patientId } = fhirClient;
 
   const rootReducer = combineReducers({
     resources: flattenedResourcesReducer,
