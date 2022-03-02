@@ -13,12 +13,14 @@ if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && CLIENT_ID)) {
 
 // https://docs.expo.dev/versions/latest/config/app/
 
+const VERSION = '0.2.3';
+
 module.exports = {
   expo: {
     name: 'Sync for Science Discovery',
     slug: EXPO_SLUG,
     owner: EXPO_OWNER,
-    version: '0.2.1',
+    version: VERSION,
     icon: './assets/icon.png',
     scheme: 'https',
     extra: {
@@ -41,7 +43,7 @@ module.exports = {
     ],
     ios: {
       bundleIdentifier: BUNDLE_IDENTIFIER,
-      buildNumber: '0.2.0',
+      buildNumber: VERSION,
       supportsTablet: true,
       config: {
         usesNonExemptEncryption: false,
