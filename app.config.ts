@@ -28,7 +28,7 @@ module.exports = {
     owner: EXPO_OWNER,
     version: VERSION,
     icon: './assets/icon.png',
-    scheme: 'https',
+    scheme: BUNDLE_IDENTIFIER,
     extra: {
       EXPO_OWNER,
       EXPO_SLUG,
