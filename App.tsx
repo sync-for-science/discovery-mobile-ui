@@ -17,11 +17,15 @@ export default function App() {
   LogBox.ignoreAllLogs();
   useEffect(() => {
     const loadFonts = async () => {
-      await Font.loadAsync({
-        Roboto,
-        RobotoMedium,
-        ...Ionicons.font,
-      });
+      try {
+        await Font.loadAsync({
+          Roboto,
+          RobotoMedium,
+          ...Ionicons.font,
+        });
+      } catch (error) {
+        console.error('an error occurred while loading fonts: ', error);
+      }
       setLoading(false);
     };
     loadFonts();

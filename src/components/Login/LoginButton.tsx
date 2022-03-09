@@ -28,7 +28,9 @@ import { authPendingState, authenticationState } from '../../recoil';
 
 WebBrowser.maybeCompleteAuthSession();
 
-const { EXPO_OWNER, EXPO_SLUG, CLIENT_ID } = Constants.manifest?.extra || {};
+const {
+  EXPO_OWNER, EXPO_SLUG, BUNDLE_IDENTIFIER, CLIENT_ID,
+} = Constants.manifest?.extra || {};
 
 // Reference:
 //   https://fhir.epic.com/interconnect-fhir-oauth/api/FHIR/R4/metadata
@@ -46,7 +48,9 @@ const SCOPES = [
 
 const redirectUri = makeRedirectUri({
   useProxy: true,
-  path: `@${EXPO_OWNER}/${EXPO_SLUG}`,
+  native: `https://auth.expo.io/@${EXPO_OWNER}/${EXPO_SLUG}`,
+  // native: `${BUNDLE_IDENTIFIER}://`,
+  scheme: `${BUNDLE_IDENTIFIER}`,
 });
 
 type LoginButtonProps = {
