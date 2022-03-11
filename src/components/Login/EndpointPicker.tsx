@@ -31,20 +31,16 @@ const EndpointPicker = ({
   };
 
   const enpointCountMessage = `(${filteredEndpoints.length}/${endpoints.length} endpoints)`;
+  console.log(enpointCountMessage);
 
   return (
     <View style={styles.container}>
       <View style={styles.label}><Text>{prompt}</Text></View>
-      <View style={styles.count}>
-        <Text>
-          {enpointCountMessage}
-        </Text>
-        <Searchbar
-          placeholder="Search"
-          onChangeText={onChangeSearch}
-          value={searchQuery}
-        />
-      </View>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+      />
       <Picker
         selectedValue={selectedValue}
         onValueChange={onChange}
@@ -74,15 +70,12 @@ export default EndpointPicker;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    margin: 8,
   },
   label: {
     width: '100%',
-    alignItems: 'center',
-    // fontWeight: '900',
-  },
-  count: {
-    width: '100%',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    marginBottom: 8,
   },
   // @ts-ignore
   picker: Platform.select({
