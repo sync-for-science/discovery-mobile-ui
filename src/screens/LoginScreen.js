@@ -6,9 +6,7 @@ import {
   StatusBar,
   Text,
   Image,
-  TouchableOpacity,
 } from 'react-native';
-import { func } from 'prop-types';
 
 import LoadingIndicator from '../components/LoadingIndicator';
 import Login from '../components/Login';
@@ -21,7 +19,7 @@ import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
 import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
 import TextStyles from '../constants/TextStyles';
 
-const LoginScreen = ({ handleOnboardingState }) => (
+const LoginScreen = () => (
   <SafeAreaView style={styles.root}>
     <StatusBar backgroundColor={Colors.primary} barStyle="dark-content" />
     <View style={styles.screen}>
@@ -40,9 +38,6 @@ const LoginScreen = ({ handleOnboardingState }) => (
           <Login />
         </Suspense>
         <View style={styles.reduxButtons}>
-          <TouchableOpacity onPress={() => handleOnboardingState(false)}>
-            <Text style={[styles.baseText, styles.logoBlue]}>Repeat Onboarding</Text>
-          </TouchableOpacity>
           <View style={styles.resetStorageContainer}>
             <ResetAsyncStorageButton />
           </View>
@@ -66,7 +61,6 @@ const LoginScreen = ({ handleOnboardingState }) => (
 );
 
 LoginScreen.propTypes = {
-  handleOnboardingState: func.isRequired,
 };
 
 export default LoginScreen;
