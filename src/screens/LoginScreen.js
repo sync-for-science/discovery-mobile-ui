@@ -31,11 +31,7 @@ const LoginScreen = () => (
         <Suspense fallback={(<LoadingIndicator />)}>
           <Login />
         </Suspense>
-        <View style={styles.reduxButtons}>
-          <View style={styles.resetStorageContainer}>
-            <ResetAsyncStorageButton />
-          </View>
-        </View>
+        <ResetAsyncStorageButton />
       </View>
       <View style={styles.bottomScreen}>
         <Text style={styles.powered}>Powered By</Text>
@@ -60,7 +56,7 @@ LoginScreen.propTypes = {
 export default LoginScreen;
 
 const {
-  rd2, rd4, rd6, rd7, rd8,
+  rd4, rd6, rd7, rd8,
 } = ResponsiveDimensions;
 const { body1, h6 } = TextStyles;
 
@@ -73,6 +69,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: rd4,
     justifyContent: 'space-between',
+  },
+  midScreen: {
+    alignItems: 'center',
   },
   baseText: {
     ...body1,
@@ -93,13 +92,6 @@ const styles = StyleSheet.create({
   },
   fullLogoContainer: {
     marginTop: rd6,
-  },
-  reduxButtons: {
-    marginTop: rd4,
-    alignItems: 'flex-start',
-  },
-  resetStorageContainer: {
-    marginTop: rd2,
   },
   powered: {
     ...h6,

@@ -1,11 +1,6 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-} from 'react-native';
 import { useRecoilValue, useRecoilState } from 'recoil';
 
-import Colors from '../../constants/Colors';
 import LoginButton from './LoginButton';
 import EndpointPicker from './EndpointPicker';
 import { selectedEndpointIdState, baseUrlState, endpointBundleState } from '../../recoil';
@@ -20,7 +15,7 @@ const Login = () => {
   }
 
   return (
-    <View style={styles.body}>
+    <>
       <EndpointPicker
         prompt="Select a hospital system portal: "
         endpoints={endpointBundle.entry}
@@ -28,7 +23,7 @@ const Login = () => {
         onChange={setEndpointId}
       />
       {baseUrl && <LoginButton baseUrl={baseUrl} />}
-    </View>
+    </>
   );
 };
 
@@ -39,21 +34,3 @@ Login.defaultProps = {
 };
 
 export default Login;
-
-const styles = StyleSheet.create({
-  body: {
-    alignItems: 'center',
-  },
-  login: {
-    backgroundColor: Colors.logoBlue,
-    paddingVertical: 8,
-    paddingHorizontal: 24,
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  loginText: {
-    color: 'white',
-    fontSize: 20,
-  },
-});

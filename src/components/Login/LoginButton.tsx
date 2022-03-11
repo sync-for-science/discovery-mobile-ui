@@ -182,12 +182,11 @@ LoginButton.defaultProps = {
 export default LoginButton;
 
 const styles = StyleSheet.create({
-  body: {
-    alignItems: 'center',
-  },
   login: {
-    backgroundColor: Colors.primary,
+    margin: 8,
+    paddingHorizontal: 16,
     paddingVertical: 8,
+    backgroundColor: Colors.primary,
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
