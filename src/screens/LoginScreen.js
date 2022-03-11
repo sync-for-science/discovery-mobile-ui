@@ -62,7 +62,7 @@ export default LoginScreen;
 const {
   rd2, rd4, rd6, rd7, rd8,
 } = ResponsiveDimensions;
-const { body1, h5 } = TextStyles;
+const { body1, h6 } = TextStyles;
 
 const styles = StyleSheet.create({
   root: {
@@ -73,12 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: rd4,
     justifyContent: 'space-between',
-  },
-  vermonster: {
-    height: rd7,
-  },
-  harvard: {
-    height: rd8,
   },
   baseText: {
     ...body1,
@@ -108,8 +102,16 @@ const styles = StyleSheet.create({
     marginTop: rd2,
   },
   powered: {
-    ...h5,
+    ...h6,
     color: Colors.darkgrey,
     fontWeight: '300',
+  },
+  harvard: {
+    width: '60%',
+    height: rd8,
+  },
+  vermonster: {
+    width: '40%',
+    height: rd7,
   },
 });
