@@ -5,31 +5,41 @@ import {
 import * as Updates from 'expo-updates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import TextStyles from '../constants/TextStyles';
 import Colors from '../constants/Colors';
 
 const ResetAsyncStorage = () => {
-  const handleClearAsyncStorage = async () => {
+  const handleReset = async () => {
     await AsyncStorage.clear();
     Updates.reloadAsync();
   };
 
   return (
-    <TouchableOpacity onPress={handleClearAsyncStorage}>
-      <Text style={[styles.baseText, styles.logoBlue]}>Delete App Data From Phone</Text>
+    <TouchableOpacity
+      style={styles.reset}
+      onPress={handleReset}
+    >
+      <Text style={styles.resetText}>Reset App</Text>
     </TouchableOpacity>
   );
 };
 
 export default ResetAsyncStorage;
 
-const { body1 } = TextStyles;
-
 const styles = StyleSheet.create({
-  baseText: {
-    ...body1,
+  reset: {
+    margin: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderWidth: 1,
+    borderColor: Colors.primary,
+    borderRadius: 50,
+    backgroundColor: Colors.white,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '50%',
   },
-  logoBlue: {
-    color: Colors.logoBlue,
+  resetText: {
+    color: Colors.resetAppText,
+    fontSize: 20,
   },
 });

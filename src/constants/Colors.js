@@ -19,7 +19,7 @@ const blue10 = '#B3DEF2';
 const yellow1 = '#ffc000';
 const yellow2 = '#f2db99';
 const yellow3 = '#FFF2CC';
-const red1 = 'red';
+const red1 = '#CC0000';
 const purple1 = '#7030A0';
 const purple2 = '#EAB9FF';
 const green1 = '#6CBB3C';
@@ -66,6 +66,7 @@ export default {
   editNotesContainer: gray2,
   sortingHeaderBackground: yellow3,
   currentCollectionColor: green1,
+  resetAppText: red1,
   alto: '#dfdfdf',
 
 };
