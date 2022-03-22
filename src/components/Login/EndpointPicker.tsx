@@ -9,10 +9,14 @@ import {
   selectedEndpointIdState, endpointOptionsState,
 } from '../../recoil';
 import { TypedBundleEntry } from '../../../types/s4s';
+import endpointTheme from '../../themes/light';
 
 type EndpointPickerProps = {
   endpoints: TypedBundleEntry<Endpoint>[],
 };
+
+// DropDownPicker.addTheme('LIGHT', endpointTheme);
+// DropDownPicker.setTheme('LIGHT');
 
 const EndpointPicker = ({ endpoints }: EndpointPickerProps) => {
   const [open, setOpen] = useState(false);
