@@ -42,6 +42,18 @@ const EndpointPicker = ({ endpoints }: EndpointPickerProps) => {
         // }}
         setValue={setEndpointId}
         setItems={setFilteredEndpoints}
+        style={endpointTheme.style}
+        containerStyle={endpointTheme.container}
+        searchContainerStyle={endpointTheme.searchContainer}
+        searchTextInputStyle={endpointTheme.searchTextInput}
+        dropDownContainerStyle={endpointTheme.dropDownContainer}
+        labelStyle={endpointTheme.label}
+        listItemLabelStyle={endpointTheme.listItemLabel}
+        // disabledStyle={endpointTheme.disabled}
+        // textStyle={endpointTheme.text}
+        // placeholderStyle={endpointTheme.placeholder}
+        // arrowIconStyle={endpointTheme.arrowIcon}
+        // arrowIconContainerStyle={endpointTheme.arrowIconContainer}
       />
     </View>
   );
