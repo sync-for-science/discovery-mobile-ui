@@ -12,6 +12,12 @@ export interface TypedBundle<Type extends FhirResource> extends Bundle {
   entry: TypedBundleEntry<Type>[]
 }
 
+export interface EndpointOption {
+  label: string
+  value: string
+  address: string
+}
+
 export interface TimelineResource extends FhirResource {
   timelineDate: Date
 }
