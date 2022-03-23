@@ -1,29 +1,19 @@
 import React from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
-import LoginButton from './LoginButton';
 import EndpointPicker from './EndpointPicker';
-import { selectedEndpointIdState, baseUrlState, endpointBundleState } from '../../recoil';
+import { endpointBundleState } from '../../recoil';
 
 const Login = () => {
   const endpointBundle = useRecoilValue(endpointBundleState);
-  const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
-  const baseUrl = useRecoilValue(baseUrlState);
-
   if (!endpointBundle) {
     return null;
   }
 
   return (
-    <>
-      <EndpointPicker
-        prompt="Select a provider"
-        endpoints={endpointBundle.entry}
-        selectedValue={endpointId as string}
-        onChange={setEndpointId}
-      />
-      {baseUrl && <LoginButton baseUrl={baseUrl} />}
-    </>
+    <EndpointPicker
+      endpoints={endpointBundle.entry}
+    />
   );
 };
 

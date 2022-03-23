@@ -1,10 +1,9 @@
 import { atom, selector } from 'recoil';
-import { memoizeWith, identity } from 'ramda';
 import { TokenResponseConfig } from 'expo-auth-session';
 import Constants from 'expo-constants'; // eslint-disable-line import/no-extraneous-dependencies
 import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
-import { TypedBundle } from '../types/s4s';
+import { TypedBundle, EndpointOption } from '../types/s4s';
 import Storage from './storage';
 
 // eg: https://open.epic.com/Endpoints/R4
@@ -21,17 +20,23 @@ export const endpointBundleState = selector({
   },
 });
 
-export const endpointFilterState = atom({
-  key: 'EndpointFilterState',
-  default: '',
+export const endpointResourcesState = selector({
+  key: 'EndpointResourcesState',
+  get: ({ get }) => get(endpointBundleState).entry.map(({ resource }) => resource),
 });
 
-export const filteredEndpointsState = selector({
-  key: 'FilteredEndpointsState',
+export const endpointOptionsState = selector({
+  key: 'EndpointOptionsState',
   get: ({ get }) => {
-    const endpointEntries = get(endpointBundleState).entry;
-    const searchString = get(endpointFilterState).toLowerCase();
-    return endpointEntries.filter((entry) => (entry.resource.name || '').toLowerCase().includes(searchString));
+    const endpointEntries = get(endpointResourcesState);
+    return endpointEntries.map((resource) => {
+      const { id, name, address } = resource;
+      return ({
+        label: name,
+        value: id,
+        address,
+      });
+    }) as EndpointOption[];
   },
 });
 
@@ -50,7 +55,7 @@ const selectedEndpointIdAtom = atom({
 
 export const selectedEndpointIdState = selector({
   key: 'SelectedEndpointIdState',
-  get: ({ get }) => get(selectedEndpointIdAtom) || get(endpointBundleState)?.entry[0]?.resource.id,
+  get: ({ get }) => get(selectedEndpointIdAtom),
   set: ({ set }, id) => {
     set(selectedEndpointIdAtom, id as string);
   },
@@ -93,21 +98,3 @@ export const storageOnboardingState = selector({
   key: 'StorageOnboardingState',
   get: async () => Storage.getOnboardingState(),
 });
-
-type isOnboarded = boolean | undefined
-
-const atomForOnboardingState = atom({
-  key: 'AtomForOnboardingState',
-  default: undefined as isOnboarded,
-});
-
-// TODO: it seems unecessary and possibly buggy to memoize this selector:
-// @ts-ignore
-export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => selector({
-  key: 'OnboardingState',
-  // if atomForOnboardingState is undefined aka default then use storage value
-  get: ({ get }) => (get(atomForOnboardingState) === undefined
-    ? storageIsOnboardingComplete
-    : get(atomForOnboardingState)),
-  set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted as boolean),
-}));
