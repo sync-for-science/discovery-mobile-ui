@@ -30,7 +30,7 @@ const LoginScreen = () => {
       <View style={styles.screen}>
         <View style={styles.topScreen}>
           <View style={styles.fullLogoContainer}>
-            <FullLogo height={140} width={300} fill="black" />
+            <FullLogo height={105} width={225} fill="black" />
           </View>
           <Suspense fallback={(<View style={styles.loading}><LoadingIndicator /></View>)}>
             <Login />
