@@ -1,5 +1,4 @@
 import { atom, selector } from 'recoil';
-import { memoizeWith, identity } from 'ramda';
 import { TokenResponseConfig } from 'expo-auth-session';
 import Constants from 'expo-constants'; // eslint-disable-line import/no-extraneous-dependencies
 import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
@@ -93,21 +92,3 @@ export const storageOnboardingState = selector({
   key: 'StorageOnboardingState',
   get: async () => Storage.getOnboardingState(),
 });
-
-type isOnboarded = boolean | undefined
-
-const atomForOnboardingState = atom({
-  key: 'AtomForOnboardingState',
-  default: undefined as isOnboarded,
-});
-
-// TODO: it seems unecessary and possibly buggy to memoize this selector:
-// @ts-ignore
-export const onboardingState = memoizeWith(identity, (storageIsOnboardingComplete) => selector({
-  key: 'OnboardingState',
-  // if atomForOnboardingState is undefined aka default then use storage value
-  get: ({ get }) => (get(atomForOnboardingState) === undefined
-    ? storageIsOnboardingComplete
-    : get(atomForOnboardingState)),
-  set: ({ set }, isCompleted) => set(atomForOnboardingState, isCompleted as boolean),
-}));
