@@ -4,11 +4,21 @@ import {
 
 import Colors from '../../constants/Colors';
 
+// import ARROW_DOWN from './light/icons/arrow-down.png';
+// import ARROW_UP from './light/icons/arrow-up.png';
+// import TICK from './light/icons/arrow-down.png';
+// import CLOSE from './light/icons/arrow-down.png';
+
+// const ARROW_DOWN = require('./light/icons/arrow-down.png');
+// const ARROW_UP = require('./light/icons/arrow-up.png');
+// const TICK = require('./light/icons/tick.png');
+// const CLOSE = require('./light/icons/close.png');
+
 export const ICONS = {
-  // ARROW_DOWN: require('./icons/arrow-down.png'),
-  // ARROW_UP: require('./icons/arrow-up.png'),
-  // TICK: require('./icons/tick.png'),
-  // CLOSE: require('./icons/close.png'),
+  // ARROW_DOWN,
+  // ARROW_UP,
+  // TICK,
+  // CLOSE,
 };
 
 export default StyleSheet.create({
@@ -23,13 +33,14 @@ export default StyleSheet.create({
     height: 50,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: Colors.BLACK,
+    borderColor: Colors.logoBlue,
     paddingHorizontal: 10,
     backgroundColor: Colors.WHITE,
   },
   label: {
     flex: 1,
-    color: Colors.BLACK,
+    color: Colors.darkgrey,
+    fontWeight: 'bold',
   },
   labelContainer: {
     flex: 1,
@@ -76,7 +87,7 @@ export default StyleSheet.create({
     position: 'absolute',
     backgroundColor: Colors.WHITE,
     borderRadius: 8,
-    borderColor: Colors.BLACK,
+    borderColor: Colors.logoBlue,
     borderWidth: 1,
     width: '100%',
     overflow: 'hidden',
@@ -94,7 +105,7 @@ export default StyleSheet.create({
   },
   listItemLabel: {
     flex: 1,
-    color: Colors.BLACK,
+    color: Colors.darkgrey,
   },
   iconContainer: {
     marginRight: 10,
@@ -124,7 +135,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderBottomColor: Colors.BLACK,
+    borderBottomColor: Colors.logoBlue,
     borderBottomWidth: 1,
   },
   searchTextInput: {
@@ -134,13 +145,13 @@ export default StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8,
-    borderColor: Colors.BLACK,
+    borderColor: Colors.logoBlue,
     borderWidth: 1,
     color: Colors.BLACK,
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: Colors.BLACK,
+    backgroundColor: Colors.logoBlue,
   },
   flatListContentContainer: {
     flexGrow: 1,
