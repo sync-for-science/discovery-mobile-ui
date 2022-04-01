@@ -12,13 +12,13 @@ import { useRecoilValue } from 'recoil';
 import LoadingIndicator from '../components/LoadingIndicator';
 import Login from '../components/Login';
 import Colors from '../constants/Colors';
-import ResetAsyncStorageButton from '../storage/ResetAsyncStorageButton';
 import FullLogo from '../../assets/images/logos/full-logo-transparent-fill.svg';
 import ResponsiveDimensions from '../constants/ResponsiveDimensions';
 import vermonsterLogo from '../../assets/images/logos/vermonster-logo.png';
 import harvardLogo from '../../assets/images/logos/harvard-dbmi-logo.png';
 import TextStyles from '../constants/TextStyles';
 import LoginButton from '../components/Login/LoginButton';
+import ResetAsyncStorageButton from '../components/Login/ResetAsyncStorageButton';
 import { baseUrlState } from '../recoil';
 
 const LoginScreen = () => {
