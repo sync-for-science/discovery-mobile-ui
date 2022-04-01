@@ -9,6 +9,7 @@ import {
 import CollectionRow from '../components/CollectionRow/CollectionRow';
 import { prebuiltCollectionsSelector, collectionsCounterSelector } from '../redux/selectors';
 import HeaderCountIcon from '../components/Icons/HeaderCountIcon';
+import { TAB_LABELS } from '../constants/index';
 import Colors from '../constants/Colors';
 
 const UpdatesScreen = ({ navigation, collections, collectionsCounter }) => (
@@ -18,7 +19,7 @@ const UpdatesScreen = ({ navigation, collections, collectionsCounter }) => (
         {collectionsCounter.preBuiltCount > 0 && (
         <HeaderCountIcon count={collectionsCounter.preBuiltCount} />
         )}
-        <Title style={styles.headerText}>Updates</Title>
+        <Title style={styles.headerText}>{TAB_LABELS.AUTO_COLLECTIONS}</Title>
       </View>
     </Header>
     <View style={styles.collectionRowContainer}>
