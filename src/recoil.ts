@@ -4,7 +4,6 @@ import Constants from 'expo-constants'; // eslint-disable-line import/no-extrane
 import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { TypedBundle, EndpointOption } from '../types/s4s';
-import Storage from './storage';
 
 // eg: https://open.epic.com/Endpoints/R4
 const { ENDPOINTS_URL } = Constants.manifest?.extra || {};
@@ -94,9 +93,4 @@ export const authenticationState = atom({
     baseUrl: '',
     tokenResponse: null as TokenResponseType,
   },
-});
-
-export const storageOnboardingState = selector({
-  key: 'StorageOnboardingState',
-  get: async () => Storage.getOnboardingState(),
 });
