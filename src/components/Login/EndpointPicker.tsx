@@ -16,8 +16,8 @@ type EndpointPickerProps = {
 // DropDownPicker.setTheme('LIGHT');
 
 const EndpointPicker = ({ endpointOptions }: EndpointPickerProps) => {
-  const [open, setOpen] = useState(true);
   const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
+  const [open, setOpen] = useState(!endpointId);
   const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [filteredEndpoints, setFilteredEndpoints] = useState(endpointOptions);
 
