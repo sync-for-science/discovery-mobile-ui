@@ -18,16 +18,23 @@ import StateProvider from '../../StateProvider';
 const HomeTab = createBottomTabNavigator();
 const CollectionsStack = createStackNavigator();
 
+export const TAB_LABELS = {
+  PROFILE: 'Profile',
+  SUMMARY: 'Summary',
+  AUTO_COLLECTIONS: 'Updates',
+  COLLECTIONS: 'Collections',
+};
+
 function selectIconName(name, focused) {
   switch (name) {
-    case 'Profile':
+    case TAB_LABELS.PROFILE:
       return focused ? 'md-person-sharp' : 'md-person-outline';
-    case 'Summary':
+    case TAB_LABELS.SUMMARY:
       return focused ? 'md-grid-sharp' : 'md-grid-outline';
-    case 'Collections':
-      return focused ? 'albums' : 'albums-outline';
-    case 'Updates':
+    case TAB_LABELS.AUTO_COLLECTIONS:
       return focused ? 'newspaper-variant' : 'newspaper-variant-outline';
+    case TAB_LABELS.COLLECTIONS:
+      return focused ? 'albums' : 'albums-outline';
     default:
       return '';
   }
@@ -36,7 +43,7 @@ function selectIconName(name, focused) {
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
   tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
-    name === 'Updates'
+    name === TAB_LABELS.AUTO_COLLECTIONS
       ? (
         <MaterialCommunityIcons
           name={selectIconName(name, focused)}
@@ -85,7 +92,7 @@ const CollectionStackScreen = () => (
 const AuthorizedNavigator = () => (
   <StateProvider>
     <HomeTab.Navigator
-      initialRouteName="Profile"
+      initialRouteName={TAB_LABELS.PROFILE}
       screenOptions={selectScreenOptions}
       tabBarOptions={{
         activeTintColor: Colors.primary,
@@ -100,10 +107,10 @@ const AuthorizedNavigator = () => (
         },
       }}
     >
-      <HomeTab.Screen name="Profile" component={ProfileScreen} />
-      <HomeTab.Screen name="Summary" component={SummaryScreen} />
-      <HomeTab.Screen name="Updates" component={UpdatesScreen} />
-      <HomeTab.Screen name="Collections" component={CollectionStackScreen} />
+      <HomeTab.Screen name={TAB_LABELS.PROFILE} component={ProfileScreen} />
+      <HomeTab.Screen name={TAB_LABELS.SUMMARY} component={SummaryScreen} />
+      <HomeTab.Screen name={TAB_LABELS.AUTO_COLLECTIONS} component={UpdatesScreen} />
+      <HomeTab.Screen name={TAB_LABELS.COLLECTIONS} component={CollectionStackScreen} />
     </HomeTab.Navigator>
   </StateProvider>
 );
