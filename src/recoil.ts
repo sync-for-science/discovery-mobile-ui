@@ -38,21 +38,21 @@ export const endpointOptionsSortedState = selector({
 });
 
 const endpointsByIdState = selector({
-  key: 'SelectedEndpointId',
+  key: 'EndpointsByIdState',
   get: ({ get }) => {
-    const endpointEntries = get(endpointBundleState).entry;
-    return new Map(endpointEntries.map((entry) => [String(entry?.resource.id), entry]));
+    const sortedOptions = get(endpointOptionsSortedState);
+    return new Map(sortedOptions.map((options) => [String(options.value), options]));
   },
 });
 
 const selectedEndpointIdAtom = atom({
   key: 'SelectedEndpointIdAtom',
-  default: '',
+  default: '' as string,
 });
 
 export const selectedEndpointIdState = selector({
   key: 'SelectedEndpointIdState',
-  get: ({ get }) => get(selectedEndpointIdAtom),
+  get: ({ get }) => get(selectedEndpointIdAtom) as string,
   set: ({ set }, id) => {
     set(selectedEndpointIdAtom, id as string);
   },
@@ -61,12 +61,12 @@ export const selectedEndpointIdState = selector({
 export const baseUrlState = selector({
   key: 'FhirEndpointBaseUrlState',
   get: ({ get }) => {
-    const selectedId = get(selectedEndpointIdState) as string;
+    const selectedId = get(selectedEndpointIdState);
     if (selectedId) {
       const endpointsById = get(endpointsByIdState);
       const endpointEntry = endpointsById.get(selectedId as string);
-      if (endpointEntry?.resource?.address) {
-        return endpointEntry.resource.address;
+      if (endpointEntry?.address) {
+        return endpointEntry.address;
       }
     }
     return '';
