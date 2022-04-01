@@ -12,18 +12,12 @@ import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
 import CollectionInputScreen from '../screens/CollectionInputScreen';
 
+import { TAB_LABELS } from '../constants';
 import Colors from '../constants/Colors';
 import StateProvider from '../../StateProvider';
 
 const HomeTab = createBottomTabNavigator();
 const CollectionsStack = createStackNavigator();
-
-export const TAB_LABELS = {
-  PROFILE: 'Profile',
-  SUMMARY: 'Summary',
-  AUTO_COLLECTIONS: 'Updates',
-  COLLECTIONS: 'Collections',
-};
 
 function selectIconName(name, focused) {
   switch (name) {
