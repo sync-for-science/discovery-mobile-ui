@@ -85,7 +85,7 @@ const CollectionStackScreen = () => (
 const AuthorizedNavigator = () => (
   <StateProvider>
     <HomeTab.Navigator
-      initialRouteName="Collections"
+      initialRouteName="Profile"
       screenOptions={selectScreenOptions}
       tabBarOptions={{
         activeTintColor: Colors.primary,
