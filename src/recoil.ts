@@ -11,7 +11,7 @@ const { ENDPOINTS_URL } = Constants.manifest?.extra || {};
 
 type TokenResponseType = TokenResponseConfig | null
 
-export const endpointBundleState = selector({
+const endpointBundleState = selector({
   key: 'EndpointBundleState',
   get: async () => {
     const response = await fetch(ENDPOINTS_URL);
@@ -20,23 +20,20 @@ export const endpointBundleState = selector({
   },
 });
 
-export const endpointResourcesState = selector({
-  key: 'EndpointResourcesState',
-  get: ({ get }) => get(endpointBundleState).entry.map(({ resource }) => resource),
-});
-
-export const endpointOptionsState = selector({
-  key: 'EndpointOptionsState',
+export const endpointOptionsSortedState = selector({
+  key: 'EndpointOptionsSortedState',
   get: ({ get }) => {
-    const endpointEntries = get(endpointResourcesState);
-    return endpointEntries.map((resource) => {
-      const { id, name, address } = resource;
-      return ({
-        label: name,
-        value: id,
-        address,
-      });
-    }) as EndpointOption[];
+    const endpointBundle = get(endpointBundleState);
+    return endpointBundle.entry
+      .map(({ resource }) => {
+        const { id, name, address } = resource;
+        return ({
+          label: name,
+          value: id,
+          address,
+        });
+      })
+      .sort(({ label: l1 = '' }, { label: l2 = '' }) => (l1.toLowerCase() < l2.toLowerCase() ? -1 : 1)) as EndpointOption[];
   },
 });
 

@@ -1,30 +1,26 @@
 import React, { useState } from 'react';
-import { arrayOf, shape } from 'prop-types';
+import { arrayOf, shape, string } from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
+import { useRecoilState } from 'recoil';
 
-import {
-  selectedEndpointIdState, endpointOptionsState,
-} from '../../recoil';
-import { TypedBundleEntry } from '../../../types/s4s';
+import { selectedEndpointIdState } from '../../recoil';
+import { EndpointOption } from '../../../types/s4s';
 import endpointTheme from '../../themes/light';
 
 type EndpointPickerProps = {
-  endpoints: TypedBundleEntry<Endpoint>[],
+  endpointOptions: EndpointOption[],
 };
 
 // DropDownPicker.addTheme('LIGHT', endpointTheme);
 // DropDownPicker.setTheme('LIGHT');
 
-const EndpointPicker = ({ endpoints }: EndpointPickerProps) => {
+const EndpointPicker = ({ endpointOptions }: EndpointPickerProps) => {
   const [open, setOpen] = useState(false);
   const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
-  const [filteredEndpoints, setFilteredEndpoints] = useState(useRecoilValue(endpointOptionsState));
-  // console.log('filteredEndpoints: ', filteredEndpoints);
+  const [filteredEndpoints, setFilteredEndpoints] = useState(endpointOptions);
 
-  const enpointCountMessage = `(${filteredEndpoints.length}/${endpoints.length} endpoints)`;
+  const enpointCountMessage = `(${filteredEndpoints.length}/${endpointOptions.length} endpoints)`;
   console.log(enpointCountMessage);
 
   return (
@@ -60,7 +56,11 @@ const EndpointPicker = ({ endpoints }: EndpointPickerProps) => {
 };
 
 EndpointPicker.propTypes = {
-  endpoints: arrayOf(shape({})).isRequired,
+  endpointOptions: arrayOf(shape({
+    label: string.isRequired,
+    value: string.isRequired,
+    address: string.isRequired,
+  })).isRequired,
 };
 
 export default EndpointPicker;
