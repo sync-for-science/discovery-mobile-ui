@@ -1,8 +1,10 @@
 import { atom, selector } from 'recoil';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TokenResponseConfig } from 'expo-auth-session';
 import Constants from 'expo-constants'; // eslint-disable-line import/no-extraneous-dependencies
 import { Endpoint } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
+import { STORAGE_KEYS } from './constants';
 import { TypedBundle, EndpointOption } from '../types/s4s';
 
 // eg: https://open.epic.com/Endpoints/R4
@@ -51,7 +53,7 @@ const endpointsByIdState = selector({
 
 const selectedEndpointIdAtom = atom({
   key: 'SelectedEndpointIdAtom',
-  default: '' as string,
+  default: AsyncStorage.getItem(STORAGE_KEYS.SELECTED_ENDPOINT_ID),
 });
 
 export const selectedEndpointIdState = selector({
@@ -59,6 +61,7 @@ export const selectedEndpointIdState = selector({
   get: ({ get }) => get(selectedEndpointIdAtom) as string,
   set: ({ set }, id) => {
     set(selectedEndpointIdAtom, id as string);
+    AsyncStorage.setItem(STORAGE_KEYS.SELECTED_ENDPOINT_ID, String(id));
   },
 });
 
