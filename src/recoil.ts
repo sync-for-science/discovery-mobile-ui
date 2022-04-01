@@ -20,6 +20,11 @@ const endpointBundleState = selector({
   },
 });
 
+export const searchTextState = atom({
+  key: 'SearchTextAtom',
+  default: '' as string,
+});
+
 export const endpointOptionsSortedState = selector({
   key: 'EndpointOptionsSortedState',
   get: ({ get }) => {

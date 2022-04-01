@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useRecoilState } from 'recoil';
 
-import { selectedEndpointIdState } from '../../recoil';
+import { selectedEndpointIdState, searchTextState } from '../../recoil';
 import { EndpointOption } from '../../../types/s4s';
 import endpointTheme from '../../themes/light';
 
@@ -18,6 +18,7 @@ type EndpointPickerProps = {
 const EndpointPicker = ({ endpointOptions }: EndpointPickerProps) => {
   const [open, setOpen] = useState(true);
   const [endpointId, setEndpointId] = useRecoilState(selectedEndpointIdState);
+  const [searchText, setSearchText] = useRecoilState(searchTextState);
   const [filteredEndpoints, setFilteredEndpoints] = useState(endpointOptions);
 
   const enpointCountMessage = `(${filteredEndpoints.length}/${endpointOptions.length} endpoints)`;
@@ -30,12 +31,14 @@ const EndpointPicker = ({ endpointOptions }: EndpointPickerProps) => {
         value={String(endpointId)}
         items={filteredEndpoints}
         searchable
-        placeholder="Select a provider"
-        searchPlaceholder="Search providers"
+        translation={{
+          PLACEHOLDER: 'Select a provider',
+          SEARCH_PLACEHOLDER: 'Search providers',
+          // SELECTED_ITEMS_COUNT_TEXT: '', // for multi-select
+          NOTHING_TO_SHOW: `No providers match "${searchText}"`,
+        }}
         setOpen={setOpen}
-        // onChangeSearchText={(text) => {
-        //   console.log('onChangeSearchText: ', text);
-        // }}
+        onChangeSearchText={setSearchText}
         setValue={setEndpointId}
         setItems={setFilteredEndpoints}
         style={endpointTheme.style}
