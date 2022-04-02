@@ -6,8 +6,10 @@ import {
   StatusBar,
   Text,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import { useRecoilValue } from 'recoil';
+import * as Linking from 'expo-linking';
 
 import LoadingIndicator from '../components/LoadingIndicator';
 import Login from '../components/Login';
@@ -41,16 +43,26 @@ const LoginScreen = () => {
           {!!baseUrl && <LoginButton baseUrl={baseUrl} />}
           <ResetAsyncStorageButton />
           <Text style={styles.powered}>Powered By</Text>
-          <Image
-            style={styles.harvard}
-            source={harvardLogo}
-            resizeMode="contain"
-          />
-          <Image
-            style={styles.vermonster}
-            source={vermonsterLogo}
-            resizeMode="contain"
-          />
+          <TouchableOpacity
+            style={styles.navlink}
+            onPress={() => Linking.openURL('https://dbmi.hms.harvard.edu')}
+          >
+            <Image
+              style={styles.harvard}
+              source={harvardLogo}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.navlink}
+            onPress={() => Linking.openURL('https://vermonster.com')}
+          >
+            <Image
+              style={styles.vermonster}
+              source={vermonsterLogo}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -87,6 +99,7 @@ const styles = StyleSheet.create({
   midScreen: {
   },
   bottomScreen: {
+    backgroundColor: Colors.TRANSPARENT,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
@@ -107,6 +120,12 @@ const styles = StyleSheet.create({
     ...h6,
     color: Colors.darkgrey,
     fontWeight: '300',
+  },
+  navlink: {
+    backgroundColor: Colors.TRANSPARENT,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
   harvard: {
     width: '60%',

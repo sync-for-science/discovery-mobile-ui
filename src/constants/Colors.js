@@ -23,7 +23,9 @@ const red1 = '#CC0000';
 const purple1 = '#7030A0';
 const purple2 = '#EAB9FF';
 const green1 = '#6CBB3C';
+
 export default {
+  TRANSPARENT: '#FFFFFF00',
   primary: blue9,
   primaryLight: blue10,
   primaryLight2: blue5,
