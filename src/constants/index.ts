@@ -8,3 +8,5 @@ export const TAB_LABELS = {
   AUTO_COLLECTIONS: 'Auto Collections',
   COLLECTIONS: 'Collections',
 };
+
+export const DEFAULT_COLLECTION_NAME = 'Untitled Collection';
