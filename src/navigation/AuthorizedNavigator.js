@@ -6,7 +6,6 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; // eslint
 import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import UpdatesScreen from '../screens/UpdatesScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
@@ -103,7 +102,6 @@ const AuthorizedNavigator = () => (
     >
       <HomeTab.Screen name={TAB_LABELS.PROFILE} component={ProfileScreen} />
       <HomeTab.Screen name={TAB_LABELS.SUMMARY} component={SummaryScreen} />
-      <HomeTab.Screen name={TAB_LABELS.AUTO_COLLECTIONS} component={UpdatesScreen} />
       <HomeTab.Screen name={TAB_LABELS.COLLECTIONS} component={CollectionStackScreen} />
     </HomeTab.Navigator>
   </StateProvider>
