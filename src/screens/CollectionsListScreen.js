@@ -54,18 +54,18 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       }}
     >
       <Tab.Screen
-        name={ROUTES.COLLECTIONS.BUILDS}
-        options={{
-          title: `${collectionsCounter.customCount} My Collections`,
-        }}
-        component={CollectionsIndexCustom}
-      />
-      <Tab.Screen
         name={ROUTES.COLLECTIONS.REPORTS}
         options={{
           title: `${collectionsCounter.preBuiltCount} Reports`,
         }}
         component={CollectionsIndexPrebuilt}
+      />
+      <Tab.Screen
+        name={ROUTES.COLLECTIONS.BUILDS}
+        options={{
+          title: `${collectionsCounter.customCount} My Collections`,
+        }}
+        component={CollectionsIndexCustom}
       />
     </Tab.Navigator>
   </SafeAreaView>
