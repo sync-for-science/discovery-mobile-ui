@@ -45,7 +45,7 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       navigation={navigation}
     />
     <Tab.Navigator
-      initialRouteName={ROUTES.COLLECTIONS.BUILDS}
+      initialRouteName={ROUTES.COLLECTIONS.REPORTS}
       tabBarOptions={{
         labelStyle: styles.tabText,
         indicatorStyle: {
