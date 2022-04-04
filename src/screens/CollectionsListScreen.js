@@ -41,11 +41,11 @@ const Tab = createMaterialTopTabNavigator();
 const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
   <SafeAreaView style={styles.root}>
     <CollectionsIndexHeader
-      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== ROUTES.COLLECTIONS.UPDATES}
+      showNewCollectionButton={getFocusedRouteNameFromRoute(route) !== ROUTES.COLLECTIONS.REPORTS}
       navigation={navigation}
     />
     <Tab.Navigator
-      initialRouteName={ROUTES.COLLECTIONS.BUILDS}
+      initialRouteName={ROUTES.COLLECTIONS.REPORTS}
       tabBarOptions={{
         labelStyle: styles.tabText,
         indicatorStyle: {
@@ -54,18 +54,18 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       }}
     >
       <Tab.Screen
-        name={ROUTES.COLLECTIONS.BUILDS}
+        name={ROUTES.COLLECTIONS.REPORTS}
         options={{
-          title: `${collectionsCounter.customCount} Builds`,
-        }}
-        component={CollectionsIndexCustom}
-      />
-      <Tab.Screen
-        name={ROUTES.COLLECTIONS.UPDATES}
-        options={{
-          title: `${collectionsCounter.preBuiltCount} Updates`,
+          title: `${collectionsCounter.preBuiltCount} Reports`,
         }}
         component={CollectionsIndexPrebuilt}
+      />
+      <Tab.Screen
+        name={ROUTES.COLLECTIONS.BUILDS}
+        options={{
+          title: `${collectionsCounter.customCount} My Collections`,
+        }}
+        component={CollectionsIndexCustom}
       />
     </Tab.Navigator>
   </SafeAreaView>

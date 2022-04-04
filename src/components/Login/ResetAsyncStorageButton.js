@@ -5,7 +5,7 @@ import {
 import * as Updates from 'expo-updates';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import Colors from '../constants/Colors';
+import Colors from '../../constants/Colors';
 
 const ResetAsyncStorage = () => {
   const handleReset = async () => {

@@ -1,55 +1,65 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { shape } from 'prop-types';
 import { connect } from 'react-redux';
 import {
   StyleSheet, Text, View, SectionList,
 } from 'react-native';
+import { Patient } from 'fhir/r4'; // eslint-disable-line import/no-extraneous-dependencies
 
 import { patientSelector } from '../../redux/selectors';
 
 import {
-  getPatientGender,
   formatPatientBirthDate,
-  getPatientAge,
-  getPatientAddresses,
-  formatAddress,
+  formatPatientAge,
+  formatPatientGender,
+  formatPatientAddress,
 } from '../../resources/fhirReader';
 import Colors from '../../constants/Colors';
 import TextStyles from '../../constants/TextStyles';
 
-const Demographics = ({
-  patientResource,
-}) => {
-  const birthDate = formatPatientBirthDate(patientResource);
-  const age = getPatientAge(patientResource);
-  const gender = getPatientGender(patientResource);
-  const address = formatAddress(getPatientAddresses(patientResource));
+type SectionHeaderProps = {
+  section: {
+    title: string
+  }
+};
 
+const SectionHeader = ({ section: { title } }: SectionHeaderProps) => (
+  <Text style={styles.subHeading}>{title}</Text>
+);
+
+type SectionItemProps = {
+  item: string
+};
+
+const SectionItem = ({ item }: SectionItemProps) => (
+  <View style={styles.row}>
+    <Text style={styles.data}>{item}</Text>
+  </View>
+);
+
+type DemographicsProps = {
+  patientResource: Patient | null
+};
+
+const Demographics: FunctionComponent<DemographicsProps> = ({ patientResource }) => {
   const demographics = [
     {
       title: 'Date of birth',
-      data: [birthDate],
+      data: [formatPatientBirthDate(patientResource)],
     },
     {
       title: 'Age',
-      data: [age],
+      data: [formatPatientAge(patientResource)],
     },
     {
       title: 'Gender',
-      data: [gender],
+      data: [formatPatientGender(patientResource)],
     },
     {
       title: 'Address',
-      data: [address],
+      data: [formatPatientAddress(patientResource)],
     },
   ];
-
-  // eslint-disable-next-line react/prop-types
-  const Item = ({ title }) => (
-    <View style={styles.row}>
-      <Text style={styles.data}>{title}</Text>
-    </View>
-  );
 
   return (
     <View style={styles.root}>
@@ -61,20 +71,15 @@ const Demographics = ({
       <SectionList
         sections={demographics}
         keyExtractor={(item, index) => item + index}
-        renderSectionHeader={({ section: { title } }) => (
-          <Text style={styles.subHeading}>{title}</Text>
-        )}
-        renderItem={({ item }) => (
-          <Item
-            title={item}
-          />
-        )}
+        renderSectionHeader={SectionHeader}
+        renderItem={SectionItem}
       />
     </View>
   );
 };
 
 Demographics.propTypes = {
+  // @ts-ignore
   patientResource: shape({}),
 };
 
@@ -82,7 +87,7 @@ Demographics.defaultProps = {
   patientResource: null,
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   patientResource: patientSelector(state),
 });
 

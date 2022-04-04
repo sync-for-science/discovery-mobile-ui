@@ -19,7 +19,7 @@ if (!(EXPO_OWNER && EXPO_SLUG && BUNDLE_IDENTIFIER && ENDPOINTS_URL && CLIENT_ID
 
 // https://docs.expo.dev/versions/latest/config/app/
 
-const VERSION = '0.3.8';
+const VERSION = '0.3.9';
 
 module.exports = {
   expo: {

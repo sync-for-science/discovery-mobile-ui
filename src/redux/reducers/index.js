@@ -6,6 +6,7 @@ import { compareDesc, format } from 'date-fns';
 
 import { actionTypes } from '../action-types';
 import { PLURAL_RESOURCE_TYPES, TYPES_SORTED_BY_LABEL } from '../../constants/resource-types';
+import { DEFAULT_COLLECTION_NAME } from '../../constants';
 import { UNMARKED, MARKED, FOCUSED } from '../../constants/marked-status';
 import { SORT_ASC, SORT_DESC, sortFields } from '../../constants/sorting';
 
@@ -85,7 +86,7 @@ const defaultDetailsPanelSortingState = {
 
 export const createCollection = (options = {}) => {
   const {
-    label = 'Untitled Collection',
+    label = DEFAULT_COLLECTION_NAME,
     id = uuidv4(),
     preBuilt = false,
     showCollectionOnly = false,

@@ -21,7 +21,7 @@ const UI_DATE_FORMAT_SHORT_YEAR = "MMM d, ''yy";
 const UI_DATE_FORMAT_LONG = 'MMM d, y h:mm:ssaaa';
 const UI_DATE_FORMAT_SHORT = 'MM/dd/y';
 
-export const getPatientName = (patientResource: Patient) => {
+export const getPatientName = (patientResource: Patient | null) => {
   if (patientResource?.name) {
     const officialName = patientResource.name.find((name) => name.use === 'official');
     const usualName = patientResource.name.find((name) => name.use === 'usual');
@@ -37,7 +37,7 @@ export const getPatientName = (patientResource: Patient) => {
   return '';
 };
 
-export const formatPractitionerName = (practitionerResource: Practitioner) => {
+export const formatPractitionerName = (practitionerResource: Practitioner | null) => {
   if (practitionerResource?.name?.[0]) {
     const { prefix, given, family } = practitionerResource.name[0];
     return [prefix?.[0], given?.[0], family].join(' ');
@@ -45,49 +45,48 @@ export const formatPractitionerName = (practitionerResource: Practitioner) => {
   return '(Not Available)';
 };
 
-export const getPatientGender = (patientResource: Patient) => patientResource?.gender;
+export const formatPatientGender = (patientResource: Patient | null) => patientResource?.gender || '';
 
 // returns human-readable patient birthdate
-export const formatPatientBirthDate = (patientResource: Patient) => {
-  if (!patientResource.birthDate) {
-    return null;
+export const formatPatientBirthDate = (patientResource: Patient | null) => {
+  if (!patientResource?.birthDate) {
+    return '';
   }
   const birthDate = parse(patientResource.birthDate, 'yyyy-MM-dd', new Date());
   return format(birthDate, UI_DATE_FORMAT);
 };
 
-export const getPatientAddresses = (patientResource: Patient) => patientResource.address;
-
-export const formatAddress = (address: Address[]) => {
+const formatAddress = (address: Address[] | void) => {
   // handle the first one for now
-  const firstAddress = address[0];
+  const firstAddress = address?.[0];
   if (!firstAddress) {
-    return null;
+    return '';
   }
-  const buildup = [
+  const addressParts = [
     (firstAddress.line || []).join('\n'),
     `${firstAddress.city}, ${firstAddress.state} ${firstAddress.postalCode}`,
     firstAddress.country,
   ];
 
-  return buildup.join('\n');
+  return addressParts.join('\n');
 };
+
+export const formatPatientAddress = (patient: Patient | null) => formatAddress(patient?.address);
 
 // TODO: make it handle only years or months which is valid
 // TODO: have it return months for babies
-export const getPatientAge = (patient: Patient) => {
-  const { birthDate } = patient;
-  if (!birthDate) {
-    return null;
+export const formatPatientAge = (patient: Patient | null) => {
+  if (!patient?.birthDate) {
+    return '';
   }
   const birthDuration = intervalToDuration(
     {
-      start: parse(birthDate, 'yyyy-MM-dd', new Date()),
+      start: parse(patient.birthDate, 'yyyy-MM-dd', new Date()),
       end: new Date(),
     },
   );
   if (!birthDuration.years) {
-    return null;
+    return '';
   }
   return formatDuration(birthDuration, birthDuration.years > 5 ? { format: ['years'] } : { format: ['years', 'months'] });
 };

@@ -2,17 +2,18 @@ import React from 'react';
 import { useRecoilValue } from 'recoil';
 
 import EndpointPicker from './EndpointPicker';
-import { endpointBundleState } from '../../recoil';
+import { endpointOptionsSortedState } from '../../recoil';
 
 const Login = () => {
-  const endpointBundle = useRecoilValue(endpointBundleState);
-  if (!endpointBundle) {
+  const endpointOptions = useRecoilValue(endpointOptionsSortedState);
+
+  if (!endpointOptions.length) {
     return null;
   }
 
   return (
     <EndpointPicker
-      endpoints={endpointBundle.entry}
+      endpointOptions={endpointOptions}
     />
   );
 };
