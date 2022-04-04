@@ -57,7 +57,7 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       <Tab.Screen
         name={ROUTES.COLLECTIONS.BUILDS}
         options={{
-          title: `${collectionsCounter.customCount} Builds`,
+          title: `${collectionsCounter.customCount} Custom Collections`,
         }}
         component={CollectionsIndexCustom}
       />
