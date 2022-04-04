@@ -9,4 +9,4 @@ export const TAB_LABELS = {
   COLLECTIONS: 'Collections',
 };
 
-export const DEFAULT_COLLECTION_NAME = 'Untitled Collection';
+export const DEFAULT_COLLECTION_NAME = 'Untitled Custom Collection';
