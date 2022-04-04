@@ -24,6 +24,7 @@ import CollectionsDialog, {
   COLLECTIONS_DIALOG_ACTIONS,
   CollectionsDialogText,
 } from '../components/Dialog/CollectionsDialog';
+import { DEFAULT_COLLECTION_NAME } from '../constants';
 
 import Colors from '../constants/Colors';
 import BaseText from '../components/Generic/BaseText';
@@ -40,7 +41,7 @@ const CollectionInputScreen = ({
   renameCollectionAction,
 }) => {
   const navigation = useNavigation();
-  const [title, onChangeTitle] = useState(creatingCollection ? 'Untitled Collection' : collection.label);
+  const [title, onChangeTitle] = useState(creatingCollection ? DEFAULT_COLLECTION_NAME : collection.label); // eslint-disable-line max-len
   const [purpose, onChangePurpose] = useState(creatingCollection ? '' : collection?.purpose);
   const [current, currentSelection] = useState(creatingCollection ? false : collection?.current);
   const [urgent, urgentSelection] = useState(creatingCollection ? false : collection?.urgent);
