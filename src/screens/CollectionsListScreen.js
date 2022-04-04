@@ -12,7 +12,6 @@ import { customCollectionsSelector, prebuiltCollectionsSelector, collectionsCoun
 import CollectionsIndex from '../components/Collections/index';
 import CollectionsIndexSearch from '../components/Collections/indexSearch';
 import CollectionsIndexHeader from '../components/Collections/CollectionsIndexHeader';
-import { TAB_LABELS } from '../constants/index';
 import Colors from '../constants/Colors';
 import TextStyles from '../constants/TextStyles';
 import ROUTES from '../constants/routes';
@@ -64,7 +63,7 @@ const CollectionsListScreen = ({ route, collectionsCounter, navigation }) => (
       <Tab.Screen
         name={ROUTES.COLLECTIONS.UPDATES}
         options={{
-          title: `${collectionsCounter.preBuiltCount} ${TAB_LABELS.AUTO_COLLECTIONS}`,
+          title: `${collectionsCounter.preBuiltCount} Reports`,
         }}
         component={CollectionsIndexPrebuilt}
       />

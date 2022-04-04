@@ -1,12 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
+import { Ionicons } from '@expo/vector-icons'; // eslint-disable-line import/no-extraneous-dependencies
 
 import ProfileScreen from '../screens/ProfileScreen';
 import SummaryScreen from '../screens/SummaryScreen';
 import CatalogScreen from '../screens/CatalogScreen';
-import UpdatesScreen from '../screens/UpdatesScreen';
 import CollectionsListScreen from '../screens/CollectionsListScreen';
 import NotesScreen from '../screens/NotesScreen';
 import CollectionDetailsScreen from '../screens/CollectionDetailsScreen';
@@ -25,8 +24,6 @@ function selectIconName(name, focused) {
       return focused ? 'md-person-sharp' : 'md-person-outline';
     case TAB_LABELS.SUMMARY:
       return focused ? 'md-grid-sharp' : 'md-grid-outline';
-    case TAB_LABELS.AUTO_COLLECTIONS:
-      return focused ? 'newspaper-variant' : 'newspaper-variant-outline';
     case TAB_LABELS.COLLECTIONS:
       return focused ? 'albums' : 'albums-outline';
     default:
@@ -37,20 +34,11 @@ function selectIconName(name, focused) {
 // selectScreenOptions is a function that returns a POJO
 const selectScreenOptions = ({ route: { name } }) => ({
   tabBarIcon: ({ focused, color, size }) => ( // eslint-disable-line react/prop-types
-    name === TAB_LABELS.AUTO_COLLECTIONS
-      ? (
-        <MaterialCommunityIcons
-          name={selectIconName(name, focused)}
-          size={30}
-          color={color}
-        />
-      ) : (
-        <Ionicons
-          name={selectIconName(name, focused)}
-          size={size}
-          color={color}
-        />
-      )
+    <Ionicons
+      name={selectIconName(name, focused)}
+      size={size}
+      color={color}
+    />
   ),
 });
 
@@ -95,7 +83,9 @@ const AuthorizedNavigator = () => (
           paddingVertical: 10,
           height: 84,
         },
-        labelStyle: { fontSize: 12 },
+        labelStyle: {
+          fontSize: 12,
+        },
         tabBarIcon: {
           size: 5,
         },
@@ -103,7 +93,6 @@ const AuthorizedNavigator = () => (
     >
       <HomeTab.Screen name={TAB_LABELS.PROFILE} component={ProfileScreen} />
       <HomeTab.Screen name={TAB_LABELS.SUMMARY} component={SummaryScreen} />
-      <HomeTab.Screen name={TAB_LABELS.AUTO_COLLECTIONS} component={UpdatesScreen} />
       <HomeTab.Screen name={TAB_LABELS.COLLECTIONS} component={CollectionStackScreen} />
     </HomeTab.Navigator>
   </StateProvider>
